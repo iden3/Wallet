@@ -1,0 +1,25 @@
+.i3-ww-box__header {
+  border-bottom: 1px $app-border-color solid;
+  display: flex;
+  -webkit-display: flex;
+  -moz-display: flex;
+  -ms-display: flex;
+  -o-display: flex;
+  align-items: center;
+  -webkit-align-items: center; /* Safari. Chrome, Android, iOS */
+  justify-content: space-between;
+  -webkit-justify-content: space-between;  /* Safari. Chrome, Android, iOS */
+  .i3-ww-box__header-title {
+    $map: ($large-desktop-width: $app-title-large-desktop-fs,
+            $desktop-width: $app-title-desktop-fs,
+            $tablet-landscape-width: $app-title-tablet-landscape-fs,
+            $tablet-portrait-width: $app-title-tablet-portrait-fs,
+            $mobile-max-width: $app-title-mobile-fs,
+            $small-mobile-min-width: $app-title-small-fs);
+    @include fluid-sizing('font-size', $map, true);
+    margin-left: 5%;
+  }
+  .i3-ww-box__header-buttons-area {
+    margin-right: 1%;
+  }
+}

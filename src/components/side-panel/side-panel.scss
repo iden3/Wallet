@@ -1,0 +1,42 @@
+.i3-ww-side-panel {
+  z-index: $side-bar-z-index;
+  position: fixed;
+  width: 100%;
+  transition-property: transform;
+  transition-duration: .4s;
+  top: 0;
+  bottom: 0;
+  overflow-y: auto;
+  background: $box-bg-color;
+  $map: ($desktop-width: 600px,
+          $tablet-landscape-width: 450px,
+          $tablet-portrait-width: 300px,
+          $mobile-max-width: 300px,
+          $small-mobile-min-width: 256px,
+  );
+  @include fluid-sizing('max-width', $map, false);
+}
+
+.i3-ww-side-panel__inner {
+  background-color: $box-bg-color;
+  min-height: 100%;
+  position: relative;
+}
+
+.i3-ww-side-panel--left {
+  border-right: 6px solid rgba(0, 0, 0, 0.1);
+  left: 0;
+  transform: translateX(-100%);
+  &.i3-ww-side-panel--visible {
+    transform: translateX(0);
+  }
+}
+
+.i3-ww-side-panel--right {
+  border-left: 6px solid rgba(0, 0, 0, 0.1);
+  right: 0;
+  transform: translateX(100%);
+  &.i3-ww-side-panel--visible {
+    transform: translate(0);
+  }
+}

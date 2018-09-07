@@ -1,0 +1,14 @@
+.i3-ww-claims{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 5%;
+  .i3-ww-claims__drop-down {
+    display: flex;
+    padding-bottom: 17px;
+    .i3-ww-drop-down {
+      margin-left: auto;
+    }
+  }
+}

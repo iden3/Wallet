@@ -1,0 +1,9 @@
+.i3-ww-layout {
+  $map: ($large-desktop-width: 22px,
+          $desktop-width: 20px,
+          $tablet-landscape-width: 18px,
+          $tablet-portrait-width: 16px,
+          $mobile-min-width: 15px,
+          $small-mobile-min-width: 14px);
+  @include fluid-sizing('font-size', $map, true);
+}

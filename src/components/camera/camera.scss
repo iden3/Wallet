@@ -1,0 +1,29 @@
+.i3-ww-camera {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -58%);
+  .i3-ww-camera__container {
+    button {
+      left: 14%;
+      top: 150%;
+      position: absolute;
+    }
+    video {
+      $map: ($desktop-width: 500px,
+              $tablet-landscape-width: 400px,
+              $tablet-portrait-width: 290px,
+              $small-mobile-min-width: 200px,
+      );
+      @include fluid-sizing('max-width', $map, false);
+      $map: ($desktop-width: 500px,
+              $tablet-landscape-width: 400px,
+              $tablet-portrait-width: 290px,
+              $small-mobile-min-width: 200px,
+      );
+      @include fluid-sizing('max-height', $map, false);
+    }
+  }
+}
+

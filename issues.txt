@@ -1,0 +1,2 @@
+SourceMap is not working in Firefox, because webpack plugin style-loader:
+https://github.com/webpack-contrib/style-loader/issues/303

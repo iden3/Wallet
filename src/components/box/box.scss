@@ -1,0 +1,35 @@
+.i3-ww-box {
+  .i3-ww-panel {
+    position: fixed;
+    width: 100%;
+    transition-property: transform;
+    transition-duration: .4s;
+    top: 0;
+    bottom: 0;
+    overflow-y: auto;
+  }
+
+  .i3-ww-panel-inner {
+    background-color: $white-20;
+    min-height: 100%;
+  }
+
+  .i3-ww-panel--left {
+    border-right: 6px solid rgba(0, 0, 0, 0.1);
+    left: 0;
+    transform: translateX(-100%);
+    &.i3-ww-panel--visible {
+      transform: translateX(0);
+    }
+  }
+
+  .i3-ww-panel--right {
+    border-left: 6px solid rgba(0, 0, 0, 0.1);
+    right: 0;
+    transform: translateX(100%);
+    &.i3-ww-panel--visible {
+      transform: translate(0);
+    }
+  }
+}
+

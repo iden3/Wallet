@@ -1,0 +1,10 @@
+.i3-ww-dashboard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 5%;
+  .i3-ww-widget:not(:first-child){
+    margin-top: 5%;
+  }
+}

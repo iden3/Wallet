@@ -1,0 +1,145 @@
+@import "palette";
+
+/*
+* Base variables
+*/
+$dir: ltr;
+$rem: 16px;
+
+/*
+* Generic break points
+*/
+$small-mobile-min-width: 200px;
+$mobile-min-width: 320px;
+$mobile-max-width: 480px;
+$tablet-portrait-width: 600px;
+$tablet-landscape-width: 900px;
+$desktop-width: 1200px;
+$large-desktop-width: 1600px;
+
+/*
+* Device break points
+*/
+
+// iPhone
+$iPhone-4-min-width: 320px;
+$iPhone-4-max-width: 480px;
+$iPhone-5-min-width: 320px;
+$iPhone-5-max-width: 568px;
+$iPhone-6-7-8-min-width: 375px;
+$iPhone-6-7-8-max-width: 667px;
+$iPhone-6-7-8-plus-min-width: 414px;
+$iPhone-6-7-8-plus-max-width: 736px;
+$iPhone-X-min-width: 375px;
+$iPhone-X-max-width: 812px;
+
+// iPad
+$iPad-min-width: 768px;
+$iPad-max-width: 1024px;
+
+// Galaxy S4
+$galaxy-s4-min-width: 320px;
+$galaxy-s4-max-width: 640px;
+$galaxy-s5-s6-min-width: 360px;
+$galaxy-s5-s6-max-width: 640px;
+$galaxy-s7-min-width: 360px;
+$galaxy-s7-max-width: 640px;
+
+/*
+* Fonts sizes
+ */
+$app-title-fs: 24px;
+$app-regular-fs: 20px;
+
+$app-title-large-desktop-fs: 24px;
+$app-title-desktop-fs: 24px;
+$app-title-tablet-landscape-fs: 22px;
+$app-title-tablet-portrait-fs: 22px;
+$app-title-mobile-fs: 18px;
+$app-title-small-fs: 16px;
+
+$app-regular-large-desktop-fs: 20px;
+$app-regular-desktop-fs: 20px;
+$app-regular-tablet-landscape-fs: 18px;
+$app-regular-tablet-portrait-fs: 16px;
+$app-regular-mobile-fs: 15px;
+$app-regular-small-fs: 13px;
+
+$claim-list-pinned-icon-fs: 30px;
+
+/*
+* Colors
+*/
+
+// App
+$app-bg-color: $grey-9;
+$app-font-color: $grey-70;
+$app-border-color: $navy-35;
+
+// Nav bar
+$nav-bar-bg-color: $navy-97;
+$nav-bar-item-color: $grey-9;
+$nav-bar-selected-item-color: $navy-97;
+$nav-bar-selected-item-bg-color: $navy-88;
+$nav-bar-selected-item-border-color: $navy-35;
+$nav-bar-item-hover-color: $navy-100;
+$nav-bar-fixed-item-color: $navy-100;
+
+// Nav bar mobile
+$nav-bar-mobile-item-selected-color: $grey-9;
+$nav-bar-mobile-selected-item-border-color: $navy-35;
+
+// Box: side panel and pop-up
+$box-bg-color: $white-100;
+$box-border-color: $navy-57;
+
+// Button
+$button-primary-main-color: $blue-75;
+$button-primary-content-color: $white-20;
+$button-primary-hover-main-color: $blue-40;
+$button-primary-hover-content-color: $grey-52;
+$button-primary-pressed-color: $blue-100;
+$button-primary-pressed-content-color: $white-20;
+
+$button-secondary-main-color: transparent;
+$button-secondary-content-color: $grey-70;
+$button-secondary-hover-main-color: $grey-23;
+$button-secondary-hover-content-color: $grey-52;
+$button-secondary-pressed-color: $blue-100;
+$button-secondary-pressed-content-color: $white-20;
+
+$button-danger-main-color: $grey-23;
+$button-danger-content-color: $white-20;
+$button-danger-hover-main-color: $grey-52;
+$button-danger-hover-content-color: $white-20;
+$button-danger-pressed-color: $grey-70;
+$button-danger-pressed-content-color: $white-20;
+
+// Claim types
+$claim-type-assign-name-color: $orange-40;
+$claim-type-sign-color: $green-40;
+$claim-type-default-color: $grey-23;
+
+// Claim list
+$claim-row-bg-color: $white-10;
+
+/*
+* Other settings
+*/
+
+// Nav bar
+$nav-bar-item-height: 63px;
+$nav-bar-fixed-item-height: 45px;
+$nav-bar-header-height: 65px;
+$nav-bar-submenu-title-height: 55px;
+
+// Box
+$box-pop-up-border-radius: 2px;
+
+
+// Z-index
+$footer-z-index: 1;
+$header-z-index: 50;
+$main-content-z-index: 1;
+$side-bar-z-index: 100;
+$pop-up-z-index: 100;

@@ -1,0 +1,42 @@
+.i3-ww-claim-row {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  overflow: hidden;
+  height: rem(60px);
+  background: $claim-row-bg-color;
+  .i3-ww-claim-row__content {
+    flex-grow: 1;
+    display: flex;
+    justify-content: start;
+    padding-left: 30px;
+    cursor: pointer;
+  }
+  .i3-ww-claim-row__type {
+    display: inline-block;
+    height: 40px;
+    width: 40px;
+    line-height: 40px;
+    text-align: center;
+    border-radius: 40px;
+    color: $claim-row-bg-color;
+    font-size: 1.5em;
+    margin-left: 15px;
+    cursor: pointer;
+    &.default {
+      background: $claim-type-default-color;
+    }
+    &.assign-name {
+      background: $claim-type-assign-name-color;
+    }
+    &.sign {
+      background: $claim-type-sign-color;
+    }
+  }
+  .i3-ww-claim-row__pinned {
+    text-align: side(right);
+    font-size: $claim-list-pinned-icon-fs;
+    padding-right: 15px;
+    cursor: pointer;
+  }
+}
