@@ -1,0 +1,74 @@
+483a4cecabf32c732d4557f76abc099a
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _immutable = require("immutable");
+
+var _constants = require("./constants");
+
+(function () {
+  var enterModule = require('react-hot-loader').enterModule;
+
+  enterModule && enterModule(module);
+})();
+
+var initialState = new _immutable.Map({
+  error: '',
+  isFetching: true,
+  qrCodes: (0, _immutable.List)()
+});
+
+function qrCodes() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case _constants.FETCHING_QR_CODES:
+      return state.merge({
+        isFetching: true
+      });
+
+    case _constants.FETCHING_QR_CODES_ERROR:
+      return state.merge({
+        isFetching: false,
+        qrCodes: action.data
+      });
+
+    case _constants.FETCHING_QR_CODES_SUCCESS:
+      return state.merge({
+        isFetching: false,
+        qrCodes: (0, _immutable.List)(),
+        error: action.error
+      });
+
+    default:
+      return state;
+  }
+}
+
+var _default = qrCodes;
+var _default2 = _default;
+exports.default = _default2;
+;
+
+(function () {
+  var reactHotLoader = require('react-hot-loader').default;
+
+  var leaveModule = require('react-hot-loader').leaveModule;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(initialState, "initialState", "/home/charly/Uniclau/Iden3/web-wallet/src/state/qr-codes/reducer.js");
+  reactHotLoader.register(qrCodes, "qrCodes", "/home/charly/Uniclau/Iden3/web-wallet/src/state/qr-codes/reducer.js");
+  reactHotLoader.register(_default, "default", "/home/charly/Uniclau/Iden3/web-wallet/src/state/qr-codes/reducer.js");
+  leaveModule(module);
+})();
+
+;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInJlZHVjZXIuanMiXSwibmFtZXMiOlsiaW5pdGlhbFN0YXRlIiwiSW1tdXRhYmxlTWFwIiwiZXJyb3IiLCJpc0ZldGNoaW5nIiwicXJDb2RlcyIsInN0YXRlIiwiYWN0aW9uIiwidHlwZSIsIkZFVENISU5HX1FSX0NPREVTIiwibWVyZ2UiLCJGRVRDSElOR19RUl9DT0RFU19FUlJPUiIsImRhdGEiLCJGRVRDSElOR19RUl9DT0RFU19TVUNDRVNTIl0sIm1hcHBpbmdzIjoiOzs7Ozs7O0FBQUE7O0FBSUE7Ozs7Ozs7O0FBTUEsSUFBTUEsWUFBWSxHQUFHLElBQUlDLGNBQUosQ0FBaUI7QUFDcENDLEVBQUFBLEtBQUssRUFBRSxFQUQ2QjtBQUVwQ0MsRUFBQUEsVUFBVSxFQUFFLElBRndCO0FBR3BDQyxFQUFBQSxPQUFPLEVBQUU7QUFIMkIsQ0FBakIsQ0FBckI7O0FBTUEsU0FBU0EsT0FBVCxHQUErQztBQUFBLE1BQTlCQyxLQUE4Qix1RUFBdEJMLFlBQXNCO0FBQUEsTUFBUk0sTUFBUTs7QUFDN0MsVUFBUUEsTUFBTSxDQUFDQyxJQUFmO0FBQ0UsU0FBS0MsNEJBQUw7QUFDRSxhQUFPSCxLQUFLLENBQUNJLEtBQU4sQ0FBWTtBQUNqQk4sUUFBQUEsVUFBVSxFQUFFO0FBREssT0FBWixDQUFQOztBQUdGLFNBQUtPLGtDQUFMO0FBQ0UsYUFBT0wsS0FBSyxDQUFDSSxLQUFOLENBQVk7QUFDakJOLFFBQUFBLFVBQVUsRUFBRSxLQURLO0FBRWpCQyxRQUFBQSxPQUFPLEVBQUVFLE1BQU0sQ0FBQ0s7QUFGQyxPQUFaLENBQVA7O0FBSUYsU0FBS0Msb0NBQUw7QUFDRSxhQUFPUCxLQUFLLENBQUNJLEtBQU4sQ0FBWTtBQUNqQk4sUUFBQUEsVUFBVSxFQUFFLEtBREs7QUFFakJDLFFBQUFBLE9BQU8sRUFBRSxzQkFGUTtBQUdqQkYsUUFBQUEsS0FBSyxFQUFFSSxNQUFNLENBQUNKO0FBSEcsT0FBWixDQUFQOztBQUtGO0FBQ0UsYUFBT0csS0FBUDtBQWpCSjtBQW1CRDs7ZUFFY0QsTzs7Ozs7Ozs7Ozs7Ozs7MEJBNUJUSixZOzBCQU1HSSxPIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHtcbiAgTWFwIGFzIEltbXV0YWJsZU1hcCxcbiAgTGlzdCBhcyBJbW11dGFibGVMaXN0LFxufSBmcm9tICdpbW11dGFibGUnO1xuaW1wb3J0IHtcbiAgRkVUQ0hJTkdfUVJfQ09ERVMsXG4gIEZFVENISU5HX1FSX0NPREVTX0VSUk9SLFxuICBGRVRDSElOR19RUl9DT0RFU19TVUNDRVNTLFxufSBmcm9tICcuL2NvbnN0YW50cyc7XG5cbmNvbnN0IGluaXRpYWxTdGF0ZSA9IG5ldyBJbW11dGFibGVNYXAoe1xuICBlcnJvcjogJycsXG4gIGlzRmV0Y2hpbmc6IHRydWUsXG4gIHFyQ29kZXM6IEltbXV0YWJsZUxpc3QoKSxcbn0pO1xuXG5mdW5jdGlvbiBxckNvZGVzKHN0YXRlID0gaW5pdGlhbFN0YXRlLCBhY3Rpb24pIHtcbiAgc3dpdGNoIChhY3Rpb24udHlwZSkge1xuICAgIGNhc2UgRkVUQ0hJTkdfUVJfQ09ERVM6XG4gICAgICByZXR1cm4gc3RhdGUubWVyZ2Uoe1xuICAgICAgICBpc0ZldGNoaW5nOiB0cnVlLFxuICAgICAgfSk7XG4gICAgY2FzZSBGRVRDSElOR19RUl9DT0RFU19FUlJPUjpcbiAgICAgIHJldHVybiBzdGF0ZS5tZXJnZSh7XG4gICAgICAgIGlzRmV0Y2hpbmc6IGZhbHNlLFxuICAgICAgICBxckNvZGVzOiBhY3Rpb24uZGF0YSxcbiAgICAgIH0pO1xuICAgIGNhc2UgRkVUQ0hJTkdfUVJfQ09ERVNfU1VDQ0VTUzpcbiAgICAgIHJldHVybiBzdGF0ZS5tZXJnZSh7XG4gICAgICAgIGlzRmV0Y2hpbmc6IGZhbHNlLFxuICAgICAgICBxckNvZGVzOiBJbW11dGFibGVMaXN0KCksXG4gICAgICAgIGVycm9yOiBhY3Rpb24uZXJyb3IsXG4gICAgICB9KTtcbiAgICBkZWZhdWx0OlxuICAgICAgcmV0dXJuIHN0YXRlO1xuICB9XG59XG5cbmV4cG9ydCBkZWZhdWx0IHFyQ29kZXM7XG4iXX0=

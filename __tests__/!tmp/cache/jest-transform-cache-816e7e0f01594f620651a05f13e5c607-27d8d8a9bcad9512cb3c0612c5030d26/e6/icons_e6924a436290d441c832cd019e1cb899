@@ -1,0 +1,48 @@
+15d37c0e8c4509b0530419672304c906
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.IDENTITY = exports.BURGER_MENU_UNFOLD = exports.BURGER_MENU_FOLD = exports.DASHBOARD = exports.HISTORY = exports.CLAIMS = void 0;
+
+(function () {
+  var enterModule = require('react-hot-loader').enterModule;
+
+  enterModule && enterModule(module);
+})();
+
+var CLAIMS = 'idcard';
+exports.CLAIMS = CLAIMS;
+var HISTORY = 'database';
+exports.HISTORY = HISTORY;
+var DASHBOARD = 'desktop';
+exports.DASHBOARD = DASHBOARD;
+var BURGER_MENU_FOLD = 'menu-fold';
+exports.BURGER_MENU_FOLD = BURGER_MENU_FOLD;
+var BURGER_MENU_UNFOLD = 'menu-unfold';
+exports.BURGER_MENU_UNFOLD = BURGER_MENU_UNFOLD;
+var IDENTITY = 'user';
+exports.IDENTITY = IDENTITY;
+;
+
+(function () {
+  var reactHotLoader = require('react-hot-loader').default;
+
+  var leaveModule = require('react-hot-loader').leaveModule;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(CLAIMS, "CLAIMS", "/home/charly/Uniclau/Iden3/web-wallet/src/constants/icons.js");
+  reactHotLoader.register(HISTORY, "HISTORY", "/home/charly/Uniclau/Iden3/web-wallet/src/constants/icons.js");
+  reactHotLoader.register(DASHBOARD, "DASHBOARD", "/home/charly/Uniclau/Iden3/web-wallet/src/constants/icons.js");
+  reactHotLoader.register(BURGER_MENU_FOLD, "BURGER_MENU_FOLD", "/home/charly/Uniclau/Iden3/web-wallet/src/constants/icons.js");
+  reactHotLoader.register(BURGER_MENU_UNFOLD, "BURGER_MENU_UNFOLD", "/home/charly/Uniclau/Iden3/web-wallet/src/constants/icons.js");
+  reactHotLoader.register(IDENTITY, "IDENTITY", "/home/charly/Uniclau/Iden3/web-wallet/src/constants/icons.js");
+  leaveModule(module);
+})();
+
+;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImljb25zLmpzIl0sIm5hbWVzIjpbIkNMQUlNUyIsIkhJU1RPUlkiLCJEQVNIQk9BUkQiLCJCVVJHRVJfTUVOVV9GT0xEIiwiQlVSR0VSX01FTlVfVU5GT0xEIiwiSURFTlRJVFkiXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7QUFBTyxJQUFNQSxNQUFNLEdBQUcsUUFBZjs7QUFDQSxJQUFNQyxPQUFPLEdBQUcsVUFBaEI7O0FBQ0EsSUFBTUMsU0FBUyxHQUFHLFNBQWxCOztBQUNBLElBQU1DLGdCQUFnQixHQUFHLFdBQXpCOztBQUNBLElBQU1DLGtCQUFrQixHQUFHLGFBQTNCOztBQUNBLElBQU1DLFFBQVEsR0FBRyxNQUFqQjs7Ozs7Ozs7Ozs7OzswQkFMTUwsTTswQkFDQUMsTzswQkFDQUMsUzswQkFDQUMsZ0I7MEJBQ0FDLGtCOzBCQUNBQyxRIiwic291cmNlc0NvbnRlbnQiOlsiZXhwb3J0IGNvbnN0IENMQUlNUyA9ICdpZGNhcmQnO1xuZXhwb3J0IGNvbnN0IEhJU1RPUlkgPSAnZGF0YWJhc2UnO1xuZXhwb3J0IGNvbnN0IERBU0hCT0FSRCA9ICdkZXNrdG9wJztcbmV4cG9ydCBjb25zdCBCVVJHRVJfTUVOVV9GT0xEID0gJ21lbnUtZm9sZCc7XG5leHBvcnQgY29uc3QgQlVSR0VSX01FTlVfVU5GT0xEID0gJ21lbnUtdW5mb2xkJztcbmV4cG9ydCBjb25zdCBJREVOVElUWSA9ICd1c2VyJztcbiJdfQ==

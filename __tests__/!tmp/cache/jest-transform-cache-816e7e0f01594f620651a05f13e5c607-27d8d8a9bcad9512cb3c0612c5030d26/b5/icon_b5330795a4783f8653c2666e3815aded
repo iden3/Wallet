@@ -1,0 +1,92 @@
+4799c0664abfc5d7ce422ca709651fd1
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _antd = require("antd");
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+(function () {
+  var enterModule = require('react-hot-loader').enterModule;
+
+  enterModule && enterModule(module);
+})();
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+/**
+ * Wraps antd Icon.Header component to isolate the views from
+ * any UI framework that we decide to use.
+ * Please, visit to https://ant.design/components/icon/ to check props.
+ */
+var Icon =
+/*#__PURE__*/
+function (_PureComponent) {
+  _inherits(Icon, _PureComponent);
+
+  function Icon() {
+    _classCallCheck(this, Icon);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(Icon).apply(this, arguments));
+  }
+
+  _createClass(Icon, [{
+    key: "render",
+    value: function render() {
+      return _react.default.createElement(_antd.Icon, this.props);
+    }
+  }, {
+    key: "__reactstandin__regenerateByEval",
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
+  }]);
+
+  return Icon;
+}(_react.PureComponent);
+
+var _default = Icon;
+var _default2 = _default;
+exports.default = _default2;
+;
+
+(function () {
+  var reactHotLoader = require('react-hot-loader').default;
+
+  var leaveModule = require('react-hot-loader').leaveModule;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(Icon, "Icon", "/home/charly/Uniclau/Iden3/web-wallet/src/components/icon/icon.js");
+  reactHotLoader.register(_default, "default", "/home/charly/Uniclau/Iden3/web-wallet/src/components/icon/icon.js");
+  leaveModule(module);
+})();
+
+;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImljb24uanMiXSwibmFtZXMiOlsiSWNvbiIsInByb3BzIiwiUHVyZUNvbXBvbmVudCJdLCJtYXBwaW5ncyI6Ijs7Ozs7OztBQUFBOztBQUNBOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBRUE7Ozs7O0lBS01BLEk7Ozs7Ozs7Ozs7Ozs7NkJBQ0s7QUFDUCxhQUNFLDZCQUFDLFVBQUQsRUFBYyxLQUFLQyxLQUFuQixDQURGO0FBR0Q7Ozs7Ozs7Ozs7O0VBTGdCQyxvQjs7ZUFRSkYsSTs7Ozs7Ozs7Ozs7Ozs7MEJBUlRBLEkiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QsIHsgUHVyZUNvbXBvbmVudCB9IGZyb20gJ3JlYWN0JztcbmltcG9ydCB7IEljb24gYXMgSWNvbkNtcHQgfSBmcm9tICdhbnRkJztcblxuLyoqXG4gKiBXcmFwcyBhbnRkIEljb24uSGVhZGVyIGNvbXBvbmVudCB0byBpc29sYXRlIHRoZSB2aWV3cyBmcm9tXG4gKiBhbnkgVUkgZnJhbWV3b3JrIHRoYXQgd2UgZGVjaWRlIHRvIHVzZS5cbiAqIFBsZWFzZSwgdmlzaXQgdG8gaHR0cHM6Ly9hbnQuZGVzaWduL2NvbXBvbmVudHMvaWNvbi8gdG8gY2hlY2sgcHJvcHMuXG4gKi9cbmNsYXNzIEljb24gZXh0ZW5kcyBQdXJlQ29tcG9uZW50IHtcbiAgcmVuZGVyKCkge1xuICAgIHJldHVybiAoXG4gICAgICA8SWNvbkNtcHQgey4uLnRoaXMucHJvcHN9IC8+XG4gICAgKTtcbiAgfVxufVxuXG5leHBvcnQgZGVmYXVsdCBJY29uO1xuIl19

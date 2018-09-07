@@ -1,0 +1,39 @@
+962c156ca7b3e05236f882135ba9a1e8
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.FETCHING_HISTORY_SUCCESS = exports.FETCHING_HISTORY_ERROR = exports.FETCHING_HISTORY = void 0;
+
+(function () {
+  var enterModule = require('react-hot-loader').enterModule;
+
+  enterModule && enterModule(module);
+})();
+
+var FETCHING_HISTORY = 'FETCHING_HISTORY';
+exports.FETCHING_HISTORY = FETCHING_HISTORY;
+var FETCHING_HISTORY_ERROR = 'FETCHING_HISTORY_ERROR';
+exports.FETCHING_HISTORY_ERROR = FETCHING_HISTORY_ERROR;
+var FETCHING_HISTORY_SUCCESS = 'FETCHING_HISTORY_SUCCESS';
+exports.FETCHING_HISTORY_SUCCESS = FETCHING_HISTORY_SUCCESS;
+;
+
+(function () {
+  var reactHotLoader = require('react-hot-loader').default;
+
+  var leaveModule = require('react-hot-loader').leaveModule;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(FETCHING_HISTORY, "FETCHING_HISTORY", "/home/charly/Uniclau/Iden3/web-wallet/src/state/history/constants.js");
+  reactHotLoader.register(FETCHING_HISTORY_ERROR, "FETCHING_HISTORY_ERROR", "/home/charly/Uniclau/Iden3/web-wallet/src/state/history/constants.js");
+  reactHotLoader.register(FETCHING_HISTORY_SUCCESS, "FETCHING_HISTORY_SUCCESS", "/home/charly/Uniclau/Iden3/web-wallet/src/state/history/constants.js");
+  leaveModule(module);
+})();
+
+;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImNvbnN0YW50cy5qcyJdLCJuYW1lcyI6WyJGRVRDSElOR19ISVNUT1JZIiwiRkVUQ0hJTkdfSElTVE9SWV9FUlJPUiIsIkZFVENISU5HX0hJU1RPUllfU1VDQ0VTUyJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7OztBQUFPLElBQU1BLGdCQUFnQixHQUFHLGtCQUF6Qjs7QUFDQSxJQUFNQyxzQkFBc0IsR0FBRyx3QkFBL0I7O0FBQ0EsSUFBTUMsd0JBQXdCLEdBQUcsMEJBQWpDOzs7Ozs7Ozs7Ozs7OzBCQUZNRixnQjswQkFDQUMsc0I7MEJBQ0FDLHdCIiwic291cmNlc0NvbnRlbnQiOlsiZXhwb3J0IGNvbnN0IEZFVENISU5HX0hJU1RPUlkgPSAnRkVUQ0hJTkdfSElTVE9SWSc7XG5leHBvcnQgY29uc3QgRkVUQ0hJTkdfSElTVE9SWV9FUlJPUiA9ICdGRVRDSElOR19ISVNUT1JZX0VSUk9SJztcbmV4cG9ydCBjb25zdCBGRVRDSElOR19ISVNUT1JZX1NVQ0NFU1MgPSAnRkVUQ0hJTkdfSElTVE9SWV9TVUNDRVNTJztcbiJdfQ==

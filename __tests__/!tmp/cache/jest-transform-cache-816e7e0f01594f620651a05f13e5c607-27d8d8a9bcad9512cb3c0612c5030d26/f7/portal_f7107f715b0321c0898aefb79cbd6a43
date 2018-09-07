@@ -1,0 +1,162 @@
+5586a1e916488adf55c4bc59f9959ba7
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = require("react");
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var _reactDom = _interopRequireDefault(require("react-dom"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(function () {
+  var enterModule = require('react-hot-loader').enterModule;
+
+  enterModule && enterModule(module);
+})();
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+/**
+ * A portal component that allows components to render elements
+ * outside of their own markup. It creates a div HTML element to
+ * inject the children sent by other component. I.e. will be used
+ * to show content in a pop-up or in a side-bar. We need to send
+ * information to there.
+ */
+var Portal =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(Portal, _Component);
+
+  function Portal() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    _classCallCheck(this, Portal);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Portal)).call.apply(_getPrototypeOf2, [this].concat(args)));
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "domNode", document.createElement('div'));
+
+    return _this;
+  }
+
+  _createClass(Portal, [{
+    key: "componentDidMount",
+
+    /**
+     * Once component mounted and portal created, check where is the container
+     * to inject the sent content. We will check for an Id or ClassName
+     */
+    value: function componentDidMount() {
+      if (this.props.parentId && document.getElementById(this.props.parentId)) {
+        document.getElementById(this.props.parentId).appendChild(this.domNode);
+      }
+
+      if (this.props.parentClassName && document.getElementsByClassName(this.props.parentClassName)[0]) {
+        document.getElementsByClassName(this.props.parentClassName)[0].appendChild(this.domNode);
+      }
+    }
+    /**
+     * Once component has been unmounted remove the portal created
+     */
+
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      if (this.props.parentId && document.getElementById(this.props.parentId)) {
+        document.getElementById(this.props.parentId).removeChild(this.domNode);
+      }
+
+      if (this.props.parentClassName && document.getElementsByClassName(this.props.parentClassName)[0]) {
+        document.getElementsByClassName(this.props.parentClassName)[0].removeChild(this.domNode);
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return _reactDom.default.createPortal(this.props.children, this.domNode);
+    }
+  }, {
+    key: "__reactstandin__regenerateByEval",
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
+  }]);
+
+  return Portal;
+}(_react.Component);
+
+_defineProperty(Portal, "propTypes", {
+  /*
+   The content to be shown
+   */
+  children: _propTypes.default.node,
+
+  /*
+  The id of the container to inject the content
+   */
+  parentId: _propTypes.default.string,
+
+  /*
+  The class name of the container to inject the content
+   */
+  parentClassName: _propTypes.default.string
+});
+
+_defineProperty(Portal, "defaultProps", {
+  parentClassName: 'i3-ww-popups'
+});
+
+var _default = Portal;
+var _default2 = _default;
+exports.default = _default2;
+;
+
+(function () {
+  var reactHotLoader = require('react-hot-loader').default;
+
+  var leaveModule = require('react-hot-loader').leaveModule;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(Portal, "Portal", "/home/charly/Uniclau/Iden3/web-wallet/src/components/portal/portal.js");
+  reactHotLoader.register(_default, "default", "/home/charly/Uniclau/Iden3/web-wallet/src/components/portal/portal.js");
+  leaveModule(module);
+})();
+
+;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInBvcnRhbC5qcyJdLCJuYW1lcyI6WyJQb3J0YWwiLCJkb2N1bWVudCIsImNyZWF0ZUVsZW1lbnQiLCJwcm9wcyIsInBhcmVudElkIiwiZ2V0RWxlbWVudEJ5SWQiLCJhcHBlbmRDaGlsZCIsImRvbU5vZGUiLCJwYXJlbnRDbGFzc05hbWUiLCJnZXRFbGVtZW50c0J5Q2xhc3NOYW1lIiwicmVtb3ZlQ2hpbGQiLCJSZWFjdERPTSIsImNyZWF0ZVBvcnRhbCIsImNoaWxkcmVuIiwiQ29tcG9uZW50IiwiUHJvcFR5cGVzIiwibm9kZSIsInN0cmluZyJdLCJtYXBwaW5ncyI6Ijs7Ozs7OztBQUFBOztBQUNBOztBQUNBOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFFQTs7Ozs7OztJQU9NQSxNOzs7Ozs7Ozs7Ozs7Ozs7Ozs7c0ZBRU1DLFFBQVEsQ0FBQ0MsYUFBVCxDQUF1QixLQUF2QixDOzs7Ozs7OztBQXFCVjs7Ozt3Q0FJb0I7QUFDbEIsVUFBSSxLQUFLQyxLQUFMLENBQVdDLFFBQVgsSUFBdUJILFFBQVEsQ0FBQ0ksY0FBVCxDQUF3QixLQUFLRixLQUFMLENBQVdDLFFBQW5DLENBQTNCLEVBQXlFO0FBQ3ZFSCxRQUFBQSxRQUFRLENBQUNJLGNBQVQsQ0FBd0IsS0FBS0YsS0FBTCxDQUFXQyxRQUFuQyxFQUE2Q0UsV0FBN0MsQ0FBeUQsS0FBS0MsT0FBOUQ7QUFDRDs7QUFFRCxVQUFJLEtBQUtKLEtBQUwsQ0FBV0ssZUFBWCxJQUE4QlAsUUFBUSxDQUFDUSxzQkFBVCxDQUFnQyxLQUFLTixLQUFMLENBQVdLLGVBQTNDLEVBQTRELENBQTVELENBQWxDLEVBQWtHO0FBQ2hHUCxRQUFBQSxRQUFRLENBQUNRLHNCQUFULENBQWdDLEtBQUtOLEtBQUwsQ0FBV0ssZUFBM0MsRUFBNEQsQ0FBNUQsRUFBK0RGLFdBQS9ELENBQTJFLEtBQUtDLE9BQWhGO0FBQ0Q7QUFDRjtBQUVEOzs7Ozs7MkNBR3VCO0FBQ3JCLFVBQUksS0FBS0osS0FBTCxDQUFXQyxRQUFYLElBQXVCSCxRQUFRLENBQUNJLGNBQVQsQ0FBd0IsS0FBS0YsS0FBTCxDQUFXQyxRQUFuQyxDQUEzQixFQUF5RTtBQUN2RUgsUUFBQUEsUUFBUSxDQUFDSSxjQUFULENBQXdCLEtBQUtGLEtBQUwsQ0FBV0MsUUFBbkMsRUFBNkNNLFdBQTdDLENBQXlELEtBQUtILE9BQTlEO0FBQ0Q7O0FBRUQsVUFBSSxLQUFLSixLQUFMLENBQVdLLGVBQVgsSUFBOEJQLFFBQVEsQ0FBQ1Esc0JBQVQsQ0FBZ0MsS0FBS04sS0FBTCxDQUFXSyxlQUEzQyxFQUE0RCxDQUE1RCxDQUFsQyxFQUFrRztBQUNoR1AsUUFBQUEsUUFBUSxDQUFDUSxzQkFBVCxDQUFnQyxLQUFLTixLQUFMLENBQVdLLGVBQTNDLEVBQTRELENBQTVELEVBQStERSxXQUEvRCxDQUEyRSxLQUFLSCxPQUFoRjtBQUNEO0FBQ0Y7Ozs2QkFFUTtBQUNQLGFBQU9JLGtCQUFTQyxZQUFULENBQ0wsS0FBS1QsS0FBTCxDQUFXVSxRQUROLEVBRUwsS0FBS04sT0FGQSxDQUFQO0FBSUQ7Ozs7Ozs7Ozs7O0VBdkRrQk8sZ0I7O2dCQUFmZCxNLGVBSWU7QUFDakI7OztBQUdBYSxFQUFBQSxRQUFRLEVBQUVFLG1CQUFVQyxJQUpIOztBQUtqQjs7O0FBR0FaLEVBQUFBLFFBQVEsRUFBRVcsbUJBQVVFLE1BUkg7O0FBU2pCOzs7QUFHQVQsRUFBQUEsZUFBZSxFQUFFTyxtQkFBVUU7QUFaVixDOztnQkFKZmpCLE0sa0JBbUJrQjtBQUNwQlEsRUFBQUEsZUFBZSxFQUFFO0FBREcsQzs7ZUF1Q1RSLE07Ozs7Ozs7Ozs7Ozs7OzBCQTFEVEEsTSIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IENvbXBvbmVudCB9IGZyb20gJ3JlYWN0JztcbmltcG9ydCBQcm9wVHlwZXMgZnJvbSAncHJvcC10eXBlcyc7XG5pbXBvcnQgUmVhY3RET00gZnJvbSAncmVhY3QtZG9tJztcblxuLyoqXG4gKiBBIHBvcnRhbCBjb21wb25lbnQgdGhhdCBhbGxvd3MgY29tcG9uZW50cyB0byByZW5kZXIgZWxlbWVudHNcbiAqIG91dHNpZGUgb2YgdGhlaXIgb3duIG1hcmt1cC4gSXQgY3JlYXRlcyBhIGRpdiBIVE1MIGVsZW1lbnQgdG9cbiAqIGluamVjdCB0aGUgY2hpbGRyZW4gc2VudCBieSBvdGhlciBjb21wb25lbnQuIEkuZS4gd2lsbCBiZSB1c2VkXG4gKiB0byBzaG93IGNvbnRlbnQgaW4gYSBwb3AtdXAgb3IgaW4gYSBzaWRlLWJhci4gV2UgbmVlZCB0byBzZW5kXG4gKiBpbmZvcm1hdGlvbiB0byB0aGVyZS5cbiAqL1xuY2xhc3MgUG9ydGFsIGV4dGVuZHMgQ29tcG9uZW50IHtcbiAgLy8gZG9tTm9kZSB3aGVyZSB0byBpbmplY3QgdGhlIHNlbnQgY29udGVudFxuICBkb21Ob2RlID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgnZGl2Jyk7XG5cbiAgc3RhdGljIHByb3BUeXBlcyA9IHtcbiAgICAvKlxuICAgICBUaGUgY29udGVudCB0byBiZSBzaG93blxuICAgICAqL1xuICAgIGNoaWxkcmVuOiBQcm9wVHlwZXMubm9kZSxcbiAgICAvKlxuICAgIFRoZSBpZCBvZiB0aGUgY29udGFpbmVyIHRvIGluamVjdCB0aGUgY29udGVudFxuICAgICAqL1xuICAgIHBhcmVudElkOiBQcm9wVHlwZXMuc3RyaW5nLFxuICAgIC8qXG4gICAgVGhlIGNsYXNzIG5hbWUgb2YgdGhlIGNvbnRhaW5lciB0byBpbmplY3QgdGhlIGNvbnRlbnRcbiAgICAgKi9cbiAgICBwYXJlbnRDbGFzc05hbWU6IFByb3BUeXBlcy5zdHJpbmcsXG4gIH07XG5cbiAgc3RhdGljIGRlZmF1bHRQcm9wcyA9IHtcbiAgICBwYXJlbnRDbGFzc05hbWU6ICdpMy13dy1wb3B1cHMnLFxuICB9O1xuXG4gIC8qKlxuICAgKiBPbmNlIGNvbXBvbmVudCBtb3VudGVkIGFuZCBwb3J0YWwgY3JlYXRlZCwgY2hlY2sgd2hlcmUgaXMgdGhlIGNvbnRhaW5lclxuICAgKiB0byBpbmplY3QgdGhlIHNlbnQgY29udGVudC4gV2Ugd2lsbCBjaGVjayBmb3IgYW4gSWQgb3IgQ2xhc3NOYW1lXG4gICAqL1xuICBjb21wb25lbnREaWRNb3VudCgpIHtcbiAgICBpZiAodGhpcy5wcm9wcy5wYXJlbnRJZCAmJiBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCh0aGlzLnByb3BzLnBhcmVudElkKSkge1xuICAgICAgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQodGhpcy5wcm9wcy5wYXJlbnRJZCkuYXBwZW5kQ2hpbGQodGhpcy5kb21Ob2RlKTtcbiAgICB9XG5cbiAgICBpZiAodGhpcy5wcm9wcy5wYXJlbnRDbGFzc05hbWUgJiYgZG9jdW1lbnQuZ2V0RWxlbWVudHNCeUNsYXNzTmFtZSh0aGlzLnByb3BzLnBhcmVudENsYXNzTmFtZSlbMF0pIHtcbiAgICAgIGRvY3VtZW50LmdldEVsZW1lbnRzQnlDbGFzc05hbWUodGhpcy5wcm9wcy5wYXJlbnRDbGFzc05hbWUpWzBdLmFwcGVuZENoaWxkKHRoaXMuZG9tTm9kZSk7XG4gICAgfVxuICB9XG5cbiAgLyoqXG4gICAqIE9uY2UgY29tcG9uZW50IGhhcyBiZWVuIHVubW91bnRlZCByZW1vdmUgdGhlIHBvcnRhbCBjcmVhdGVkXG4gICAqL1xuICBjb21wb25lbnRXaWxsVW5tb3VudCgpIHtcbiAgICBpZiAodGhpcy5wcm9wcy5wYXJlbnRJZCAmJiBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCh0aGlzLnByb3BzLnBhcmVudElkKSkge1xuICAgICAgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQodGhpcy5wcm9wcy5wYXJlbnRJZCkucmVtb3ZlQ2hpbGQodGhpcy5kb21Ob2RlKTtcbiAgICB9XG5cbiAgICBpZiAodGhpcy5wcm9wcy5wYXJlbnRDbGFzc05hbWUgJiYgZG9jdW1lbnQuZ2V0RWxlbWVudHNCeUNsYXNzTmFtZSh0aGlzLnByb3BzLnBhcmVudENsYXNzTmFtZSlbMF0pIHtcbiAgICAgIGRvY3VtZW50LmdldEVsZW1lbnRzQnlDbGFzc05hbWUodGhpcy5wcm9wcy5wYXJlbnRDbGFzc05hbWUpWzBdLnJlbW92ZUNoaWxkKHRoaXMuZG9tTm9kZSk7XG4gICAgfVxuICB9XG5cbiAgcmVuZGVyKCkge1xuICAgIHJldHVybiBSZWFjdERPTS5jcmVhdGVQb3J0YWwoXG4gICAgICB0aGlzLnByb3BzLmNoaWxkcmVuLFxuICAgICAgdGhpcy5kb21Ob2RlLFxuICAgICk7XG4gIH1cbn1cblxuZXhwb3J0IGRlZmF1bHQgUG9ydGFsO1xuIl19

@@ -1,0 +1,135 @@
+a6ae6f11329fbbd484d2251e21a15bec
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var _antd = require("antd");
+
+var _classnames = _interopRequireDefault(require("classnames"));
+
+require("./buttons.scss");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+(function () {
+  var enterModule = require('react-hot-loader').enterModule;
+
+  enterModule && enterModule(module);
+})();
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+/**
+ * Wraps antd Button.Content component to isolate the views from
+ * any UI framework that we decide to use.
+ * Please, visit to https://ant.design/components/button/ to check props.
+ */
+var Button =
+/*#__PURE__*/
+function (_PureComponent) {
+  _inherits(Button, _PureComponent);
+
+  function Button() {
+    _classCallCheck(this, Button);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(Button).apply(this, arguments));
+  }
+
+  _createClass(Button, [{
+    key: "render",
+    value: function render() {
+      var _this$props = this.props,
+          children = _this$props.children,
+          restProps = _objectWithoutProperties(_this$props, ["children"]);
+
+      var cmptClasses = (0, _classnames.default)({
+        'i3-ww-button': true,
+        'i3-ww-button__primary': this.props.type === 'primary',
+        'i3-ww-button__secondary': this.props.type === 'secondary',
+        'i3-ww-button__danger': this.props.type === 'danger'
+      });
+      return _react.default.createElement("div", {
+        className: cmptClasses
+      }, _react.default.createElement(_antd.Button, restProps, children));
+    }
+  }, {
+    key: "__reactstandin__regenerateByEval",
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
+  }]);
+
+  return Button;
+}(_react.PureComponent);
+
+_defineProperty(Button, "propTypes", {
+  /*
+    One of the antd framework types. If not set, is 'default'
+   */
+  type: _propTypes.default.oneOf(['primary', 'ghost', 'dashed', 'danger', 'default']),
+
+  /*
+    Set the HTML type. If not set, is 'button'
+   */
+  htmlType: _propTypes.default.oneOf(['submit', 'reset', 'button']).isRequired,
+
+  /*
+    Children
+   */
+  children: _propTypes.default.node
+});
+
+var _default = Button;
+var _default2 = _default;
+exports.default = _default2;
+;
+
+(function () {
+  var reactHotLoader = require('react-hot-loader').default;
+
+  var leaveModule = require('react-hot-loader').leaveModule;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(Button, "Button", "/home/charly/Uniclau/Iden3/web-wallet/src/components/button/button.js");
+  reactHotLoader.register(_default, "default", "/home/charly/Uniclau/Iden3/web-wallet/src/components/button/button.js");
+  leaveModule(module);
+})();
+
+;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImJ1dHRvbi5qcyJdLCJuYW1lcyI6WyJCdXR0b24iLCJwcm9wcyIsImNoaWxkcmVuIiwicmVzdFByb3BzIiwiY21wdENsYXNzZXMiLCJ0eXBlIiwiUHVyZUNvbXBvbmVudCIsIlByb3BUeXBlcyIsIm9uZU9mIiwiaHRtbFR5cGUiLCJpc1JlcXVpcmVkIiwibm9kZSJdLCJtYXBwaW5ncyI6Ijs7Ozs7OztBQUFBOztBQUNBOztBQUNBOztBQUNBOztBQUVBOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFFQTs7Ozs7SUFLTUEsTTs7Ozs7Ozs7Ozs7Ozs2QkFnQks7QUFBQSx3QkFDNEIsS0FBS0MsS0FEakM7QUFBQSxVQUNDQyxRQURELGVBQ0NBLFFBREQ7QUFBQSxVQUNjQyxTQURkOztBQUVQLFVBQU1DLFdBQVcsR0FBRyx5QkFBVztBQUM3Qix3QkFBZ0IsSUFEYTtBQUU3QixpQ0FBeUIsS0FBS0gsS0FBTCxDQUFXSSxJQUFYLEtBQW9CLFNBRmhCO0FBRzdCLG1DQUEyQixLQUFLSixLQUFMLENBQVdJLElBQVgsS0FBb0IsV0FIbEI7QUFJN0IsZ0NBQXdCLEtBQUtKLEtBQUwsQ0FBV0ksSUFBWCxLQUFvQjtBQUpmLE9BQVgsQ0FBcEI7QUFPQSxhQUNFO0FBQUssUUFBQSxTQUFTLEVBQUVEO0FBQWhCLFNBQ0UsNkJBQUMsWUFBRCxFQUFnQkQsU0FBaEIsRUFDR0QsUUFESCxDQURGLENBREY7QUFRRDs7Ozs7Ozs7Ozs7RUFqQ2tCSSxvQjs7Z0JBQWZOLE0sZUFDZTtBQUNqQjs7O0FBR0FLLEVBQUFBLElBQUksRUFBRUUsbUJBQVVDLEtBQVYsQ0FBZ0IsQ0FBQyxTQUFELEVBQVksT0FBWixFQUFxQixRQUFyQixFQUErQixRQUEvQixFQUF5QyxTQUF6QyxDQUFoQixDQUpXOztBQUtqQjs7O0FBR0FDLEVBQUFBLFFBQVEsRUFBRUYsbUJBQVVDLEtBQVYsQ0FBZ0IsQ0FBQyxRQUFELEVBQVcsT0FBWCxFQUFvQixRQUFwQixDQUFoQixFQUErQ0UsVUFSeEM7O0FBU2pCOzs7QUFHQVIsRUFBQUEsUUFBUSxFQUFFSyxtQkFBVUk7QUFaSCxDOztlQW1DTlgsTTs7Ozs7Ozs7Ozs7Ozs7MEJBcENUQSxNIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0LCB7IFB1cmVDb21wb25lbnQgfSBmcm9tICdyZWFjdCc7XG5pbXBvcnQgUHJvcFR5cGVzIGZyb20gJ3Byb3AtdHlwZXMnO1xuaW1wb3J0IHsgQnV0dG9uIGFzIEJ1dHRvbkNtcHQgfSBmcm9tICdhbnRkJztcbmltcG9ydCBjbGFzc05hbWVzIGZyb20gJ2NsYXNzbmFtZXMnO1xuXG5pbXBvcnQgJy4vYnV0dG9ucy5zY3NzJztcblxuLyoqXG4gKiBXcmFwcyBhbnRkIEJ1dHRvbi5Db250ZW50IGNvbXBvbmVudCB0byBpc29sYXRlIHRoZSB2aWV3cyBmcm9tXG4gKiBhbnkgVUkgZnJhbWV3b3JrIHRoYXQgd2UgZGVjaWRlIHRvIHVzZS5cbiAqIFBsZWFzZSwgdmlzaXQgdG8gaHR0cHM6Ly9hbnQuZGVzaWduL2NvbXBvbmVudHMvYnV0dG9uLyB0byBjaGVjayBwcm9wcy5cbiAqL1xuY2xhc3MgQnV0dG9uIGV4dGVuZHMgUHVyZUNvbXBvbmVudCB7XG4gIHN0YXRpYyBwcm9wVHlwZXMgPSB7XG4gICAgLypcbiAgICAgIE9uZSBvZiB0aGUgYW50ZCBmcmFtZXdvcmsgdHlwZXMuIElmIG5vdCBzZXQsIGlzICdkZWZhdWx0J1xuICAgICAqL1xuICAgIHR5cGU6IFByb3BUeXBlcy5vbmVPZihbJ3ByaW1hcnknLCAnZ2hvc3QnLCAnZGFzaGVkJywgJ2RhbmdlcicsICdkZWZhdWx0J10pLFxuICAgIC8qXG4gICAgICBTZXQgdGhlIEhUTUwgdHlwZS4gSWYgbm90IHNldCwgaXMgJ2J1dHRvbidcbiAgICAgKi9cbiAgICBodG1sVHlwZTogUHJvcFR5cGVzLm9uZU9mKFsnc3VibWl0JywgJ3Jlc2V0JywgJ2J1dHRvbiddKS5pc1JlcXVpcmVkLFxuICAgIC8qXG4gICAgICBDaGlsZHJlblxuICAgICAqL1xuICAgIGNoaWxkcmVuOiBQcm9wVHlwZXMubm9kZSxcbiAgfTtcblxuICByZW5kZXIoKSB7XG4gICAgY29uc3QgeyBjaGlsZHJlbiwgLi4ucmVzdFByb3BzIH0gPSB0aGlzLnByb3BzO1xuICAgIGNvbnN0IGNtcHRDbGFzc2VzID0gY2xhc3NOYW1lcyh7XG4gICAgICAnaTMtd3ctYnV0dG9uJzogdHJ1ZSxcbiAgICAgICdpMy13dy1idXR0b25fX3ByaW1hcnknOiB0aGlzLnByb3BzLnR5cGUgPT09ICdwcmltYXJ5JyxcbiAgICAgICdpMy13dy1idXR0b25fX3NlY29uZGFyeSc6IHRoaXMucHJvcHMudHlwZSA9PT0gJ3NlY29uZGFyeScsXG4gICAgICAnaTMtd3ctYnV0dG9uX19kYW5nZXInOiB0aGlzLnByb3BzLnR5cGUgPT09ICdkYW5nZXInLFxuICAgIH0pO1xuXG4gICAgcmV0dXJuIChcbiAgICAgIDxkaXYgY2xhc3NOYW1lPXtjbXB0Q2xhc3Nlc30+XG4gICAgICAgIDxCdXR0b25DbXB0IHsuLi5yZXN0UHJvcHN9PlxuICAgICAgICAgIHtjaGlsZHJlbn1cbiAgICAgICAgPC9CdXR0b25DbXB0PlxuICAgICAgPC9kaXY+XG5cbiAgICApO1xuICB9XG59XG5cbmV4cG9ydCBkZWZhdWx0IEJ1dHRvbjtcbiJdfQ==

@@ -1,0 +1,258 @@
+48fdd676c0d256a9d73feb5cac4c6b0c
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var _base_components = require("base_components");
+
+require("./camera.scss");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+(function () {
+  var enterModule = require('react-hot-loader').enterModule;
+
+  enterModule && enterModule(module);
+})();
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+/**
+ * Class to show the cam in the browser using its webcam.
+ * By default will show a button to do a screenshot and
+ * we will add this functionality with a method in this class.
+ */
+var Camera =
+/*#__PURE__*/
+function (_PureComponent) {
+  _inherits(Camera, _PureComponent);
+
+  function Camera() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    _classCallCheck(this, Camera);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Camera)).call.apply(_getPrototypeOf2, [this].concat(args)));
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleVideoStream", function (stream) {
+      _this._setStream(stream);
+
+      _this.videoElement.play().then(function () {
+        // handle each animation in the video stream before repaint
+        // used i.e. when we are scanning a QR code
+        if (_this.props.handleRequestAnimationFrame) {
+          _this.props.handleRequestAnimationFrame(_this.videoElement, _this.canvasElement);
+        }
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "takeSnapShot", function () {
+      var context = _this.canvasElement.getContext('2d');
+
+      context.drawImage(_this.videoElement, 0, 0, 800, 600);
+      return _this.canvasElement.toDataURL('image/jpeg', 0.5);
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "videoError", function (error) {
+      console.error('Error accessing to the cam:', error);
+    });
+
+    return _this;
+  }
+
+  _createClass(Camera, [{
+    key: "componentDidMount",
+
+    /**
+     * Once component is mounted need to get media device (video) if it's supported
+     * by the browser. An alternative should use window.URL.createObjectURL(stream),
+     * but it's going to be deprecated.
+     * So we are using the MediaStream object returned (https://developer.mozilla.org/en-US/docs/Web/API/MediaStream)
+     * in the promise to set the src of the HTML media object (https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/srcObject)
+     */
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      // For more information, please visit: https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
+      if (navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: 'environment' // to attempt to get the front camera on phones
+
+          }
+        }).then(function (stream) {
+          _this2.handleVideoStream(stream);
+        }).catch(function (error) {
+          _this2.videoError(error);
+        });
+      }
+    }
+    /**
+     * Check if there is any callback to trigger when camera is closed. If yes, trigger it
+     */
+
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      if (this.props.onClose) {
+        this.props.onClose(this.videoElement);
+      }
+    }
+    /**
+     * Set the source of the video element.
+     * We need to set the srcObject depending the browser.
+     * Please, for more information, visit: https://github.com/addyosmani/getUserMedia.js/issues/64
+     * @param {*} stream with the info fo the video stream
+     */
+
+  }, {
+    key: "_setStream",
+
+    /**
+     * Set the stream of the video regarding the browser,
+     * since is managed different
+     * @param {*} stream stream of the video
+     * @private
+     */
+    value: function _setStream(stream) {
+      // set the stream, regarding the browser we srcObject is different
+      if (this.videoElement.mozSrcObject !== undefined) {
+        // FF18a
+        this.videoElement.mozSrcObject = stream;
+      } else if (this.videoElement.srcObject !== undefined) {
+        // Chrome
+        this.videoElement.srcObject = stream;
+      } else if (window.webkitURL !== undefined) {
+        // older Chrome browsers
+        this.videoElement.srcObject = window.webkitURL.createObjectURL(stream);
+      } else {
+        // FF16a, 17a
+        this.videoElement.src = stream;
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this3 = this;
+
+      return _react.default.createElement("div", {
+        className: "i3-ww-camera"
+      }, _react.default.createElement("div", {
+        className: "i3-ww-camera__container"
+      }, _react.default.createElement("video", {
+        playsInline: "true",
+        muted: "true",
+        ref: function ref(input) {
+          _this3.videoElement = input;
+        }
+      }), this.props.showButton && _react.default.createElement(_base_components.Button, {
+        type: "primary",
+        htmlType: "button",
+        onClick: this.props.onClickButton ? this.props.onClickButton : this.takeSnapShot
+      }, this.props.messageButton)), _react.default.createElement("canvas", {
+        ref: function ref(canvas) {
+          _this3.canvasElement = canvas;
+        },
+        style: {
+          display: 'none'
+        }
+      }));
+    }
+  }, {
+    key: "__reactstandin__regenerateByEval",
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
+  }]);
+
+  return Camera;
+}(_react.PureComponent);
+
+_defineProperty(Camera, "propTypes", {
+  /*
+   Message to who in the button if shown
+   */
+  messageButton: _propTypes.default.string,
+
+  /*
+   Function to trigger if button is shown
+   */
+  onClickButton: _propTypes.default.func,
+
+  /*
+   Function to trigger when camera is unmounted
+   */
+  onClose: _propTypes.default.func,
+
+  /*
+   Function to handle each video stream repaint, i.e. for qr-scanner
+   */
+  handleRequestAnimationFrame: _propTypes.default.func,
+
+  /*
+   Show button in the camera
+   */
+  showButton: _propTypes.default.bool
+});
+
+_defineProperty(Camera, "defaultProps", {
+  messageButton: 'Take a screenshot',
+  showButton: false
+});
+
+var _default = Camera;
+var _default2 = _default;
+exports.default = _default2;
+;
+
+(function () {
+  var reactHotLoader = require('react-hot-loader').default;
+
+  var leaveModule = require('react-hot-loader').leaveModule;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(Camera, "Camera", "/home/charly/Uniclau/Iden3/web-wallet/src/components/camera/camera.js");
+  reactHotLoader.register(_default, "default", "/home/charly/Uniclau/Iden3/web-wallet/src/components/camera/camera.js");
+  leaveModule(module);
+})();
+
+;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImNhbWVyYS5qcyJdLCJuYW1lcyI6WyJDYW1lcmEiLCJzdHJlYW0iLCJfc2V0U3RyZWFtIiwidmlkZW9FbGVtZW50IiwicGxheSIsInRoZW4iLCJwcm9wcyIsImhhbmRsZVJlcXVlc3RBbmltYXRpb25GcmFtZSIsImNhbnZhc0VsZW1lbnQiLCJjb250ZXh0IiwiZ2V0Q29udGV4dCIsImRyYXdJbWFnZSIsInRvRGF0YVVSTCIsImVycm9yIiwiY29uc29sZSIsIm5hdmlnYXRvciIsIm1lZGlhRGV2aWNlcyIsImdldFVzZXJNZWRpYSIsInZpZGVvIiwiZmFjaW5nTW9kZSIsImhhbmRsZVZpZGVvU3RyZWFtIiwiY2F0Y2giLCJ2aWRlb0Vycm9yIiwib25DbG9zZSIsIm1velNyY09iamVjdCIsInVuZGVmaW5lZCIsInNyY09iamVjdCIsIndpbmRvdyIsIndlYmtpdFVSTCIsImNyZWF0ZU9iamVjdFVSTCIsInNyYyIsImlucHV0Iiwic2hvd0J1dHRvbiIsIm9uQ2xpY2tCdXR0b24iLCJ0YWtlU25hcFNob3QiLCJtZXNzYWdlQnV0dG9uIiwiY2FudmFzIiwiZGlzcGxheSIsIlB1cmVDb21wb25lbnQiLCJQcm9wVHlwZXMiLCJzdHJpbmciLCJmdW5jIiwiYm9vbCJdLCJtYXBwaW5ncyI6Ijs7Ozs7OztBQUFBOztBQUNBOztBQUNBOztBQUVBOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUVBOzs7OztJQUtNQSxNOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Z0dBb0VnQixVQUFDQyxNQUFELEVBQVk7QUFDOUIsWUFBS0MsVUFBTCxDQUFnQkQsTUFBaEI7O0FBQ0EsWUFBS0UsWUFBTCxDQUFrQkMsSUFBbEIsR0FDR0MsSUFESCxDQUNRLFlBQU07QUFDVjtBQUNBO0FBQ0EsWUFBSSxNQUFLQyxLQUFMLENBQVdDLDJCQUFmLEVBQTRDO0FBQzFDLGdCQUFLRCxLQUFMLENBQVdDLDJCQUFYLENBQXVDLE1BQUtKLFlBQTVDLEVBQTBELE1BQUtLLGFBQS9EO0FBQ0Q7QUFDRixP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QUFHLEVBQUUsYUFBQ0MsTUFBRCxFQUFZO0FBQUUsVUFBQSxNQUFJLENBQUM1QixhQUFMLEdBQXFCNEIsTUFBckI7QUFBOEIsU0FEbkQ7QUFFRSxRQUFBLEtBQUssRUFBRTtBQUFFQyxVQUFBQSxPQUFPLEVBQUU7QUFBWDtBQUZULFFBakJGLENBREY7QUF1QkQ7Ozs7Ozs7Ozs7O0VBakprQkMsb0I7O2dCQUFmdEMsTSxlQUNlO0FBQ2pCOzs7QUFHQW1DLEVBQUFBLGFBQWEsRUFBRUksbUJBQVVDLE1BSlI7O0FBS2pCOzs7QUFHQVAsRUFBQUEsYUFBYSxFQUFFTSxtQkFBVUUsSUFSUjs7QUFTakI7OztBQUdBbEIsRUFBQUEsT0FBTyxFQUFFZ0IsbUJBQVVFLElBWkY7O0FBYWpCOzs7QUFHQWxDLEVBQUFBLDJCQUEyQixFQUFFZ0MsbUJBQVVFLElBaEJ0Qjs7QUFpQmpCOzs7QUFHQVQsRUFBQUEsVUFBVSxFQUFFTyxtQkFBVUc7QUFwQkwsQzs7Z0JBRGYxQyxNLGtCQXdCa0I7QUFDcEJtQyxFQUFBQSxhQUFhLEVBQUUsbUJBREs7QUFFcEJILEVBQUFBLFVBQVUsRUFBRTtBQUZRLEM7O2VBNEhUaEMsTTs7Ozs7Ozs7Ozs7Ozs7MEJBcEpUQSxNIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0LCB7IFB1cmVDb21wb25lbnQgfSBmcm9tICdyZWFjdCc7XG5pbXBvcnQgUHJvcFR5cGVzIGZyb20gJ3Byb3AtdHlwZXMnO1xuaW1wb3J0IHsgQnV0dG9uIH0gZnJvbSAnYmFzZV9jb21wb25lbnRzJztcblxuaW1wb3J0ICcuL2NhbWVyYS5zY3NzJztcblxuLyoqXG4gKiBDbGFzcyB0byBzaG93IHRoZSBjYW0gaW4gdGhlIGJyb3dzZXIgdXNpbmcgaXRzIHdlYmNhbS5cbiAqIEJ5IGRlZmF1bHQgd2lsbCBzaG93IGEgYnV0dG9uIHRvIGRvIGEgc2NyZWVuc2hvdCBhbmRcbiAqIHdlIHdpbGwgYWRkIHRoaXMgZnVuY3Rpb25hbGl0eSB3aXRoIGEgbWV0aG9kIGluIHRoaXMgY2xhc3MuXG4gKi9cbmNsYXNzIENhbWVyYSBleHRlbmRzIFB1cmVDb21wb25lbnQge1xuICBzdGF0aWMgcHJvcFR5cGVzID0ge1xuICAgIC8qXG4gICAgIE1lc3NhZ2UgdG8gd2hvIGluIHRoZSBidXR0b24gaWYgc2hvd25cbiAgICAgKi9cbiAgICBtZXNzYWdlQnV0dG9uOiBQcm9wVHlwZXMuc3RyaW5nLFxuICAgIC8qXG4gICAgIEZ1bmN0aW9uIHRvIHRyaWdnZXIgaWYgYnV0dG9uIGlzIHNob3duXG4gICAgICovXG4gICAgb25DbGlja0J1dHRvbjogUHJvcFR5cGVzLmZ1bmMsXG4gICAgLypcbiAgICAgRnVuY3Rpb24gdG8gdHJpZ2dlciB3aGVuIGNhbWVyYSBpcyB1bm1vdW50ZWRcbiAgICAgKi9cbiAgICBvbkNsb3NlOiBQcm9wVHlwZXMuZnVuYyxcbiAgICAvKlxuICAgICBGdW5jdGlvbiB0byBoYW5kbGUgZWFjaCB2aWRlbyBzdHJlYW0gcmVwYWludCwgaS5lLiBmb3IgcXItc2Nhbm5lclxuICAgICAqL1xuICAgIGhhbmRsZVJlcXVlc3RBbmltYXRpb25GcmFtZTogUHJvcFR5cGVzLmZ1bmMsXG4gICAgLypcbiAgICAgU2hvdyBidXR0b24gaW4gdGhlIGNhbWVyYVxuICAgICAqL1xuICAgIHNob3dCdXR0b246IFByb3BUeXBlcy5ib29sLFxuICB9O1xuXG4gIHN0YXRpYyBkZWZhdWx0UHJvcHMgPSB7XG4gICAgbWVzc2FnZUJ1dHRvbjogJ1Rha2UgYSBzY3JlZW5zaG90JyxcbiAgICBzaG93QnV0dG9uOiBmYWxzZSxcbiAgfTtcblxuICAvKipcbiAgICogT25jZSBjb21wb25lbnQgaXMgbW91bnRlZCBuZWVkIHRvIGdldCBtZWRpYSBkZXZpY2UgKHZpZGVvKSBpZiBpdCdzIHN1cHBvcnRlZFxuICAgKiBieSB0aGUgYnJvd3Nlci4gQW4gYWx0ZXJuYXRpdmUgc2hvdWxkIHVzZSB3aW5kb3cuVVJMLmNyZWF0ZU9iamVjdFVSTChzdHJlYW0pLFxuICAgKiBidXQgaXQncyBnb2luZyB0byBiZSBkZXByZWNhdGVkLlxuICAgKiBTbyB3ZSBhcmUgdXNpbmcgdGhlIE1lZGlhU3RyZWFtIG9iamVjdCByZXR1cm5lZCAoaHR0cHM6Ly9kZXZlbG9wZXIubW96aWxsYS5vcmcvZW4tVVMvZG9jcy9XZWIvQVBJL01lZGlhU3RyZWFtKVxuICAgKiBpbiB0aGUgcHJvbWlzZSB0byBzZXQgdGhlIHNyYyBvZiB0aGUgSFRNTCBtZWRpYSBvYmplY3QgKGh0dHBzOi8vZGV2ZWxvcGVyLm1vemlsbGEub3JnL2VuLVVTL2RvY3MvV2ViL0FQSS9IVE1MTWVkaWFFbGVtZW50L3NyY09iamVjdClcbiAgICovXG4gIGNvbXBvbmVudERpZE1vdW50KCkge1xuICAgIC8vIEZvciBtb3JlIGluZm9ybWF0aW9uLCBwbGVhc2UgdmlzaXQ6IGh0dHBzOi8vZGV2ZWxvcGVyLm1vemlsbGEub3JnL2VuLVVTL2RvY3MvV2ViL0FQSS9NZWRpYURldmljZXMvZ2V0VXNlck1lZGlhXG4gICAgaWYgKG5hdmlnYXRvci5tZWRpYURldmljZXMuZ2V0VXNlck1lZGlhKSB7XG4gICAgICBuYXZpZ2F0b3IubWVkaWFEZXZpY2VzLmdldFVzZXJNZWRpYSh7XG4gICAgICAgIHZpZGVvOiB7XG4gICAgICAgICAgZmFjaW5nTW9kZTogJ2Vudmlyb25tZW50JywgLy8gdG8gYXR0ZW1wdCB0byBnZXQgdGhlIGZyb250IGNhbWVyYSBvbiBwaG9uZXNcbiAgICAgICAgfSxcbiAgICAgIH0pXG4gICAgICAgIC50aGVuKChzdHJlYW0pID0+IHtcbiAgICAgICAgICB0aGlzLmhhbmRsZVZpZGVvU3RyZWFtKHN0cmVhbSk7XG4gICAgICAgIH0pXG4gICAgICAgIC5jYXRjaCgoZXJyb3IpID0+IHtcbiAgICAgICAgICB0aGlzLnZpZGVvRXJyb3IoZXJyb3IpO1xuICAgICAgICB9KTtcbiAgICB9XG4gIH1cblxuICAvKipcbiAgICogQ2hlY2sgaWYgdGhlcmUgaXMgYW55IGNhbGxiYWNrIHRvIHRyaWdnZXIgd2hlbiBjYW1lcmEgaXMgY2xvc2VkLiBJZiB5ZXMsIHRyaWdnZXIgaXRcbiAgICovXG4gIGNvbXBvbmVudFdpbGxVbm1vdW50KCkge1xuICAgIGlmICh0aGlzLnByb3BzLm9uQ2xvc2UpIHtcbiAgICAgIHRoaXMucHJvcHMub25DbG9zZSh0aGlzLnZpZGVvRWxlbWVudCk7XG4gICAgfVxuICB9XG5cbiAgLyoqXG4gICAqIFNldCB0aGUgc291cmNlIG9mIHRoZSB2aWRlbyBlbGVtZW50LlxuICAgKiBXZSBuZWVkIHRvIHNldCB0aGUgc3JjT2JqZWN0IGRlcGVuZGluZyB0aGUgYnJvd3Nlci5cbiAgICogUGxlYXNlLCBmb3IgbW9yZSBpbmZvcm1hdGlvbiwgdmlzaXQ6IGh0dHBzOi8vZ2l0aHViLmNvbS9hZGR5b3NtYW5pL2dldFVzZXJNZWRpYS5qcy9pc3N1ZXMvNjRcbiAgICogQHBhcmFtIHsqfSBzdHJlYW0gd2l0aCB0aGUgaW5mbyBmbyB0aGUgdmlkZW8gc3RyZWFtXG4gICAqL1xuICBoYW5kbGVWaWRlb1N0cmVhbSA9IChzdHJlYW0pID0+IHtcbiAgICB0aGlzLl9zZXRTdHJlYW0oc3RyZWFtKTtcbiAgICB0aGlzLnZpZGVvRWxlbWVudC5wbGF5KClcbiAgICAgIC50aGVuKCgpID0+IHtcbiAgICAgICAgLy8gaGFuZGxlIGVhY2ggYW5pbWF0aW9uIGluIHRoZSB2aWRlbyBzdHJlYW0gYmVmb3JlIHJlcGFpbnRcbiAgICAgICAgLy8gdXNlZCBpLmUuIHdoZW4gd2UgYXJlIHNjYW5uaW5nIGEgUVIgY29kZVxuICAgICAgICBpZiAodGhpcy5wcm9wcy5oYW5kbGVSZXF1ZXN0QW5pbWF0aW9uRnJhbWUpIHtcbiAgICAgICAgICB0aGlzLnByb3BzLmhhbmRsZVJlcXVlc3RBbmltYXRpb25GcmFtZSh0aGlzLnZpZGVvRWxlbWVudCwgdGhpcy5jYW52YXNFbGVtZW50KTtcbiAgICAgICAgfVxuICAgICAgfSk7XG4gIH07XG5cbiAgLyoqXG4gICAqIFRha2UgYSBzbmFwc2hvdCBpZiBjYW1lcmEgaXMgY29uZmlndXJlZCB3aXRoIHRoaXMgZmVhdHVyZS5cbiAgICogSXQncyBzaG93biBpbiB0aGUgY2FudmFzIGVsZW1lbnQgb2YgdGhlIGNhbWVyYS5cbiAgICogQHJldHVybnMge3N0cmluZ30gd2l0aCB0aGUgc25hcHNob3QgdGFrZW5cbiAgICovXG4gIHRha2VTbmFwU2hvdCA9ICgpID0+IHtcbiAgICBjb25zdCBjb250ZXh0ID0gdGhpcy5jYW52YXNFbGVtZW50LmdldENvbnRleHQoJzJkJyk7XG5cbiAgICBjb250ZXh0LmRyYXdJbWFnZSh0aGlzLnZpZGVvRWxlbWVudCwgMCwgMCwgODAwLCA2MDApO1xuICAgIHJldHVybiB0aGlzLmNhbnZhc0VsZW1lbnQudG9EYXRhVVJMKCdpbWFnZS9qcGVnJywgMC41KTtcbiAgfTtcblxuICAvKipcbiAgICogSGFuZGxlIHRoZSBlcnJvciBpZiB3ZSBjYW4ndCBhY2Nlc3MgdG8gdGhlIGNhbS5cbiAgICogSWYgdGhlcmUgaXMgYW5vdGhlciB0YWIsIGFwcGxpY2F0aW9uIG9yIGJyb3dzZXIgdXNpbmcgaXQsXG4gICAqIHlvdSdsbCByZWNlaXZlIGFuIFwiQWJvcnRFcnJvclwiIHR5cGUgb2YgZXJyb3JcbiAgICogQHBhcmFtIGVycm9yXG4gICAqL1xuICB2aWRlb0Vycm9yID0gKGVycm9yKSA9PiB7XG4gICAgY29uc29sZS5lcnJvcignRXJyb3IgYWNjZXNzaW5nIHRvIHRoZSBjYW06JywgZXJyb3IpO1xuICB9O1xuXG4gIC8qKlxuICAgKiBTZXQgdGhlIHN0cmVhbSBvZiB0aGUgdmlkZW8gcmVnYXJkaW5nIHRoZSBicm93c2VyLFxuICAgKiBzaW5jZSBpcyBtYW5hZ2VkIGRpZmZlcmVudFxuICAgKiBAcGFyYW0geyp9IHN0cmVhbSBzdHJlYW0gb2YgdGhlIHZpZGVvXG4gICAqIEBwcml2YXRlXG4gICAqL1xuICBfc2V0U3RyZWFtKHN0cmVhbSkge1xuICAgIC8vIHNldCB0aGUgc3RyZWFtLCByZWdhcmRpbmcgdGhlIGJyb3dzZXIgd2Ugc3JjT2JqZWN0IGlzIGRpZmZlcmVudFxuICAgIGlmICh0aGlzLnZpZGVvRWxlbWVudC5tb3pTcmNPYmplY3QgIT09IHVuZGVmaW5lZCkgeyAvLyBGRjE4YVxuICAgICAgdGhpcy52aWRlb0VsZW1lbnQubW96U3JjT2JqZWN0ID0gc3RyZWFtO1xuICAgIH0gZWxzZSBpZiAodGhpcy52aWRlb0VsZW1lbnQuc3JjT2JqZWN0ICE9PSB1bmRlZmluZWQpIHsgLy8gQ2hyb21lXG4gICAgICB0aGlzLnZpZGVvRWxlbWVudC5zcmNPYmplY3QgPSBzdHJlYW07XG4gICAgfSBlbHNlIGlmICh3aW5kb3cud2Via2l0VVJMICE9PSB1bmRlZmluZWQpIHsgLy8gb2xkZXIgQ2hyb21lIGJyb3dzZXJzXG4gICAgICB0aGlzLnZpZGVvRWxlbWVudC5zcmNPYmplY3QgPSB3aW5kb3cud2Via2l0VVJMLmNyZWF0ZU9iamVjdFVSTChzdHJlYW0pO1xuICAgIH0gZWxzZSB7IC8vIEZGMTZhLCAxN2FcbiAgICAgIHRoaXMudmlkZW9FbGVtZW50LnNyYyA9IHN0cmVhbTtcbiAgICB9XG4gIH1cblxuICByZW5kZXIoKSB7XG4gICAgcmV0dXJuIChcbiAgICAgIDxkaXYgY2xhc3NOYW1lPVwiaTMtd3ctY2FtZXJhXCI+XG4gICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiaTMtd3ctY2FtZXJhX19jb250YWluZXJcIj5cbiAgICAgICAgICA8dmlkZW9cbiAgICAgICAgICAgIHBsYXlzSW5saW5lPVwidHJ1ZVwiXG4gICAgICAgICAgICBtdXRlZD1cInRydWVcIlxuICAgICAgICAgICAgcmVmPXsoaW5wdXQpID0+IHsgdGhpcy52aWRlb0VsZW1lbnQgPSBpbnB1dDsgfX0gLz5cbiAgICAgICAgICB7dGhpcy5wcm9wcy5zaG93QnV0dG9uXG4gICAgICAgICAgICAmJiAoXG4gICAgICAgICAgICA8QnV0dG9uXG4gICAgICAgICAgICAgIHR5cGU9XCJwcmltYXJ5XCJcbiAgICAgICAgICAgICAgaHRtbFR5cGU9XCJidXR0b25cIlxuICAgICAgICAgICAgICBvbkNsaWNrPXt0aGlzLnByb3BzLm9uQ2xpY2tCdXR0b24gPyB0aGlzLnByb3BzLm9uQ2xpY2tCdXR0b24gOiB0aGlzLnRha2VTbmFwU2hvdH0+XG4gICAgICAgICAgICAgICAge3RoaXMucHJvcHMubWVzc2FnZUJ1dHRvbn1cbiAgICAgICAgICAgIDwvQnV0dG9uPlxuICAgICAgICAgICAgKVxuICAgICAgICAgIH1cbiAgICAgICAgPC9kaXY+XG4gICAgICAgIDxjYW52YXNcbiAgICAgICAgICByZWY9eyhjYW52YXMpID0+IHsgdGhpcy5jYW52YXNFbGVtZW50ID0gY2FudmFzOyB9fVxuICAgICAgICAgIHN0eWxlPXt7IGRpc3BsYXk6ICdub25lJyB9fSAvPlxuICAgICAgPC9kaXY+XG4gICAgKTtcbiAgfVxufVxuXG5leHBvcnQgZGVmYXVsdCBDYW1lcmE7XG4iXX0=

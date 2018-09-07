@@ -1,0 +1,111 @@
+87b99748e8b600a960188149b96df999
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _redux = require("redux");
+
+var _reactRouterDom = require("react-router-dom");
+
+var _layout = _interopRequireDefault(require("views/layout/containers/layout"));
+
+var ROUTES = _interopRequireWildcard(require("constants/routes"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+(function () {
+  var enterModule = require('react-hot-loader').enterModule;
+
+  enterModule && enterModule(module);
+})();
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+/**
+ * This is a root platform component that loads the configuration and renders
+ * the Layout that contains all the routes. Thanks to nesting all the routes
+ * under this component, we have the tab params available in the child components.
+ */
+var App =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(App, _Component);
+
+  function App() {
+    _classCallCheck(this, App);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(App).apply(this, arguments));
+  }
+
+  _createClass(App, [{
+    key: "render",
+    value: function render() {
+      return _react.default.createElement("div", {
+        className: "i3-ww-app"
+      }, _react.default.createElement("div", {
+        className: "i3-ww-popups"
+      }), _react.default.createElement(_reactRouterDom.Switch, null, _react.default.createElement(_reactRouterDom.Route, {
+        path: "/:tab",
+        component: _layout.default
+      }), _react.default.createElement(_reactRouterDom.Redirect, {
+        from: "/",
+        to: ROUTES.DASHBOARD.MAIN
+      })));
+    }
+  }, {
+    key: "__reactstandin__regenerateByEval",
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
+  }]);
+
+  return App;
+}(_react.Component);
+
+var _default = (0, _redux.compose)(_reactRouterDom.withRouter)(App);
+
+var _default2 = _default;
+exports.default = _default2;
+;
+
+(function () {
+  var reactHotLoader = require('react-hot-loader').default;
+
+  var leaveModule = require('react-hot-loader').leaveModule;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(App, "App", "/home/charly/Uniclau/Iden3/web-wallet/src/views/app/containers/app.js");
+  reactHotLoader.register(_default, "default", "/home/charly/Uniclau/Iden3/web-wallet/src/views/app/containers/app.js");
+  leaveModule(module);
+})();
+
+;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImFwcC5qcyJdLCJuYW1lcyI6WyJBcHAiLCJMYXlvdXQiLCJST1VURVMiLCJEQVNIQk9BUkQiLCJNQUlOIiwiQ29tcG9uZW50Iiwid2l0aFJvdXRlciJdLCJtYXBwaW5ncyI6Ijs7Ozs7OztBQUFBOztBQUNBOztBQUNBOztBQUdBOztBQUNBOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFFQTs7Ozs7SUFLTUEsRzs7Ozs7Ozs7Ozs7Ozs2QkFDSztBQUNQLGFBQ0U7QUFBSyxRQUFBLFNBQVMsRUFBQztBQUFmLFNBQ0U7QUFBSyxRQUFBLFNBQVMsRUFBQztBQUFmLFFBREYsRUFFRSw2QkFBQyxzQkFBRCxRQUNFLDZCQUFDLHFCQUFEO0FBQU8sUUFBQSxJQUFJLEVBQUMsT0FBWjtBQUFvQixRQUFBLFNBQVMsRUFBRUM7QUFBL0IsUUFERixFQUVFLDZCQUFDLHdCQUFEO0FBQVUsUUFBQSxJQUFJLEVBQUMsR0FBZjtBQUFtQixRQUFBLEVBQUUsRUFBRUMsTUFBTSxDQUFDQyxTQUFQLENBQWlCQztBQUF4QyxRQUZGLENBRkYsQ0FERjtBQVNEOzs7Ozs7Ozs7OztFQVhlQyxnQjs7ZUFjSCxvQkFDYkMsMEJBRGEsRUFFYk4sR0FGYSxDOzs7Ozs7Ozs7Ozs7Ozs7MEJBZFRBLEciLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QsIHsgQ29tcG9uZW50IH0gZnJvbSAncmVhY3QnO1xuaW1wb3J0IHsgY29tcG9zZSB9IGZyb20gJ3JlZHV4JztcbmltcG9ydCB7XG4gIFN3aXRjaCwgUm91dGUsIHdpdGhSb3V0ZXIsIFJlZGlyZWN0LFxufSBmcm9tICdyZWFjdC1yb3V0ZXItZG9tJztcbmltcG9ydCBMYXlvdXQgZnJvbSAndmlld3MvbGF5b3V0L2NvbnRhaW5lcnMvbGF5b3V0JztcbmltcG9ydCAqIGFzIFJPVVRFUyBmcm9tICdjb25zdGFudHMvcm91dGVzJztcblxuLyoqXG4gKiBUaGlzIGlzIGEgcm9vdCBwbGF0Zm9ybSBjb21wb25lbnQgdGhhdCBsb2FkcyB0aGUgY29uZmlndXJhdGlvbiBhbmQgcmVuZGVyc1xuICogdGhlIExheW91dCB0aGF0IGNvbnRhaW5zIGFsbCB0aGUgcm91dGVzLiBUaGFua3MgdG8gbmVzdGluZyBhbGwgdGhlIHJvdXRlc1xuICogdW5kZXIgdGhpcyBjb21wb25lbnQsIHdlIGhhdmUgdGhlIHRhYiBwYXJhbXMgYXZhaWxhYmxlIGluIHRoZSBjaGlsZCBjb21wb25lbnRzLlxuICovXG5jbGFzcyBBcHAgZXh0ZW5kcyBDb21wb25lbnQge1xuICByZW5kZXIoKSB7XG4gICAgcmV0dXJuIChcbiAgICAgIDxkaXYgY2xhc3NOYW1lPVwiaTMtd3ctYXBwXCI+XG4gICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiaTMtd3ctcG9wdXBzXCIgLz5cbiAgICAgICAgPFN3aXRjaD5cbiAgICAgICAgICA8Um91dGUgcGF0aD1cIi86dGFiXCIgY29tcG9uZW50PXtMYXlvdXR9IC8+XG4gICAgICAgICAgPFJlZGlyZWN0IGZyb209XCIvXCIgdG89e1JPVVRFUy5EQVNIQk9BUkQuTUFJTn0gLz5cbiAgICAgICAgPC9Td2l0Y2g+XG4gICAgICA8L2Rpdj5cbiAgICApO1xuICB9XG59XG5cbmV4cG9ydCBkZWZhdWx0IGNvbXBvc2UoXG4gIHdpdGhSb3V0ZXIsXG4pKEFwcCk7XG4iXX0=

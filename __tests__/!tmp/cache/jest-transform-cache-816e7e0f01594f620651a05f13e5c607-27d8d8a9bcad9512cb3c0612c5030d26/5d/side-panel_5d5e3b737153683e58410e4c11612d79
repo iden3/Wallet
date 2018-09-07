@@ -1,0 +1,156 @@
+7ae3ea3feda71a59b1b08daa1f3003be
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var _classnames = _interopRequireDefault(require("classnames"));
+
+var BOX_CONSTANTS = _interopRequireWildcard(require("constants/box"));
+
+require("./side-panel.scss");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+(function () {
+  var enterModule = require('react-hot-loader').enterModule;
+
+  enterModule && enterModule(module);
+})();
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var onTheSide = Object.values(BOX_CONSTANTS.SIDE);
+
+var SidePanel =
+/*#__PURE__*/
+function (_PureComponent) {
+  _inherits(SidePanel, _PureComponent);
+
+  function SidePanel() {
+    _classCallCheck(this, SidePanel);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(SidePanel).apply(this, arguments));
+  }
+
+  _createClass(SidePanel, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.props.setActiveContainer(this.container);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _classNames,
+          _this = this;
+
+      var cmptClasses = (0, _classnames.default)((_classNames = {
+        'i3-ww-side-panel': true
+      }, _defineProperty(_classNames, "i3-ww-side-panel--".concat(this.props.side), true), _defineProperty(_classNames, 'i3-ww-side-panel--visible', this.props.isVisible), _classNames));
+      return _react.default.createElement("div", {
+        className: cmptClasses,
+        role: "dialog"
+      }, _react.default.createElement("div", null, this.props.header), _react.default.createElement("div", {
+        role: "document",
+        ref: function ref(el) {
+          _this.container = el;
+        },
+        className: "i3-ww-side-panel__inner"
+      }, this.props.children), _react.default.createElement("div", null, this.props.footer));
+    }
+  }, {
+    key: "__reactstandin__regenerateByEval",
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
+  }]);
+
+  return SidePanel;
+}(_react.PureComponent);
+
+_defineProperty(SidePanel, "propTypes", {
+  /*
+   Header React element
+   */
+  header: _propTypes.default.node,
+
+  /*
+   Footer React element
+   */
+  footer: _propTypes.default.node,
+
+  /*
+  Children
+   */
+  children: _propTypes.default.node.isRequired,
+
+  /*
+  Set if tha side panel should be shown or not when it's created
+   */
+  isVisible: _propTypes.default.bool,
+
+  /*
+   Callback set the active container to focus for accessibility
+   */
+  setActiveContainer: _propTypes.default.func.isRequired,
+
+  /*
+  Side where show the side panel
+   */
+  side: _propTypes.default.oneOf(onTheSide)
+});
+
+_defineProperty(SidePanel, "defaultProps", {
+  side: 'right'
+});
+
+var _default = SidePanel;
+var _default2 = _default;
+exports.default = _default2;
+;
+
+(function () {
+  var reactHotLoader = require('react-hot-loader').default;
+
+  var leaveModule = require('react-hot-loader').leaveModule;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(onTheSide, "onTheSide", "/home/charly/Uniclau/Iden3/web-wallet/src/components/side-panel/side-panel.js");
+  reactHotLoader.register(SidePanel, "SidePanel", "/home/charly/Uniclau/Iden3/web-wallet/src/components/side-panel/side-panel.js");
+  reactHotLoader.register(_default, "default", "/home/charly/Uniclau/Iden3/web-wallet/src/components/side-panel/side-panel.js");
+  leaveModule(module);
+})();
+
+;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNpZGUtcGFuZWwuanMiXSwibmFtZXMiOlsib25UaGVTaWRlIiwiT2JqZWN0IiwidmFsdWVzIiwiQk9YX0NPTlNUQU5UUyIsIlNJREUiLCJTaWRlUGFuZWwiLCJwcm9wcyIsInNldEFjdGl2ZUNvbnRhaW5lciIsImNvbnRhaW5lciIsImNtcHRDbGFzc2VzIiwic2lkZSIsImlzVmlzaWJsZSIsImhlYWRlciIsImVsIiwiY2hpbGRyZW4iLCJmb290ZXIiLCJQdXJlQ29tcG9uZW50IiwiUHJvcFR5cGVzIiwibm9kZSIsImlzUmVxdWlyZWQiLCJib29sIiwiZnVuYyIsIm9uZU9mIl0sIm1hcHBpbmdzIjoiOzs7Ozs7O0FBQUE7O0FBQ0E7O0FBQ0E7O0FBQ0E7O0FBRUE7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBRUEsSUFBTUEsU0FBUyxHQUFHQyxNQUFNLENBQUNDLE1BQVAsQ0FBY0MsYUFBYSxDQUFDQyxJQUE1QixDQUFsQjs7SUFFTUMsUzs7Ozs7Ozs7Ozs7Ozt3Q0FnQ2dCO0FBQ2xCLFdBQUtDLEtBQUwsQ0FBV0Msa0JBQVgsQ0FBOEIsS0FBS0MsU0FBbkM7QUFDRDs7OzZCQUVRO0FBQUE7QUFBQTs7QUFDUCxVQUFNQyxXQUFXLEdBQUc7QUFDbEIsNEJBQW9CO0FBREYsa0VBRUksS0FBS0gsS0FBTCxDQUFXSSxJQUZmLEdBRXdCLElBRnhCLGdDQUdsQiwyQkFIa0IsRUFHVyxLQUFLSixLQUFMLENBQVdLLFNBSHRCLGdCQUFwQjtBQU1BLGFBQ0U7QUFDRSxRQUFBLFNBQVMsRUFBRUYsV0FEYjtBQUVFLFFBQUEsSUFBSSxFQUFDO0FBRlAsU0FHRSwwQ0FDRyxLQUFLSCxLQUFMLENBQVdNLE1BRGQsQ0FIRixFQU1FO0FBQ0UsUUFBQSxJQUFJLEVBQUMsVUFEUDtBQUVFLFFBQUEsR0FBRyxFQUFFLGFBQUNDLEVBQUQsRUFBUTtBQUFFLFVBQUEsS0FBSSxDQUFDTCxTQUFMLEdBQWlCSyxFQUFqQjtBQUFzQixTQUZ2QztBQUdFLFFBQUEsU0FBUyxFQUFDO0FBSFosU0FJRyxLQUFLUCxLQUFMLENBQVdRLFFBSmQsQ0FORixFQVlFLDBDQUNHLEtBQUtSLEtBQUwsQ0FBV1MsTUFEZCxDQVpGLENBREY7QUFrQkQ7Ozs7Ozs7Ozs7O0VBN0RxQkMsb0I7O2dCQUFsQlgsUyxlQUNlO0FBQ2pCOzs7QUFHQU8sRUFBQUEsTUFBTSxFQUFFSyxtQkFBVUMsSUFKRDs7QUFLakI7OztBQUdBSCxFQUFBQSxNQUFNLEVBQUVFLG1CQUFVQyxJQVJEOztBQVNqQjs7O0FBR0FKLEVBQUFBLFFBQVEsRUFBRUcsbUJBQVVDLElBQVYsQ0FBZUMsVUFaUjs7QUFhakI7OztBQUdBUixFQUFBQSxTQUFTLEVBQUVNLG1CQUFVRyxJQWhCSjs7QUFpQmpCOzs7QUFHQWIsRUFBQUEsa0JBQWtCLEVBQUVVLG1CQUFVSSxJQUFWLENBQWVGLFVBcEJsQjs7QUFxQmpCOzs7QUFHQVQsRUFBQUEsSUFBSSxFQUFFTyxtQkFBVUssS0FBVixDQUFnQnRCLFNBQWhCO0FBeEJXLEM7O2dCQURmSyxTLGtCQTRCa0I7QUFDcEJLLEVBQUFBLElBQUksRUFBRTtBQURjLEM7O2VBb0NUTCxTOzs7Ozs7Ozs7Ozs7OzswQkFsRVRMLFM7MEJBRUFLLFMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QsIHsgUHVyZUNvbXBvbmVudCB9IGZyb20gJ3JlYWN0JztcbmltcG9ydCBQcm9wVHlwZXMgZnJvbSAncHJvcC10eXBlcyc7XG5pbXBvcnQgY2xhc3NOYW1lcyBmcm9tICdjbGFzc25hbWVzJztcbmltcG9ydCAqIGFzIEJPWF9DT05TVEFOVFMgZnJvbSAnY29uc3RhbnRzL2JveCc7XG5cbmltcG9ydCAnLi9zaWRlLXBhbmVsLnNjc3MnO1xuXG5jb25zdCBvblRoZVNpZGUgPSBPYmplY3QudmFsdWVzKEJPWF9DT05TVEFOVFMuU0lERSk7XG5cbmNsYXNzIFNpZGVQYW5lbCBleHRlbmRzIFB1cmVDb21wb25lbnQge1xuICBzdGF0aWMgcHJvcFR5cGVzID0ge1xuICAgIC8qXG4gICAgIEhlYWRlciBSZWFjdCBlbGVtZW50XG4gICAgICovXG4gICAgaGVhZGVyOiBQcm9wVHlwZXMubm9kZSxcbiAgICAvKlxuICAgICBGb290ZXIgUmVhY3QgZWxlbWVudFxuICAgICAqL1xuICAgIGZvb3RlcjogUHJvcFR5cGVzLm5vZGUsXG4gICAgLypcbiAgICBDaGlsZHJlblxuICAgICAqL1xuICAgIGNoaWxkcmVuOiBQcm9wVHlwZXMubm9kZS5pc1JlcXVpcmVkLFxuICAgIC8qXG4gICAgU2V0IGlmIHRoYSBzaWRlIHBhbmVsIHNob3VsZCBiZSBzaG93biBvciBub3Qgd2hlbiBpdCdzIGNyZWF0ZWRcbiAgICAgKi9cbiAgICBpc1Zpc2libGU6IFByb3BUeXBlcy5ib29sLFxuICAgIC8qXG4gICAgIENhbGxiYWNrIHNldCB0aGUgYWN0aXZlIGNvbnRhaW5lciB0byBmb2N1cyBmb3IgYWNjZXNzaWJpbGl0eVxuICAgICAqL1xuICAgIHNldEFjdGl2ZUNvbnRhaW5lcjogUHJvcFR5cGVzLmZ1bmMuaXNSZXF1aXJlZCxcbiAgICAvKlxuICAgIFNpZGUgd2hlcmUgc2hvdyB0aGUgc2lkZSBwYW5lbFxuICAgICAqL1xuICAgIHNpZGU6IFByb3BUeXBlcy5vbmVPZihvblRoZVNpZGUpLFxuICB9O1xuXG4gIHN0YXRpYyBkZWZhdWx0UHJvcHMgPSB7XG4gICAgc2lkZTogJ3JpZ2h0JyxcbiAgfTtcblxuICBjb21wb25lbnREaWRNb3VudCgpIHtcbiAgICB0aGlzLnByb3BzLnNldEFjdGl2ZUNvbnRhaW5lcih0aGlzLmNvbnRhaW5lcik7XG4gIH1cblxuICByZW5kZXIoKSB7XG4gICAgY29uc3QgY21wdENsYXNzZXMgPSBjbGFzc05hbWVzKHtcbiAgICAgICdpMy13dy1zaWRlLXBhbmVsJzogdHJ1ZSxcbiAgICAgIFtgaTMtd3ctc2lkZS1wYW5lbC0tJHt0aGlzLnByb3BzLnNpZGV9YF06IHRydWUsXG4gICAgICAnaTMtd3ctc2lkZS1wYW5lbC0tdmlzaWJsZSc6IHRoaXMucHJvcHMuaXNWaXNpYmxlLFxuICAgIH0pO1xuXG4gICAgcmV0dXJuIChcbiAgICAgIDxkaXZcbiAgICAgICAgY2xhc3NOYW1lPXtjbXB0Q2xhc3Nlc31cbiAgICAgICAgcm9sZT1cImRpYWxvZ1wiPlxuICAgICAgICA8ZGl2PlxuICAgICAgICAgIHt0aGlzLnByb3BzLmhlYWRlcn1cbiAgICAgICAgPC9kaXY+XG4gICAgICAgIDxkaXZcbiAgICAgICAgICByb2xlPVwiZG9jdW1lbnRcIlxuICAgICAgICAgIHJlZj17KGVsKSA9PiB7IHRoaXMuY29udGFpbmVyID0gZWw7IH19XG4gICAgICAgICAgY2xhc3NOYW1lPVwiaTMtd3ctc2lkZS1wYW5lbF9faW5uZXJcIj5cbiAgICAgICAgICB7dGhpcy5wcm9wcy5jaGlsZHJlbn1cbiAgICAgICAgPC9kaXY+XG4gICAgICAgIDxkaXY+XG4gICAgICAgICAge3RoaXMucHJvcHMuZm9vdGVyfVxuICAgICAgICA8L2Rpdj5cbiAgICAgIDwvZGl2PlxuICAgICk7XG4gIH1cbn1cblxuZXhwb3J0IGRlZmF1bHQgU2lkZVBhbmVsO1xuIl19

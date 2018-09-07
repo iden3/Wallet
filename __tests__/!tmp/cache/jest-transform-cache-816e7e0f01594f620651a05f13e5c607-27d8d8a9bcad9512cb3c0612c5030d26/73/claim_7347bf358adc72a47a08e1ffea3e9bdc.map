@@ -1,0 +1,1 @@
+{"version":3,"sources":["claim.js"],"names":["TYPE","ASSIGN_NAME","DEFAULT","SIGN"],"mappings":";;;;;;;;;;;;;AAAO,IAAMA,IAAI,GAAG;AAClBC,EAAAA,WAAW,EAAE,aADK;AAElBC,EAAAA,OAAO,EAAE,SAFS;AAGlBC,EAAAA,IAAI,EAAE;AAHY,CAAb;;;;;;;;;;;;;0BAAMH,I","sourcesContent":["export const TYPE = {\n  ASSIGN_NAME: 'assign_name',\n  DEFAULT: 'default',\n  SIGN: 'sign',\n};\n"]}

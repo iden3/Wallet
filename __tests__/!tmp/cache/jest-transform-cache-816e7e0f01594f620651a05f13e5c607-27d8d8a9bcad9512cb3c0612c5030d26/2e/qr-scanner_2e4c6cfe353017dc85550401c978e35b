@@ -1,0 +1,176 @@
+a28304626fb608564e2d4e35f217645d
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _jsqr = _interopRequireDefault(require("jsqr"));
+
+var _base_components = require("base_components");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+(function () {
+  var enterModule = require('react-hot-loader').enterModule;
+
+  enterModule && enterModule(module);
+})();
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var LIVE_STREAM = 'live';
+var ENDED_STREAM = 'ended';
+/**
+ * Class  that uses jsqr library to scan a QR and retrieve the data.
+ * Uses the camera component to get the stream and find the QR.
+ * ScanImage is a function triggered for each tick of the video stream
+ * for parsing the image and look for a QR code
+ */
+
+var QRScanner =
+/*#__PURE__*/
+function (_PureComponent) {
+  _inherits(QRScanner, _PureComponent);
+
+  function QRScanner(props) {
+    var _this;
+
+    _classCallCheck(this, QRScanner);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(QRScanner).call(this, props));
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "state", {
+      canvasElement: {},
+      videoElement: {}
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "closeCamera", function () {
+      _this.state.videoElement.srcObject.getVideoTracks()[0].stop();
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "scanImage", function (videoElement, canvasElement) {
+      if (videoElement.readyState === videoElement.HAVE_ENOUGH_DATA) {
+        _this.setState({
+          canvasElement: canvasElement,
+          videoElement: videoElement
+        }, function () {
+          return window.requestAnimationFrame(function () {
+            _this._handleStreamTick();
+          });
+        });
+      }
+    });
+
+    _this._handleStreamTick = _this._handleStreamTick.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    return _this;
+  }
+  /**
+   * Access to the video stream and stop them, removing them from the event loop
+   * @param {object} stream of the video
+   */
+
+
+  _createClass(QRScanner, [{
+    key: "_handleStreamTick",
+
+    /**
+     * Handle each tick of the stream to check if there is any QR shown
+     * to capture the data
+     * @private
+     */
+    value: function _handleStreamTick() {
+      // It is needed do this check, otherwise a lot of animation frames are added to event loop
+      // and even we unmount the component the are many frames to deal with in the stack
+      if (this.state.videoElement.srcObject.getVideoTracks()[0].readyState === LIVE_STREAM) {
+        var canvas = this.state.canvasElement.getContext('2d'); // write current video stream tick in the canvas for parsing it and check if there is any QR code
+
+        canvas.drawImage(this.state.videoElement, 0, 0, this.state.canvasElement.width, this.state.canvasElement.height);
+        var imageData = canvas.getImageData(0, 0, this.state.canvasElement.width, this.state.canvasElement.height); // Should jsQR attempt to invert the image to find QR codes with white modules
+        // on black backgrounds instead of the black modules on white background. Set it to dontInvert
+        // for performance. Please, visit https://github.com/cozmo/jsQR for more info
+
+        var code = (0, _jsqr.default)(imageData.data, imageData.width, imageData.height, {
+          inversionAttempts: 'dontInvert'
+        }); // check if QR code found
+
+        if (code) {
+          console.log('=====> QR CODE FOUND: ', code.data);
+          this.closeCamera();
+        } // move forward next frame
+
+
+        window.requestAnimationFrame(this._handleStreamTick);
+      } // check if stream finished (when camera is closed or component unmount)
+
+
+      if (this.state.videoElement.srcObject.getVideoTracks()[0].readyState === ENDED_STREAM) {
+        this.closeCamera();
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return _react.default.createElement(_base_components.Camera, {
+        onClose: this.closeCamera,
+        handleRequestAnimationFrame: this.scanImage
+      });
+    }
+  }, {
+    key: "__reactstandin__regenerateByEval",
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
+  }]);
+
+  return QRScanner;
+}(_react.PureComponent);
+
+var _default = QRScanner;
+var _default2 = _default;
+exports.default = _default2;
+;
+
+(function () {
+  var reactHotLoader = require('react-hot-loader').default;
+
+  var leaveModule = require('react-hot-loader').leaveModule;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(LIVE_STREAM, "LIVE_STREAM", "/home/charly/Uniclau/Iden3/web-wallet/src/components/qr-scanner/qr-scanner.js");
+  reactHotLoader.register(ENDED_STREAM, "ENDED_STREAM", "/home/charly/Uniclau/Iden3/web-wallet/src/components/qr-scanner/qr-scanner.js");
+  reactHotLoader.register(QRScanner, "QRScanner", "/home/charly/Uniclau/Iden3/web-wallet/src/components/qr-scanner/qr-scanner.js");
+  reactHotLoader.register(_default, "default", "/home/charly/Uniclau/Iden3/web-wallet/src/components/qr-scanner/qr-scanner.js");
+  leaveModule(module);
+})();
+
+;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInFyLXNjYW5uZXIuanMiXSwibmFtZXMiOlsiTElWRV9TVFJFQU0iLCJFTkRFRF9TVFJFQU0iLCJRUlNjYW5uZXIiLCJwcm9wcyIsImNhbnZhc0VsZW1lbnQiLCJ2aWRlb0VsZW1lbnQiLCJzdGF0ZSIsInNyY09iamVjdCIsImdldFZpZGVvVHJhY2tzIiwic3RvcCIsInJlYWR5U3RhdGUiLCJIQVZFX0VOT1VHSF9EQVRBIiwic2V0U3RhdGUiLCJ3aW5kb3ciLCJyZXF1ZXN0QW5pbWF0aW9uRnJhbWUiLCJfaGFuZGxlU3RyZWFtVGljayIsImJpbmQiLCJjYW52YXMiLCJnZXRDb250ZXh0IiwiZHJhd0ltYWdlIiwid2lkdGgiLCJoZWlnaHQiLCJpbWFnZURhdGEiLCJnZXRJbWFnZURhdGEiLCJjb2RlIiwiZGF0YSIsImludmVyc2lvbkF0dGVtcHRzIiwiY29uc29sZSIsImxvZyIsImNsb3NlQ2FtZXJhIiwic2NhbkltYWdlIiwiUHVyZUNvbXBvbmVudCJdLCJtYXBwaW5ncyI6Ijs7Ozs7OztBQUFBOztBQUNBOztBQUNBOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUVBLElBQU1BLFdBQVcsR0FBRyxNQUFwQjtBQUNBLElBQU1DLFlBQVksR0FBRyxPQUFyQjtBQUVBOzs7Ozs7O0lBTU1DLFM7Ozs7O0FBTUoscUJBQVlDLEtBQVosRUFBbUI7QUFBQTs7QUFBQTs7QUFDakIsbUZBQU1BLEtBQU47O0FBRGlCLG9GQUxYO0FBQ05DLE1BQUFBLGFBQWEsRUFBRSxFQURUO0FBRU5DLE1BQUFBLFlBQVksRUFBRTtBQUZSLEtBS1c7O0FBQUEsMEZBU0wsWUFBTTtBQUNsQixZQUFLQyxLQUFMLENBQVdELFlBQVgsQ0FBd0JFLFNBQXhCLENBQWtDQyxjQUFsQyxHQUFtRCxDQUFuRCxFQUFzREMsSUFBdEQ7QUFDRCxLQVhrQjs7QUFBQSx3RkFvQlAsVUFBQ0osWUFBRCxFQUFlRCxhQUFmLEVBQWlDO0FBQzNDLFVBQUlDLFlBQVksQ0FBQ0ssVUFBYixLQUE0QkwsWUFBWSxDQUFDTSxnQkFBN0MsRUFBK0Q7QUFDN0QsY0FBS0MsUUFBTCxDQUFjO0FBQ1pSLFVBQUFBLGFBQWEsRUFBYkEsYUFEWTtBQUVaQyxVQUFBQSxZQUFZLEVBQVpBO0FBRlksU0FBZCxFQUdHO0FBQUEsaUJBQU1RLE1BQU0sQ0FBQ0MscUJBQVAsQ0FBNkIsWUFBTTtBQUMxQyxrQkFBS0MsaUJBQUw7QUFDRCxXQUZRLENBQU47QUFBQSxTQUhIO0FBTUQ7QUFDRixLQTdCa0I7O0FBRWpCLFVBQUtBLGlCQUFMLEdBQXlCLE1BQUtBLGlCQUFMLENBQXVCQyxJQUF2Qix1REFBekI7QUFGaUI7QUFHbEI7QUFFRDs7Ozs7Ozs7O0FBMEJBOzs7Ozt3Q0FLb0I7QUFDbEI7QUFDQTtBQUNBLFVBQUksS0FBS1YsS0FBTCxDQUFXRCxZQUFYLENBQXdCRSxTQUF4QixDQUFrQ0MsY0FBbEMsR0FBbUQsQ0FBbkQsRUFBc0RFLFVBQXRELEtBQXFFVixXQUF6RSxFQUFzRjtBQUNwRixZQUFNaUIsTUFBTSxHQUFHLEtBQUtYLEtBQUwsQ0FBV0YsYUFBWCxDQUF5QmMsVUFBekIsQ0FBb0MsSUFBcEMsQ0FBZixDQURvRixDQUdwRjs7QUFDQUQsUUFBQUEsTUFBTSxDQUFDRSxTQUFQLENBQWlCLEtBQUtiLEtBQUwsQ0FBV0QsWUFBNUIsRUFBMEMsQ0FBMUMsRUFBNkMsQ0FBN0MsRUFBZ0QsS0FBS0MsS0FBTCxDQUFXRixhQUFYLENBQXlCZ0IsS0FBekUsRUFBZ0YsS0FBS2QsS0FBTCxDQUFXRixhQUFYLENBQXlCaUIsTUFBekc7QUFDQSxZQUFNQyxTQUFTLEdBQUdMLE1BQU0sQ0FBQ00sWUFBUCxDQUFvQixDQUFwQixFQUF1QixDQUF2QixFQUEwQixLQUFLakIsS0FBTCxDQUFXRixhQUFYLENBQXlCZ0IsS0FBbkQsRUFBMEQsS0FBS2QsS0FBTCxDQUFXRixhQUFYLENBQXlCaUIsTUFBbkYsQ0FBbEIsQ0FMb0YsQ0FNcEY7QUFDQTtBQUNBOztBQUNBLFlBQU1HLElBQUksR0FBRyxtQkFBS0YsU0FBUyxDQUFDRyxJQUFmLEVBQXFCSCxTQUFTLENBQUNGLEtBQS9CLEVBQXNDRSxTQUFTLENBQUNELE1BQWhELEVBQXdEO0FBQ25FSyxVQUFBQSxpQkFBaUIsRUFBRTtBQURnRCxTQUF4RCxDQUFiLENBVG9GLENBYXBGOztBQUNBLFlBQUlGLElBQUosRUFBVTtBQUNSRyxVQUFBQSxPQUFPLENBQUNDLEdBQVIsQ0FBWSx3QkFBWixFQUFzQ0osSUFBSSxDQUFDQyxJQUEzQztBQUNBLGVBQUtJLFdBQUw7QUFDRCxTQWpCbUYsQ0FtQnBGOzs7QUFDQWhCLFFBQUFBLE1BQU0sQ0FBQ0MscUJBQVAsQ0FBNkIsS0FBS0MsaUJBQWxDO0FBQ0QsT0F4QmlCLENBMEJsQjs7O0FBQ0EsVUFBSSxLQUFLVCxLQUFMLENBQVdELFlBQVgsQ0FBd0JFLFNBQXhCLENBQWtDQyxjQUFsQyxHQUFtRCxDQUFuRCxFQUFzREUsVUFBdEQsS0FBcUVULFlBQXpFLEVBQXVGO0FBQ3JGLGFBQUs0QixXQUFMO0FBQ0Q7QUFDRjs7OzZCQUVRO0FBQ1AsYUFDRSw2QkFBQyx1QkFBRDtBQUNFLFFBQUEsT0FBTyxFQUFFLEtBQUtBLFdBRGhCO0FBRUUsUUFBQSwyQkFBMkIsRUFBRSxLQUFLQztBQUZwQyxRQURGO0FBS0Q7Ozs7Ozs7Ozs7O0VBaEZxQkMsb0I7O2VBbUZUN0IsUzs7Ozs7Ozs7Ozs7Ozs7MEJBNUZURixXOzBCQUNBQyxZOzBCQVFBQyxTIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0LCB7IFB1cmVDb21wb25lbnQgfSBmcm9tICdyZWFjdCc7XG5pbXBvcnQganNRUiBmcm9tICdqc3FyJztcbmltcG9ydCB7IENhbWVyYSB9IGZyb20gJ2Jhc2VfY29tcG9uZW50cyc7XG5cbmNvbnN0IExJVkVfU1RSRUFNID0gJ2xpdmUnO1xuY29uc3QgRU5ERURfU1RSRUFNID0gJ2VuZGVkJztcblxuLyoqXG4gKiBDbGFzcyAgdGhhdCB1c2VzIGpzcXIgbGlicmFyeSB0byBzY2FuIGEgUVIgYW5kIHJldHJpZXZlIHRoZSBkYXRhLlxuICogVXNlcyB0aGUgY2FtZXJhIGNvbXBvbmVudCB0byBnZXQgdGhlIHN0cmVhbSBhbmQgZmluZCB0aGUgUVIuXG4gKiBTY2FuSW1hZ2UgaXMgYSBmdW5jdGlvbiB0cmlnZ2VyZWQgZm9yIGVhY2ggdGljayBvZiB0aGUgdmlkZW8gc3RyZWFtXG4gKiBmb3IgcGFyc2luZyB0aGUgaW1hZ2UgYW5kIGxvb2sgZm9yIGEgUVIgY29kZVxuICovXG5jbGFzcyBRUlNjYW5uZXIgZXh0ZW5kcyBQdXJlQ29tcG9uZW50IHtcbiAgc3RhdGUgPSB7XG4gICAgY2FudmFzRWxlbWVudDoge30sXG4gICAgdmlkZW9FbGVtZW50OiB7fSxcbiAgfTtcblxuICBjb25zdHJ1Y3Rvcihwcm9wcykge1xuICAgIHN1cGVyKHByb3BzKTtcbiAgICB0aGlzLl9oYW5kbGVTdHJlYW1UaWNrID0gdGhpcy5faGFuZGxlU3RyZWFtVGljay5iaW5kKHRoaXMpO1xuICB9XG5cbiAgLyoqXG4gICAqIEFjY2VzcyB0byB0aGUgdmlkZW8gc3RyZWFtIGFuZCBzdG9wIHRoZW0sIHJlbW92aW5nIHRoZW0gZnJvbSB0aGUgZXZlbnQgbG9vcFxuICAgKiBAcGFyYW0ge29iamVjdH0gc3RyZWFtIG9mIHRoZSB2aWRlb1xuICAgKi9cbiAgY2xvc2VDYW1lcmEgPSAoKSA9PiB7XG4gICAgdGhpcy5zdGF0ZS52aWRlb0VsZW1lbnQuc3JjT2JqZWN0LmdldFZpZGVvVHJhY2tzKClbMF0uc3RvcCgpO1xuICB9O1xuXG4gIC8qKlxuICAgKiBQYXJzZSB0aGUgY3VycmVudCB0aWNrIG9mIHRoZSBzdHJlYW0gdmlkZW8gdG8gY2hlY2sgaWYgdGhlcmUgaXNcbiAgICogYW55IFFSIGNvZGUgYW5kIHJldHJpZXZlIHRoZSBkYXRhIGluc2lkZVxuICAgKiBAcGFyYW0ge25vZGUgfHwgbnVtYmVyfSB2aWRlb0VsZW1lbnQgSFRNTCBFbGVtZW50IHdpdGggdGhlIHZpZGVvIHN0cmVhbWluZ1xuICAgKiBAcGFyYW0ge25vZGV9IGNhbnZhc0VsZW1lbnQgSFRNTCBDYW52YXMgRWxlbWVudCB3aXRoIGEgaGlkZGVuIGNhbnZhcyBlbGVtZW50IGZyb20gd2hpY2ggZ2V0IHRoZSBpbmZvIG9mXG4gICAqIHRoZSB2aWRlbyBzdHJlYW0gYW5kIG1hbmlwdWxhdGUgaXRcbiAgICovXG4gIHNjYW5JbWFnZSA9ICh2aWRlb0VsZW1lbnQsIGNhbnZhc0VsZW1lbnQpID0+IHtcbiAgICBpZiAodmlkZW9FbGVtZW50LnJlYWR5U3RhdGUgPT09IHZpZGVvRWxlbWVudC5IQVZFX0VOT1VHSF9EQVRBKSB7XG4gICAgICB0aGlzLnNldFN0YXRlKHtcbiAgICAgICAgY2FudmFzRWxlbWVudCxcbiAgICAgICAgdmlkZW9FbGVtZW50LFxuICAgICAgfSwgKCkgPT4gd2luZG93LnJlcXVlc3RBbmltYXRpb25GcmFtZSgoKSA9PiB7XG4gICAgICAgIHRoaXMuX2hhbmRsZVN0cmVhbVRpY2soKTtcbiAgICAgIH0pKTtcbiAgICB9XG4gIH07XG5cbiAgLyoqXG4gICAqIEhhbmRsZSBlYWNoIHRpY2sgb2YgdGhlIHN0cmVhbSB0byBjaGVjayBpZiB0aGVyZSBpcyBhbnkgUVIgc2hvd25cbiAgICogdG8gY2FwdHVyZSB0aGUgZGF0YVxuICAgKiBAcHJpdmF0ZVxuICAgKi9cbiAgX2hhbmRsZVN0cmVhbVRpY2soKSB7XG4gICAgLy8gSXQgaXMgbmVlZGVkIGRvIHRoaXMgY2hlY2ssIG90aGVyd2lzZSBhIGxvdCBvZiBhbmltYXRpb24gZnJhbWVzIGFyZSBhZGRlZCB0byBldmVudCBsb29wXG4gICAgLy8gYW5kIGV2ZW4gd2UgdW5tb3VudCB0aGUgY29tcG9uZW50IHRoZSBhcmUgbWFueSBmcmFtZXMgdG8gZGVhbCB3aXRoIGluIHRoZSBzdGFja1xuICAgIGlmICh0aGlzLnN0YXRlLnZpZGVvRWxlbWVudC5zcmNPYmplY3QuZ2V0VmlkZW9UcmFja3MoKVswXS5yZWFkeVN0YXRlID09PSBMSVZFX1NUUkVBTSkge1xuICAgICAgY29uc3QgY2FudmFzID0gdGhpcy5zdGF0ZS5jYW52YXNFbGVtZW50LmdldENvbnRleHQoJzJkJyk7XG5cbiAgICAgIC8vIHdyaXRlIGN1cnJlbnQgdmlkZW8gc3RyZWFtIHRpY2sgaW4gdGhlIGNhbnZhcyBmb3IgcGFyc2luZyBpdCBhbmQgY2hlY2sgaWYgdGhlcmUgaXMgYW55IFFSIGNvZGVcbiAgICAgIGNhbnZhcy5kcmF3SW1hZ2UodGhpcy5zdGF0ZS52aWRlb0VsZW1lbnQsIDAsIDAsIHRoaXMuc3RhdGUuY2FudmFzRWxlbWVudC53aWR0aCwgdGhpcy5zdGF0ZS5jYW52YXNFbGVtZW50LmhlaWdodCk7XG4gICAgICBjb25zdCBpbWFnZURhdGEgPSBjYW52YXMuZ2V0SW1hZ2VEYXRhKDAsIDAsIHRoaXMuc3RhdGUuY2FudmFzRWxlbWVudC53aWR0aCwgdGhpcy5zdGF0ZS5jYW52YXNFbGVtZW50LmhlaWdodCk7XG4gICAgICAvLyBTaG91bGQganNRUiBhdHRlbXB0IHRvIGludmVydCB0aGUgaW1hZ2UgdG8gZmluZCBRUiBjb2RlcyB3aXRoIHdoaXRlIG1vZHVsZXNcbiAgICAgIC8vIG9uIGJsYWNrIGJhY2tncm91bmRzIGluc3RlYWQgb2YgdGhlIGJsYWNrIG1vZHVsZXMgb24gd2hpdGUgYmFja2dyb3VuZC4gU2V0IGl0IHRvIGRvbnRJbnZlcnRcbiAgICAgIC8vIGZvciBwZXJmb3JtYW5jZS4gUGxlYXNlLCB2aXNpdCBodHRwczovL2dpdGh1Yi5jb20vY296bW8vanNRUiBmb3IgbW9yZSBpbmZvXG4gICAgICBjb25zdCBjb2RlID0ganNRUihpbWFnZURhdGEuZGF0YSwgaW1hZ2VEYXRhLndpZHRoLCBpbWFnZURhdGEuaGVpZ2h0LCB7XG4gICAgICAgIGludmVyc2lvbkF0dGVtcHRzOiAnZG9udEludmVydCcsXG4gICAgICB9KTtcblxuICAgICAgLy8gY2hlY2sgaWYgUVIgY29kZSBmb3VuZFxuICAgICAgaWYgKGNvZGUpIHtcbiAgICAgICAgY29uc29sZS5sb2coJz09PT09PiBRUiBDT0RFIEZPVU5EOiAnLCBjb2RlLmRhdGEpO1xuICAgICAgICB0aGlzLmNsb3NlQ2FtZXJhKCk7XG4gICAgICB9XG5cbiAgICAgIC8vIG1vdmUgZm9yd2FyZCBuZXh0IGZyYW1lXG4gICAgICB3aW5kb3cucmVxdWVzdEFuaW1hdGlvbkZyYW1lKHRoaXMuX2hhbmRsZVN0cmVhbVRpY2spO1xuICAgIH1cblxuICAgIC8vIGNoZWNrIGlmIHN0cmVhbSBmaW5pc2hlZCAod2hlbiBjYW1lcmEgaXMgY2xvc2VkIG9yIGNvbXBvbmVudCB1bm1vdW50KVxuICAgIGlmICh0aGlzLnN0YXRlLnZpZGVvRWxlbWVudC5zcmNPYmplY3QuZ2V0VmlkZW9UcmFja3MoKVswXS5yZWFkeVN0YXRlID09PSBFTkRFRF9TVFJFQU0pIHtcbiAgICAgIHRoaXMuY2xvc2VDYW1lcmEoKTtcbiAgICB9XG4gIH1cblxuICByZW5kZXIoKSB7XG4gICAgcmV0dXJuIChcbiAgICAgIDxDYW1lcmFcbiAgICAgICAgb25DbG9zZT17dGhpcy5jbG9zZUNhbWVyYX1cbiAgICAgICAgaGFuZGxlUmVxdWVzdEFuaW1hdGlvbkZyYW1lPXt0aGlzLnNjYW5JbWFnZX0gLz5cbiAgICApO1xuICB9XG59XG5cbmV4cG9ydCBkZWZhdWx0IFFSU2Nhbm5lcjtcbiJdfQ==

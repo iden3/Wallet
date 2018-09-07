@@ -1,0 +1,148 @@
+ddda00f2011864bb9cb06618b7a3b0dc
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var _base_components = require("base_components");
+
+require("./content.scss");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+(function () {
+  var enterModule = require('react-hot-loader').enterModule;
+
+  enterModule && enterModule(module);
+})();
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+/**
+ * Wrapper for dynamically loaded content that depending on the status/outcome
+ * of the request shows a spinner, no-data message, error message, or the actual component
+ */
+var Content =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(Content, _Component);
+
+  function Content() {
+    _classCallCheck(this, Content);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(Content).apply(this, arguments));
+  }
+
+  _createClass(Content, [{
+    key: "render",
+    value: function render() {
+      /* const cmptClasses = classNames({
+          'i3-ww-widget__content': true,
+          'i3-ww-widget__content--minimized': this.props.isMinimized,
+        }); */
+      return _react.default.createElement("div", {
+        className: "i3-ww-widget__content",
+        style: {
+          minHeight: this.props.minHeight
+        }
+      }, this.props.hasData && !this.props.hasError && this.props.children, !this.props.hasData && !this.props.hasError && !this.props.isFetching && _react.default.createElement("div", {
+        className: "i3-ww-widget__content-alert"
+      }, "No data available"), this.props.hasError && !this.props.isFetching && _react.default.createElement("div", null, "Unkown error"), this.props.isFetching && _react.default.createElement("div", {
+        className: "i3-ww-widget__content-spinner"
+      }, _react.default.createElement(_base_components.Spinner, null)));
+    }
+  }, {
+    key: "__reactstandin__regenerateByEval",
+    // @ts-ignore
+    value: function __reactstandin__regenerateByEval(key, code) {
+      // @ts-ignore
+      this[key] = eval(code);
+    }
+  }]);
+
+  return Content;
+}(_react.Component);
+
+_defineProperty(Content, "propTypes", {
+  /*
+    isFetching flag
+   */
+  isFetching: _propTypes.default.bool.isRequired,
+
+  /*
+   *Boolean variable to show if there is an error
+   */
+  hasError: _propTypes.default.bool.isRequired,
+
+  /*
+    Determines whether to show the no-data message
+   */
+  hasData: _propTypes.default.bool.isRequired,
+
+  /*
+    Min height property to prevent loading spinner collapsing when its container has no height
+   */
+  minHeight: _propTypes.default.string,
+
+  /*
+    Children
+   */
+  children: _propTypes.default.node.isRequired,
+
+  /*
+    Max height property for dynamic widgets with dynamic info on which we wnt a maximum height
+   */
+  maxHeight: _propTypes.default.string
+});
+
+_defineProperty(Content, "defaultProps", {
+  minHeight: 'auto'
+});
+
+var _default = Content;
+var _default2 = _default;
+exports.default = _default2;
+;
+
+(function () {
+  var reactHotLoader = require('react-hot-loader').default;
+
+  var leaveModule = require('react-hot-loader').leaveModule;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(Content, "Content", "/home/charly/Uniclau/Iden3/web-wallet/src/components/widget/content/content.js");
+  reactHotLoader.register(_default, "default", "/home/charly/Uniclau/Iden3/web-wallet/src/components/widget/content/content.js");
+  leaveModule(module);
+})();
+
+;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImNvbnRlbnQuanMiXSwibmFtZXMiOlsiQ29udGVudCIsIm1pbkhlaWdodCIsInByb3BzIiwiaGFzRGF0YSIsImhhc0Vycm9yIiwiY2hpbGRyZW4iLCJpc0ZldGNoaW5nIiwiQ29tcG9uZW50IiwiUHJvcFR5cGVzIiwiYm9vbCIsImlzUmVxdWlyZWQiLCJzdHJpbmciLCJub2RlIiwibWF4SGVpZ2h0Il0sIm1hcHBpbmdzIjoiOzs7Ozs7O0FBQUE7O0FBQ0E7O0FBQ0E7O0FBRUE7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBRUE7Ozs7SUFJTUEsTzs7Ozs7Ozs7Ozs7Ozs2QkFnQ0s7QUFDVDs7OztBQUtFLGFBQ0U7QUFDRSxRQUFBLFNBQVMsRUFBQyx1QkFEWjtBQUVFLFFBQUEsS0FBSyxFQUFFO0FBQUVDLFVBQUFBLFNBQVMsRUFBRSxLQUFLQyxLQUFMLENBQVdEO0FBQXhCO0FBRlQsU0FHRyxLQUFLQyxLQUFMLENBQVdDLE9BQVgsSUFBc0IsQ0FBQyxLQUFLRCxLQUFMLENBQVdFLFFBQWxDLElBQThDLEtBQUtGLEtBQUwsQ0FBV0csUUFINUQsRUFJRyxDQUFDLEtBQUtILEtBQUwsQ0FBV0MsT0FBWixJQUF1QixDQUFDLEtBQUtELEtBQUwsQ0FBV0UsUUFBbkMsSUFBK0MsQ0FBQyxLQUFLRixLQUFMLENBQVdJLFVBQTNELElBQ0M7QUFBSyxRQUFBLFNBQVMsRUFBQztBQUFmLDZCQUxKLEVBU0csS0FBS0osS0FBTCxDQUFXRSxRQUFYLElBQXVCLENBQUMsS0FBS0YsS0FBTCxDQUFXSSxVQUFuQyxJQUNDLHlEQVZKLEVBY0csS0FBS0osS0FBTCxDQUFXSSxVQUFYLElBQ0M7QUFBSyxRQUFBLFNBQVMsRUFBQztBQUFmLFNBQ0UsNkJBQUMsd0JBQUQsT0FERixDQWZKLENBREY7QUFzQkQ7Ozs7Ozs7Ozs7O0VBNURtQkMsZ0I7O2dCQUFoQlAsTyxlQUNlO0FBQ2pCOzs7QUFHQU0sRUFBQUEsVUFBVSxFQUFFRSxtQkFBVUMsSUFBVixDQUFlQyxVQUpWOztBQUtqQjs7O0FBR0FOLEVBQUFBLFFBQVEsRUFBRUksbUJBQVVDLElBQVYsQ0FBZUMsVUFSUjs7QUFTakI7OztBQUdBUCxFQUFBQSxPQUFPLEVBQUVLLG1CQUFVQyxJQUFWLENBQWVDLFVBWlA7O0FBYWpCOzs7QUFHQVQsRUFBQUEsU0FBUyxFQUFFTyxtQkFBVUcsTUFoQko7O0FBaUJqQjs7O0FBR0FOLEVBQUFBLFFBQVEsRUFBRUcsbUJBQVVJLElBQVYsQ0FBZUYsVUFwQlI7O0FBcUJqQjs7O0FBR0FHLEVBQUFBLFNBQVMsRUFBRUwsbUJBQVVHO0FBeEJKLEM7O2dCQURmWCxPLGtCQTRCa0I7QUFDcEJDLEVBQUFBLFNBQVMsRUFBRTtBQURTLEM7O2VBbUNURCxPOzs7Ozs7Ozs7Ozs7OzswQkEvRFRBLE8iLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QsIHsgQ29tcG9uZW50IH0gZnJvbSAncmVhY3QnO1xuaW1wb3J0IFByb3BUeXBlcyBmcm9tICdwcm9wLXR5cGVzJztcbmltcG9ydCB7IFNwaW5uZXIgfSBmcm9tICdiYXNlX2NvbXBvbmVudHMnO1xuXG5pbXBvcnQgJy4vY29udGVudC5zY3NzJztcblxuLyoqXG4gKiBXcmFwcGVyIGZvciBkeW5hbWljYWxseSBsb2FkZWQgY29udGVudCB0aGF0IGRlcGVuZGluZyBvbiB0aGUgc3RhdHVzL291dGNvbWVcbiAqIG9mIHRoZSByZXF1ZXN0IHNob3dzIGEgc3Bpbm5lciwgbm8tZGF0YSBtZXNzYWdlLCBlcnJvciBtZXNzYWdlLCBvciB0aGUgYWN0dWFsIGNvbXBvbmVudFxuICovXG5jbGFzcyBDb250ZW50IGV4dGVuZHMgQ29tcG9uZW50IHtcbiAgc3RhdGljIHByb3BUeXBlcyA9IHtcbiAgICAvKlxuICAgICAgaXNGZXRjaGluZyBmbGFnXG4gICAgICovXG4gICAgaXNGZXRjaGluZzogUHJvcFR5cGVzLmJvb2wuaXNSZXF1aXJlZCxcbiAgICAvKlxuICAgICAqQm9vbGVhbiB2YXJpYWJsZSB0byBzaG93IGlmIHRoZXJlIGlzIGFuIGVycm9yXG4gICAgICovXG4gICAgaGFzRXJyb3I6IFByb3BUeXBlcy5ib29sLmlzUmVxdWlyZWQsXG4gICAgLypcbiAgICAgIERldGVybWluZXMgd2hldGhlciB0byBzaG93IHRoZSBuby1kYXRhIG1lc3NhZ2VcbiAgICAgKi9cbiAgICBoYXNEYXRhOiBQcm9wVHlwZXMuYm9vbC5pc1JlcXVpcmVkLFxuICAgIC8qXG4gICAgICBNaW4gaGVpZ2h0IHByb3BlcnR5IHRvIHByZXZlbnQgbG9hZGluZyBzcGlubmVyIGNvbGxhcHNpbmcgd2hlbiBpdHMgY29udGFpbmVyIGhhcyBubyBoZWlnaHRcbiAgICAgKi9cbiAgICBtaW5IZWlnaHQ6IFByb3BUeXBlcy5zdHJpbmcsXG4gICAgLypcbiAgICAgIENoaWxkcmVuXG4gICAgICovXG4gICAgY2hpbGRyZW46IFByb3BUeXBlcy5ub2RlLmlzUmVxdWlyZWQsXG4gICAgLypcbiAgICAgIE1heCBoZWlnaHQgcHJvcGVydHkgZm9yIGR5bmFtaWMgd2lkZ2V0cyB3aXRoIGR5bmFtaWMgaW5mbyBvbiB3aGljaCB3ZSB3bnQgYSBtYXhpbXVtIGhlaWdodFxuICAgICAqL1xuICAgIG1heEhlaWdodDogUHJvcFR5cGVzLnN0cmluZyxcbiAgfTtcblxuICBzdGF0aWMgZGVmYXVsdFByb3BzID0ge1xuICAgIG1pbkhlaWdodDogJ2F1dG8nLFxuICB9O1xuXG4gIHJlbmRlcigpIHtcbiAgLyogY29uc3QgY21wdENsYXNzZXMgPSBjbGFzc05hbWVzKHtcbiAgICAgICdpMy13dy13aWRnZXRfX2NvbnRlbnQnOiB0cnVlLFxuICAgICAgJ2kzLXd3LXdpZGdldF9fY29udGVudC0tbWluaW1pemVkJzogdGhpcy5wcm9wcy5pc01pbmltaXplZCxcbiAgICB9KTsgKi9cblxuICAgIHJldHVybiAoXG4gICAgICA8ZGl2XG4gICAgICAgIGNsYXNzTmFtZT1cImkzLXd3LXdpZGdldF9fY29udGVudFwiXG4gICAgICAgIHN0eWxlPXt7IG1pbkhlaWdodDogdGhpcy5wcm9wcy5taW5IZWlnaHQgfX0+XG4gICAgICAgIHt0aGlzLnByb3BzLmhhc0RhdGEgJiYgIXRoaXMucHJvcHMuaGFzRXJyb3IgJiYgdGhpcy5wcm9wcy5jaGlsZHJlbn1cbiAgICAgICAgeyF0aGlzLnByb3BzLmhhc0RhdGEgJiYgIXRoaXMucHJvcHMuaGFzRXJyb3IgJiYgIXRoaXMucHJvcHMuaXNGZXRjaGluZyAmJiAoXG4gICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJpMy13dy13aWRnZXRfX2NvbnRlbnQtYWxlcnRcIj5cbiAgICAgICAgICAgIE5vIGRhdGEgYXZhaWxhYmxlXG4gICAgICAgICAgPC9kaXY+XG4gICAgICAgICl9XG4gICAgICAgIHt0aGlzLnByb3BzLmhhc0Vycm9yICYmICF0aGlzLnByb3BzLmlzRmV0Y2hpbmcgJiYgKFxuICAgICAgICAgIDxkaXY+XG4gICAgICAgICAgICBVbmtvd24gZXJyb3JcbiAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgKX1cbiAgICAgICAge3RoaXMucHJvcHMuaXNGZXRjaGluZyAmJiAoXG4gICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJpMy13dy13aWRnZXRfX2NvbnRlbnQtc3Bpbm5lclwiPlxuICAgICAgICAgICAgPFNwaW5uZXIgLz5cbiAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgKX1cbiAgICAgIDwvZGl2PlxuICAgICk7XG4gIH1cbn1cblxuZXhwb3J0IGRlZmF1bHQgQ29udGVudDtcbiJdfQ==

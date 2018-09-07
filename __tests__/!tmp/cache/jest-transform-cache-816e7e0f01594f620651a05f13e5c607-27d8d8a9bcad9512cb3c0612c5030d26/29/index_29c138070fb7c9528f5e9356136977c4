@@ -1,0 +1,51 @@
+64166b448ac7f863c2e500edbe1ebf08
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var actions = _interopRequireWildcard(require("./actions"));
+
+var constants = _interopRequireWildcard(require("./constants"));
+
+var selectors = _interopRequireWildcard(require("./selectors"));
+
+var _reducer = _interopRequireDefault(require("./reducer"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+(function () {
+  var enterModule = require('react-hot-loader').enterModule;
+
+  enterModule && enterModule(module);
+})();
+
+var _default = {
+  actions: actions,
+  constants: constants,
+  selectors: selectors,
+  reducer: _reducer.default
+};
+var _default2 = _default;
+exports.default = _default2;
+;
+
+(function () {
+  var reactHotLoader = require('react-hot-loader').default;
+
+  var leaveModule = require('react-hot-loader').leaveModule;
+
+  if (!reactHotLoader) {
+    return;
+  }
+
+  reactHotLoader.register(_default, "default", "/home/charly/Uniclau/Iden3/web-wallet/src/state/history/index.js");
+  leaveModule(module);
+})();
+
+;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImluZGV4LmpzIl0sIm5hbWVzIjpbImFjdGlvbnMiLCJjb25zdGFudHMiLCJzZWxlY3RvcnMiLCJyZWR1Y2VyIl0sIm1hcHBpbmdzIjoiOzs7Ozs7O0FBQUE7O0FBQ0E7O0FBQ0E7O0FBQ0E7Ozs7Ozs7Ozs7OztlQUVlO0FBQ2JBLEVBQUFBLE9BQU8sRUFBUEEsT0FEYTtBQUViQyxFQUFBQSxTQUFTLEVBQVRBLFNBRmE7QUFHYkMsRUFBQUEsU0FBUyxFQUFUQSxTQUhhO0FBSWJDLEVBQUFBLE9BQU8sRUFBUEE7QUFKYSxDIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0ICogYXMgYWN0aW9ucyBmcm9tICcuL2FjdGlvbnMnO1xuaW1wb3J0ICogYXMgY29uc3RhbnRzIGZyb20gJy4vY29uc3RhbnRzJztcbmltcG9ydCAqIGFzIHNlbGVjdG9ycyBmcm9tICcuL3NlbGVjdG9ycyc7XG5pbXBvcnQgcmVkdWNlciBmcm9tICcuL3JlZHVjZXInO1xuXG5leHBvcnQgZGVmYXVsdCB7XG4gIGFjdGlvbnMsXG4gIGNvbnN0YW50cyxcbiAgc2VsZWN0b3JzLFxuICByZWR1Y2VyLFxufTtcbiJdfQ==
