@@ -32,6 +32,7 @@ module.exports = {
       static_images: path.resolve(__dirname, './static/images/'),
       store: path.resolve(__dirname, './src/store/'),
       helpers: path.resolve(__dirname, './src/helpers/'),
+      test_helpers: path.resolve(__dirname, './__tests__/utils/helpers.js'),
       views: path.resolve(__dirname, './src/views/'),
     },
   },
