@@ -5,10 +5,9 @@
   "private": false,
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --mode development --open --hot --colors -progress webpack.dev.js",
     "build:prod": "webpack -p --config webpack.prod.js",
     "build:dev": "webpack-dev-server --display-error-details --open --config webpack.dev.js",
-    "test": "jest --setupTestFrameworkScriptFile"
+    "tests": "jest --setupTestFrameworkScriptFile"
   },
   "repository": {
     "type": "git",
@@ -73,15 +72,16 @@
       "jsx"
     ],
     "moduleNameMapper": {
-      "^views(.*)$": "<rootDir>/src$1/views",
-      "^base_components(.*)$": "<rootDir>/src$1/components",
+      "^views(.*)$": "<rootDir>/src/views/$1",
+      "^base_components(.*)$": "<rootDir>/src/components/$1",
       "^state(.*)$": "<rootDir>/src$1/state",
-      "^constants(.*)$": "<rootDir>/src$1/constants",
-      "^helpers(.*)$": "<rootDir>/src$1/helpers",
-      "^test-helpers(.*)$": "<rootDir>/__tests__/utils/helpers.js",
+      "^constants(.*)$": "<rootDir>/src/constants/$1",
+      "^fixtures(.*)$": "<rootDir>/src/fixtures/fixtures.js",
+      "^helpers(.*)$": "<rootDir>/src/helpers/utils.js",
+      "^test_helpers(.*)$": "<rootDir>/__tests__/utils/helpers.js",
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__tests__/mocks/file-mock.js",
       "\\.(svg)$": "<rootDir>/src/__tests__/mocks/svg-mock.js",
-      "\\.(css|scss)$": "<rootDir>/__tests_/mocks/file-mock.js"
+      "\\.(css|scss)$": "<rootDir>/__tests__/mocks/file-mock.js"
     },
     "notify": true,
     "testPathIgnorePatterns": [
@@ -108,12 +108,12 @@
   "devDependencies": {
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.0",
-    "babel-core": "7.0.0-bridge.0",
     "@babel/plugin-proposal-class-properties": "^7.0.0",
     "@babel/plugin-proposal-export-default-from": "^7.0.0",
     "@babel/polyfill": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
+    "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^9.0.0",
     "babel-jest": "^23.4.2",
     "babel-loader": "^8.0.0",
@@ -134,6 +134,7 @@
     "node-sass": "^4.9.2",
     "optimize-css-assets-webpack-plugin": "^5.0.0",
     "react-hot-loader": "^4.3.5",
+    "react-router-enzyme-context": "^1.2.0",
     "redux-devtools": "^3.4.1",
     "redux-devtools-extension": "^2.13.5",
     "sass-loader": "^7.1.0",
