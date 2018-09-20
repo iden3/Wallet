@@ -5,7 +5,6 @@
   "private": false,
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --mode development --open --hot --colors -progress webpack.dev.js",
     "build:prod": "webpack -p --config webpack.prod.js",
     "build:dev": "webpack-dev-server --display-error-details --open --config webpack.dev.js",
     "tests": "jest --setupTestFrameworkScriptFile"

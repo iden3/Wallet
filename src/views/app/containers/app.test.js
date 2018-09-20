@@ -1,4 +1,3 @@
-
 import * as helpers from 'test_helpers';
 import ReactRouterEnzymeContext from 'react-router-enzyme-context';
 import App from './app';
