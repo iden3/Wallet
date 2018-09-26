@@ -13,14 +13,14 @@ import {
   Icon,
   Menu,
   MenuItem,
-  SubMenu,
 } from 'base_components';
 import { QRScanner } from 'views';
 import * as ROUTES from 'constants/routes';
 import {
-  BURGER_MENU_FOLD,
-  BURGER_MENU_UNFOLD,
-  IDENTITY,
+  BURGER_MENU,
+  CAMERA,
+  CLOSE,
+  NOTIFICATIONS,
 } from 'constants/icons';
 import { capitalizeFirstLetter } from 'helpers/utils';
 
@@ -43,7 +43,7 @@ class NavBar extends Component {
 
   state = {
     collapsed: true,
-    mobileMenuIcon: BURGER_MENU_UNFOLD,
+    mobileMenuIcon: BURGER_MENU,
     isCameraVisible: false,
   };
 
@@ -63,7 +63,7 @@ class NavBar extends Component {
   toggleMenuMobileIcon = () => {
     this.setState(prevState => (
       {
-        mobileMenuIcon: prevState.mobileMenuIcon === BURGER_MENU_FOLD ? BURGER_MENU_UNFOLD : BURGER_MENU_FOLD,
+        mobileMenuIcon: prevState.mobileMenuIcon === BURGER_MENU ? CLOSE : BURGER_MENU,
         collapsed: !prevState.collapsed,
       }));
   };
@@ -152,34 +152,34 @@ class NavBar extends Component {
           <div className="i3-ww-nav-bar__buttons">
             <Menu mode="horizontal" onClick={this.toggleCameraVisibility}>
               <MenuItem>
-                <Icon type="camera" theme="filled" />
+                <Icon type={CAMERA} theme="filled" />
               </MenuItem>
             </Menu>
             <Menu mode="horizontal">
               <MenuItem>
                 <Badge count={5}>
-                  <Icon type="mail" />
+                  <Icon type={NOTIFICATIONS} />
                 </Badge>
               </MenuItem>
             </Menu>
-          </div>
-          {/* Collapsed menu in small devices */}
-          <div className="i3-ww-nav-bar-mobile">
-            <Button
-              className="i3-ww-nav-bar-mobile__menu-button"
-              type="primary"
-              htmlType="button"
-              onClick={this.toggleMenuMobileIcon}
-              onKeyUp={this.toggleMenuMobileIcon}>
-              <Icon type={this.state.mobileMenuIcon} />
-            </Button>
-            <Menu
-              defaultSelectedKeys={[selectedMenuItem]}
-              mode="inline"
-              inlineCollapsed={this.state.collapsed}>
-              { !this.state.collapsed && menuItems }
-              { !this.state.collapsed && settingsMenu }
-            </Menu>
+            {/* Collapsed menu in small devices */}
+            <div className="i3-ww-nav-bar-mobile">
+              <Button
+                className="i3-ww-nav-bar-mobile__menu-button"
+                type="primary"
+                htmlType="button"
+                onClick={this.toggleMenuMobileIcon}
+                onKeyUp={this.toggleMenuMobileIcon}>
+                <Icon type={this.state.mobileMenuIcon} />
+              </Button>
+              <Menu
+                defaultSelectedKeys={[selectedMenuItem]}
+                mode="inline"
+                inlineCollapsed={this.state.collapsed}>
+                { !this.state.collapsed && menuItems }
+                { !this.state.collapsed && settingsMenu }
+              </Menu>
+            </div>
           </div>
         </div>
         {/* Box to show camera for reading QR */}

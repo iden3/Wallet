@@ -68,6 +68,10 @@
 
   // cam and notifications buttons
   .i3-ww-nav-bar__buttons {
+    @include with-desktop-width {
+      margin-left: inherit;
+    }
+    margin-left: auto;
     padding-right: 2%;
     -webkit-display: flex;
     -moz-display: flex;
@@ -76,7 +80,7 @@
     display: flex;
     align-items: center;
     -webkit-align-items: center;
-    .ant-menu {
+    .ant-menu:not(:last-child) {
       display: flex;
       -webkit-display: flex;
       -moz-display: flex;
@@ -89,16 +93,17 @@
       border: none;
       line-height: $nav-bar-fixed-item-height;
       background: transparent;
+      .ant-menu-item {
+        display: flex;
+        -webkit-display: flex;
+        -moz-display: flex;
+        -ms-display: flex;
+        -o-display: flex;
+        border: none;
+        background: transparent;
+      }
     }
-    .ant-menu-item {
-      display: flex;
-      -webkit-display: flex;
-      -moz-display: flex;
-      -ms-display: flex;
-      -o-display: flex;
-      border: none;
-      background: transparent;
-    }
+
     .anticon {
       font-size: $app-title-fs;
       width: 25px;
@@ -143,19 +148,12 @@
   }
 
   .i3-ww-nav-bar-identity {
-    display: none;
-    -webkit-display: none;
-    -moz-display: none;
-    -ms-display: none;
-    -o-display: none;
-    @include with-desktop-width {
-      padding-left: 2%;
-      display: flex;
-      -webkit-display: flex;
-      -moz-display: flex;
-      -ms-display: flex;
-      -o-display: flex;
-    }
+    padding-left: 2%;
+    display: flex;
+    -webkit-display: flex;
+    -moz-display: flex;
+    -ms-display: flex;
+    -o-display: flex;
     .anticon {
       margin-right: 15px;
       margin-bottom: 3px;
@@ -183,14 +181,6 @@
 
   // from 1280px and below is shown
   .i3-ww-nav-bar-mobile {
-    display: flex;
-    margin-left: auto;
-    margin-right: 10%;
-    -webkit-display: flex;
-    -moz-display: flex;
-    -ms-display: flex;
-    -o-display: flex;
-    width: 256px;
     @include with-desktop-width {
       display: none;
       -webkit-display: none;
@@ -201,22 +191,15 @@
   ;
     .i3-ww-nav-bar-mobile__menu-button{
       font-size: inherit;
-      margin-bottom: 16px;
-      background: $nav-bar-bg-color;
-      border-color: $nav-bar-bg-color;
+      margin-top: 23px;
+      background: transparent;
+      border: none;
       &:hover, &:focus {
         background: inherit;
         border: none;
       }
     }
     .ant-menu {
-      $map: ($desktop-width: 1240px,
-              $tablet-landscape-width: 350px,
-              $tablet-portrait-width: 350px,
-              $mobile-max-width: 200px,
-              $small-mobile-min-width: 200px,
-      );
-      @include fluid-sizing('width', $map, false);
       .ant-menu-item:after {
         border-right: 2px solid $nav-bar-mobile-selected-item-border-color;
       }
