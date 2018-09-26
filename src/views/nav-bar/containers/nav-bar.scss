@@ -1,10 +1,10 @@
 .i3-ww-nav-bar {
   height: 90px;
-  display: flex;
-  -webkit-display: flex;
-  -moz-display: flex;
-  -ms-display: flex;
-  -o-display: flex;
+  display: block;
+  -webkit-display: block;
+  -moz-display: block;
+  -ms-display: block;
+  -o-display: block;
   @include with-desktop-width {
     display: block;
     -webkit-display: block;
@@ -55,8 +55,10 @@
     -moz-display: flex;
     -ms-display: flex;
     -o-display: flex;
-    height: $nav-bar-item-height;
-    margin-left: auto;
+    //height: $nav-bar-item-height;
+    //margin-left: auto;
+    height: inherit;
+    margin-left: inherit;
     align-items: center;
     @include with-desktop-width {
       height: inherit;
@@ -97,9 +99,12 @@
       border: none;
       background: transparent;
     }
-    .anticon{
+    .anticon {
       font-size: $app-title-fs;
       width: 25px;
+    }
+    .anticon:hover {
+      color: $nav-bar-hover-item-color;
     }
   }
 
@@ -137,7 +142,7 @@
     }
   }
 
-  .i3-ww-nav-bar-settings {
+  .i3-ww-nav-bar-identity {
     display: none;
     -webkit-display: none;
     -moz-display: none;
@@ -151,16 +156,13 @@
       -ms-display: flex;
       -o-display: flex;
     }
-    // margin-left: auto;
     .anticon {
       margin-right: 15px;
       margin-bottom: 3px;
     }
     .ant-avatar {
       margin-right: 15px;
-    }
-    .ant-avatar > img {
-      content:url($generic-avatar);
+      background-image: url($generic-avatar);
     }
     .ant-menu-horizontal, .ant-menu-horizontal > .ant-menu-submenu:hover {
       border-bottom: none;
@@ -171,15 +173,23 @@
     .ant-menu-submenu {
       transition: none;
     }
+    .ant-menu-item > a:hover {
+      color: $nav-bar-hover-item-color;
+    }
+    .ant-menu-item:hover {
+      border-bottom: none;
+    }
   }
 
   // from 1280px and below is shown
   .i3-ww-nav-bar-mobile {
-    display: block;
-    -webkit-display: block;
-    -moz-display: block;
-    -ms-display: block;
-    -o-display: block;
+    display: flex;
+    margin-left: auto;
+    margin-right: 10%;
+    -webkit-display: flex;
+    -moz-display: flex;
+    -ms-display: flex;
+    -o-display: flex;
     width: 256px;
     @include with-desktop-width {
       display: none;

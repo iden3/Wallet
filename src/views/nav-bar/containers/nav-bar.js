@@ -113,8 +113,7 @@ class NavBar extends Component {
         <Avatar
           shape="square"
           size={64}
-          style={{ color: '#f56a00', backgroundColor: 'white' }}
-          src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+          style={{ color: '#f56a00', backgroundColor: 'white' }} />
         Identity A
       </span>
     );
@@ -136,27 +135,9 @@ class NavBar extends Component {
 
     return (
       <div className="i3-ww-nav-bar">
-        {/* Collapsed menu in small devices */}
-        <div className="i3-ww-nav-bar-mobile">
-          <Button
-            className="i3-ww-nav-bar-mobile__menu-button"
-            type="primary"
-            htmlType="button"
-            onClick={this.toggleMenuMobileIcon}
-            onKeyUp={this.toggleMenuMobileIcon}>
-            <Icon type={this.state.mobileMenuIcon} />
-          </Button>
-          <Menu
-            defaultSelectedKeys={[selectedMenuItem]}
-            mode="inline"
-            inlineCollapsed={this.state.collapsed}>
-            { !this.state.collapsed && menuItems }
-            { !this.state.collapsed && settingsMenu }
-          </Menu>
-        </div>
         {/* Regular menu for desktop */}
         <div className="i3-ww-nav-bar__header-items">
-          <div className="i3-ww-nav-bar-settings">
+          <div className="i3-ww-nav-bar-identity">
             <Menu mode="horizontal">
               { settingsMenu }
             </Menu>
@@ -171,15 +152,33 @@ class NavBar extends Component {
           <div className="i3-ww-nav-bar__buttons">
             <Menu mode="horizontal" onClick={this.toggleCameraVisibility}>
               <MenuItem>
-                <Icon type="camera-o" theme="filled" />
+                <Icon type="camera" theme="filled" />
               </MenuItem>
             </Menu>
             <Menu mode="horizontal">
               <MenuItem>
                 <Badge count={5}>
-                  <Icon type="mail" theme="outlined" />
+                  <Icon type="mail" />
                 </Badge>
               </MenuItem>
+            </Menu>
+          </div>
+          {/* Collapsed menu in small devices */}
+          <div className="i3-ww-nav-bar-mobile">
+            <Button
+              className="i3-ww-nav-bar-mobile__menu-button"
+              type="primary"
+              htmlType="button"
+              onClick={this.toggleMenuMobileIcon}
+              onKeyUp={this.toggleMenuMobileIcon}>
+              <Icon type={this.state.mobileMenuIcon} />
+            </Button>
+            <Menu
+              defaultSelectedKeys={[selectedMenuItem]}
+              mode="inline"
+              inlineCollapsed={this.state.collapsed}>
+              { !this.state.collapsed && menuItems }
+              { !this.state.collapsed && settingsMenu }
             </Menu>
           </div>
         </div>

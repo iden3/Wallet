@@ -35,8 +35,7 @@ class Layout extends React.Component {
   render() {
     return (
       <LayoutCmpt className="i3-ww-layout">
-        <Header
-          className="i3-ww-header">
+        <Header className="i3-ww-header">
           <HeaderWihtLogo />
           { this.props.showNavBar && <NavBar /> }
         </Header>
