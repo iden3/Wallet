@@ -5,7 +5,7 @@ import * as BOX_CONSTANTS from 'constants/box';
 
 import './pop-up.scss';
 
-const popUpSizes = Object.keys(BOX_CONSTANTS.POP_UP.SIZE);
+const popUpSizes = Object.values(BOX_CONSTANTS.POP_UP.SIZE);
 
 /**
  * Pop up component for all the application

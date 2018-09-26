@@ -3,6 +3,7 @@
  import { Badge } from 'base_components';
  */
 
+export Avatar from './avatar/avatar';
 export Badge from './badge/badge';
 export Box from './box/box';
 export Button from './button/button';

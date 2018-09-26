@@ -1,6 +1,8 @@
 import React from 'react';
 import { compose } from 'redux';
+import PropTypes from 'prop-types';
 import { Switch, Route, withRouter } from 'react-router-dom';
+import HeaderWihtLogo from '../components/header-with-logo/header-with-logo';
 import {
   Content,
   Footer,
@@ -22,11 +24,21 @@ import './layout.scss';
  * Main layout of the app. Routes are set up here.
  */
 class Layout extends React.Component {
+  static propTypes = {
+    showNavBar: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    showNavBar: true,
+  };
+
   render() {
     return (
       <LayoutCmpt className="i3-ww-layout">
-        <Header className="i3-ww-header">
-          <NavBar />
+        <Header
+          className="i3-ww-header">
+          <HeaderWihtLogo />
+          { this.props.showNavBar && <NavBar /> }
         </Header>
         <Content className="i3-ww-content">
           <div>

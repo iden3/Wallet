@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 import memoizeOne from 'memoize-one';
 import {
+  Avatar,
   Badge,
   Button,
   Icon,
@@ -46,6 +47,10 @@ class NavBar extends Component {
     isCameraVisible: false,
   };
 
+  /**
+   * Update the state to show or not the box with the camera.
+   * This callback is called from the camera button.
+   */
   toggleCameraVisibility = () => {
     this.setState(
       prevState => ({ isCameraVisible: !prevState.isCameraVisible }),
@@ -86,7 +91,6 @@ class NavBar extends Component {
             key={_route.KEY}
             onClick={this.toggleMenuMobileIcon}>
             <Link to={_route.MAIN} replace />
-            <Icon type={_route.ICON} />
             {_route.KEY}
           </MenuItem>,
         );
@@ -98,38 +102,30 @@ class NavBar extends Component {
 
   /**
    * Set the submenu for the setting/user menu. Valid for desktop and mobile size.
-   * We will have an icon, the name of the current identity and a
-   * badge in the top of the icon with the number of notifications
+   * We will have an icon, the name of the current identity and an
+   * avatar with the icon of the user.
+   * TODO: Right now avatar is generic and hardcoded
    * @returns {element} React node with the settings SubMenu
    */
   _getSettingSubmenu() {
     const title = (
       <span>
-        <Badge count={5}>
-          <Icon type={IDENTITY} />
-        </Badge>
+        <Avatar
+          shape="square"
+          size={64}
+          style={{ color: '#f56a00', backgroundColor: 'white' }}
+          src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
         Identity A
       </span>
     );
 
     return (
-      <SubMenu title={title}>
-        <MenuItem>
-          Identity 2
-        </MenuItem>
-        <MenuItem>
-          Identity 3
-        </MenuItem>
-        <MenuItem>
-          <Button
-            type="primary"
-            htmlType="button">
-            <Link to={ROUTES.IDENTITIES.MAIN} replace>
-              Manage my identities
-            </Link>
-          </Button>
-        </MenuItem>
-      </SubMenu>
+      <MenuItem
+        onClick={this.toggleMenuMobileIcon}>
+        <Link to={ROUTES.IDENTITIES.MAIN} replace>
+          {title}
+        </Link>
+      </MenuItem>
     );
   }
 
@@ -160,6 +156,11 @@ class NavBar extends Component {
         </div>
         {/* Regular menu for desktop */}
         <div className="i3-ww-nav-bar__header-items">
+          <div className="i3-ww-nav-bar-settings">
+            <Menu mode="horizontal">
+              { settingsMenu }
+            </Menu>
+          </div>
           <div className="i3-ww-nav-bar-desktop">
             <Menu
               mode="horizontal"
@@ -167,16 +168,18 @@ class NavBar extends Component {
               { menuItems }
             </Menu>
           </div>
-          <div className="i3-ww-nav-bar__cam-button">
+          <div className="i3-ww-nav-bar__buttons">
             <Menu mode="horizontal" onClick={this.toggleCameraVisibility}>
               <MenuItem>
-                <Icon type="camera-o" />
+                <Icon type="camera-o" theme="filled" />
               </MenuItem>
             </Menu>
-          </div>
-          <div className="i3-ww-nav-bar-settings">
             <Menu mode="horizontal">
-              { settingsMenu }
+              <MenuItem>
+                <Badge count={5}>
+                  <Icon type="mail" theme="outlined" />
+                </Badge>
+              </MenuItem>
             </Menu>
           </div>
         </div>

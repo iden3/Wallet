@@ -12,7 +12,7 @@
   .ant-layout-header {
     padding: 0;
     background: $nav-bar-bg-color;
-    height: $nav-bar-header-height;
+    height: $app-header-height;
     $map: ($desktop-width: 1240px,
             $tablet-landscape-width: 350px,
             $tablet-portrait-width: 350px,
@@ -23,10 +23,6 @@
   }
   .ant-layout-footer {
     z-index: -1;
-    /*position: absolute;
-    width: 100%;
-    bottom: 0;*/
-    //background: #ddd;
   }
   .i3-ww-header {
     flex: none;

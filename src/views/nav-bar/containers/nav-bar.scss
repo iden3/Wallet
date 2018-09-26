@@ -1,4 +1,5 @@
 .i3-ww-nav-bar {
+  height: 90px;
   display: flex;
   -webkit-display: flex;
   -moz-display: flex;
@@ -13,7 +14,7 @@
   }
   .ant-menu {
     font-size: inherit;
-    background: $nav-bar-bg-color;
+    background: transparent;
     color: $nav-bar-item-color;
     line-height: $nav-bar-item-height;
     .anticon {
@@ -21,18 +22,21 @@
       font-size: 20px;
     }
     .ant-badge-count {
-      right: 18px;
+      right: 10px;
+      background: $nav-bar-badge-bg-color;
+      box-shadow: 0 0 0 1px $nav-bar-badge-bg-color;
     }
     .ant-menu-item, a {
       color: $nav-bar-item-color;
+      transition: unset;
     }
     .ant-menu-item-selected {
-      background: $nav-bar-selected-item-bg-color;
+      background: transparent;
+      color: $nav-bar-selected-item-color;
     }
-    // .ant-menu-submenu-open, .ant-menu-submenu:hover>.ant-menu-submenu-title
-    .ant-menu-item:hover, .ant-menu-submenu:hover {
-      background: $nav-bar-item-hover-color;
-      color: inherit;
+    .ant-menu-item:hover, .ant-menu-submenu:hover, .ant-menu-item:active {
+      background: transparent;
+      color: $nav-bar-hover-item-color;
     }
     .ant-menu-submenu-title, .ant-menu-submenu-active {
       color: inherit;
@@ -41,6 +45,11 @@
 
   // items that appears in the header always (like cam button) or when are in desktop size
   .i3-ww-nav-bar__header-items {
+    background: #0f9fbf; /* Old browsers */
+    background: -moz-linear-gradient(left, #0f9fbf 0%, #346abc 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(left, #0f9fbf 0%,#346abc 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to right, #0f9fbf 0%,#346abc 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0f9fbf', endColorstr='#346abc',GradientType=1 ); /* IE6-9 */
     display: flex;
     -webkit-display: flex;
     -moz-display: flex;
@@ -48,14 +57,16 @@
     -o-display: flex;
     height: $nav-bar-item-height;
     margin-left: auto;
+    align-items: center;
     @include with-desktop-width {
       height: inherit;
       margin-left: inherit;
     }
   }
-  // cam button
-  .i3-ww-nav-bar__cam-button {
-    margin-left: auto;
+
+  // cam and notifications buttons
+  .i3-ww-nav-bar__buttons {
+    padding-right: 2%;
     -webkit-display: flex;
     -moz-display: flex;
     -ms-display: flex;
@@ -75,7 +86,7 @@
       -webkit-align-items: center;
       border: none;
       line-height: $nav-bar-fixed-item-height;
-      background: $nav-bar-fixed-item-color;
+      background: transparent;
     }
     .ant-menu-item {
       display: flex;
@@ -84,16 +95,23 @@
       -ms-display: flex;
       -o-display: flex;
       border: none;
-      background: $nav-bar-fixed-item-color;
+      background: transparent;
     }
     .anticon{
-      font-size: 35px;
+      font-size: $app-title-fs;
       width: 25px;
     }
   }
 
   // from 1280px and above is shown
   .i3-ww-nav-bar-desktop {
+    $map: ($large-desktop-width: $app-subtitle-large-desktop-fs,
+            $desktop-width: $app-subtitle-desktop-fs,
+            $tablet-landscape-width: $app-subtitle-tablet-landscape-fs,
+            $tablet-portrait-width: $app-subtitle-tablet-portrait-fs,
+            $mobile-max-width: $app-subtitle-mobile-fs,
+            $small-mobile-min-width: $app-subtitle-small-fs);
+    @include fluid-sizing('font-size', $map, true);
     display: none;
     -webkit-display: none;
     -moz-display: none;
@@ -101,6 +119,8 @@
     -o-display: none;
     @include with-desktop-width {
       display: flex;
+      margin-left: auto;
+      margin-right: 10%;
       -webkit-display: flex;
       -moz-display: flex;
       -ms-display: flex;
@@ -110,10 +130,10 @@
       border-bottom: none;
     }
     .ant-menu-item-selected {
-      border-bottom: 2px solid $nav-bar-selected-item-border-color;
+      border-bottom: none;
     }
     .ant-menu-item:hover, .ant-menu-submenu:hover {
-      border-bottom: 2px solid $nav-bar-selected-item-border-color;
+      border-bottom: none;
     }
   }
 
@@ -124,16 +144,32 @@
     -ms-display: none;
     -o-display: none;
     @include with-desktop-width {
+      padding-left: 2%;
       display: flex;
       -webkit-display: flex;
       -moz-display: flex;
       -ms-display: flex;
       -o-display: flex;
     }
-    margin-left: auto;
+    // margin-left: auto;
     .anticon {
       margin-right: 15px;
       margin-bottom: 3px;
+    }
+    .ant-avatar {
+      margin-right: 15px;
+    }
+    .ant-avatar > img {
+      content:url($generic-avatar);
+    }
+    .ant-menu-horizontal, .ant-menu-horizontal > .ant-menu-submenu:hover {
+      border-bottom: none;
+    }
+    .ant-menu-submenu-title:active {
+      background: transparent;
+    }
+    .ant-menu-submenu {
+      transition: none;
     }
   }
 

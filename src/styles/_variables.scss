@@ -48,15 +48,23 @@ $galaxy-s7-max-width: 640px;
 /*
 * Fonts sizes
  */
-$app-title-fs: 24px;
+$app-title-fs: 30px;
+$app-subtitle-fs: 24px;
 $app-regular-fs: 20px;
 
-$app-title-large-desktop-fs: 24px;
-$app-title-desktop-fs: 24px;
-$app-title-tablet-landscape-fs: 22px;
-$app-title-tablet-portrait-fs: 22px;
-$app-title-mobile-fs: 18px;
-$app-title-small-fs: 16px;
+$app-title-large-desktop-fs: 30px;
+$app-title-desktop-fs: 30px;
+$app-title-tablet-landscape-fs: 28px;
+$app-title-tablet-portrait-fs: 28px;
+$app-title-mobile-fs: 22px;
+$app-title-small-fs: 20px;
+
+$app-subtitle-large-desktop-fs: 24px;
+$app-subtitle-desktop-fs: 24px;
+$app-subtitle-tablet-landscape-fs: 24px;
+$app-subtitle-tablet-portrait-fs: 24px;
+$app-subtitle-mobile-fs: 18px;
+$app-subtitle-small-fs: 16px;
 
 $app-regular-large-desktop-fs: 20px;
 $app-regular-desktop-fs: 20px;
@@ -76,10 +84,15 @@ $app-bg-color: $grey-9;
 $app-font-color: $grey-70;
 $app-border-color: $navy-35;
 
+// Header logo
+$header-logo-bg-color: $white-100;
+
 // Nav bar
 $nav-bar-bg-color: $navy-97;
 $nav-bar-item-color: $grey-9;
-$nav-bar-selected-item-color: $navy-97;
+$nav-bar-selected-item-color: $blue-75;
+$nav-bar-hover-item-color: $blue-75;
+$nav-bar-badge-bg-color: $blue-75;
 $nav-bar-selected-item-bg-color: $navy-88;
 $nav-bar-selected-item-border-color: $navy-35;
 $nav-bar-item-hover-color: $navy-100;
@@ -127,6 +140,9 @@ $claim-row-bg-color: $white-10;
 * Other settings
 */
 
+// Heder
+$app-header-height: 155px;
+
 // Nav bar
 $nav-bar-item-height: 63px;
 $nav-bar-fixed-item-height: 45px;
@@ -143,3 +159,7 @@ $header-z-index: 50;
 $main-content-z-index: 1;
 $side-bar-z-index: 100;
 $pop-up-z-index: 100;
+
+// Images
+$logo-image: url('~static_images/logo-iden3.png');
+$generic-avatar: '~static_images/generic-avatar-1.png';
