@@ -5,27 +5,12 @@
   -moz-display: block;
   -ms-display: block;
   -o-display: block;
-  @include with-desktop-width {
-    display: block;
-    -webkit-display: block;
-    -moz-display: block;
-    -ms-display: block;
-    -o-display: block;
-  }
+
   .ant-menu {
     font-size: inherit;
     background: transparent;
     color: $nav-bar-item-color;
     line-height: $nav-bar-item-height;
-    .anticon {
-      color: $nav-bar-item-color;
-      font-size: 20px;
-    }
-    .ant-badge-count {
-      right: 10px;
-      background: $nav-bar-badge-bg-color;
-      box-shadow: 0 0 0 1px $nav-bar-badge-bg-color;
-    }
     .ant-menu-item, a {
       color: $nav-bar-item-color;
       transition: unset;
@@ -38,12 +23,8 @@
       background: transparent;
       color: $nav-bar-hover-item-color;
     }
-    .ant-menu-submenu-title, .ant-menu-submenu-active {
-      color: inherit;
-    }
   }
 
-  // items that appears in the header always (like cam button) or when are in desktop size
   .i3-ww-nav-bar__header-items {
     background: #0f9fbf; /* Old browsers */
     background: -moz-linear-gradient(left, #0f9fbf 0%, #346abc 100%); /* FF3.6-15 */
@@ -55,163 +36,8 @@
     -moz-display: flex;
     -ms-display: flex;
     -o-display: flex;
-    //height: $nav-bar-item-height;
-    //margin-left: auto;
     height: inherit;
     margin-left: inherit;
     align-items: center;
-    @include with-desktop-width {
-      height: inherit;
-      margin-left: inherit;
-    }
-  }
-
-  // cam and notifications buttons
-  .i3-ww-nav-bar__buttons {
-    @include with-desktop-width {
-      margin-left: inherit;
-    }
-    margin-left: auto;
-    padding-right: 2%;
-    -webkit-display: flex;
-    -moz-display: flex;
-    -ms-display: flex;
-    -o-display: flex;
-    display: flex;
-    align-items: center;
-    -webkit-align-items: center;
-    .ant-menu:not(:last-child) {
-      display: flex;
-      -webkit-display: flex;
-      -moz-display: flex;
-      -ms-display: flex;
-      -o-display: flex;
-      align-self: normal;
-      -webkit-align-self: normal;
-      align-items: center;
-      -webkit-align-items: center;
-      border: none;
-      line-height: $nav-bar-fixed-item-height;
-      background: transparent;
-      .ant-menu-item {
-        display: flex;
-        -webkit-display: flex;
-        -moz-display: flex;
-        -ms-display: flex;
-        -o-display: flex;
-        border: none;
-        background: transparent;
-      }
-    }
-
-    .anticon {
-      font-size: $app-title-fs;
-      width: 25px;
-    }
-    .anticon:hover {
-      color: $nav-bar-hover-item-color;
-    }
-  }
-
-  // from 1280px and above is shown
-  .i3-ww-nav-bar-desktop {
-    $map: ($large-desktop-width: $app-subtitle-large-desktop-fs,
-            $desktop-width: $app-subtitle-desktop-fs,
-            $tablet-landscape-width: $app-subtitle-tablet-landscape-fs,
-            $tablet-portrait-width: $app-subtitle-tablet-portrait-fs,
-            $mobile-max-width: $app-subtitle-mobile-fs,
-            $small-mobile-min-width: $app-subtitle-small-fs);
-    @include fluid-sizing('font-size', $map, true);
-    display: none;
-    -webkit-display: none;
-    -moz-display: none;
-    -ms-display: none;
-    -o-display: none;
-    @include with-desktop-width {
-      display: flex;
-      margin-left: auto;
-      margin-right: 10%;
-      -webkit-display: flex;
-      -moz-display: flex;
-      -ms-display: flex;
-      -o-display: flex;
-    }
-    .ant-menu-horizontal {
-      border-bottom: none;
-    }
-    .ant-menu-item-selected {
-      border-bottom: none;
-    }
-    .ant-menu-item:hover, .ant-menu-submenu:hover {
-      border-bottom: none;
-    }
-  }
-
-  .i3-ww-nav-bar-identity {
-    padding-left: 2%;
-    display: flex;
-    -webkit-display: flex;
-    -moz-display: flex;
-    -ms-display: flex;
-    -o-display: flex;
-    .anticon {
-      margin-right: 15px;
-      margin-bottom: 3px;
-    }
-    .ant-avatar {
-      margin-right: 15px;
-      background-image: url($generic-avatar);
-    }
-    .ant-menu-horizontal, .ant-menu-horizontal > .ant-menu-submenu:hover {
-      border-bottom: none;
-    }
-    .ant-menu-submenu-title:active {
-      background: transparent;
-    }
-    .ant-menu-submenu {
-      transition: none;
-    }
-    .ant-menu-item > a:hover {
-      color: $nav-bar-hover-item-color;
-    }
-    .ant-menu-item:hover {
-      border-bottom: none;
-    }
-  }
-
-  // from 1280px and below is shown
-  .i3-ww-nav-bar-mobile {
-    @include with-desktop-width {
-      display: none;
-      -webkit-display: none;
-      -moz-display: none;
-      -ms-display: none;
-      -o-display: none;
-    }
-  ;
-    .i3-ww-nav-bar-mobile__menu-button{
-      font-size: inherit;
-      margin-top: 23px;
-      background: transparent;
-      border: none;
-      &:hover, &:focus {
-        background: inherit;
-        border: none;
-      }
-    }
-    .ant-menu {
-      .ant-menu-item:after {
-        border-right: 2px solid $nav-bar-mobile-selected-item-border-color;
-      }
-      .ant-menu-item:hover {
-        border: none;
-      }
-      .ant-menu-submenu > .ant-menu-item, .ant-menu-sub {
-        background: $nav-bar-item-hover-color;
-      }
-      .ant-badge-count {
-        right: 12px;
-      }
-    }
   }
 }

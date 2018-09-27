@@ -1,0 +1,35 @@
+.i3-ww-nav-bar {
+  // from 1280px and above is shown
+  .i3-ww-nav-bar-desktop {
+    $map: ($large-desktop-width: $app-subtitle-large-desktop-fs,
+            $desktop-width: $app-subtitle-desktop-fs,
+            $tablet-landscape-width: $app-subtitle-tablet-landscape-fs,
+            $tablet-portrait-width: $app-subtitle-tablet-portrait-fs,
+            $mobile-max-width: $app-subtitle-mobile-fs,
+            $small-mobile-min-width: $app-subtitle-small-fs);
+    @include fluid-sizing('font-size', $map, true);
+    display: none;
+    -webkit-display: none;
+    -moz-display: none;
+    -ms-display: none;
+    -o-display: none;
+    @include with-desktop-width {
+      display: flex;
+      margin-left: auto;
+      margin-right: 10%;
+      -webkit-display: flex;
+      -moz-display: flex;
+      -ms-display: flex;
+      -o-display: flex;
+    }
+    .ant-menu-horizontal {
+      border-bottom: none;
+    }
+    .ant-menu-item-selected {
+      border-bottom: none;
+    }
+    .ant-menu-item:hover, .ant-menu-submenu:hover {
+      border-bottom: none;
+    }
+  }
+}

@@ -135,8 +135,8 @@ class Camera extends PureComponent {
       <div className="i3-ww-camera">
         <div className="i3-ww-camera__container">
           <video
-            playsInline="true"
-            muted="true"
+            playsInline
+            muted
             ref={(input) => { this.videoElement = input; }} />
           {this.props.showButton
             && (

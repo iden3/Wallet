@@ -1,0 +1,27 @@
+.i3-ww-nav-bar {
+  .i3-ww-nav-bar-identity {
+    padding-left: 5%;
+    display: flex;
+    -webkit-display: flex;
+    -moz-display: flex;
+    -ms-display: flex;
+    -o-display: flex;
+    .anticon {
+      margin-right: 15px;
+      margin-bottom: 3px;
+    }
+    .ant-avatar {
+      margin-right: 15px;
+      background-image: url($generic-avatar);
+    }
+    .ant-menu-horizontal {
+      border-bottom: none;
+    }
+    .ant-menu-item > a:hover {
+      color: $nav-bar-hover-item-color;
+    }
+    .ant-menu-item:hover {
+      border-bottom: none;
+    }
+  }
+}
