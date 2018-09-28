@@ -27,3 +27,9 @@ export const IDENTITIES = {
   CHILDREN: [],
   ORDER: -1, // not shown in main nav-bar
 };
+export const WELCOME = {
+  MAIN: '/welcome',
+  KEY: 'Welcome',
+  CHILDREN: [],
+  ORDER: -1, // not shown in main nav-bar
+};

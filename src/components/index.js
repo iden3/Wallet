@@ -11,8 +11,12 @@ export Camera from './camera/camera';
 export Content from './content/content';
 export DropDown from './drop-down/drop-down';
 export Footer from './footer/footer';
+// TODO: Wrap form in a component
+export { Form } from 'antd';
+export FormItem from './form-item/form-item';
 export Header from './header/header';
 export Icon from './icon/icon';
+export Input from './input/input';
 export Layout from './layout/layout';
 export List from './list/list';
 export Menu from './menu/menu';

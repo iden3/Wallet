@@ -11,7 +11,6 @@
   //override ant styles
   .ant-layout-header {
     padding: 0;
-    //background: $nav-bar-bg-color;
     height: $app-header-height;
     $map: ($desktop-width: 1240px,
             $tablet-landscape-width: 350px,
@@ -28,17 +27,12 @@
     flex: none;
     z-index: $header-z-index;
   }
+  .i3-ww-header__no-nav-bar {
+    height: 104px;
+  }
   .i3-ww-content {
     z-index: $main-content-z-index;
     flex: 1 0 auto;
-    /*background: rgba(246,246,246,1);
-    background: -moz-linear-gradient(-45deg, rgba(246,246,246,1) 0%, rgba(15,202,235,1) 0%, rgba(101,78,227,1) 100%);
-    background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(246,246,246,1)), color-stop(0%, rgba(15,202,235,1)), color-stop(100%, rgba(101,78,227,1)));
-    background: -webkit-linear-gradient(-45deg, rgba(246,246,246,1) 0%, rgba(15,202,235,1) 0%, rgba(101,78,227,1) 100%);
-    background: -o-linear-gradient(-45deg, rgba(246,246,246,1) 0%, rgba(15,202,235,1) 0%, rgba(101,78,227,1) 100%);
-    background: -ms-linear-gradient(-45deg, rgba(246,246,246,1) 0%, rgba(15,202,235,1) 0%, rgba(101,78,227,1) 100%);
-    background: linear-gradient(135deg, rgba(246,246,246,1) 0%, rgba(15,202,235,1) 0%, rgba(101,78,227,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f6f6f6', endColorstr='#654ee3', GradientType=1 );*/
     background-image: url($app-bg-gradient);
   }
   .i3-ww-footer {

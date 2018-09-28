@@ -12,3 +12,4 @@ export Identities from 'views/identities';
 export Layout from 'views/layout';
 export NavBar from 'views/nav-bar';
 export QRScanner from 'views/qr-scanner';
+export Welcome from 'views/welcome';

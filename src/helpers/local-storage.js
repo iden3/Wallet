@@ -10,7 +10,9 @@ class LocalStorage {
     if (!instance) {
       instance = this;
       this._domain = domainName;
-      this.createDomain();
+      if (!this.doesDomainExist()) {
+        this.createDomain();
+      }
     }
 
     return instance;

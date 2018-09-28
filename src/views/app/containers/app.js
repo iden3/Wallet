@@ -4,7 +4,7 @@ import {
   Switch, Route, withRouter, Redirect,
 } from 'react-router-dom';
 import Layout from 'views/layout';
-import CreateIdentity from 'views/create-identity';
+import Welcome from 'views/welcome';
 import LocalStorage from 'helpers/local-storage';
 import * as ROUTES from 'constants/routes';
 
@@ -16,7 +16,7 @@ import * as ROUTES from 'constants/routes';
 class App extends Component {
   constructor(props) {
     super(props);
-    this._localStorage = new LocalStorage('iden3');
+    this.localStorage = new LocalStorage('iden3');
   }
 
   /**
@@ -26,25 +26,30 @@ class App extends Component {
    * @returns {boolean} true if already exists an identity
    */
   checkIdentityExistence = () => {
-    return !!this._localStorage.domain;
+    if (!this.localStorage.domain || !this.localStorage.domain.identity) {
+      this.localStorage = new LocalStorage('iden3');
+      return false;
+    }
+
+    return true;
   };
 
   render() {
-    const showCreateIdentityWizard = this.checkIdentityExistence();
+    const existsIdentity = this.checkIdentityExistence();
     const LayoutCmpt = (props) => {
       return (
         <Layout
-          showNavBar={showCreateIdentityWizard}
+          existsIdentity={existsIdentity}
           {...props} />);
     };
+    const redirectTo = existsIdentity ? ROUTES.DASHBOARD.MAIN : ROUTES.WELCOME.MAIN;
 
     return (
       <div className="i3-ww-app">
         <div className="i3-ww-popups" />
-        <CreateIdentity show={!showCreateIdentityWizard} />
         <Switch>
           <Route path="/:tab" component={LayoutCmpt} />
-          <Redirect from="/" to={ROUTES.DASHBOARD.MAIN} />
+          <Redirect from="/" to={redirectTo} />
         </Switch>
       </div>
     );
