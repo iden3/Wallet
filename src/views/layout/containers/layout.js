@@ -7,7 +7,6 @@ import {
 import classNames from 'classnames';
 import {
   Content,
-  Footer,
   Header,
   Layout as LayoutCmpt,
 } from 'base_components';
@@ -20,7 +19,10 @@ import {
   Welcome,
 } from 'views';
 import * as ROUTES from 'constants/routes';
-import HeaderWihtLogo from '../components/header-with-logo/header-with-logo';
+import {
+  Footer,
+  HeaderWithLogo,
+} from '../components';
 
 import './layout.scss';
 
@@ -52,43 +54,39 @@ class Layout extends React.Component {
     return (
       <LayoutCmpt className="i3-ww-layout">
         <Header className={cmptClasses}>
-          <HeaderWihtLogo />
+          <HeaderWithLogo />
           { this.props.existsIdentity && <NavBar /> }
         </Header>
         <Content className="i3-ww-content">
-          <div>
-            {/* If exists an identity we use the regular routes
+          {/* If exists an identity we use the regular routes
             to access to any of the views. Otherwise, all requests
             are redirect to the Welcome view wizard to create an identity */}
-            { this.props.existsIdentity
-              ? (
-                <Switch>
-                  <Route
-                    path={ROUTES.DASHBOARD.MAIN}
-                    component={Dashboard} />
-                  <Route
-                    path={ROUTES.CLAIMS.MAIN}
-                    component={Claims} />
-                  <Route
-                    path={ROUTES.HISTORY.MAIN}
-                    component={History} />
-                  <Route
-                    path={ROUTES.IDENTITIES.MAIN}
-                    component={Identities} />
-                </Switch>
-              )
-              : (
-                <Switch>
-                  <Route path="/:tab" component={Welcome} />
-                  <Redirect from="/" to={ROUTES.WELCOME.MAIN} />
-                </Switch>
-              )
+          { this.props.existsIdentity
+            ? (
+              <Switch>
+                <Route
+                  path={ROUTES.DASHBOARD.MAIN}
+                  component={Dashboard} />
+                <Route
+                  path={ROUTES.CLAIMS.MAIN}
+                  component={Claims} />
+                <Route
+                  path={ROUTES.HISTORY.MAIN}
+                  component={History} />
+                <Route
+                  path={ROUTES.IDENTITIES.MAIN}
+                  component={Identities} />
+              </Switch>
+            )
+            : (
+              <Switch>
+                <Route path="/:tab" component={Welcome} />
+                <Redirect from="/" to={ROUTES.WELCOME.MAIN} />
+              </Switch>
+            )
             }
-          </div>
+          <Footer />
         </Content>
-        <Footer className="i3-ww-footer">
-          Footer
-        </Footer>
       </LayoutCmpt>
     );
   }

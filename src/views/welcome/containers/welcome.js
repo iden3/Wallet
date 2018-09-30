@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import {
-  Button,
-} from 'base_components';
-import {
   StepSetPassphrase,
   StepCreateIdentity,
   StepChooseAvatar,
@@ -10,6 +7,8 @@ import {
   StepShowMnemonicSeed,
   StepWelcome,
 } from '../components';
+
+import './welcome.scss';
 
 const sortedSteps = [
   StepWelcome,

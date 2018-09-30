@@ -1,0 +1,26 @@
+.i3-ww-footer {
+  margin: 0;
+  z-index: $footer-z-index;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 15px;
+  i {
+    font-size: 34px;
+  }
+  a {
+    color: $white-100;
+    padding: 0 6px;
+  }
+  .i3-ww-footer__icons {
+    padding-bottom: 14px;
+  }
+  .i3-ww-footer__links {
+    padding-top: 10px;
+    font-size: 18px;
+  }
+}

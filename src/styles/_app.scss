@@ -9,13 +9,13 @@
   box-sizing: border-box;
 }
 
-body {
+body, button {
   display: flex;
   flex-direction: column;
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: Lato, sans-serif;
+  font-family: Roboto, Lato, sans-serif !important;
   font-style: normal;
   font-weight: 400;
   background-color: $app-bg-color;
