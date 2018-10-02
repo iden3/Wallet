@@ -1,53 +1,60 @@
 .i3-ww-button {
   button {
-    border-radius: 1px;
+    border-radius: 5px;
+    height: 45px;
+    line-height: 3;
   }
   // primary button
   &.i3-ww-button__primary {
     button {
-      background-color: $button-primary-main-color;
-      border-color: $button-primary-main-color;
+      background-color: $button-primary-bg-color;
+      border-color: $button-primary-bg-color;
       color: $button-primary-content-color;
       &:hover {
-        background-color: $button-primary-hover-main-color;
-        border-color: $button-primary-hover-main-color;
+        background-color: $button-primary-hover-bg-color;
+        border-color: $button-primary-hover-bg-color;
+        color: $button-primary-hover-content-color;
       }
       &:focus {
-        background-color: $button-primary-pressed-color;
-        border-color: $button-primary-pressed-color;
-        //color: $button-primary-pressed-content-color;
+        background-color: $button-primary-pressed-bg-color;
+        border-color: $button-primary-pressed-bg-color;
+        color: $button-primary-pressed-content-color;
       }
     }
   }
   // secondary button: when we have a group of them, the ones that are not selected
   &.i3-ww-button__secondary {
     button{
-      background-color: $button-secondary-main-color;
-      border-color: $button-secondary-main-color;
+      background-color: $button-secondary-bg-color;
+      border-color: $button-secondary-bg-color;
       color: $button-secondary-content-color;
       &:hover {
-        background-color: $button-secondary-hover-main-color;
-        border-color: $button-secondary-hover-main-color;
+        background-color: $button-secondary-hover-bg-color;
+        border-color: $button-secondary-hover-bg-color;
+        color: $button-secondary-hover-content-color;
       }
       &:focus {
-        background-color: $button-secondary-pressed-color;
-        border-color: $button-secondary-pressed-color;
+        background-color: $button-secondary-pressed-bg-color;
+        border-color: $button-secondary-pressed-bg-color;
+        color: $button-secondary-pressed-content-color;
       }
     }
   }
   // danger button: for delete, cancel, confirm any dangerous actions from the user, etc...
   &.i3-ww-button__danger {
     button{
-      background-color: $button-danger-main-color;
-      border-color: $button-danger-main-color;
+      background-color: $button-danger-bg-color;
+      border-color: $button-danger-bg-color;
       color: $button-danger-content-color;
       &:hover {
-        background-color: $button-danger-hover-main-color;
-        border-color: $button-danger-hover-main-color;
+        background-color: $button-danger-hover-bg-color;
+        border-color: $button-danger-hover-bg-color;
+        color: $button-danger-hover-content-color;
       }
       &:focus {
-        background-color: $button-danger-pressed-color;
-        border-color: $button-danger-pressed-color;
+        background-color: $button-danger-pressed-bg-color;
+        border-color: $button-danger-pressed-bg-color;
+        color: $button-danger-pressed-content-color;
       }
     }
   }

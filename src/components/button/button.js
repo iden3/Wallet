@@ -15,7 +15,7 @@ class Button extends PureComponent {
     /*
       One of the antd framework types. If not set, is 'default'
      */
-    type: PropTypes.oneOf(['primary', 'ghost', 'dashed', 'danger', 'default']),
+    type: PropTypes.oneOf(['primary', 'ghost', 'dashed', 'danger', 'default', 'secondary']),
     /*
       Set the HTML type. If not set, is 'button'
      */

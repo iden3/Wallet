@@ -13,14 +13,23 @@
     font-size: 34px;
   }
   a {
-    color: $white-100;
+    color: $white;
     padding: 0 6px;
   }
   .i3-ww-footer__icons {
-    padding-bottom: 14px;
+    //padding-bottom: 14px;
+    margin-top: 2%;
   }
-  .i3-ww-footer__links {
-    padding-top: 10px;
+
+ .i3-ww-footer__links {
+    padding-top: 1%;
     font-size: 18px;
   }
+}
+
+.i3-ww-footer:before {
+  content: ""; /* This is necessary for the pseudo element to work. */
+  display: block; /* This will put the pseudo element on its own line. */
+  width: 90%; /* Change this to whatever width you want. */
+  border-bottom: 1px solid white;
 }

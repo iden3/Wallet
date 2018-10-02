@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import {
   Button,
+  Icon,
 } from 'base_components';
 
 /**
@@ -23,14 +24,14 @@ class StepWelcome extends PureComponent {
     return (
       <div className="i3-ww-steps-new-identity i3-ww-step-welcome">
         <div className="i3-ww-step__title">
-          <p>Welcome to IDEN3</p>
-          <p>Decentralizing identity systems</p>
+          <p className="i3-ww-title">Welcome to IDEN3</p>
+          <p className="i3-ww-subtitle">Create your decentralized identity</p>
         </div>
         <div className="i3-ww-step__content">
           <p>
-          You are about to create an identity, since no one has been found.
-          Keep in mind that your private key is encrypted and stored in this device.
-          Also, You can create as much identities as you want
+            The next steps will guide you through your active identity creation process,
+            and you will also be able to create more identities later.
+            Keep in mind that your private key will be encrypted and stored in this device.
           </p>
         </div>
         <div className="i3-ww-step__buttons">
@@ -39,6 +40,7 @@ class StepWelcome extends PureComponent {
             type="primary"
             htmlType="button">
             Create your identity
+            <Icon type="right" />
           </Button>
         </div>
       </div>

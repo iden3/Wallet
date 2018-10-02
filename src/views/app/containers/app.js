@@ -4,9 +4,10 @@ import {
   Switch, Route, withRouter, Redirect,
 } from 'react-router-dom';
 import Layout from 'views/layout';
-import Welcome from 'views/welcome';
 import LocalStorage from 'helpers/local-storage';
 import * as ROUTES from 'constants/routes';
+
+import './app.scss';
 
 /**
  * This is a root platform component that loads the configuration and renders

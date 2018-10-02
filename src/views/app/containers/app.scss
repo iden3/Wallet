@@ -1,2 +1,21 @@
 .i3-ww-app {
+  .i3-ww-title {
+    font-family: Barlow Bold, Lato, sans-serif !important;
+    $map: ($large-desktop-width: $app-title-large-desktop-fs,
+            $desktop-width: $app-title-desktop-fs,
+            $tablet-landscape-width: $app-title-tablet-landscape-fs,
+            $tablet-portrait-width: $app-title-tablet-portrait-fs,
+            $small-mobile-min-width: $app-title-small-fs);
+    @include fluid-sizing('font-size', $map, true);
+  }
+  .i3-ww-subtitle {
+    font-family: Barlow Light, Lato, sans-serif !important;
+    $map: ($large-desktop-width: $app-subtitle-large-desktop-fs,
+            $desktop-width: $app-subtitle-desktop-fs,
+            $tablet-landscape-width: $app-subtitle-tablet-landscape-fs,
+            $tablet-portrait-width: $app-subtitle-tablet-portrait-fs,
+            $small-mobile-min-width: $app-subtitle-small-fs,
+    );
+    @include fluid-sizing('font-size', $map, true);
+  }
 }
