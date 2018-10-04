@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Input as InputCmpt } from 'antd';
 
+import './input.scss';
+
 class Input extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
@@ -11,9 +13,11 @@ class Input extends PureComponent {
     const { children, ...restProps } = this.props;
 
     return (
-      <InputCmpt {...restProps}>
-        { children }
-      </InputCmpt>
+      <div className="i3-ww-input">
+        <InputCmpt {...restProps}>
+          { children }
+        </InputCmpt>
+      </div>
     );
   }
 }

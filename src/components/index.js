@@ -21,6 +21,8 @@ export Layout from './layout/layout';
 export List from './list/list';
 export Menu from './menu/menu';
 export MenuItem from './menu/item';
+// TODO: Wrap form in a component
+export { notification } from 'antd';
 export PopUp from './pop-up/pop-up';
 export Portal from './portal/portal';
 export QRScanner from './qr-scanner/qr-scanner';

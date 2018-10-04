@@ -152,6 +152,7 @@
     "antd": "^3.9.1",
     "classnames": "^2.2.6",
     "date-fns": "^2.0.0-alpha.16",
+    "iden3": "0.0.1",
     "immutable": "^3.8.2",
     "jsqr": "^1.1.1",
     "memoize-one": "^4.0.0",

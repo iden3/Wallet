@@ -5,6 +5,8 @@ import {
   Icon,
 } from 'base_components';
 
+import './step-welcome.scss';
+
 /**
  * View that shows the very first screen to indicate the user
  * that is going to create a new identity. Shown when no identity
@@ -14,15 +16,14 @@ import {
 class StepWelcome extends PureComponent {
   static propTypes = {
     /*
-      Call back triggered when one of the action buttons are pressed,
-      send true if moving forward, false if moving backwards
+      Call back triggered when one of the action buttons are pressed
      */
-    onChange: PropTypes.func.isRequired,
+    move: PropTypes.func.isRequired,
   };
 
   render() {
     return (
-      <div className="i3-ww-steps-new-identity i3-ww-step-welcome">
+      <div className="i3-ww-steps-new-identity__welcome">
         <div className="i3-ww-step__title">
           <p className="i3-ww-title">Welcome to IDEN3</p>
           <p className="i3-ww-subtitle">Create your decentralized identity</p>
@@ -36,7 +37,7 @@ class StepWelcome extends PureComponent {
         </div>
         <div className="i3-ww-step__buttons">
           <Button
-            onClick={() => this.props.onChange(true)}
+            onClick={() => this.props.move()}
             type="primary"
             htmlType="button">
             Create your identity

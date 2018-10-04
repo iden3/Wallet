@@ -11,6 +11,9 @@ class Footer extends PureComponent {
     return (
       <FooterCmpt className="i3-ww-footer" target="_blank" rel="noopener noreferrer">
         <div className="i3-ww-footer__icons">
+          <a href="https://iden3.io" target="_blank" rel="noopener noreferrer">
+            <Icon type="global" />
+          </a>
           <a href="https://github.com/iden3">
             <Icon type="github" />
           </a>
@@ -18,11 +21,11 @@ class Footer extends PureComponent {
             <Icon type="twitter" />
           </a>
         </div>
-        <div className="i3-ww-footer__links">
+        {/* <div className="i3-ww-footer__links">
           <a href="https://iden3.io" target="_blank" rel="noopener noreferrer">
             Contact
           </a>
-        </div>
+        </div> */}
       </FooterCmpt>
     );
   }

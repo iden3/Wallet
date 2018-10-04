@@ -8,7 +8,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 15px;
+  padding-bottom: 1px;
   i {
     font-size: 34px;
   }
@@ -17,13 +17,18 @@
     padding: 0 6px;
   }
   .i3-ww-footer__icons {
-    //padding-bottom: 14px;
-    margin-top: 2%;
+    margin-top: 10px;
   }
 
  .i3-ww-footer__links {
-    padding-top: 1%;
     font-size: 18px;
+  }
+  /* iPhone 4 screens 320x480 */
+  @media screen and (min-width: $mobile-min-width) and (max-height: $mobile-max-width) {
+    height: 71px;
+    .i3-ww-footer__links {
+      display: none;
+    }
   }
 }
 

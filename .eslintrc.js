@@ -23,6 +23,7 @@ module.exports = {
         "arrow-body-style": [0],
         "class-methods-use-this": [0],
         "no-unused-vars": [2, { "varsIgnorePattern": "export^" }],
+        "no-unused-expressions": [0],
         "func-names": [0],
         "global-require": [0],
         "max-len": ["error", { "code": 120, "comments": 200 }],

@@ -239,3 +239,21 @@ export const capitalizeFirstLetter = function (str) {
     ? str.charAt(0).toUpperCase() + str.slice(1)
     : str;
 };
+
+/**
+ * Mask with regular expressions a string with the expression/char sent
+ * I.e. to mask with asterisk a string
+ * @param {string} unmaskedString - String to mask
+ * @param {string} expression - Expression to place at any char of the unmasked String
+ * @returns {string} A string with the expression sent masking all the characters of the unmasked string
+ */
+export const maskWithExpression = function (unmaskedString, expression) {
+  if (unmaskedString && expression) {
+    //const regex = /./gi;
+    const regex = /^[a-z0-9._]+$/i;
+    console.log(`unmaskedString: ${unmaskedString} -- expression: ${expression}`)
+    const result = unmaskedString.replace(regex, expression);
+    return result;
+  }
+  return unmaskedString;
+};
