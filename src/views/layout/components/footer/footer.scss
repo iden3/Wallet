@@ -30,6 +30,9 @@
       display: none;
     }
   }
+  @media screen and (min-height: $mobile-max-width + 1 ) {
+    padding-bottom: 2%;
+  }
 }
 
 .i3-ww-footer:before {

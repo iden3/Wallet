@@ -249,11 +249,8 @@ export const capitalizeFirstLetter = function (str) {
  */
 export const maskWithExpression = function (unmaskedString, expression) {
   if (unmaskedString && expression) {
-    //const regex = /./gi;
-    const regex = /^[a-z0-9._]+$/i;
-    console.log(`unmaskedString: ${unmaskedString} -- expression: ${expression}`)
-    const result = unmaskedString.replace(regex, expression);
-    return result;
+    const regex = /^[a-z0-9._]+$/i; // any character
+    return unmaskedString.replace(regex, expression);
   }
   return unmaskedString;
 };

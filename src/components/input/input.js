@@ -4,6 +4,12 @@ import { Input as InputCmpt } from 'antd';
 
 import './input.scss';
 
+/**
+ * Overrides antd Input component to isolate the views from
+ * any UI framework that we decide to use.
+ * Please, visit to https://ant.design/components/input/ to check props.
+ *
+ */
 class Input extends PureComponent {
   static propTypes = {
     children: PropTypes.node,

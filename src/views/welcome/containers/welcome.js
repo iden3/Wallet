@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { compose } from 'redux';
+import PropTypes from 'prop-types';
+import { withFormsValues } from 'hocs';
 import { notification } from 'base_components';
 import {
   StepSetPassphrase,
@@ -20,9 +23,33 @@ const sortedSteps = [
  * Handles each change of the step views to show and the notifications to show.
  */
 class Welcome extends Component {
+  static propTypes = {
+    // From withSetIdentityValues HOC
+    /*
+      If fetching data about the value of the forms
+     */
+    isFetchingForms: PropTypes.bool.isRequired,
+    /*
+     If there is an error fetching value
+     */
+    fetchingFormsError: PropTypes.string.isRequired,
+    /*
+      Action to set a new passphrase in the app state
+     */
+    handleUpdatePassphrase: PropTypes.func.isRequired,
+    /*
+     Selector to retrieve the value of a form
+     */
+    getForm: PropTypes.func.isRequired,
+  };
+
   state = {
     currentStep: 0,
   };
+
+  componentDidMount() {
+    this.props.getForm('passphrase');
+  }
 
   /**
    * Set component state to show the right view of the welcome wizard
@@ -62,6 +89,8 @@ class Welcome extends Component {
     return (
       <div className="i3-ww-welcome">
         <Step
+          getFormValue={this.props.getForm}
+          updatePassphraseValue={this.props.handleUpdatePassphrase}
           showNotification={this.showNotification}
           move={this.changeStep} />
       </div>
@@ -69,4 +98,4 @@ class Welcome extends Component {
   }
 }
 
-export default Welcome;
+export default compose(withFormsValues)(Welcome);

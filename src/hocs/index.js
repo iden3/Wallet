@@ -1,1 +1,1 @@
-export withInputValues from './with-input-values/with-input-values';
+export withFormsValues from './with-forms-values/with-forms-values';

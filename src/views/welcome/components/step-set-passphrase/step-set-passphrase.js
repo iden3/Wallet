@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { Map as ImmutableMap } from 'immutable';
 import classNames from 'classnames';
 import {
   Button, Icon,
@@ -22,11 +23,20 @@ class StepSetPassphrase extends PureComponent {
      Callback triggered when there is an error about the passphrase to show a notification
      */
     showNotification: PropTypes.func.isRequired,
+    /*
+     Callback to retrieve the value of the passphrase form is there was any before moving
+     over the different views of the wizard
+     */
+    getFormValue: PropTypes.func.isRequired,
+    /*
+     Callback to update the passphrase
+     */
+    updatePassphraseValue: PropTypes.func.isRequired,
   };
 
   state = {
-    passphrase: '',
-    repeatedPasshphrase: '',
+    passphrase: this.props.getFormValue('passphrase').get('first'),
+    repeatedPasshphrase: this.props.getFormValue('passphrase').get('second'),
     areSamePassphrases: true,
     passphraseIsMasked: true,
     repeatedPasshphraseIsMasked: true,
@@ -56,12 +66,26 @@ class StepSetPassphrase extends PureComponent {
   };
 
   /**
+   * Update the app state with the curren passphrase introduced
+   * and trigger callback to move former view of the wizard
+   */
+  moveBackwards = () => {
+    this.props.updatePassphraseValue(new ImmutableMap({
+      first: this.state.passphrase,
+      second: this.state.repeatedPasshphrase,
+    }));
+    this.props.move('backwards');
+  };
+
+  /**
    * Before moving forward to next screen check if both inputs
    * have the same value. If not, a notification is shown.
    */
   moveForward = () => {
     if (this.state.passphrase !== this.state.repeatedPasshphrase) {
+      // show error nofitication
       this.setState({ areSamePassphrases: false });
+      this.props.updatePassphraseValue(this.state.passphrase);
       // show notification with error
       this.props.showNotification('error', {
         message: 'Error',
@@ -72,8 +96,9 @@ class StepSetPassphrase extends PureComponent {
         },
       });
     } else {
-      // move forward
+      // move forward and update app state with empty value in the passphrase input
       this.setState({ areSamePassphrases: true });
+      this.props.updatePassphraseValue('');
       this.props.move('forward');
     }
   };
@@ -146,7 +171,7 @@ class StepSetPassphrase extends PureComponent {
         </div>
         <div className="i3-ww-step__buttons">
           <Button
-            onClick={() => this.props.move('backwards')}
+            onClick={this.moveBackwards}
             type="primary"
             htmlType="button">
             <Icon type="left" />

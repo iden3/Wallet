@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import claims from './claims';
+import forms from './forms';
 import history from './history';
 import qrCodes from './qr-codes';
 
@@ -10,6 +11,7 @@ export default combineReducers({
   // add here your reducers after importing the entity state
   // i.e: myStuff: myStuff.reducer, etc...
   claims: claims.reducer,
+  forms: forms.reducer,
   history: history.reducer,
   qrCodes: qrCodes.reducer,
 });
