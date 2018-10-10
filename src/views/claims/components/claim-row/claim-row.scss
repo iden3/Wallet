@@ -1,16 +1,21 @@
 .i3-ww-claim-row {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  overflow: hidden;
-  height: rem(60px);
-  background: $claim-row-bg-color;
-  .i3-ww-claim-row__content {
-    flex-grow: 1;
+  .i3-ww-claim-row__initial-content {
     display: flex;
-    justify-content: start;
-    padding-left: 30px;
-    cursor: pointer;
+    align-items: center;
+    height: inherit;
+  }
+  .i3-ww-claim-row__main-content {
+    height: inherit;
+  }
+  .i3-ww-claim-row__final-content {
+    height: inherit;
+  }
+  .i3-ww-claim-row__date {
+    background: $claim-row-date-cell-bg-color;
+    height: inherit;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
   }
   .i3-ww-claim-row__type {
     display: inline-block;
@@ -32,11 +37,5 @@
     &.sign {
       background: $claim-type-sign-color;
     }
-  }
-  .i3-ww-claim-row__pinned {
-    text-align: side(right);
-    font-size: $claim-list-pinned-icon-fs;
-    padding-right: 15px;
-    cursor: pointer;
   }
 }

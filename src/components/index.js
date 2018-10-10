@@ -26,6 +26,7 @@ export { notification } from 'antd';
 export PopUp from './pop-up/pop-up';
 export Portal from './portal/portal';
 export QRScanner from './qr-scanner/qr-scanner';
+export Row from './list/row';
 export Scrollable from './scrollable/scrollable';
 export SidePanel from './side-panel/side-panel';
 export Spinner from './spinner/spinner';

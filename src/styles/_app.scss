@@ -16,7 +16,7 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: Barlow Light, Lato, sans-serif;
+  font-family: Barlow Light, Lato, sans-serif !important;
   $map: ($large-desktop-width: $app-regular-large-desktop-fs,
           $desktop-width: $app-regular-desktop-fs,
           $tablet-landscape-width: $app-regular-tablet-landscape-fs,

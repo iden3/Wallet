@@ -1,3 +1,4 @@
+import { Map as ImmutableMap } from 'immutable';
 import {
   FETCHING_FORMS,
   FETCHING_FORMS_SUCCESS,
@@ -43,6 +44,6 @@ export function handleFetchingForms() {
 export function handleUpdatePassphrase(passphrase) {
   return {
     type: UPDATE_PASSPHRASE_FORM,
-    data: passphrase,
+    data: new ImmutableMap({ ...passphrase }),
   };
 }

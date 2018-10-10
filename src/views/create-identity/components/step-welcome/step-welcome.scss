@@ -1,0 +1,31 @@
+.i3-ww-ci__welcome {
+  .i3-ww-ci__title {
+    $map: ($large-desktop-width: 120px,
+            $desktop-width: 110px,
+            $tablet-landscape-width: 75px,
+            $tablet-portrait-width: 65px,
+            $mobile-max-width: 60px,
+            $small-mobile-min-width: 50px);
+    @include fluid-sizing('margin-right', $map, true);
+
+    $map: ($large-desktop-width: 50px,
+            $desktop-width: 66px,
+            $tablet-landscape-width: 80px,
+            $tablet-portrait-width: 75px,
+            $mobile-max-width: 30px,
+            $small-mobile-min-width: 20px);
+    @include fluid-sizing('margin-bottom', $map, true);
+
+    $map: ($large-desktop-width: 120px,
+            $desktop-width: 110px,
+            $tablet-landscape-width: 70px,
+            $tablet-portrait-width: 65px,
+            $mobile-max-width: 60px,
+            $small-mobile-min-width: 50px);
+    @include fluid-sizing('margin-left', $map, true);
+  }
+  .i3-ww-ci__content{
+    flex-grow: 1;
+    margin: 0 10%;
+  }
+}

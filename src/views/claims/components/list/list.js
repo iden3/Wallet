@@ -1,7 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Scrollable } from 'base_components';
-import * as claimsList from 'fixtures/fixtures';
+import {
+  List as ListCmpt,
+  Scrollable,
+} from 'base_components';
+import * as _claimsList from 'fixtures/fixtures';
 import * as CLAIM from 'constants/claim';
 import Claim from '../claim-row';
 
@@ -29,7 +32,7 @@ class List extends PureComponent {
    * @private
    */
   _getClaimsList() {
-    return claimsList.claims.map((claim) => {
+    const claims = _claimsList.claims.map((claim) => {
       // common props to the three types of claims: emitted, received or grouped
       const claimProps = {
         date: claim.date,
@@ -68,16 +71,18 @@ class List extends PureComponent {
 
       return ClaimCmpt;
     });
+
+    return (<ListCmpt rows={claims} />);
   }
 
   render() {
-    const claims = this._getClaimsList();
+    const claimsList = this._getClaimsList();
 
     return (
       <div>
         <Scrollable
           fetchMore={() => {}}>
-          {claims}
+          {claimsList}
         </Scrollable>
       </div>
     );

@@ -21,6 +21,10 @@ class Header extends PureComponent {
      Title to show in the header
      */
     title: PropTypes.string,
+    /*
+     React component to show in the right of the header instead the default (minimize, maximize)
+    */
+    actionButtons: PropTypes.node,
   };
 
   static defaultProps = {
@@ -30,6 +34,13 @@ class Header extends PureComponent {
 
   render() {
     const buttonIcon = this.props.isMinimized ? 'arrows-alt' : 'shrink';
+    const minimizeMaximizeButton = (
+      <Button
+        onClick={this.props.onClick}
+        type="default"
+        htmlType="button"
+        icon={buttonIcon} />
+    );
 
     return (
       <div className="i3-ww-widget__header">
@@ -37,11 +48,13 @@ class Header extends PureComponent {
           {this.props.title}
         </span>
         <div className="i3-ww-widget__header-buttons-area">
-          <Button
-            onClick={this.props.onClick}
-            type="default"
-            htmlType="button"
-            icon={buttonIcon} />
+          {this.props.actionButtons && <div>{this.props.actionButtons}</div>}
+          <div className="i3-ww-widget__header-buttons-area--separator">
+            {' '}
+          </div>
+          <div>
+            {minimizeMaximizeButton}
+          </div>
         </div>
       </div>
     );

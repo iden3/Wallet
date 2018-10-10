@@ -138,12 +138,13 @@ $claim-type-default-color: $grey-23;
 
 // Claim list
 $claim-row-bg-color: $white;
+$claim-row-date-cell-bg-color: $grey-9;
 
 /*
 * Other settings
 */
 
-// Heder
+// Header
 $app-header-height: 155px;
 
 // Nav bar
@@ -167,3 +168,6 @@ $pop-up-z-index: 100;
 $logo-image: url('~static_images/logo-iden3.png');
 $generic-avatar: '~static_images/generic-avatar-1.png';
 $app-bg-gradient: '~static_images/gradient_app.jpg';
+
+// Widget
+$widget-header-height: 9vh;

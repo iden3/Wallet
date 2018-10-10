@@ -1,8 +1,11 @@
-import React, { PureComponent } from 'react';
+import React, {Fragment, PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { format } from 'date-fns';
-import { Icon } from 'base_components';
+import {
+  Icon,
+  Row,
+} from 'base_components';
 import * as CLAIM from 'constants/claim';
 
 import './claim-row.scss';
@@ -82,37 +85,52 @@ class ClaimRow extends PureComponent {
     });
     const formatedDate = format(
       this.props.date,
-      ' on MMMM do, yyyy',
+      ' d / MMM / yyyy',
     );
-
-    return (
-      <div
-        style={{ marginBottom: 2, marginLeft: 5 }}
-        className="i3-ww-claim-row"
-        role="row">
-        {!this.props.groups && (
-          <div
-            className={typeClassNames}
-            tabIndex="-1"
-            role="gridcell">
-            {this.props.type.charAt(0).toUpperCase()}
-          </div>
-        )}
-        <div
-          className="i3-ww-claim-row__content"
-          tabIndex="-1"
-          role="gridcell">
-          {`${this.props.content} ${formatedDate}`}
+    const initialContent = !this.props.groups && (
+      <div className="i3-ww-claim-row__initial-content">
+        <div className="i3-ww-claim-row__date">
+          {`${formatedDate}`}
         </div>
         <div
-          className="i3-ww-claim-row__pinned"
-          tabIndex={0}
           role="gridcell"
+          tabIndex={0}
           onKeyUp={this.togglePinnedHandleKeyUp}
           onClick={this.togglePinned}>
           {this.state.isPinned ? <Icon type="star" theme="filled" /> : <Icon type="star" />}
         </div>
       </div>
+    );
+    const mainContent = (
+      <div
+        className="i3-ww-claim-row__main-content"
+        tabIndex="-1"
+        role="gridcell">
+        <div className={typeClassNames}>
+          {this.props.type.charAt(0).toUpperCase()}
+        </div>
+        <div>
+          {this.props.content}
+        </div>
+      </div>
+    );
+    const finalContent = (
+      <div
+        className="i3-ww-claim-row__final-content"
+        tabIndex={0}
+        role="gridcell">
+        <Icon type="down" />
+      </div>
+    );
+
+    return (
+      <Fragment>
+        <Row
+          className="i3-ww-claim-row"
+          initialContent={initialContent}
+          mainContent={mainContent}
+          finalContent={finalContent} />
+      </Fragment>
     );
   }
 }

@@ -27,9 +27,9 @@ export const IDENTITIES = {
   CHILDREN: [],
   ORDER: -1, // not shown in main nav-bar
 };
-export const WELCOME = {
-  MAIN: '/welcome',
-  KEY: 'Welcome',
+export const CREATE_IDENTITY = {
+  MAIN: '/create-identity',
+  KEY: 'Create identity',
   CHILDREN: [],
   ORDER: -1, // not shown in main nav-bar
 };

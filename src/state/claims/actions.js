@@ -1,77 +1,58 @@
 import {
-  FETCHING_EMITTED_CLAIMS,
-  FETCHING_EMITTED_CLAIMS_SUCCESS,
-  FETCHING_EMITTED_CLAIMS_ERROR,
-  FETCHING_RECEIVED_CLAIMS,
-  FETCHING_RECEIVED_CLAIMS_ERROR,
-  FETCHING_RECEIVED_CLAIMS_SUCCESS,
+  FETCHING_CLAIMS,
+  FETCHING_CLAIMS_SUCCESS,
+  FETCHING_CLAIMS_ERROR,
+  CREATE_CLAIM_SUCCESS,
 } from './constants';
 
 
-function fetchingEmittedClaims() {
+function fetchingClaims() {
   return {
-    type: FETCHING_EMITTED_CLAIMS,
+    type: FETCHING_CLAIMS,
   };
 }
 
-function fetchingEmittedClaimsSuccess(response) {
+function fetchingClaimsSuccess(data) {
   return {
-    type: FETCHING_EMITTED_CLAIMS_SUCCESS,
-    response,
+    type: FETCHING_CLAIMS_SUCCESS,
+    data,
   };
 }
 
-function fetchingEmittedClaimsError(error) {
+function fetchingClaimsError(error) {
   console.log(error);
   return {
-    type: FETCHING_EMITTED_CLAIMS_ERROR,
-    error: 'Fetching emitted claims error',
+    type: FETCHING_CLAIMS_ERROR,
+    error: 'Fetching claims error',
   };
 }
 
-function fetchingReceivedClaims() {
+function createClaimSuccess(data) {
   return {
-    type: FETCHING_RECEIVED_CLAIMS,
+    type: CREATE_CLAIM_SUCCESS,
+    data,
   };
 }
 
-function fetchingReceivedClaimsSuccess(response) {
-  return {
-    type: FETCHING_RECEIVED_CLAIMS_SUCCESS,
-    response,
-  };
-}
-
-function fetchingReceivedClaimsError(error) {
-  console.log(error);
-  return {
-    type: FETCHING_RECEIVED_CLAIMS_ERROR,
-    error: 'Fetching received claims error',
-  };
-}
-
-export function handleFetchingEmittedClaims() {
+export default function handleFetchingClaims() {
   return function (dispatch) {
-    dispatch(fetchingEmittedClaims());
+    dispatch(fetchingClaims());
     return Promise.resolve()
       .then(({ data }) => {
-        dispatch(fetchingEmittedClaimsSuccess({
+        dispatch(fetchingClaimsSuccess({
           claims: data,
         }));
       })
-      .catch(error => dispatch(fetchingEmittedClaimsError(error)));
+      .catch(error => dispatch(fetchingClaimsError(error)));
   };
 }
 
-export function handleFetchingReceivedClaims() {
+export function handleCreateClaim(claim) {
   return function (dispatch) {
-    dispatch(fetchingReceivedClaims());
     return Promise.resolve()
-      .then(({ data }) => {
-        dispatch(fetchingReceivedClaimsSuccess({
-          claims: data,
-        }));
+      .then(() => {
+        dispatch(createClaimSuccess(claim));
       })
-      .catch(error => dispatch(fetchingReceivedClaimsError(error)));
+      .catch(error => dispatch(fetchingClaimsError(error)));
   };
 }

@@ -23,19 +23,19 @@ class StepWelcome extends PureComponent {
 
   render() {
     return (
-      <div className="i3-ww-steps-new-identity__welcome">
-        <div className="i3-ww-step__title">
+      <div className="i3-ww-ci__welcome">
+        <div className="i3-ww-ci__title">
           <p className="i3-ww-title">Welcome to IDEN3</p>
           <p className="i3-ww-subtitle">Create your decentralized identity</p>
         </div>
-        <div className="i3-ww-step__content">
+        <div className="i3-ww-ci__content">
           <p>
             The next steps will guide you through your active identity creation process,
             and you will also be able to create more identities later.
             Keep in mind that your private key will be encrypted and stored in this device.
           </p>
         </div>
-        <div className="i3-ww-step__buttons">
+        <div className="i3-ww-ci__buttons">
           <Button
             onClick={() => this.props.move()}
             type="primary"

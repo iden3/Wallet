@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
-import { Widget } from 'base_components';
+import { Link } from 'react-router-dom';
+import {
+  Icon,
+  Widget
+} from 'base_components';
+import * as ROUTES from 'constants/routes';
 
 import './dashboard.scss';
 
@@ -9,6 +14,11 @@ import './dashboard.scss';
  */
 class Dashboard extends Component {
   render() {
+    const headerButtons = (
+      <Link to={ROUTES.CLAIMS.MAIN}>
+        All claims <Icon type="right" />
+      </Link>);
+
     return (
       <div className="i3-ww-dashboard">
         <Widget
@@ -42,7 +52,8 @@ class Dashboard extends Component {
           isFetching={false}
           hasError={false}
           hasData
-          title="Pinned claims">
+          title="My claims"
+          headerButtons={headerButtons}>
           <div>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
             Nulla consequat convallis neque id laoreet. Donec pulvinar eleifend commodo.

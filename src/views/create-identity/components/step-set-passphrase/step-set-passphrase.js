@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Map as ImmutableMap } from 'immutable';
 import classNames from 'classnames';
 import {
   Button, Icon,
@@ -66,14 +65,11 @@ class StepSetPassphrase extends PureComponent {
   };
 
   /**
-   * Update the app state with the curren passphrase introduced
+   * Update the app state with the current passphrase introduced
    * and trigger callback to move former view of the wizard
    */
   moveBackwards = () => {
-    this.props.updatePassphraseValue(new ImmutableMap({
-      first: this.state.passphrase,
-      second: this.state.repeatedPasshphrase,
-    }));
+    this._updatePassphrase();
     this.props.move('backwards');
   };
 
@@ -82,10 +78,11 @@ class StepSetPassphrase extends PureComponent {
    * have the same value. If not, a notification is shown.
    */
   moveForward = () => {
+    this._updatePassphrase();
+    // move backwards
     if (this.state.passphrase !== this.state.repeatedPasshphrase) {
       // show error nofitication
       this.setState({ areSamePassphrases: false });
-      this.props.updatePassphraseValue(this.state.passphrase);
       // show notification with error
       this.props.showNotification('error', {
         message: 'Error',
@@ -96,9 +93,8 @@ class StepSetPassphrase extends PureComponent {
         },
       });
     } else {
-      // move forward and update app state with empty value in the passphrase input
+      // move forward
       this.setState({ areSamePassphrases: true });
-      this.props.updatePassphraseValue('');
       this.props.move('forward');
     }
   };
@@ -124,27 +120,41 @@ class StepSetPassphrase extends PureComponent {
       </div>);
   };
 
+  /**
+   * Trigger the call back sent via props to update in
+   * the app state the passphrasses introduced by the
+   * user, just to have them if user is moving forward
+   * or backwards.
+   * @private
+   */
+  _updatePassphrase() {
+    this.props.updatePassphraseValue({
+      first: this.state.passphrase,
+      second: this.state.repeatedPasshphrase,
+    });
+  }
+
   render() {
     const inputClasses = classNames({
-      'i3-ww-steps-new-identity__passphrase-inputs': true,
+      'i3-ww-ci__passphrase-inputs': true,
       'i3-ww-input--error': !this.state.areSamePassphrases,
     });
 
     return (
-      <div className="i3-ww-steps-new-identity__passphrase">
-        <div className="i3-ww-step__title">
+      <div className="i3-ww-ci__passphrase">
+        <div className="i3-ww-ci__title">
           <p className="i3-ww-title">Create a passphrase</p>
         </div>
-        <div className="i3-ww-step__content">
+        <div className="i3-ww-ci__content">
           <p>
             Secure your identity to encrypt your private key.
             A good passphrase
             {' '}
-            <span className="i3-ww-step__content-description1--bold">
+            <span className="i3-ww-ci__passphrase-content-description1--bold">
             should have at least 15 characters with upper and lower case letters,
             digits and some special character.
             </span>
-            <span className="i3-ww-step__content-description2">
+            <span className="i3-ww-ci__passphrase-content-description2">
             But it should be a text which you are able to remember,
               {' '}
             since it will be asked in some of your activities with your identity.
@@ -152,24 +162,28 @@ class StepSetPassphrase extends PureComponent {
           </p>
           <div className={inputClasses}>
             <form>
-              <Input
-                autoComplete="off"
-                value={this.state.passphrase}
-                type={this.state.passphraseIsMasked ? 'password' : 'text'}
-                placeholder="Enter a passphrase"
-                onChange={e => this.handleInputChange(e.target.value, 'passphrase')}
-                addonAfter={this.setViewIcon('passphrase')} />
-              <Input
-                autoComplete="off"
-                value={this.state.repeatedPasshphrase}
-                type={this.state.repeatedPasshphraseIsMasked ? 'password' : 'text'}
-                placeholder="Repeat the passphrase"
-                onChange={e => this.handleInputChange(e.target.value, 'repeatedPasshphrase')}
-                addonAfter={this.setViewIcon('repeatedPasshphrase')} />
+              <div className={this.state.passphraseIsMasked ? 'i3-ww-ci__passphrase--masked' : ''}>
+                <Input
+                  autoComplete="off"
+                  value={this.state.passphrase}
+                  type={this.state.passphraseIsMasked ? 'password' : 'text'}
+                  placeholder="Enter a passphrase"
+                  onChange={e => this.handleInputChange(e.target.value, 'passphrase')}
+                  addonAfter={this.setViewIcon('passphrase')} />
+              </div>
+              <div className={this.state.repeatedPasshphraseIsMasked ? 'i3-ww-ci__passphrase--masked' : ''}>
+                <Input
+                  autoComplete="off"
+                  value={this.state.repeatedPasshphrase}
+                  type={this.state.repeatedPasshphraseIsMasked ? 'password' : 'text'}
+                  placeholder="Repeat the passphrase"
+                  onChange={e => this.handleInputChange(e.target.value, 'repeatedPasshphrase')}
+                  addonAfter={this.setViewIcon('repeatedPasshphrase')} />
+              </div>
             </form>
           </div>
         </div>
-        <div className="i3-ww-step__buttons">
+        <div className="i3-ww-ci__buttons">
           <Button
             onClick={this.moveBackwards}
             type="primary"

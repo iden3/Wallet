@@ -42,7 +42,7 @@ class LocalStorage {
    * @param {string} key
    * @param {*} value
    */
-  static createKey = (key, value) => {
+  createKey = (key, value) => {
     if (this.doesDomainExist()) {
       const domainStorage = this.getDomainStorage();
 
@@ -68,6 +68,19 @@ class LocalStorage {
   };
 
   /**
+   * Check if a key exists in the domain stored in the local storage
+   * @param {string} key - The key to look for
+   * @returns {boolean} True if exists, false otherwise
+   */
+  doesKeyExist = (key) => {
+    if (this.doesDomainExist()) {
+      const values = this.getDomainStorage();
+      return !!values[key];
+    }
+    return false;
+  };
+
+  /**
    * Get the key and its information from local storage of the root of current domain.
    * @returns {any} with the information in the local storage of the domain
    */
@@ -80,7 +93,7 @@ class LocalStorage {
    * This operation causes set to null the instance of this singleton class.
    * So it's needed to call constructor again to create again the domain.
    */
-  static removeDomain = () => {
+  removeDomain = () => {
     const domainStorage = this.doesDomainExist();
 
     if (domainStorage) {
@@ -97,7 +110,7 @@ class LocalStorage {
    * throw an error
    * @param {string} key to update
    */
-  static removeKey = (key) => {
+  removeKey = (key) => {
     if (this.doesDomainExist()) {
       const domainStorage = this.getDomainStorage();
 
@@ -120,7 +133,7 @@ class LocalStorage {
    * @param {string} key to update
    * @param {*} newValue to update
    */
-  static updateKey = (key, newValue) => {
+  updateKey = (key, newValue) => {
     if (this.doesDomainExist()) {
       const domainStorage = this.getDomainStorage();
 

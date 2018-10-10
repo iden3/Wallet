@@ -45,7 +45,7 @@ class Button extends PureComponent {
       'i3-ww-button__primary': !overrideOwnClasses && this.props.type === 'primary',
       'i3-ww-button__secondary': !overrideOwnClasses && this.props.type === 'secondary',
       'i3-ww-button__danger': !overrideOwnClasses && this.props.type === 'danger',
-      [this.props.className]: true,
+      [`${this.props.className}`]: this.props.className,
     });
 
     return (

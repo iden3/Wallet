@@ -9,7 +9,7 @@
   -webkit-align-items: center; /* Safari. Chrome, Android, iOS */
   justify-content: space-between;
   -webkit-justify-content: space-between;  /* Safari. Chrome, Android, iOS */
-  height: 60px;
+  height: $widget-header-height;
   .i3-ww-widget__header-title {
     $map: ($large-desktop-width: $app-title-large-desktop-fs,
             $desktop-width: $app-title-desktop-fs,
@@ -18,9 +18,23 @@
             $mobile-max-width: $app-title-mobile-fs,
             $small-mobile-min-width: $app-title-small-fs);
     @include fluid-sizing('font-size', $map, true);
-    margin-left: 5%;
+    margin-left: 2%;
   }
   .i3-ww-widget__header-buttons-area {
     margin-right: 1%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    button, a {
+      background: transparent;
+      border: transparent;
+      color: $app-bg-color;
+    }
+    .i3-ww-widget__header-buttons-area--separator {
+      border-left: 1px white solid;
+      height: $widget-header-height;
+      width: 1vw;
+      margin-left: 2vh;
+    }
   }
 }

@@ -6,6 +6,7 @@ import {
 import Layout from 'views/layout';
 import LocalStorage from 'helpers/local-storage';
 import * as ROUTES from 'constants/routes';
+import { AppContextProvider } from 'app_context';
 
 import './app.scss';
 
@@ -27,7 +28,7 @@ class App extends Component {
    * @returns {boolean} true if already exists an identity
    */
   checkIdentityExistence = () => {
-    if (!this.localStorage.domain || !this.localStorage.domain.identity) {
+    if (!this.localStorage.domain || !this.localStorage.doesKeyExist('identity')) {
       this.localStorage = new LocalStorage('iden3');
       return false;
     }
@@ -37,22 +38,18 @@ class App extends Component {
 
   render() {
     const existsIdentity = this.checkIdentityExistence();
-    const LayoutCmpt = (props) => {
-      return (
-        <Layout
-          existsIdentity={existsIdentity}
-          {...props} />);
-    };
-    const redirectTo = existsIdentity ? ROUTES.DASHBOARD.MAIN : ROUTES.WELCOME.MAIN;
+    const redirectTo = existsIdentity ? ROUTES.DASHBOARD.MAIN : ROUTES.CREATE_IDENTITY.MAIN;
 
     return (
-      <div className="i3-ww-app">
-        <div className="i3-ww-popups" />
-        <Switch>
-          <Route path="/:tab" component={LayoutCmpt} />
-          <Redirect from="/" to={redirectTo} />
-        </Switch>
-      </div>
+      <AppContextProvider value={{ existsIdentity }}>
+        <div className="i3-ww-app">
+          <div className="i3-ww-popups" />
+          <Switch>
+            <Route path="/:tab" component={Layout} />
+            <Redirect from="/" to={redirectTo} />
+          </Switch>
+        </div>
+      </AppContextProvider>
     );
   }
 }

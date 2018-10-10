@@ -24,6 +24,7 @@ module.exports = {
     alias: {
       base_components: path.resolve(__dirname, './src/components/'),
       constants: path.resolve(__dirname, './src/constants/'),
+      app_context: path.resolve(__dirname, './src/app-context.js'),
       fixtures: path.resolve(__dirname, './src/fixtures'),
       hocs: path.resolve(__dirname, './src/hocs/'),
       state: path.resolve(__dirname, './src/state/'),
@@ -49,7 +50,23 @@ module.exports = {
         test: /\.(png|jpg|jpeg|gif|woff|woff2|ttf|eot|url\.svg)(\?.+)?$/,
         loader: 'url-loader?limit=8192&name=[name].[ext]',
       },
-    ],
+      // this rule is only to override global variables of antd framework that is made with LeSS
+      {
+        test: /\.less$/,
+        use: [{
+          loader: 'style-loader',
+        }, {
+          loader: 'css-loader', // translates CSS into CommonJS
+        }, {
+          loader: 'less-loader', // compiles Less to CSS
+          options: {
+            modifyVars: {
+              'font-family': '"Barlow Light", Lato, sans-serif !important',
+            },
+            javascriptEnabled: true,
+          },
+        }],
+      }],
   },
   plugins: [
     cleanWebPackPlugin,

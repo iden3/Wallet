@@ -1,4 +1,12 @@
 .i3-ww-scrollable {
   width: 100%;
   overflow-y: auto;
+  // only works in webkit based browsers, Mozilla can't style scroll bar
+  &::-webkit-scrollbar {
+    background-color: #F5F5F5;
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #336ABC;
+  }
 }
