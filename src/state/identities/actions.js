@@ -88,10 +88,10 @@ export function handleCreateIdentity(passphrase) {
   return function (dispatch) {
     dispatch(createIdentity());
     return API.createIdentity(passphrase)
-      .then((res) => {
-        dispatch(createIdentitySuccess(res));
+      .then((identity) => {
+        dispatch(createIdentitySuccess(identity));
         // return data from new user because is needed to bind it to a name in next step of the UI
-        return res;
+        return identity;
       })
       .catch(error => dispatch(createIdentityError(error.message)));
   };
@@ -127,8 +127,9 @@ export function handleUpdateIdentity(identity, data, passphrase) {
   return function (dispatch) {
     dispatch(updateIdentity());
     return API.updateIdentity(identity, data, passphrase)
-      .then((res) => {
-        dispatch(updateIdentitySuccess(res));
+      .then((updatedIdentity) => {
+        identitiesHelper.setIdentityAsDefault(updatedIdentity);
+        dispatch(updateIdentitySuccess(updatedIdentity));
       })
       .catch(error => dispatch(updateIdentityError(error)));
   };

@@ -103,7 +103,7 @@ function identities(state = initialState, action) {
       return state.merge({
         isFetching: false,
         error: '',
-        identities: state.setIn(['identities', action.data.get('idAddr')], action.data),
+        identities: state.get('identities').set(action.data.get('idAddr'), action.data),
       });
     case UPDATE_IDENTITY_ERROR:
       return state.merge({

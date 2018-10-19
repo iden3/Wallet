@@ -7,5 +7,5 @@ export const getIdentity = (state, idAddr) => getIdentitesState(state).get('iden
 export const getDefaultIdentity = (state) => {
   const idDefaultAddr = getIdentitesState(state).get('currentIdentity');
   const idDefault = getIdentity(state, idDefaultAddr);
-  return idDefault || new ImmutableMap({});
+  return new ImmutableMap(idDefault) || new ImmutableMap({});
 };
