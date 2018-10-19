@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import jsQR from 'jsqr';
 import { Camera } from 'base_components';
 
@@ -12,6 +13,13 @@ const ENDED_STREAM = 'ended';
  * for parsing the image and look for a QR code
  */
 class QRScanner extends PureComponent {
+  static propTypes = {
+    /*
+     Call back triggered when QR is read
+     */
+    actionAfterRead: PropTypes.func,
+  };
+
   state = {
     canvasElement: {},
     videoElement: {},
@@ -72,6 +80,7 @@ class QRScanner extends PureComponent {
       // check if QR code found
       if (code) {
         console.log('=====> QR CODE FOUND: ', code.data);
+        if (this.props.actionAfterRead) this.props.actionAfterRead(code.data);
         this.closeCamera();
       }
 

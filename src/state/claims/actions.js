@@ -1,9 +1,16 @@
+import * as API from 'helpers/api';
 import {
+  AUTHORIZE_CLAIM,
+  AUTHORIZE_CLAIM_SUCCESS,
+  AUTHORIZE_CLAIM_ERROR,
   FETCHING_CLAIMS,
   FETCHING_CLAIMS_SUCCESS,
   FETCHING_CLAIMS_ERROR,
+  CREATE_CLAIM,
   CREATE_CLAIM_SUCCESS,
+  CREATE_CLAIM_ERROR,
 } from './constants';
+import { Map as ImmutableMap } from 'immutable';
 
 
 function fetchingClaims() {
@@ -27,10 +34,43 @@ function fetchingClaimsError(error) {
   };
 }
 
+function createClaim() {
+  return {
+    type: CREATE_CLAIM,
+  };
+}
+
 function createClaimSuccess(data) {
   return {
     type: CREATE_CLAIM_SUCCESS,
+    data: new ImmutableMap({ ...data }),
+  };
+}
+
+function createClaimError(data) {
+  return {
+    type: CREATE_CLAIM_ERROR,
     data,
+  };
+}
+
+function authorizeClaim() {
+  return {
+    type: AUTHORIZE_CLAIM,
+  };
+}
+
+function authorizeClaimSuccess(data) {
+  return {
+    type: AUTHORIZE_CLAIM_SUCCESS,
+    data: new ImmutableMap({ ...data }),
+  };
+}
+
+function authorizeClaimError(error) {
+  return {
+    type: AUTHORIZE_CLAIM_ERROR,
+    data: error,
   };
 }
 
@@ -49,10 +89,22 @@ export default function handleFetchingClaims() {
 
 export function handleCreateClaim(claim) {
   return function (dispatch) {
+    dispatch(createClaim());
     return Promise.resolve()
       .then(() => {
         dispatch(createClaimSuccess(claim));
       })
-      .catch(error => dispatch(fetchingClaimsError(error)));
+      .catch(error => dispatch(createClaimError(error)));
+  };
+}
+
+export function handleAuthorizeClaim(identity, claim) {
+  return function (dispatch) {
+    dispatch(authorizeClaim());
+    return API.authorizeClaim(identity, claim)
+      .then((authorizedClaimData) => {
+        dispatch(authorizeClaimSuccess(authorizedClaimData));
+      })
+      .catch(error => dispatch(authorizeClaimError(error)));
   };
 }

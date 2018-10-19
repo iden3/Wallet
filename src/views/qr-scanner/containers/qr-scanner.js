@@ -1,5 +1,12 @@
 import React, { PureComponent } from 'react';
-import PropTytpes from 'prop-types';
+import PropTypes from 'prop-types';
+import { compose } from 'redux';
+import { Map as ImmutableMap } from 'immutable';
+import {
+  withIdentities,
+  withClaims,
+  withFormsValues,
+} from 'hocs';
 import {
   Box,
   QRScanner as QRScannerCmpt,
@@ -14,20 +21,47 @@ class QRScanner extends PureComponent {
     /*
      Flag to mount the qr scanner component
      */
-    isCameraVisible: PropTytpes.bool,
+    isCameraVisible: PropTypes.bool,
     /*
      Function to trigger when close camera
      */
-    toggleCameraVisibility: PropTytpes.func.isRequired,
+    toggleCameraVisibility: PropTypes.func.isRequired,
+    //
+    // from withClaims HoC
+    //
+    /*
+     Action authorize a claim received
+     */
+    handleAuthorizeClaim: PropTypes.func.isRequired,
+    //
+    // from withIdentities HoC
+    //
+    /*
+     Selector to get the current loaded identity information
+     */
+    defaultIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
+    /*
+     Selector to get the information related to an identity.
+     Expect the identity address as parameter
+     */
+    getIdentity: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     isCameraVisible: false,
   };
 
+  authorizeKSignClaim = (data) => {
+    this.props.handleAuthorizeClaim(this.props.defaultIdentity, data);
+  };
+
+
   render() {
     const contentCameraBox = this.props.isCameraVisible
-      ? <QRScannerCmpt />
+      ? (
+        <QRScannerCmpt
+          actionAfterRead={this.authorizeKSignClaim} />
+      )
       : <div />;
 
     return (
@@ -42,4 +76,8 @@ class QRScanner extends PureComponent {
   }
 }
 
-export default QRScanner;
+export default compose(
+  withClaims,
+  withIdentities,
+  withFormsValues,
+)(QRScanner);

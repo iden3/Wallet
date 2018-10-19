@@ -52,14 +52,6 @@ class NavBar extends Component {
   };
 
   /**
-   * Retrieve the name/label of the loaded identity to show it in the nav bar close
-   * to the identity icon
-   */
-  componentDidMount() {
-    //this.setState({ identityName: this.props.defaultIdentity.name || this.props.defaultIdentity.label });
-  }
-
-  /**
    * Update the state to show or not the box with the camera.
    * This callback is called from the camera button.
    */

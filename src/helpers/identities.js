@@ -98,7 +98,8 @@ export const createIdentity = function (idAddr, data, storage = APP_SETTINGS.LOC
  */
 export const createKeys = function (passphrase, storage = APP_SETTINGS.LOCAL_STORAGE) {
   const keyContainer = new iden3.KeyContainer(storage.toLowerCase());
-  keyContainer.unlock(passphrase); // for 30 seconds available
+  //keyContainer.unlock(passphrase); // for 30 seconds available
+  keyContainer.unlock('a');
   const keyRecovery = keyContainer.generateKey();
   const keyRevoke = keyContainer.generateKey();
   const keyOp = keyContainer.generateKey();

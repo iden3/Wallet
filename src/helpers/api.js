@@ -1,6 +1,7 @@
 import iden3 from 'iden3';
 import * as APP_SETTINGS from 'constants/app';
 import * as identitiesHelper from 'helpers/identities';
+import Claim from 'helpers/claims';
 
 /**
  * Create an identity, creating the keys that are stored in the local storage
@@ -47,7 +48,8 @@ export function createIdentity(passphrase, relayAddr = APP_SETTINGS.RELAY_ADDR) 
 export async function bindIdToUsername(identity, data, passphrase) {
   let identityUpdated = {};
 
-  identity.keys.keyContainer.unlock(passphrase); // for 30 seconds to update the identity
+  //identity.keys.keyContainer.unlock(passphrase); // for 30 seconds to update the identity
+  identity.keys.keyContainer.unlock('a');
   await identity.id.vinculateID(identity.keys.keyContainer, data.label || data.name)
     .then(res => identityUpdated = Object.assign({}, identityUpdated, res.data));
   return identityUpdated;
@@ -110,4 +112,21 @@ export async function updateIdentity(identity, data, passphrase, storage = APP_S
     return Promise.resolve(storedIdentity);
   }
   return Promise.reject(new Error('Not storage found when update identity'));
+}
+
+export function sendClaimToCentralizedServer(data) {
+  return iden3.auth.resolv(...data.valueSeq().toJS());
+}
+
+export function authorizeClaim(identity, data) {
+  const claim = new Claim(identity);
+  return Promise.resolve(claim.decodeReadedData(data));
+}
+
+export function authorizeKSignClaim(identity, data, keysContainer, ko, krec, krev) {
+  const idRelay = identity.get('relay').toJS();
+  const relay = new iden3.Relay(idRelay.url);
+  const id = new iden3.Id(krec, krev, ko, relay, '');
+  id.idaddr = identity.get('idAddr');
+  return Promise.resolve(id.AuthorizeKSignClaim(...data.valueSeq().toJS()));
 }

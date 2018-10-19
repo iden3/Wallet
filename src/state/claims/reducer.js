@@ -2,6 +2,9 @@ import {
   Map as ImmutableMap,
 } from 'immutable';
 import {
+  AUTHORIZE_CLAIM,
+  AUTHORIZE_CLAIM_SUCCESS,
+  AUTHORIZE_CLAIM_ERROR,
   FETCHING_CLAIMS,
   FETCHING_CLAIMS_ERROR,
   FETCHING_CLAIMS_SUCCESS,
@@ -24,6 +27,7 @@ function claims(state = initialState, action) {
       return state.merge({
         isFetchingClaims: false,
         claims: action.data,
+        error: '',
       });
     case FETCHING_CLAIMS_ERROR:
       return state.merge({
@@ -33,6 +37,21 @@ function claims(state = initialState, action) {
       });
     case CREATE_CLAIM_SUCCESS:
       return state;
+    case AUTHORIZE_CLAIM:
+      return state.merge({
+        isFetchingClaims: true,
+      });
+    case AUTHORIZE_CLAIM_SUCCESS:
+      return state.merge({
+        isFetchingClaims: false,
+        error: '',
+        claims: action.data,
+      });
+    case AUTHORIZE_CLAIM_ERROR:
+      return state.merge({
+        isFetchingClaims: false,
+        error: action.data,
+      });
     default:
       return state;
   }

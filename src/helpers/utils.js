@@ -254,3 +254,12 @@ export const maskWithExpression = function (unmaskedString, expression) {
   }
   return unmaskedString;
 };
+
+/**
+ * Return time in Unix format.
+ *
+ * @returns {number} - With the time in Unix format
+ */
+export const getUnixTime = function () {
+  return Math.round(+new Date() / 1000);
+};
