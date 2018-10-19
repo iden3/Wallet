@@ -1,8 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import * as FORMS from 'constants/forms';
 import classNames from 'classnames';
 import {
-  Button, Icon,
+  Button,
+  Icon,
   Input,
 } from 'base_components';
 
@@ -30,28 +32,14 @@ class StepSetPassphrase extends PureComponent {
     /*
      Callback to update the passphrase
      */
-    updatePassphraseValue: PropTypes.func.isRequired,
+    updateForm: PropTypes.func.isRequired,
+    createIdentity: PropTypes.func.isRequired,
   };
 
   state = {
-    passphrase: this.props.getFormValue('passphrase').get('first'),
-    repeatedPasshphrase: this.props.getFormValue('passphrase').get('second'),
+    passphrase: this.props.getFormValue(FORMS.PASSPHRASE).get('first'),
+    repeatedPasshphrase: this.props.getFormValue(FORMS.PASSPHRASE).get('second'),
     areSamePassphrases: true,
-    passphraseIsMasked: true,
-    repeatedPasshphraseIsMasked: true,
-  };
-
-  /**
-   * Triggered when user clicks in the "eye" button to toggle the view of
-   * way they are typing. So state is set to the opposite value that was set
-   * to set the type of each input as password or test
-   * @param {string} input - should be 'passphrase' or 'repeatedPasshphrase'
-   */
-  changeInputMask = (input) => {
-    if (input === 'passphrase' || input === 'repeatedPasshphrase') {
-      const inputState = `${input}IsMasked`;
-      this.setState(prevState => ({ [inputState]: !prevState[inputState] }));
-    }
   };
 
   /**
@@ -77,7 +65,7 @@ class StepSetPassphrase extends PureComponent {
    * Before moving forward to next screen check if both inputs
    * have the same value. If not, a notification is shown.
    */
-  moveForward = () => {
+  moveForward = async () => {
     this._updatePassphrase();
     // move backwards
     if (this.state.passphrase !== this.state.repeatedPasshphrase) {
@@ -92,32 +80,24 @@ class StepSetPassphrase extends PureComponent {
           color: 'white',
         },
       });
+    } else if (this.state.passphrase.length === 0 || this.state.repeatedPasshphrase.length === 0) {
+      // show error nofitication
+      this.setState({ areSamePassphrases: false });
+      // show notification with error
+      this.props.showNotification('error', {
+        message: 'Error',
+        description: 'Passphrases can\'t be empty',
+        style: {
+          background: '#f95555',
+          color: 'white',
+        },
+      });
     } else {
       // move forward
       this.setState({ areSamePassphrases: true });
+      await this.props.createIdentity(this.state.passphrase);
       this.props.move('forward');
     }
-  };
-
-  /**
-   * Set the icon with an eye to indicate an user that can click to
-   * toggle the view of what they are writing. Set the proper handlers
-   * regarding the input. With the key, triggers the callback the keys
-   * Enter or Space
-   * @param {string} input - Should be 'passphrase' or 'repeatedPassphrase'
-   * @returns {element} React element with Icon eye and proper handlers
-   */
-  setViewIcon = (input) => {
-    return (
-      <div
-        role="button"
-        tabIndex={0}
-        onKeyUp={(e) => {
-          (e.key === 'Enter' || e.key === ' ') && this.changeInputMask(input);
-        }}
-        onClick={() => this.changeInputMask(input)}>
-        <Icon type="eye" />
-      </div>);
   };
 
   /**
@@ -128,10 +108,11 @@ class StepSetPassphrase extends PureComponent {
    * @private
    */
   _updatePassphrase() {
-    this.props.updatePassphraseValue({
-      first: this.state.passphrase,
-      second: this.state.repeatedPasshphrase,
-    });
+    this.props.updateForm(FORMS.PASSPHRASE,
+      {
+        first: this.state.passphrase,
+        second: this.state.repeatedPasshphrase,
+      });
   }
 
   render() {
@@ -141,7 +122,7 @@ class StepSetPassphrase extends PureComponent {
     });
 
     return (
-      <div className="i3-ww-ci__passphrase">
+      <div className="i3-ww-ci__step i3-ww-ci__passphrase">
         <div className="i3-ww-ci__title">
           <p className="i3-ww-title">Create a passphrase</p>
         </div>
@@ -152,9 +133,10 @@ class StepSetPassphrase extends PureComponent {
             {' '}
             <span className="i3-ww-ci__passphrase-content-description1--bold">
             should have at least 15 characters with upper and lower case letters,
-            digits and some special character.
+            digits and some special characters.
             </span>
             <span className="i3-ww-ci__passphrase-content-description2">
+              {' '}
             But it should be a text which you are able to remember,
               {' '}
             since it will be asked in some of your activities with your identity.
@@ -162,23 +144,19 @@ class StepSetPassphrase extends PureComponent {
           </p>
           <div className={inputClasses}>
             <form>
-              <div className={this.state.passphraseIsMasked ? 'i3-ww-ci__passphrase--masked' : ''}>
+              <div>
                 <Input
-                  autoComplete="off"
-                  value={this.state.passphrase}
-                  type={this.state.passphraseIsMasked ? 'password' : 'text'}
                   placeholder="Enter a passphrase"
+                  value={this.state.passphrase}
                   onChange={e => this.handleInputChange(e.target.value, 'passphrase')}
-                  addonAfter={this.setViewIcon('passphrase')} />
+                  isPasswordType />
               </div>
-              <div className={this.state.repeatedPasshphraseIsMasked ? 'i3-ww-ci__passphrase--masked' : ''}>
+              <div>
                 <Input
-                  autoComplete="off"
-                  value={this.state.repeatedPasshphrase}
-                  type={this.state.repeatedPasshphraseIsMasked ? 'password' : 'text'}
                   placeholder="Repeat the passphrase"
+                  value={this.state.repeatedPasshphrase}
                   onChange={e => this.handleInputChange(e.target.value, 'repeatedPasshphrase')}
-                  addonAfter={this.setViewIcon('repeatedPasshphrase')} />
+                  isPasswordType />
               </div>
             </form>
           </div>

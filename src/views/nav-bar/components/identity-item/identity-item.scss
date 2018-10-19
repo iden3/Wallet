@@ -1,5 +1,5 @@
 .i3-ww-nav-bar {
-  .i3-ww-nav-bar-identity {
+  .i3-ww-nav-bar__identity {
     padding-left: 5%;
     display: flex;
     -webkit-display: flex;
@@ -22,6 +22,17 @@
     }
     .ant-menu-item:hover {
       border-bottom: none;
+    }
+    @media screen and (min-width: $small-mobile-min-width) and (max-width: $mobile-max-width) {
+      padding-left: 0;
+      .i3-ww-nav-bar--identity-name {
+          display: none;
+      }
+      .ant-avatar {
+        margin-right: 0;
+        width: 40px;
+        height: 40px;
+      }
     }
   }
 }

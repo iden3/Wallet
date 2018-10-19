@@ -7,7 +7,7 @@ import forms from 'state/forms';
 const {
   actions: {
     handleFetchingForms,
-    handleUpdatePassphrase,
+    handleUpdateForm,
   },
   selectors: {
     getForm,
@@ -31,9 +31,9 @@ function withFormsValuesWrapper(FormComponent) {
        */
       handleFetchingForms: PropTypes.func.isRequired,
       /*
-       Action to update passphrase when new identity is created
+       Action to update a form
        */
-      handleUpdatePassphrase: PropTypes.func.isRequired,
+      handleUpdateForm: PropTypes.func.isRequired,
       /*
        If fetching data about the value of the forms
      */
@@ -64,7 +64,7 @@ function withFormsValuesWrapper(FormComponent) {
   function mapDispatchToProps(dispatch) {
     return bindActionCreators({
       handleFetchingForms,
-      handleUpdatePassphrase,
+      handleUpdateForm,
     }, dispatch);
   }
 

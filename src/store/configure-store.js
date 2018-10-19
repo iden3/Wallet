@@ -9,6 +9,8 @@ export default function configureStore(initialState = {}) {
     initialState,
     composeWithDevTools(applyMiddleware(thunk)),
   );
+  // to query state in the console
+  window.appState = store.getState();
 
   if (module.hot) {
     const nextReducer = require('state/reducers');

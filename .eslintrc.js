@@ -32,6 +32,7 @@ module.exports = {
             "error",
             {"devDependencies": true, "optionalDependencies": false, "peerDependencies": false}
         ],
+        "no-prototype-builtins": [0],
         "no-plusplus": [0],
         "no-restricted-syntax": [0],
         "no-return-assign": [0],

@@ -27,9 +27,10 @@ class Claims extends Component {
    * Compose the tabs to show and the drop-down to choose the sort option
    * @returns {array} or React Elements with the tabs and the drop-down to sort
    * @private
+   * TODO: Add dropdown to sort by an option
    */
   _getTabs() {
-    const sortDropDown = (<DropDown title="Sort by" options={['Issuer', 'Date', 'Pinned first', 'Pinned last']} />);
+    // const sortDropDown = (<DropDown title="Sort by" options={['Issuer', 'Date', 'Pinned first', 'Pinned last']} />);
 
     return [CLAIM.TYPE.RECEIVED, CLAIM.TYPE.EMITTED, CLAIM.TYPE.GROUPED].map((claim) => {
       return {
@@ -37,9 +38,9 @@ class Claims extends Component {
         icon: claim.ICON,
         children: (
           <Fragment>
-            <div className="i3-ww-claims__drop-down">
+            {/* <div className="i3-ww-claims__drop-down">
               {sortDropDown}
-            </div>
+            </div> */}
             <List
               togglePinned={this.togglePinned}
               type={claim.NAME} />

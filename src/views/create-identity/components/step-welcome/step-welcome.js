@@ -23,7 +23,7 @@ class StepWelcome extends PureComponent {
 
   render() {
     return (
-      <div className="i3-ww-ci__welcome">
+      <div className="i3-ww-ci__step  i3-ww-ci__welcome">
         <div className="i3-ww-ci__title">
           <p className="i3-ww-title">Welcome to IDEN3</p>
           <p className="i3-ww-subtitle">Create your decentralized identity</p>
@@ -40,7 +40,9 @@ class StepWelcome extends PureComponent {
             onClick={() => this.props.move()}
             type="primary"
             htmlType="button">
-            Create your identity
+            Let
+            {'\''}
+            s go!
             <Icon type="right" />
           </Button>
         </div>

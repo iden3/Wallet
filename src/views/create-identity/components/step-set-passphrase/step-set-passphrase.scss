@@ -13,25 +13,15 @@
       margin-bottom: 3%;
     }
   }
-  .i3-ww-ci__passphrase--masked {
-    -webkit-text-security: disc;
-    -moz-text-security: disc;
-    text-security: disc;
-  }
   /* from iPhone 4 screens 320px until 479px */
   @media screen and (min-width: $mobile-min-width) and (max-width: $mobile-max-width - 1px) {
-    .i3-ww-step__content-description2 {
+    .i3-ww-ci__passphrase-content-description2 {
       display: none;
     }
   }
-  .i3-ww-ci__buttons {
-    padding-bottom: 20px;
-    display: flex;
-    justify-content: space-evenly;
-    /* from iPhone 4 screens 320px until 479px */
-    @media screen and (min-width: $mobile-min-width) and (max-width: $mobile-max-width - 1px) {
-      flex-direction: row;
-      align-items: center;
+  @media screen and (min-width: $mobile-min-width) and (max-width: $desktop-width) {
+    .i3-ww-ci__passphrase-inputs {
+      margin-top: 10%;
     }
   }
 }

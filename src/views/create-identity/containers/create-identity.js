@@ -2,13 +2,17 @@ import React, { Component } from 'react';
 import { compose } from 'redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
+import * as FORMS from 'constants/forms';
 import LocalStorage from 'helpers/local-storage';
-import { withFormsValues } from 'hocs';
+import {
+  withFormsValues,
+  withIdentities,
+} from 'hocs';
 import { notification } from 'base_components';
 import * as ROUTES from 'constants/routes';
 import {
   StepSetPassphrase,
-  StepConfirmCreateIdentity,
+  StepSetName,
   StepWelcome,
 } from '../components';
 
@@ -17,7 +21,7 @@ import './create-identity.scss';
 const sortedSteps = [
   StepWelcome,
   StepSetPassphrase,
-  StepConfirmCreateIdentity,
+  StepSetName,
 ];
 
 /**
@@ -27,28 +31,49 @@ const sortedSteps = [
  */
 class CreateIdentity extends Component {
   static propTypes = {
-    // From withSetIdentityValues HOC
-    /*
-      If fetching data about the value of the forms
-     */
-    isFetchingForms: PropTypes.bool.isRequired,
-    /*
-     If there is an error fetching value
-     */
-    fetchingFormsError: PropTypes.string.isRequired,
+    //
+    // from withFormsValues HOC
+    //
     /*
       Action to set a new passphrase in the app state
      */
-    handleUpdatePassphrase: PropTypes.func.isRequired,
+    handleUpdateForm: PropTypes.func.isRequired,
     /*
      Selector to retrieve the value of a form
      */
     getForm: PropTypes.func.isRequired,
+    //
+    // from react-router HoC
+    //
+    /*
+     React-router history prop
+     */
     history: PropTypes.object.isRequired,
+    //
+    // from withIdentities HoC
+    //
+    /*
+     Action creator to update an identity
+     */
+    handleCreateIdentity: PropTypes.func.isRequired,
+    /*
+     Update an identity, used to bind identity with a name after has been created
+     */
+    handleUpdateIdentity: PropTypes.func.isRequired,
+    /*
+     Action to add or subtract an identity
+     */
+    handleUpdateIdentitiesNumber: PropTypes.func.isRequired,
+    /*
+     Flag indicating any error when retrieve identities
+     */
+    identitiesError: PropTypes.string.isRequired,
   };
 
   state = {
     currentStep: 0,
+    userCreated: {},
+    passphrase: '',
   };
 
   constructor(props) {
@@ -56,8 +81,14 @@ class CreateIdentity extends Component {
     this.localStorage = new LocalStorage('iden3');
   }
 
+  /**
+   * Get the fields of the two inputs of when passphrase is asked
+   * just to fill them if we are moving forward or backwards to the
+   * that step.
+   */
   componentDidMount() {
-    this.props.getForm('passphrase');
+    this.props.getForm(FORMS.PASSPHRASE);
+    this.props.getForm(FORMS.IDENTITY_NAME);
   }
 
   /**
@@ -92,6 +123,49 @@ class CreateIdentity extends Component {
     }
   };
 
+  /**
+   * Call the action to update the form in the app state
+   * @param {string} form - from one of the forms in the app (given from a constants file)
+   * @param {object} newValues - with the new values
+   */
+  updateForm = (form, newValues) => {
+    this.props.handleUpdateForm(form, newValues);
+  };
+
+  /**
+   * Create the identity: create keys and set the relay. Then
+   * call the action creator to create the identity and set it
+   * in the app state and in the storage selected
+   * @private
+   */
+  createIdentity = (passphrase) => {
+    this.setState({ passphrase });
+    this.props.handleCreateIdentity(passphrase)
+      .then(newUser => this.setState({ userCreated: newUser }));
+
+    if (this.props.identitiesError) {
+      this.showNotification('error', {
+        message: 'Error',
+        description: `We are sorry... There was an error creating the identity:\n${this.props.identitiesError}`,
+        style: {
+          background: '#f95555',
+          color: 'white',
+        },
+      });
+    }
+  };
+
+  /**
+   * Update an identity. Basically it's used in the step after created the identity,
+   * in which we bind the name with the identity. We need to send the passprhase
+   * stored to sign the petition to the Relay.
+   *
+   * @param {Object} data - The data to update
+   * @returns {Promise<void>}
+   */
+  updateIdentity = async (data) => {
+    await this.props.handleUpdateIdentity(this.state.userCreated, data, this.state.passphrase);
+  };
 
   /**
    * Call back triggered after last step of create identity.
@@ -103,8 +177,8 @@ class CreateIdentity extends Component {
    */
   _goToDashboard() {
     // clean history to don't let user go back
-    this.props.history.index = 0;
-    this.localStorage.createKey('identity', '0xf3434938493');
+    this.props.handleUpdateIdentitiesNumber(true); // true is to add a new identity
+    this.props.history.index = 0; // in order that user can't go back
     return (<Redirect to={ROUTES.DASHBOARD.MAIN} />);
   }
 
@@ -117,8 +191,10 @@ class CreateIdentity extends Component {
            this.state.currentStep <= sortedSteps.length - 1
              ? (
                <Step
+                 createIdentity={this.createIdentity}
+                 updateIdentity={this.updateIdentity}
                  getFormValue={this.props.getForm}
-                 updatePassphraseValue={this.props.handleUpdatePassphrase}
+                 updateForm={this.updateForm}
                  showNotification={this.showNotification}
                  move={this.changeStep} />
              )
@@ -129,4 +205,7 @@ class CreateIdentity extends Component {
   }
 }
 
-export default compose(withFormsValues)(CreateIdentity);
+export default compose(
+  withIdentities,
+  withFormsValues,
+)(CreateIdentity);

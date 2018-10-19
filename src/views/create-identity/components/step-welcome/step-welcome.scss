@@ -24,8 +24,4 @@
             $small-mobile-min-width: 50px);
     @include fluid-sizing('margin-left', $map, true);
   }
-  .i3-ww-ci__content{
-    flex-grow: 1;
-    margin: 0 10%;
-  }
 }

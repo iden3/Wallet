@@ -6,6 +6,8 @@ import {
   withRouter,
 } from 'react-router-dom';
 import memoizeOne from 'memoize-one';
+import { Map as ImmutableMap } from 'immutable';
+import { withIdentities } from 'hocs';
 import { MenuItem } from 'base_components';
 import * as ROUTES from 'constants/routes';
 import { capitalizeFirstLetter } from 'helpers/utils';
@@ -28,14 +30,34 @@ class NavBar extends Component {
   // change the selected menu item when location has changed (when user has introduced by hand the URL i.e.)
   memoizedPath = memoizeOne(key => capitalizeFirstLetter(key.replace(/\//g, '')));
 
+  // memoize the name/label of the identity to show in the nav-bar when it's changed
+  memoizedIdentityName = memoizeOne(key => key.get('name') || key.get('label') || '');
+
   static propTypes = {
-    // from withRouter Hoc
+    //
+    // from withRouter HoC
+    //
     location: PropTypes.object.isRequired,
+    //
+    // from withIdentities HoC
+    //
+    /*
+     Selector to get the current loaded identity information
+     */
+    defaultIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
   };
 
   state = {
     isCameraVisible: false,
   };
+
+  /**
+   * Retrieve the name/label of the loaded identity to show it in the nav bar close
+   * to the identity icon
+   */
+  componentDidMount() {
+    //this.setState({ identityName: this.props.defaultIdentity.name || this.props.defaultIdentity.label });
+  }
 
   /**
    * Update the state to show or not the box with the camera.
@@ -81,12 +103,13 @@ class NavBar extends Component {
   render() {
     const menuItems = this._getMenuItems();
     const selectedMainMenuItem = this.memoizedPath(this.props.location.pathname);
+    const identityLabel = this.memoizedIdentityName(this.props.defaultIdentity);
 
     return (
       <div className="i3-ww-nav-bar">
         {/* Regular menu for desktop */}
         <div className="i3-ww-nav-bar__header-items">
-          <IdentityItem />
+          <IdentityItem title={identityLabel} />
           <DesktopMenu
             items={menuItems}
             selectedItem={selectedMainMenuItem} />
@@ -102,4 +125,5 @@ class NavBar extends Component {
 
 export default compose(
   withRouter,
+  withIdentities,
 )(NavBar);

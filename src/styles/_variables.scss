@@ -132,13 +132,24 @@ $input-color: $white;
 $input-error-border-color: $red;
 
 // Claim types
-$claim-type-assign-name-color: $white;
-$claim-type-sign-color: $white;
 $claim-type-default-color: $grey-23;
 
 // Claim list
 $claim-row-bg-color: $white;
 $claim-row-date-cell-bg-color: $grey-9;
+$claim-row-color: $black-100;
+
+// Tabs
+$tab-active-bg-color: $blue-20;
+$tab-color: $white;
+$tab-active-focus-hover-color: $blue-30;
+
+// Widgets
+$widget-header-border-color: $blue-20;
+
+// Lists
+$row-collapsible-content-color: $white;
+$row-collapsible-content-bg-color: $blue-30;
 
 /*
 * Other settings
@@ -171,3 +182,6 @@ $app-bg-gradient: '~static_images/gradient_app.jpg';
 
 // Widget
 $widget-header-height: 9vh;
+
+// Rows
+$border-row-radius: 5px;

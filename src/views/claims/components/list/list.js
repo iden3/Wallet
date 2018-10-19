@@ -48,14 +48,14 @@ class List extends PureComponent {
           ClaimCmpt = (
             <Claim
               content={`Issued by ${claim.issuer}`}
-              type={claim.type}
+              type={CLAIM.TYPE[claim.type.toUpperCase()].ICON}
               {...claimProps} />);
           break;
         case CLAIM.TYPE.EMITTED.NAME:
           ClaimCmpt = (
             <Claim
               content={`Emitted to ${claim.to}`}
-              type={claim.type}
+              type={CLAIM.TYPE[claim.type.toUpperCase()].ICON}
               {...claimProps} />);
           break;
         case CLAIM.TYPE.GROUPED.NAME:

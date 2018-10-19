@@ -20,7 +20,6 @@ import {
 } from 'views';
 import * as ROUTES from 'constants/routes';
 import {
-  Footer,
   HeaderWithLogo,
 } from '../components';
 
@@ -72,7 +71,7 @@ class Layout extends React.Component {
                   </Switch>
                 )
               }
-              <Footer />
+              {/* <Footer /> */}
             </Content>
           </LayoutCmpt>
         )}

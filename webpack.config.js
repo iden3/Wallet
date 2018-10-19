@@ -12,9 +12,7 @@ const htmlWebpackPlugin = new HtmlWebpackPlugin({
 });
 
 module.exports = {
-  entry: {
-    app: './src/index.js',
-  },
+  entry: ['@babel/polyfill', './src/index.js'],
   output: {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
@@ -62,6 +60,7 @@ module.exports = {
           options: {
             modifyVars: {
               'font-family': '"Barlow Light", Lato, sans-serif !important',
+              'font-size-base': '16px',
             },
             javascriptEnabled: true,
           },

@@ -25,8 +25,11 @@ class IdentityItem extends PureComponent {
   };
 
   render() {
+    // get the first word of the identity name/label
+    const title = this.props.title.replace(/ .*/, '');
+
     return (
-      <div className="i3-ww-nav-bar-identity">
+      <div className="i3-ww-nav-bar__identity">
         <Menu mode="horizontal">
           <MenuItem>
             <Link to={ROUTES.IDENTITIES.MAIN} replace>
@@ -35,7 +38,9 @@ class IdentityItem extends PureComponent {
                   shape="square"
                   size={64}
                   style={{ color: '#f56a00', backgroundColor: 'white' }} />
-                {this.props.title}
+                <span className="i3-ww-nav-bar--identity-name">
+                  {title}
+                </span>
               </span>
             </Link>
           </MenuItem>

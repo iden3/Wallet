@@ -1,5 +1,5 @@
 .i3-ww-widget__header {
-  border-bottom: 1px $app-border-color solid;
+  border-bottom: 1px $widget-header-border-color solid;
   display: flex;
   -webkit-display: flex;
   -moz-display: flex;
@@ -31,7 +31,7 @@
       color: $app-bg-color;
     }
     .i3-ww-widget__header-buttons-area--separator {
-      border-left: 1px white solid;
+      border-left: 1px $widget-header-border-color solid;
       height: $widget-header-height;
       width: 1vw;
       margin-left: 2vh;

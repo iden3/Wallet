@@ -18,6 +18,16 @@
 
 .i3-ww-input--error {
   input {
-    border: $input-error-border-color 2px solid;
+    // TODO: do it regarding if we should colour all the borders or not
+    //border: $input-error-border-color 2px solid;
+    border-bottom: $input-error-border-color 2px solid;
+    border-left: $input-error-border-color 2px solid;
+    border-top: $input-error-border-color 2px solid;
+  }
+  // colour the icon at the end of the input (if there is any)
+  .ant-input-group-addon {
+    border-bottom: $input-error-border-color 2px solid !important;
+    border-right: $input-error-border-color 2px solid !important;
+    border-top: $input-error-border-color 2px solid !important;
   }
 }

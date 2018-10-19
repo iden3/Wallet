@@ -1,9 +1,10 @@
 import { Map as ImmutableMap } from 'immutable';
+import * as FORMS from 'constants/forms';
 import {
   FETCHING_FORMS,
   FETCHING_FORMS_SUCCESS,
   FETCHING_FORMS_ERROR,
-  UPDATE_PASSPHRASE_FORM,
+  UPDATE_PASSPHRASE_FORM, UPDATE_IDENTITY_NAME_FORM,
 } from './constants';
 
 
@@ -41,9 +42,22 @@ export function handleFetchingForms() {
   };
 }
 
-export function handleUpdatePassphrase(passphrase) {
+export function handleUpdateForm(form, newValues) {
+  let type;
+
+  switch (form) {
+    case FORMS.PASSPHRASE:
+      type = UPDATE_PASSPHRASE_FORM;
+      break;
+    case FORMS.IDENTITY_NAME:
+      type = UPDATE_IDENTITY_NAME_FORM;
+      break;
+    default:
+      throw new Error('No form available to update');
+  }
+
   return {
-    type: UPDATE_PASSPHRASE_FORM,
-    data: new ImmutableMap({ ...passphrase }),
+    type,
+    data: new ImmutableMap({ ...newValues }),
   };
 }

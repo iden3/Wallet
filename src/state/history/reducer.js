@@ -28,7 +28,6 @@ function history(state = initialState, action) {
     case FETCHING_HISTORY_SUCCESS:
       return state.merge({
         isFetching: false,
-        history: ImmutableList(),
         error: action.error,
       });
     default:

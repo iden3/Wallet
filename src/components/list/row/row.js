@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { Icon } from 'base_components';
 
 import './row.scss';
 
@@ -20,6 +21,12 @@ class Row extends PureComponent {
       class name of the row
      */
     className: PropTypes.string,
+    /*
+      If we receive something in this prop, we should place an icon
+      with an arrow and do the content of this prop visible or not
+      and the row should be collapsible
+     */
+    collapsible: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     /*
       Initial content of the row. It should be buttons or icons
      */
@@ -41,31 +48,62 @@ class Row extends PureComponent {
     }),
   };
 
+  state = {
+    collapsed: true,
+  };
+
+  toggleCollapse = () => {
+    this.setState(prevState => ({ collapsed: !prevState.collapsed }));
+  };
+
   render() {
-    const cmptClasses = classNames({
-      'i3-ww-list__row': true,
+    const rowClasses = classNames({
+      'i3-ww-list__row-header': true,
       [`${this.props.className}`]: this.props.className,
     });
 
     return (
-      <div
-        className={cmptClasses}
-        role="row">
-        {this.props.initialContent && (
-          <div className="i3-ww-row__initial-content">
-            {this.props.initialContent}
-          </div>)}
-        {this.props.date && (
-          <div className="i3-ww-row__date">
-            {this.props.date}
-          </div>)}
-        <div className="i3-ww-row__main-content">
-          {this.props.mainContent}
+      <div className="i3-ww-list__row">
+        <div
+          className={rowClasses}
+          role="row">
+          {this.props.initialContent && (
+            <div className="i3-ww-row__initial-content">
+              {this.props.initialContent}
+            </div>)}
+          {this.props.date && (
+            <div className="i3-ww-row__date">
+              {this.props.date}
+            </div>)}
+          <div className="i3-ww-row__main-content">
+            {this.props.mainContent}
+          </div>
+          {this.props.finalContent && (
+            <div className="i3-ww-row__final-content">
+              {this.props.finalContent}
+            </div>)}
+          {this.props.collapsible
+          && (
+            <div
+              className="i3-ww-row__collapsible-button"
+              tabIndex="0"
+              role="gridcell"
+              onKeyUp={this.toggleCollapse}
+              onClick={this.toggleCollapse}>
+              <Icon type={this.state.collapsed ? 'down' : 'up'} />
+            </div>
+          )
+          }
         </div>
-        {this.props.finalContent && (
-          <div className="i3-ww-row__final-content">
-            {this.props.finalContent}
-          </div>)}
+        {this.props.collapsible
+        && (
+        <div className={classNames({
+          'i3-ww-row__collapsible-content': true,
+          'i3-ww-row__collapsible-content--visible': !this.state.collapsed,
+        })}>
+          {this.props.collapsible}
+        </div>
+        )}
       </div>
     );
   }

@@ -5,7 +5,6 @@
   -moz-display: block;
   -ms-display: block;
   -o-display: block;
-
   .ant-menu {
     font-size: inherit;
     background: transparent;
@@ -39,5 +38,11 @@
     height: inherit;
     margin-left: inherit;
     align-items: center;
+    .ant-menu-item-selected {
+      vertical-align: top;
+      a {
+        color: $nav-bar-selected-item-color;
+      }
+    }
   }
 }

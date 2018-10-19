@@ -10,9 +10,6 @@ class LocalStorage {
     if (!instance) {
       instance = this;
       this._domain = domainName;
-      if (!this.doesDomainExist()) {
-        this.createDomain();
-      }
     }
 
     return instance;
@@ -29,12 +26,10 @@ class LocalStorage {
   }
 
   /**
-   * Create the main key at the local storage. If it exists, return an error
+   * Remove all the local storage
    */
-  createDomain = () => {
-    if (!this.doesDomainExist()) {
-      localStorage.setItem(this._domain, JSON.stringify({}));
-    }
+  clear = () => {
+    localStorage.clear();
   };
 
   /**
@@ -43,111 +38,117 @@ class LocalStorage {
    * @param {*} value
    */
   createKey = (key, value) => {
-    if (this.doesDomainExist()) {
-      const domainStorage = this.getDomainStorage();
+    const finalKey = `${this.domain}-${key}`;
 
-      if (domainStorage) {
-        if (!domainStorage[key]) {
-          domainStorage[key] = value;
-          localStorage.setItem(this._domain, JSON.stringify(domainStorage));
-          return true;
-        }
-        throw new Error(`Can not create Key ${key} because already exists`);
-      }
+    if (!this.getItem(finalKey)) {
+      return this.setItem(finalKey, value);
     }
-
-    throw new Error(`Can not create Key ${key} because domain ${this._domain} does not exist`);
+    return false;
   };
 
   /**
-   * Check if root key of the domain exists at the local storage
-   * @returns {boolean} true if exists, false otherwise
+   * Compose the key to search in the storage. Basically if hasn't the domain
+   * as prefix, add it
+   * @param {string} key - to search
+   * @returns {string} - With the key well formed
    */
-  doesDomainExist = () => {
-    return !!localStorage.getItem(this._domain);
-  };
+  composeKey(key) {
+    return key.startsWith(`${this.domain}-`)
+      ? key
+      : `${this.domain}-${key}`;
+  }
 
   /**
    * Check if a key exists in the domain stored in the local storage
    * @param {string} key - The key to look for
    * @returns {boolean} True if exists, false otherwise
    */
-  doesKeyExist = (key) => {
-    if (this.doesDomainExist()) {
-      const values = this.getDomainStorage();
-      return !!values[key];
+  existsKey = (key) => {
+    const item = this.getItem(key);
+    return item !== null && item !== undefined;
+  };
+
+  /**
+   * Get an item from the local storage with the prefix of current domain
+   *
+   * @param {string} key - to get from the local storage
+   * @returns {any} the content stored that belong to the item sent
+   */
+  getItem = (key) => {
+    const item = localStorage.getItem(this.composeKey(key));
+
+    return item ? JSON.parse(item).d : null;
+  };
+
+  /**
+   * Retrieve an array with all the keys in the local storage.
+   * If prefix sent, return only keys with this prefix inside.
+   *
+   * @param {string} prefix - to check inside the value of a key
+   * @returns {string[]} - with the keys retrieved
+   */
+  getKeys(prefix) {
+    const keys = Object.keys(localStorage); // all keys
+    if (prefix) {
+      const keysLength = keys.length;
+      const filteredKeys = [];
+
+      for (let i = 0; i < keysLength; i++) {
+        if (keys[i].includes(prefix)) filteredKeys.push(keys[i]);
+      }
+
+      return filteredKeys;
     }
+
+    return keys;
+  }
+
+  /**
+   * Remove a key from the local storage. If it does not exist
+   * throw an error.
+   *
+   * @param {string} key - to remove
+   * @returns {boolean} - True if exists key and was removed, false otherwise
+   */
+  removeItem = (key) => {
+    const finalKey = this.composeKey(key);
+
+    if (!this.getItem(finalKey)) {
+      localStorage.removeItem(finalKey);
+      return true;
+    }
+
     return false;
   };
 
   /**
-   * Get the key and its information from local storage of the root of current domain.
-   * @returns {any} with the information in the local storage of the domain
+   * Set an item in the local storage with a prefix of the current domain.
+   *
+   * @param {string} key - new key to set
+   * @param {*} value - data to set in with this key
    */
-  getDomainStorage = () => {
-    return JSON.parse(localStorage.getItem(this._domain));
-  };
-
-  /**
-   * Remove the domain root from local storage.
-   * This operation causes set to null the instance of this singleton class.
-   * So it's needed to call constructor again to create again the domain.
-   */
-  removeDomain = () => {
-    const domainStorage = this.doesDomainExist();
-
-    if (domainStorage) {
-      localStorage.removeItem(this._domain);
-      instance = null;
+  setItem(key, value) {
+    if (key && value !== undefined && value !== null) {
+      const finalKey = this.composeKey(key);
+      const data = { d: value };
+      localStorage.setItem(finalKey, JSON.stringify(data));
       return true;
     }
-
-    throw new Error(`Can not remove domain ${this._domain} because it does not exist`);
-  };
-
-  /**
-   * Remove a key from the local storage. If it does not exist
-   * throw an error
-   * @param {string} key to update
-   */
-  removeKey = (key) => {
-    if (this.doesDomainExist()) {
-      const domainStorage = this.getDomainStorage();
-
-      if (domainStorage) {
-        if (domainStorage[key]) {
-          delete domainStorage[key];
-          localStorage.setItem(this._domain, JSON.stringify(domainStorage));
-          return true;
-        }
-        throw new Error(`Can not remove Key ${key} because it does not exist`);
-      }
-    }
-
-    throw new Error(`Can not remove Key ${key} because the domain ${this._domain} does not exist`);
-  };
+    return false;
+  }
 
   /**
    * Updates a key of our domain in the local storage.
-   * If doesn't exist throw an error
+   * If doesn't exist throw an error.
+   *
    * @param {string} key to update
    * @param {*} newValue to update
    */
   updateKey = (key, newValue) => {
-    if (this.doesDomainExist()) {
-      const domainStorage = this.getDomainStorage();
-
-      if (domainStorage && domainStorage[key]) {
-        if (domainStorage[key]) {
-          domainStorage[key] = newValue;
-          localStorage.setItem(this._domain, JSON.stringify(domainStorage));
-          return true;
-        }
-        throw new Error(`Can not update Key ${key} because it does not exist`);
-      }
+    if (this.getItem(key) !== null || this.getItem(key) !== undefined) {
+      return this.setItem(key, newValue);
     }
-
-    throw new Error(`Can not update Key ${key} because the domain ${this._domain} does not exist`);
+    return false;
   }
 }
 
