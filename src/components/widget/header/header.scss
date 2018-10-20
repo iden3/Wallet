@@ -9,7 +9,6 @@
   -webkit-align-items: center; /* Safari. Chrome, Android, iOS */
   justify-content: space-between;
   -webkit-justify-content: space-between;  /* Safari. Chrome, Android, iOS */
-  height: $widget-header-height;
   .i3-ww-widget__header-title {
     $map: ($large-desktop-width: $app-title-large-desktop-fs,
             $desktop-width: $app-title-desktop-fs,

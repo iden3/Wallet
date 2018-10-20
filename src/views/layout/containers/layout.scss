@@ -1,25 +1,17 @@
 .i3-ww-layout {
   display: flex;
-  height: 100vh; // to fit height to the screen size
+  min-height: 100vh; // to fit height to the screen size
   flex-direction: column;
-  //override ant styles
-  .ant-layout-header {
-    padding: 0;
-    $map: ($desktop-width: 1240px,
-            $tablet-landscape-width: 350px,
-            $tablet-portrait-width: 350px,
-            $mobile-max-width: 256px,
-            $small-mobile-min-width: 256px,
-    );
-    @include fluid-sizing('width', $map, true);
-  }
   .ant-layout-footer {
     z-index: -1;
   }
   .i3-ww-header {
     flex: none;
     z-index: $header-z-index;
-    display: table;
+    padding-left: 0;
+    padding-right: 0;
+    height: auto;
+    line-height: normal;
   }
   .i3-ww-header__no-nav-bar {
     height: 104px;

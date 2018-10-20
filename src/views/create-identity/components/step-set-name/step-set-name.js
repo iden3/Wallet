@@ -109,7 +109,7 @@ class StepSetName extends PureComponent {
             onClick={this.moveForward}
             type="primary"
             htmlType="button">
-            Go to my dashboard
+            Dashboard
             <Icon type="right" />
           </Button>
         </div>

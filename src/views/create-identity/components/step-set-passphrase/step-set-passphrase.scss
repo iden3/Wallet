@@ -1,27 +1,12 @@
 .i3-ww-ci__passphrase {
-  width: 85vw;
-  @media screen and (min-width: $tablet-portrait-width) {
-    input {
-      width: 50vw;
-    }
-  }
   .i3-ww-ci__passphrase-content-description1--bold {
     font-weight: bold;
   }
-  .i3-ww-ci__passphrase-inputs {
-    .i3-ww-input {
-      margin-bottom: 3%;
-    }
-  }
-  /* from iPhone 4 screens 320px until 479px */
-  @media screen and (min-width: $mobile-min-width) and (max-width: $mobile-max-width - 1px) {
-    .i3-ww-ci__passphrase-content-description2 {
-      display: none;
-    }
-  }
-  @media screen and (min-width: $mobile-min-width) and (max-width: $desktop-width) {
-    .i3-ww-ci__passphrase-inputs {
-      margin-top: 10%;
-    }
+  .i3-ww-ci__input-wrapper {
+    padding-bottom: 10px;
+    max-width: 400px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
   }
 }

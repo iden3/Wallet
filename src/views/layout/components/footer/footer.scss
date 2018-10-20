@@ -1,14 +1,11 @@
 .i3-ww-footer {
   margin: 0;
-  z-index: $footer-z-index;
-  position: absolute;
-  bottom: 0;
   width: 100%;
   background: transparent;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 1px;
+  padding: 20px;
   i {
     font-size: 34px;
   }
@@ -22,16 +19,6 @@
 
  .i3-ww-footer__links {
     font-size: 18px;
-  }
-  /* iPhone 4 screens 320x480 */
-  @media screen and (min-width: $mobile-min-width) and (max-height: $mobile-max-width) {
-    height: 71px;
-    .i3-ww-footer__links {
-      display: none;
-    }
-  }
-  @media screen and (min-height: $mobile-max-width + 1 ) {
-    padding-bottom: 2%;
   }
 }
 

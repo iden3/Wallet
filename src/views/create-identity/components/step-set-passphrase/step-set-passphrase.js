@@ -144,14 +144,14 @@ class StepSetPassphrase extends PureComponent {
           </p>
           <div className={inputClasses}>
             <form>
-              <div>
+              <div className="i3-ww-ci__input-wrapper">
                 <Input
                   placeholder="Enter a passphrase"
                   value={this.state.passphrase}
                   onChange={e => this.handleInputChange(e.target.value, 'passphrase')}
                   isPasswordType />
               </div>
-              <div>
+                <div className="i3-ww-ci__input-wrapper">
                 <Input
                   placeholder="Repeat the passphrase"
                   value={this.state.repeatedPasshphrase}

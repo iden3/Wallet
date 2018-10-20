@@ -1,51 +1,31 @@
 .i3-ww-ci {
-  display: flex;
-  height: 79%;
   width: 100%;
-  position: absolute;
+  padding: 20px 20px;
   flex-direction: column;
   align-items: center;
   text-align: center;
   color: $app-font-color;
+  flex: 1;
   .i3-ww-ci__step {
     display: flex;
     align-items: center;
     justify-content: space-around;
     flex-direction: column;
-    height: 95%;
-    .i3-ww-ci__content{
-      flex-grow: 1;
-      margin: 5%;
-      padding-top: 5vh;
+    .i3-ww-ci__content {
+      max-width: 600px;
+      width: 100%;
     }
     .i3-ww-ci__buttons {
       padding-top: 30px;
       flex-direction: row;
-      align-items: center;
+      justify-content: center;
       width: 100%;
       padding-bottom: 20px;
       display: flex;
-      justify-content: space-evenly;
-      /* from iPhone 4 screens 320px until 479px */
-      @media screen and (min-width: $mobile-min-width) and (max-width: $mobile-max-width - 1px) {
-        flex-direction: row;
-        align-items: center;
-      }
+      flex-wrap: wrap;
     }
-    @media screen and (min-width: $small-mobile-min-width) and (max-width: $mobile-min-width) {
-      .i3-ww-ci__title {
-        padding-top: 2vh;
-      }
-      .i3-ww-ci__content {
-        padding-top: 0;
-        margin: 0 10%;
-      }
-    }
-  }
-  /* from iPhone 4 screens 320px until 479px */
-  @media screen and (min-width: $mobile-min-width) and (max-width: $mobile-max-width - 1px) {
-    .i3-ww-ci__buttons {
-      padding-top: 0;
+    .i3-ww-button {
+      margin: 6px;
     }
   }
 }
