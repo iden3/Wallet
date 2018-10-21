@@ -17,13 +17,14 @@ body {
   padding: 0;
   height: 100%;
   font-family: Barlow Light, Lato, sans-serif !important;
-  $map: ($large-desktop-width: $app-regular-large-desktop-fs,
+  /*$map: ($large-desktop-width: $app-regular-large-desktop-fs,
           $desktop-width: $app-regular-desktop-fs,
           $tablet-landscape-width: $app-regular-tablet-landscape-fs,
           $tablet-portrait-width: $app-regular-tablet-portrait-fs,
           $mobile-max-width: $app-regular-mobile-fs,
           $small-mobile-min-width: $app-regular-small-fs);
-  @include fluid-sizing('font-size', $map, false);
+  @include fluid-sizing('font-size', $map, false);*/
+  font-size: $app-regular-fs;
   background-color: $app-bg-color;
   #i3-ww-root {
     position: relative;

@@ -49,9 +49,9 @@ $galaxy-s7-max-width: 640px;
 /*
 * Fonts sizes
  */
-$app-title-fs: 35px;
-$app-subtitle-fs: 26px;
-$app-regular-fs: 18px;
+$app-title-fs: 25px;
+$app-subtitle-fs: 20px;
+$app-regular-fs: 16px;
 
 $app-title-large-desktop-fs: 40px;
 $app-title-desktop-fs: 40px;
@@ -75,6 +75,10 @@ $app-regular-mobile-fs: 14px;
 $app-regular-small-fs: 12px;
 
 $claim-list-pinned-icon-fs: 30px;
+
+$nav-bar-fs: $app-subtitle-fs;
+$widget-header-title: $app-title-fs;
+$widget-header-subtitle: $app-regular-fs;
 
 /*
 * Colors
@@ -100,9 +104,6 @@ $nav-bar-fixed-item-color: $blue-10;
 
 // Nav bar mobile
 $nav-bar-mobile-selected-item-border-color: $blue-10;
-
-// Box: side panel and pop-up
-$box-bg-color: $white;
 
 // Button
 $button-primary-bg-color: $blue-10;
@@ -146,10 +147,15 @@ $tab-active-focus-hover-color: $blue-30;
 
 // Widgets
 $widget-header-border-color: $blue-20;
+$widget-header-bg-color: $blue-11;
 
 // Lists
 $row-collapsible-content-color: $white;
 $row-collapsible-content-bg-color: $blue-30;
+
+// Box: Side panel and pop ups
+$box-bg-color: &$blue-40;
+$box-header-border-color: $blue-30;
 
 /*
 * Other settings
@@ -182,6 +188,7 @@ $app-bg-gradient: '~static_images/gradient_app.jpg';
 
 // Widget
 $widget-header-height: 9vh;
+$widget-max-width: 800px;
 
 // Rows
 $border-row-radius: 5px;

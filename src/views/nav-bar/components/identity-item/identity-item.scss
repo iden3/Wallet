@@ -6,6 +6,13 @@
     -moz-display: flex;
     -ms-display: flex;
     -o-display: flex;
+    .i3-ww-nav-bar--identity-icon-name {
+      display: flex;
+      align-items: center;
+      .i3-ww-nav-bar--identity-name {
+        padding-left: 5px;
+      }
+    }
     .anticon {
       margin-right: 15px;
       margin-bottom: 3px;

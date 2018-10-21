@@ -14,7 +14,7 @@ class Footer extends PureComponent {
           <a href="https://iden3.io" target="_blank" rel="noopener noreferrer">
             <Icon type="global" />
           </a>
-          <a href="https://github.com/iden3">
+          <a href="https://github.com/iden3" target="_blank" rel="noopener noreferrer">
             <Icon type="github" />
           </a>
           <a href="https://twitter.com/identhree" target="_blank" rel="noopener noreferrer">

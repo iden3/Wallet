@@ -33,11 +33,8 @@ class IdentityItem extends PureComponent {
         <Menu mode="horizontal">
           <MenuItem>
             <Link to={ROUTES.IDENTITIES.MAIN} replace>
-              <span>
-                <Avatar
-                  shape="square"
-                  size={64}
-                  style={{ color: '#f56a00', backgroundColor: 'white' }} />
+              <span className="i3-ww-nav-bar--identity-icon-name">
+                <Avatar value="Paco Miros" />
                 <span className="i3-ww-nav-bar--identity-name">
                   {title}
                 </span>

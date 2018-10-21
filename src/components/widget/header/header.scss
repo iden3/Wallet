@@ -1,4 +1,5 @@
 .i3-ww-widget__header {
+  background: $widget-header-bg-color;
   border-bottom: 1px $widget-header-border-color solid;
   display: flex;
   -webkit-display: flex;
@@ -10,16 +11,11 @@
   justify-content: space-between;
   -webkit-justify-content: space-between;  /* Safari. Chrome, Android, iOS */
   .i3-ww-widget__header-title {
-    $map: ($large-desktop-width: $app-title-large-desktop-fs,
-            $desktop-width: $app-title-desktop-fs,
-            $tablet-landscape-width: $app-title-tablet-landscape-fs,
-            $tablet-portrait-width: $app-title-tablet-portrait-fs,
-            $mobile-max-width: $app-title-mobile-fs,
-            $small-mobile-min-width: $app-title-small-fs);
-    @include fluid-sizing('font-size', $map, true);
+    font-size: $widget-header-title;
     margin-left: 2%;
   }
   .i3-ww-widget__header-buttons-area {
+    font-size: $widget-header-subtitle;
     margin-right: 1%;
     display: flex;
     flex-direction: row;

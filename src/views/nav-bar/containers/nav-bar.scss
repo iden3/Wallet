@@ -1,5 +1,6 @@
 .i3-ww-nav-bar {
-  height: 90px;
+  font-size: $nav-bar-fs;
+  height: 75px;
   display: block;
   -webkit-display: block;
   -moz-display: block;
@@ -9,7 +10,7 @@
     font-size: inherit;
     background: transparent;
     color: $nav-bar-item-color;
-    line-height: $nav-bar-item-height;
+    //line-height: $nav-bar-item-height;
     .ant-menu-item, a {
       color: $nav-bar-item-color;
       transition: unset;

@@ -1,13 +1,14 @@
 .i3-ww-nav-bar {
   // from 1280px and above is shown
   .i3-ww-nav-bar-desktop {
-    $map: ($large-desktop-width: $app-subtitle-large-desktop-fs,
-            $desktop-width: $app-subtitle-desktop-fs,
+    /*$map: ($large-desktop-width: $app-subtitle-tablet-landscape-fs,
+            $desktop-width: $app-subtitle-tablet-landscape-fs,
             $tablet-landscape-width: $app-subtitle-tablet-landscape-fs,
             $tablet-portrait-width: $app-subtitle-tablet-portrait-fs,
             $mobile-max-width: $app-subtitle-mobile-fs,
             $small-mobile-min-width: $app-subtitle-small-fs);
-    @include fluid-sizing('font-size', $map, true);
+    @include fluid-sizing('font-size', $map, true);*/
+    //font-size: $app-subtitle-fs;
     display: none;
     -webkit-display: none;
     -moz-display: none;
