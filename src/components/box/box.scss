@@ -1,4 +1,5 @@
 .i3-ww-box {
+  color: $app-font-color;
   .i3-ww-panel {
     position: fixed;
     width: 100%;
@@ -10,7 +11,7 @@
   }
 
   .i3-ww-panel-inner {
-    background-color: $white;
+    background-color: $box-bg-color;
     min-height: 100%;
   }
 

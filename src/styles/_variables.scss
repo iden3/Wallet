@@ -154,7 +154,7 @@ $row-collapsible-content-color: $white;
 $row-collapsible-content-bg-color: $blue-30;
 
 // Box: Side panel and pop ups
-$box-bg-color: &$blue-40;
+$box-bg-color: $blue-40-rgba;
 $box-header-border-color: $blue-30;
 
 /*
@@ -187,7 +187,7 @@ $generic-avatar: '~static_images/generic-avatar-1.png';
 $app-bg-gradient: '~static_images/gradient_app.jpg';
 
 // Widget
-$widget-header-height: 9vh;
+$widget-header-height: 60px;
 $widget-max-width: 800px;
 
 // Rows
