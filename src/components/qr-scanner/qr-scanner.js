@@ -10,7 +10,7 @@ const ENDED_STREAM = 'ended';
  * Class  that uses jsqr library to scan a QR and retrieve the data.
  * Uses the camera component to get the stream and find the QR.
  * ScanImage is a function triggered for each tick of the video stream
- * for parsing the image and look for a QR code
+ * for parsing the image and look for a QR code.
  */
 class QRScanner extends PureComponent {
   static propTypes = {
@@ -31,7 +31,8 @@ class QRScanner extends PureComponent {
   }
 
   /**
-   * Access to the video stream and stop them, removing them from the event loop
+   * Access to the video stream and stop them, removing them from the event loop.
+   *
    * @param {object} stream of the video
    */
   closeCamera = () => {
@@ -40,7 +41,8 @@ class QRScanner extends PureComponent {
 
   /**
    * Parse the current tick of the stream video to check if there is
-   * any QR code and retrieve the data inside
+   * any QR code and retrieve the data inside.
+   *
    * @param {node || number} videoElement HTML Element with the video streaming
    * @param {node} canvasElement HTML Canvas Element with a hidden canvas element from which get the info of
    * the video stream and manipulate it
@@ -58,7 +60,8 @@ class QRScanner extends PureComponent {
 
   /**
    * Handle each tick of the stream to check if there is any QR shown
-   * to capture the data
+   * to capture the data.
+   *
    * @private
    */
   _handleStreamTick() {

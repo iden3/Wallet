@@ -41,7 +41,8 @@ class StepSetName extends PureComponent {
   /**
    * Handle the Input controlled components values when changed. Set the
    * state of each input with current  value.
-   * @param {string} value from the input
+   *
+   * @param {string} value - from the input
    */
   handleInputChange = (value) => {
     this.setState({ label: value });
@@ -49,7 +50,7 @@ class StepSetName extends PureComponent {
 
   /**
    * Update the app state with the current identity name introduced
-   * and trigger callback to move former view of the wizard
+   * and trigger callback to move former view of the wizard.
    */
   moveBackwards = () => {
     this._updateForm();
@@ -58,7 +59,7 @@ class StepSetName extends PureComponent {
 
   /**
    * Before moving forward to next screen check, clean
-   * the passphrase from the app state, we don't need it anymore
+   * the passphrase from the app state, we don't need it anymore.
    */
   moveForward = () => {
     this.props.updateIdentity({ label: this.state.label, domain: this.state.domain });
@@ -68,7 +69,8 @@ class StepSetName extends PureComponent {
 
   /**
    * Trigger call back from props to update the identity
-   * name in the app state
+   * name in the app state.
+   *
    * @private
    */
   _updateForm() {

@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import { Map as ImmutableMap } from 'immutable';
@@ -9,9 +9,13 @@ import {
 } from 'hocs';
 import {
   Box,
+  Button,
+  Input,
   QRScanner as QRScannerCmpt,
 } from 'base_components';
 import * as BOX_CONSTANTS from 'constants/box';
+
+import './claim-reader.scss';
 
 /**
  * Scanner of a QR view, we will call the Box component to show the cam
@@ -40,27 +44,67 @@ class QRScanner extends PureComponent {
      Selector to get the current loaded identity information
      */
     defaultIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
-    /*
-     Selector to get the information related to an identity.
-     Expect the identity address as parameter
-     */
-    getIdentity: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     isCameraVisible: false,
   };
 
+  state = {
+    inputClaimData: '',
+  };
+
+  /**
+   * Call back triggered once a QR is read or link is introduced, we need
+   * to send back the information of the current identity and the data read.
+   *
+   * @param {string} data - read from a QR or introduced by user in the input
+   */
   authorizeKSignClaim = (data) => {
     this.props.handleAuthorizeClaim(this.props.defaultIdentity, data);
   };
 
+  /**
+   * Handle the Input controlled components values when changed. Set the
+   * state of each input with current  value.
+   *
+   * @param {string} value - from the input
+   */
+  handleInputChange = (value) => {
+    this.setState({ inputClaimData: value });
+  };
+
+  _getInput() {
+    return (
+      <div className="i3-ww-claim-reader__manual-input">
+        <Input
+          value={this.state.inputClaimData}
+          placeholder="Introduce a code"
+          onChange={e => this.handleInputChange(e.target.value)} />
+        <Button
+          onClick={() => this.authorizeKSignClaim(this.state.inputClaimData)}
+          type="primary"
+          htmlType="button">
+          Read introduced code
+        </Button>
+      </div>
+    );
+  }
+
+  _getQRScanner() {
+    return (
+      <div className="i3-ww-claim-reader__camera">
+        <QRScannerCmpt actionAfterRead={this.authorizeKSignClaim} />
+      </div>);
+  }
 
   render() {
     const contentCameraBox = this.props.isCameraVisible
       ? (
-        <QRScannerCmpt
-          actionAfterRead={this.authorizeKSignClaim} />
+        <div className="i3-ww-claim-reader">
+          {this._getQRScanner()}
+          {this._getInput()}
+        </div>
       )
       : <div />;
 
