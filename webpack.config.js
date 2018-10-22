@@ -14,7 +14,7 @@ const htmlWebpackPlugin = new HtmlWebpackPlugin({
 module.exports = {
   entry: ['@babel/polyfill', './src/index.js'],
   output: {
-    filename: 'js/[name].js',
+    filename: 'js/i3-web-wallet.js',
     path: path.resolve(__dirname, 'dist'),
     publicPath: '',
   },
@@ -44,11 +44,6 @@ module.exports = {
           loader: 'babel-loader',
         },
       },
-      /*{
-        test: /\.(png|jpg|jpeg|gif|woff|woff2|ttf|eot|url\.svg)(\?.+)?$/,
-        exclude: /node_modules/,
-        loader: 'url-loader?limit=8192&name=[name].[ext]',
-      },*/
       {
         test: /\.(jpe?g|png|gif|svg|ico|url)$/i,
         exclude: /node_modules/,
@@ -59,17 +54,6 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'url-loader?limit=8192&name=fonts/[name].[ext]',
       },
-      /*{
-        test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|otf|ico|mp4)(\?\S*)?$/,
-        use: {
-          loader: 'file-loader',
-          options: {
-            outputPath: 'assets/',
-            publicPath: './static',
-            name: '[name].[ext]',
-          },
-        },
-      },*/
       {
         test: /\.(sa|sc|c)ss$/,
         use: [
@@ -124,7 +108,6 @@ module.exports = {
       }],
   },
   plugins: [
-   // miniCssExtractPlugin,
     cleanWebPackPlugin,
     htmlWebpackPlugin,
   ],

@@ -1,4 +1,5 @@
-import * as API from 'helpers/api';
+import API from 'helpers/api';
+import { Map as ImmutableMap } from 'immutable';
 import {
   AUTHORIZE_CLAIM,
   AUTHORIZE_CLAIM_SUCCESS,
@@ -10,7 +11,6 @@ import {
   CREATE_CLAIM_SUCCESS,
   CREATE_CLAIM_ERROR,
 } from './constants';
-import { Map as ImmutableMap } from 'immutable';
 
 
 function fetchingClaims() {

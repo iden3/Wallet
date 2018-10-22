@@ -2,7 +2,7 @@ import iden3 from 'iden3';
 import { List as ImmutableLlist } from 'immutable';
 import { getUnixTime } from 'helpers/utils';
 import * as APP_SETTINGS from 'constants/app';
-import * as API from 'helpers/api';
+import API from 'helpers/api';
 
 class Claim {
   constructor(identity) {

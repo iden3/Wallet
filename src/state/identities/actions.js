@@ -1,7 +1,7 @@
 import { Map as ImmutableMap } from 'immutable';
-import * as API from 'helpers/api';
+import API from 'helpers/api';
 
-import * as identitiesHelper from 'helpers/identities';
+import identitiesHelper from 'helpers/identities';
 import {
   CREATE_IDENTITY,
   CREATE_IDENTITY_SUCCESS,
