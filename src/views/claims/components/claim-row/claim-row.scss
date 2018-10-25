@@ -28,6 +28,11 @@
     padding: 0 rem(28px);
     font-size: $app-regular-small-fs;
   }
+  @media screen and (min-width: $small-mobile-min-width) and (max-width: $tablet-portrait-width) {
+    .i3-ww-claim-row__date {
+      display: none !important;
+    }
+  }
   .i3-ww-claim-row__pin-it {
     padding: 0 rem(28px);
     cursor: pointer;

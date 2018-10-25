@@ -100,9 +100,9 @@ class ClaimRow extends PureComponent {
         className="i3-ww-claim-row__main-content"
         tabIndex="-1"
         role="gridcell">
-        <div className="i3-ww-claim-row__type">
+        {/* <div className="i3-ww-claim-row__type">
           <Icon type={this.props.type} />
-        </div>
+        </div> */}
         <div className="i3-ww-claim-row__description">
           {this.props.content}
         </div>

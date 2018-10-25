@@ -3,10 +3,12 @@ import { List as ImmutableList } from 'immutable';
 import { getUnixTime } from 'helpers/utils';
 import * as APP_SETTINGS from 'constants/app';
 import API from 'helpers/api';
+import LocalStorage from 'helpers/local-storage';
 
 class Claim {
   constructor(identity) {
     this.identity = identity;
+    this.storage = new LocalStorage(APP_SETTINGS.ST_DOMAIN);
   }
 
   createAuthorizeKSignClaim = (data, keysContainer, ko, krec, krev) => {
@@ -47,10 +49,18 @@ class Claim {
         return API.sendClaimToCentralizedServer(dataToSentToSentServer);
         // }
       })
-      .then((res) => {
-        console.log('Res to send to centralized server:', res);
-      })
       .catch((error) => { throw new Error(error); });
+  };
+
+  createClaimInStorage = (idAddrOwner, claim, claimId, type) => {
+    const claimKey = `claim-${claimId}`;
+    const claimData = {
+      identity: idAddrOwner,
+      data: claim,
+      date: new Date(),
+      type,
+    };
+    return this.storage.setItem(claimKey, claimData);
   }
 }
 

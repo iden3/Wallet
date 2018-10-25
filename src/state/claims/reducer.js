@@ -1,6 +1,7 @@
 import {
   Map as ImmutableMap,
 } from 'immutable';
+import * as CLAIMS from 'constants/claim';
 import {
   AUTHORIZE_CLAIM,
   AUTHORIZE_CLAIM_SUCCESS,
@@ -45,7 +46,14 @@ function claims(state = initialState, action) {
       return state.merge({
         isFetchingClaims: false,
         error: '',
-        claims: action.data,
+        claims: state.get('claims').set(
+          action.data.get('claimId'),
+          {
+            identity: action.data.get('identity').get('idAddr'),
+            data: action.data.get('claim'),
+            type: CLAIMS.TYPE.EMITTED.NAME,
+          },
+        ),
       });
     case AUTHORIZE_CLAIM_ERROR:
       return state.merge({

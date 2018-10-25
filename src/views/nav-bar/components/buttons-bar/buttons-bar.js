@@ -61,7 +61,7 @@ class ButtonsBar extends PureComponent {
           { this.props.addNotificationsButton && (
             <Menu mode="horizontal">
               <MenuItem>
-                <Badge count={5}>
+                <Badge count={0}>
                   <Icon type={NOTIFICATIONS} />
                 </Badge>
               </MenuItem>

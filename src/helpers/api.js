@@ -1,5 +1,6 @@
 import iden3 from 'iden3';
 import * as APP_SETTINGS from 'constants/app';
+import * as CLAIMS from 'constants/claim';
 import identitiesHelper from 'helpers/identities';
 import Claim from 'helpers/claims';
 
@@ -119,8 +120,9 @@ const API = {
     return iden3.auth.resolv(...data.valueSeq().toJS());
   },
 
-  authorizeClaim(identity, data) {
+  authorizeClaim(identity, data, claimId) {
     const claim = new Claim(identity);
+    claim.createClaimInStorage(identity.get('idAddr'), data, claimId, CLAIMS.TYPE.EMITTED.NAME);
     return Promise.resolve(claim.decodeReadedData(data));
   },
 

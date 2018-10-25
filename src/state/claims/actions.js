@@ -1,5 +1,6 @@
 import API from 'helpers/api';
 import { Map as ImmutableMap } from 'immutable';
+import * as utils from 'helpers/utils';
 import {
   AUTHORIZE_CLAIM,
   AUTHORIZE_CLAIM_SUCCESS,
@@ -101,9 +102,10 @@ export function handleCreateClaim(claim) {
 export function handleAuthorizeClaim(identity, claim) {
   return function (dispatch) {
     dispatch(authorizeClaim());
-    return API.authorizeClaim(identity, claim)
-      .then((authorizedClaimData) => {
-        dispatch(authorizeClaimSuccess(authorizedClaimData));
+    const claimId = utils.createUniqueAlphanumericId();
+    return API.authorizeClaim(identity, claim, claimId)
+      .then(() => {
+        dispatch(authorizeClaimSuccess({ identity, claim, claimId }));
       })
       .catch(error => dispatch(authorizeClaimError(error)));
   };

@@ -32,7 +32,7 @@ class Claims extends Component {
   _getTabs() {
     // const sortDropDown = (<DropDown title="Sort by" options={['Issuer', 'Date', 'Pinned first', 'Pinned last']} />);
 
-    return [CLAIM.TYPE.RECEIVED, CLAIM.TYPE.EMITTED, CLAIM.TYPE.GROUPED].map((claim) => {
+    return [CLAIM.TYPE.EMITTED, CLAIM.TYPE.RECEIVED, CLAIM.TYPE.GROUPED].map((claim) => {
       return {
         title: capitalizeFirstLetter(claim.NAME),
         icon: claim.ICON,
