@@ -1,5 +1,5 @@
 import iden3 from 'iden3';
-import { List as ImmutableLlist } from 'immutable';
+import { List as ImmutableList } from 'immutable';
 import { getUnixTime } from 'helpers/utils';
 import * as APP_SETTINGS from 'constants/app';
 import API from 'helpers/api';
@@ -21,7 +21,7 @@ class Claim {
     const ko = this.identity.get('keys').get('keyOp');
     const krec = this.identity.get('keys').get('keyRecovery');
     const krev = this.identity.get('keys').get('keyRevoke');
-    const dataToCreateAuth = new ImmutableLlist([
+    const dataToCreateAuth = new ImmutableList([
       keysContainer,
       ko,
       APP_SETTINGS.DEFAULT_RELAY_DOMAIN,
@@ -36,7 +36,7 @@ class Claim {
     this.createAuthorizeKSignClaim(dataToCreateAuth, keysContainer, ko, krec, krev)
       .then((res) => {
         // if (res.states === 200) {
-        const dataToSentToSentServer = new ImmutableLlist([
+        const dataToSentToSentServer = new ImmutableList([
           JSONdata.url,
           this.identity.get('idAddr'),
           JSONdata.challenge,

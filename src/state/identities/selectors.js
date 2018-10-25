@@ -9,3 +9,4 @@ export const getDefaultIdentity = (state) => {
   const idDefault = getIdentity(state, idDefaultAddr);
   return new ImmutableMap(idDefault) || new ImmutableMap({});
 };
+export const getIdentitiesNumber = state => getIdentitesState(state).get('identities').size || 0;

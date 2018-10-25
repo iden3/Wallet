@@ -1,0 +1,11 @@
+.i3-ww-claim-reader {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-content: space-between;
+  .i3-ww-claim-reader__camera {
+    display: flex;
+    justify-content: center;
+    margin-top: 115px;
+  }
+}

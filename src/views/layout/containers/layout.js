@@ -1,10 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import {
-  Switch, Route, withRouter, Redirect,
+  Switch,
+  Route,
+  withRouter,
+  Redirect,
 } from 'react-router-dom';
+import { Map as ImmutableMap } from 'immutable';
+
 import classNames from 'classnames';
-import { AppContextConsumer } from 'app_context';
+import { withIdentities } from 'hocs';
 import {
   Content,
   Header,
@@ -21,7 +27,7 @@ import {
 import * as ROUTES from 'constants/routes';
 import {
   HeaderWithLogo,
-    Footer,
+  Footer,
 } from '../components';
 
 import './layout.scss';
@@ -32,55 +38,64 @@ import './layout.scss';
  * to create a new one
  */
 class Layout extends React.Component {
+  static propTypes = {
+    //
+    // from withIdentities HoC
+    //
+    /*
+     Selector to get the current loaded identity information
+     */
+    defaultIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
+  };
+
   render() {
+    const usersExist = this.props.defaultIdentity.size > 0;
+
     return (
-      <AppContextConsumer>
-        { ({ existsIdentity }) => (
-          <LayoutCmpt className="i3-ww-layout">
-            <Header className={classNames({
-              'i3-ww-header': true,
-              'i3-ww-header__no-nav-bar': !existsIdentity,
-            })}>
-              <HeaderWithLogo />
-              { existsIdentity && <NavBar /> }
-            </Header>
-            <Content className="i3-ww-content">
-              {/* If exists an identity we use the regular routes
+      <LayoutCmpt className="i3-ww-layout">
+        <Header className={classNames({
+          'i3-ww-header': true,
+          'i3-ww-header__no-nav-bar': !usersExist,
+        })}>
+          <HeaderWithLogo />
+          { usersExist && <NavBar /> }
+        </Header>
+        <Content className="i3-ww-content">
+          {/* If exists an identity we use the regular routes
               to access to any of the views. Otherwise, all requests
               are redirect to the Create identity view wizard to create an identity */}
-              { existsIdentity
-                ? (
-                  <Switch>
-                    <Route
-                      path={ROUTES.DASHBOARD.MAIN}
-                      component={Dashboard} />
-                    <Route
-                      path={ROUTES.CLAIMS.MAIN}
-                      component={Claims} />
-                    <Route
-                      path={ROUTES.HISTORY.MAIN}
-                      component={History} />
-                    <Route
-                      path={ROUTES.IDENTITIES.MAIN}
-                      component={Identities} />
-                  </Switch>
-                )
-                : (
-                  <Switch>
-                    <Route path="/:tab" component={CreateIdentity} />
-                    <Redirect from="/" to={ROUTES.CREATE_IDENTITY.MAIN} />
-                  </Switch>
-                )
-              }
-              <Footer />
-            </Content>
-          </LayoutCmpt>
-        )}
-      </AppContextConsumer>
+          { usersExist
+            ? (
+              <Switch>
+                <Route
+                  path={ROUTES.DASHBOARD.MAIN}
+                  component={Dashboard} />
+                <Route
+                  path={ROUTES.CLAIMS.MAIN}
+                  component={Claims} />
+                <Route
+                  path={ROUTES.HISTORY.MAIN}
+                  component={History} />
+                <Route
+                  path={ROUTES.IDENTITIES.MAIN}
+                  component={Identities} />
+              </Switch>
+            )
+            : (
+              <Switch>
+                <Route path="/:tab" component={CreateIdentity} />
+                <Redirect from="/" to={ROUTES.CREATE_IDENTITY.MAIN} />
+              </Switch>
+            )
+          }
+          <Footer />
+        </Content>
+      </LayoutCmpt>
     );
   }
 }
 
 export default compose(
   withRouter,
+  withIdentities,
 )(Layout);

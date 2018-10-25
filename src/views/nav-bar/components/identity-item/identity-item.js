@@ -13,7 +13,7 @@ import './identity-item.scss';
 /**
  * Class that creates the menu item that show
  * an avatar for the current user and their name.
- * TODO: Right now avatar is generic and hardcoded
+ *
  */
 class IdentityItem extends PureComponent {
   static propTypes = {
@@ -28,13 +28,15 @@ class IdentityItem extends PureComponent {
     // get the first word of the identity name/label
     const title = this.props.title.replace(/ .*/, '');
 
+    console.log(`=====> TITLE: ${this.props.title}`);
+
     return (
       <div className="i3-ww-nav-bar__identity">
         <Menu mode="horizontal">
           <MenuItem>
             <Link to={ROUTES.IDENTITIES.MAIN} replace>
               <span className="i3-ww-nav-bar--identity-icon-name">
-                <Avatar value="Paco Miros" />
+                <Avatar value={this.props.title} />
                 <span className="i3-ww-nav-bar--identity-name">
                   {title}
                 </span>

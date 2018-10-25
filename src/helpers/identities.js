@@ -209,7 +209,7 @@ const identitiesHelper = {
  */
   setIdentityAsDefault(identity = null, storage = APP_SETTINGS.LOCAL_STORAGE) {
     const _storage = this.getStorage(storage);
-    const newDefaultId = identity ? this.getIdentity(identity.idAddr) : this.getIdentity();
+    const newDefaultId = identity || this.getIdentity();
     const currentDefaultIdKey = _storage.getItem(`${APP_SETTINGS.ST_DEFAULT_ID}`);
     const currentDefaultId = this.getIdentity(currentDefaultIdKey);
 
@@ -221,7 +221,6 @@ const identitiesHelper = {
 
     // set the new default identity
     if (newDefaultId) {
-      newDefaultId.isDefault = true;
       _storage.updateKey(`${APP_SETTINGS.ST_IDENTITY_PREFIX}-${newDefaultId.idAddr}`, newDefaultId);
       _storage.updateKey(`${APP_SETTINGS.ST_DEFAULT_ID}`, newDefaultId.idAddr);
       return true;

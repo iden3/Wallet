@@ -12,7 +12,6 @@ module.exports = merge(common, {
   mode: 'development',
   devtool: 'cheap-module-source-map',
   devServer: {
-    // contentBase: './dist',
     contentBase: path.join(__dirname, 'dist'),
     compress: true,
     publicPath: '/',
@@ -20,13 +19,11 @@ module.exports = merge(common, {
     stats: 'minimal',
     watchContentBase: true,
     historyApiFallback: true,
+    hot: true,
   },
   plugins: [
     environmentPlugin,
     // This is necessary to emit hot updates (currently CSS only):
     new webpack.HotModuleReplacementPlugin(),
-    // we need it to create a style.[contenthash].css file when do a hot update of any SCSS file
-    // since webpack (version 4.3) has a known problem about this. So each time we change a SCSS File
-    // it'll generate a new hash, and we can see the changes
   ],
 });

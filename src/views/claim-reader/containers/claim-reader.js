@@ -1,4 +1,4 @@
-import React, { Fragment, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import { Map as ImmutableMap } from 'immutable';
@@ -13,6 +13,7 @@ import {
   Input,
   QRScanner as QRScannerCmpt,
 } from 'base_components';
+import notificationsHelper from 'helpers/notifications';
 import * as BOX_CONSTANTS from 'constants/box';
 
 import './claim-reader.scss';
@@ -20,7 +21,7 @@ import './claim-reader.scss';
 /**
  * Scanner of a QR view, we will call the Box component to show the cam
  */
-class QRScanner extends PureComponent {
+class ClaimReader extends PureComponent {
   static propTypes = {
     /*
      Flag to mount the qr scanner component
@@ -61,7 +62,29 @@ class QRScanner extends PureComponent {
    * @param {string} data - read from a QR or introduced by user in the input
    */
   authorizeKSignClaim = (data) => {
-    this.props.handleAuthorizeClaim(this.props.defaultIdentity, data);
+    this.props.handleAuthorizeClaim(this.props.defaultIdentity, data)
+      .then(() => {
+        this.props.toggleCameraVisibility();
+        notificationsHelper.showNotification('success', {
+          message: 'Claim created!',
+          description: 'You have authorized a new claim',
+          style: {
+            background: 'green',
+            color: 'white',
+          },
+        });
+      })
+      .catch((error) => {
+        this.props.toggleCameraVisibility();
+        notificationsHelper.showNotification('error', {
+          message: 'Error',
+          description: `We are sorry... There was an error creating the claim:\n ${error}`,
+          style: {
+            background: '#f95555',
+            color: 'white',
+          },
+        });
+      });
   };
 
   /**
@@ -103,7 +126,7 @@ class QRScanner extends PureComponent {
       ? (
         <div className="i3-ww-claim-reader">
           {this._getQRScanner()}
-          {this._getInput()}
+          {/* this._getInput() */}
         </div>
       )
       : <div />;
@@ -124,4 +147,4 @@ export default compose(
   withClaims,
   withIdentities,
   withFormsValues,
-)(QRScanner);
+)(ClaimReader);

@@ -33,7 +33,7 @@ class StepSetPassphrase extends PureComponent {
      Callback to update the passphrase
      */
     updateForm: PropTypes.func.isRequired,
-    createIdentity: PropTypes.func.isRequired,
+    setPassphrase: PropTypes.func.isRequired,
   };
 
   state = {
@@ -65,7 +65,7 @@ class StepSetPassphrase extends PureComponent {
    * Before moving forward to next screen check if both inputs
    * have the same value. If not, a notification is shown.
    */
-  moveForward = async () => {
+  moveForward = () => {
     this._updatePassphrase();
     // move backwards
     if (this.state.passphrase !== this.state.repeatedPasshphrase) {
@@ -95,7 +95,7 @@ class StepSetPassphrase extends PureComponent {
     } else {
       // move forward
       this.setState({ areSamePassphrases: true });
-      await this.props.createIdentity(this.state.passphrase);
+      this.props.setPassphrase(this.state.passphrase);
       this.props.move('forward');
     }
   };

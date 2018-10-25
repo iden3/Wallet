@@ -30,12 +30,12 @@ class StepSetName extends PureComponent {
     /*
      Call back to trigger when moving forward and bind the label with the identity address
      */
-    updateIdentity: PropTypes.func.isRequired,
+    createIdentity: PropTypes.func.isRequired,
   };
 
   state = {
     label: this.props.getFormValue(FORMS.IDENTITY_NAME),
-    domain: 'iden3.eth',
+    domain: 'iden3.io',
   };
 
   /**
@@ -62,9 +62,9 @@ class StepSetName extends PureComponent {
    * the passphrase from the app state, we don't need it anymore.
    */
   moveForward = () => {
-    this.props.updateIdentity({ label: this.state.label, domain: this.state.domain });
+    this.props.createIdentity({ label: this.state.label, domain: this.state.domain });
     this._updateForm();
-    this.props.move('forward');
+    //this.props.move('forward');
   };
 
   /**

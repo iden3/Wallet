@@ -6,8 +6,7 @@ const AppContextConsumer = AppContext.Consumer;
 
 /**
  * Creates context for all the application.
- * We have this:
- *  Exists identity
+ *
  */
 class AppContextProvider extends Component {
   static propTypes = {

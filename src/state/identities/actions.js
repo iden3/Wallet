@@ -1,7 +1,7 @@
 import { Map as ImmutableMap } from 'immutable';
 import API from 'helpers/api';
-
 import identitiesHelper from 'helpers/identities';
+import * as selectors from './selectors';
 import {
   CREATE_IDENTITY,
   CREATE_IDENTITY_SUCCESS,
@@ -84,14 +84,21 @@ function updateIdentityError(error) {
   };
 }
 
-export function handleCreateIdentity(passphrase) {
-  return function (dispatch) {
+export function handleCreateIdentity(passphrase, data) {
+  return function (dispatch, getState) {
     dispatch(createIdentity());
     return API.createIdentity(passphrase)
       .then((identity) => {
-        dispatch(createIdentitySuccess(identity));
+        const newIdentity = Object.assign(identity, data);
+        // check if there are no identities, set as default
+        if (selectors.getIdentitiesNumber(getState()) === 0) {
+          newIdentity.isDefault = identitiesHelper.setIdentityAsDefault(newIdentity);
+        }
+        // update the number of identities
+        API.updateIdentitiesNumber(true);
+        dispatch(createIdentitySuccess(newIdentity));
         // return data from new user because is needed to bind it to a name in next step of the UI
-        return identity;
+        return newIdentity;
       })
       .catch(error => dispatch(createIdentityError(error.message)));
   };
@@ -120,6 +127,7 @@ export function handleUpdateIdentitiesNumber(isToAdd) {
  *
  * @param {object} identity - With all the data of the identity
  * @param {object} data - New data to merge in the identity
+ * @param {string} passphrase - To encrypt keys
  *
  * @returns {function} Action creator
  */

@@ -30,9 +30,6 @@ class NavBar extends Component {
   // change the selected menu item when location has changed (when user has introduced by hand the URL i.e.)
   memoizedPath = memoizeOne(key => capitalizeFirstLetter(key.replace(/\//g, '')));
 
-  // memoize the name/label of the identity to show in the nav-bar when it's changed
-  memoizedIdentityName = memoizeOne(key => key.get('name') || key.get('label') || '');
-
   static propTypes = {
     //
     // from withRouter HoC
@@ -95,13 +92,12 @@ class NavBar extends Component {
   render() {
     const menuItems = this._getMenuItems();
     const selectedMainMenuItem = this.memoizedPath(this.props.location.pathname);
-    const identityLabel = this.memoizedIdentityName(this.props.defaultIdentity);
 
     return (
       <div className="i3-ww-nav-bar">
         {/* Regular menu for desktop */}
         <div className="i3-ww-nav-bar__header-items">
-          <IdentityItem title={identityLabel} />
+          <IdentityItem title={this.props.defaultIdentity.get('name') || this.props.defaultIdentity.get('label')} />
           <DesktopMenu
             items={menuItems}
             selectedItem={selectedMainMenuItem} />

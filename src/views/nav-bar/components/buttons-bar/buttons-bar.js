@@ -11,7 +11,7 @@ import {
   CAMERA,
   NOTIFICATIONS,
 } from 'constants/icons';
-import { QRScanner } from 'views/index';
+import { ClaimReader } from 'views';
 
 import './buttons-bar.scss';
 
@@ -71,7 +71,7 @@ class ButtonsBar extends PureComponent {
         </div>
         {/* Box to show camera for reading QR */}
         { this.props.addCamButton && (
-          <QRScanner
+          <ClaimReader
             isCameraVisible={this.state.isCameraVisible}
             toggleCameraVisibility={this.toggleCameraVisibility} />
         )}

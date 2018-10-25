@@ -54,8 +54,8 @@ function identities(state = initialState, action) {
       });
     case CREATE_IDENTITY_SUCCESS: {
       const newIdentity = {
-        label: '',
-        domain: '',
+        label: action.data.get('label') || action.data.get('name') || '',
+        domain: action.data.get('domain'),
         keys: {
           revoke: action.data.get('keys').keyRevoke,
           recovery: action.data.get('keys').keyRecovery,

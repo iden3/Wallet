@@ -46,12 +46,12 @@ const API = {
    * @param {string} passphrase - to sign the petition
    * @returns {Promise<void>}
    */
-  async bindIdToUsername(identity, data, passphrase) {
+  bindIdToUsername(identity, data, passphrase) {
     let identityUpdated = {};
 
     // identity.keys.keyContainer.unlock(passphrase); // for 30 seconds to update the identity
     identity.keys.keyContainer.unlock('a');
-    await identity.id.vinculateID(identity.keys.keyContainer, data.label || data.name)
+    identity.id.vinculateID(identity.keys.keyContainer, data.label || data.name)
       .then(res => identityUpdated = Object.assign({}, identityUpdated, res.data));
     return identityUpdated;
   },
@@ -99,17 +99,17 @@ const API = {
    * @param {string } storage - The storage in which should be updated
    * @returns {Object} - With the identity object with new data and the data received from the Relay
    */
-  async updateIdentity(identity, data, passphrase, storage = APP_SETTINGS.LOCAL_STORAGE) {
+  updateIdentity(identity, data, passphrase, storage = APP_SETTINGS.LOCAL_STORAGE) {
     let identityUpdated = Object.assign({}, identity, data);
 
     if (storage === APP_SETTINGS.LOCAL_STORAGE) {
       // if label changed, we need to bind it to the identity and call the Relay
       if (data.hasOwnProperty('label') || data.hasOwnProperty('name')) {
-        identityUpdated = await this.bindIdToUsername(identity, data, passphrase);
+        identityUpdated = this.bindIdToUsername(identity, data, passphrase);
       }
       // dataUpdated should contain (if we called the Relay) this fields:
       // ethId, name and signature
-      const storedIdentity = await identitiesHelper.updateIdentity(identity, identityUpdated);
+      const storedIdentity = identitiesHelper.updateIdentity(identity, identityUpdated);
       return Promise.resolve(storedIdentity);
     }
     return Promise.reject(new Error('Not storage found when update identity'));
