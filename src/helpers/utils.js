@@ -107,8 +107,25 @@ export const areEqualObjects = function (obj1, obj2) {
  * Generate a random an unique key in base 36 such as "0.94rz766tytb"
  * @returns {string} with the generated alphanumeric key
  */
-export const createUniqueAlphanumericId = function (radix = 36) {
-  return Math.random().toString(radix);
+export const createUniqueAlphanumericId = function (radix = 36, onlyAlphanumeric = true) {
+  return onlyAlphanumeric ? Math.random().toString(radix).slice(2) : Math.random().toString(radix);
+};
+
+/**
+ * Generates a random hash string.
+ *
+ * @param {number} length - of the hash
+ * @returns {string} with the generated hash
+ */
+export const generateHash = function (length = 15) {
+  const letters = '0123456789abcdef';
+  let hash = '';
+
+  for (let i = 0; i < length; i++) {
+    hash += letters[(Math.floor(Math.random() * 16))];
+  }
+
+  return hash;
 };
 
 /**

@@ -97,7 +97,9 @@ class NavBar extends Component {
       <div className="i3-ww-nav-bar">
         {/* Regular menu for desktop */}
         <div className="i3-ww-nav-bar__header-items">
-          <IdentityItem title={this.props.defaultIdentity.get('name') || this.props.defaultIdentity.get('label')} />
+          <IdentityItem
+            title={this.props.defaultIdentity.get('name') || this.props.defaultIdentity.get('label')}
+            icon={this.props.defaultIdentity.get('icon')} />
           <DesktopMenu
             items={menuItems}
             selectedItem={selectedMainMenuItem} />

@@ -27,9 +27,9 @@ const API = {
         .then((idAddr) => {
           // once we have the address returned by the ID, set it in the local storage
           const createdId = this.createIdentityInStorage(idAddr, { keys, relay }, storage);
-          createdId
+          Object.keys(createdId).length > 0
             ? resolve({
-              id, idAddr, keys, relay,
+              id, idAddr, keys, relay, icon: createdId.icon,
             })
             : reject(
               new Error(`Couldn't create the identity because already exists or can't access to the ${storage}`),
@@ -67,13 +67,13 @@ const API = {
    * @param {Array} data.seed - With the words of seed of the identity
    * @param {Object} data.relay - Object with the Relay information, sucha as the url field
    * @param {string} storage - where to store this information
-   * @returns {boolean} - True if was successfully created, false otherwise
+   * @returns {Object} - Populated if was successfully created, empty otherwise
    */
   createIdentityInStorage(idAddress, data, storage = APP_SETTINGS.LOCAL_STORAGE) {
     if (storage === APP_SETTINGS.LOCAL_STORAGE) {
       return identitiesHelper.createIdentity(idAddress, data);
     }
-    return false;
+    return {};
   },
 
   /**

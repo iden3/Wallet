@@ -1,5 +1,6 @@
 import iden3 from 'iden3';
 import bip39 from 'bip39';
+import * as utils from 'helpers/utils';
 import LocalStorage from 'helpers/local-storage';
 import * as APP_SETTINGS from 'constants/app';
 
@@ -64,14 +65,17 @@ const identitiesHelper = {
   createIdentity(idAddr, data, storage = APP_SETTINGS.LOCAL_STORAGE) {
     // set the object storage
     const _storage = this.getStorage(storage);
+    let created;
+    let newIdValues = {};
 
     // if doesn't exist identity
     if (!this.getIdentity(idAddr)) {
       // update the counter of the number of identities in the LS
       const mnemonic = bip39.generateMnemonic();
       const key = `id-${idAddr}`;
-      const value = {
+      newIdValues = {
         label: '',
+        icon: utils.generateHash(),
         keys: {
           recovery: data.keys.keyRecovery,
           revoke: data.keys.keyRevoke,
@@ -82,11 +86,9 @@ const identitiesHelper = {
         mnemonic,
         isDefault: false,
       };
-      return _storage.setItem(key, value); // returns a boolean
+      created = _storage.setItem(key, newIdValues); // returns a boolean
     }
-
-    // if already exists
-    return false;
+    return created ? newIdValues : null;
   },
 
   /**

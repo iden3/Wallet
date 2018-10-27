@@ -72,7 +72,7 @@ class StepSetName extends PureComponent {
       // show notification with error
       notificationsHelper.showNotification('error', {
         message: 'Error',
-        description: 'Only alphanumeric characters, dashes and underscores are allowed.',
+        description: 'Not valid name, please try again.',
         style: {
           background: '#f95555',
           color: 'white',
@@ -84,14 +84,16 @@ class StepSetName extends PureComponent {
   /**
    * Check if the label entered has no spaces, is an alphanumeric string
    * and if there are symbols are only allowed dashes and underscores.
+   * Also, at least is necessary a letter.
    *
    * @returns {boolean} True with a valid label, false otherwise
    * @private
    */
   _checkLabel() {
-    const regexp = /^[a-zA-Z0-9-_]+$/;
+    const regexp = /^(?=.*[a-zA-Z])([a-zA-Z0-9-_]+)$/;
     return this.state.label.search(regexp) !== -1;
   }
+
   /**
    * Trigger call back from props to update the identity
    * name in the app state.
@@ -116,6 +118,9 @@ class StepSetName extends PureComponent {
             You are almost there!
             <br />
             Please, insert a name in the selected domain to create your identity.
+            Only alphanumeric characters are allowed, dashes and underscores.
+            At least should have one letter.
+            Not other symbols (i.e. @) or spaces are allowed.
           </span>
           <div>
             <Input

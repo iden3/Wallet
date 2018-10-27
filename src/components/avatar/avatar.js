@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import jdenticon from 'jdenticon';
+import * as utils from 'helpers/utils';
+import Identicon from 'identicon.js';
 
 import './avatar.scss';
 
@@ -12,22 +13,27 @@ class Avatar extends PureComponent {
   static propTypes = {
     width: PropTypes.string,
     height: PropTypes.string,
-    value: PropTypes.string,
+    icon: PropTypes.string,
+    title: PropTypes.string,
   };
 
   static defaultProps = {
-    width: '45',
-    height: '45',
-    value: 'Random avatar',
-  }
+    width: '40',
+    height: '40',
+    icon: utils.generateHash(),
+    title: 'Icon of the identity',
+  };
 
   render() {
+    const icon = new Identicon(this.props.icon, this.props.height).toString();
+
     return (
       <div className="i3-ww-avatar">
-        <svg
+        <img
           width={this.props.width}
           height={this.props.height}
-          data-jdenticon-value={this.props.value} />
+          src={`data:image/png;base64,${icon}`}
+          alt={this.props.title} />
       </div>
     );
   }

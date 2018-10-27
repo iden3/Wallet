@@ -55,6 +55,7 @@ function identities(state = initialState, action) {
     case CREATE_IDENTITY_SUCCESS: {
       const newIdentity = {
         label: action.data.get('label') || action.data.get('name') || '',
+        icon: action.data.get('icon'),
         domain: action.data.get('domain'),
         keys: new ImmutableMap({
           keyRevoke: action.data.get('keys').keyRevoke,
