@@ -5,11 +5,8 @@ import {
   Icon,
   Row,
 } from 'base_components';
-import * as CLAIM from 'constants/claim';
 
 import './claim-row.scss';
-
-const claimTypes = [CLAIM.TYPE.ASSIGN_NAME.ICON, CLAIM.TYPE.SIGN.ICON, CLAIM.TYPE.DEFAULT.ICON];
 
 /**
  * Generates a row with the information needed to show in the list of claims.
@@ -27,10 +24,6 @@ class ClaimRow extends PureComponent {
      */
     date: PropTypes.object.isRequired,
     /*
-      Type of the claim to show the icon or not (if it's grouped)
-     */
-    type: PropTypes.oneOf(claimTypes).isRequired,
-    /*
      To show a filled icon or not if it's pinned to the dashboard pinned widget
      */
     isPinned: PropTypes.bool.isRequired,
@@ -41,11 +34,19 @@ class ClaimRow extends PureComponent {
     /*
      Id of the claim
      */
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
     /*
      Call back to trigger when pin icon is clicked
      */
     togglePinned: PropTypes.func.isRequired,
+    /*
+     Key of the DOM element
+     */
+    key: PropTypes.string,
+    /*
+     Extra data of the claim, to show it in the collapsible content
+     */
+    data: PropTypes.arrayOf(PropTypes.node),
   };
 
   state = {
@@ -64,7 +65,8 @@ class ClaimRow extends PureComponent {
   /**
    * Handle if key is intro (code 13) when pinned
    * claim icon is controlled by keyboard, then
-   * trigger togglePinned call back
+   * trigger togglePinned call back.
+   *
    * @param {object} e - event key
    */
   togglePinnedHandleKeyUp = (e) => {
@@ -100,9 +102,6 @@ class ClaimRow extends PureComponent {
         className="i3-ww-claim-row__main-content"
         tabIndex="-1"
         role="gridcell">
-        {/* <div className="i3-ww-claim-row__type">
-          <Icon type={this.props.type} />
-        </div> */}
         <div className="i3-ww-claim-row__description">
           {this.props.content}
         </div>
@@ -112,7 +111,8 @@ class ClaimRow extends PureComponent {
     return (
       <Fragment>
         <Row
-          collapsible="This is a collapsible content"
+          key={this.props.key}
+          collapsible={this.props.data}
           className="i3-ww-claim-row"
           initialContent={initialContent}
           mainContent={mainContent} />

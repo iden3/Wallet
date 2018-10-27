@@ -17,6 +17,7 @@ module.exports = {
     filename: 'js/i3-web-wallet.js',
     path: path.resolve(__dirname, 'dist'),
     publicPath: '',
+    sourceMapFilename: '[name].js.map',
   },
   resolve: {
     alias: {

@@ -11,7 +11,9 @@ import {
   Layout,
 } from 'views';
 import LocalStorage from 'helpers/local-storage';
-import { withIdentities } from 'hocs';
+import {
+  withClaims,
+  withIdentities, } from 'hocs';
 import * as ROUTES from 'constants/routes';
 
 import './app.scss';
@@ -27,9 +29,16 @@ class App extends Component {
     // From withIdentities HoC
     //
     /*
-     Action to set in the app state the identities from the app state first time app is loaded
+      Action to set in the app state the identities from the app state first time app is loaded
      */
     handleSetIdentitiesFromStorage: PropTypes.func.isRequired,
+    //
+    // From withClaims HoC
+    //
+    /*
+      Action to retrieve all claims from storage (for set the later in the app state)
+    */
+    handleSetClaimsFromStorage: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -42,7 +51,8 @@ class App extends Component {
    * that are in the storage.
    */
   componentDidMount() {
-    this.props.handleSetIdentitiesFromStorage();
+    this.props.handleSetIdentitiesFromStorage()
+      .then(() => this.props.handleSetClaimsFromStorage());
   }
 
   render() {
@@ -62,5 +72,6 @@ class App extends Component {
 
 export default compose(
   withRouter,
+  withClaims,
   withIdentities,
 )(App);

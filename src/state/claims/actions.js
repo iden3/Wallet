@@ -11,6 +11,9 @@ import {
   CREATE_CLAIM,
   CREATE_CLAIM_SUCCESS,
   CREATE_CLAIM_ERROR,
+  SET_ALL_CLAIMS,
+  SET_ALL_CLAIMS_SUCCESS,
+  SET_ALL_CLAIMS_ERROR,
 } from './constants';
 
 
@@ -75,6 +78,26 @@ function authorizeClaimError(error) {
   };
 }
 
+function setAllClaims() {
+  return {
+    type: SET_ALL_CLAIMS,
+  };
+}
+
+function setAllClaimsSuccess(data) {
+  return {
+    type: SET_ALL_CLAIMS_SUCCESS,
+    data: new ImmutableMap({ ...data }),
+  };
+}
+
+function setAllClaimsError(error) {
+  return {
+    type: SET_ALL_CLAIMS_ERROR,
+    data: error,
+  };
+}
+
 export default function handleFetchingClaims() {
   return function (dispatch) {
     dispatch(fetchingClaims());
@@ -108,5 +131,16 @@ export function handleAuthorizeClaim(identity, claim) {
         dispatch(authorizeClaimSuccess({ identity, claim, claimId }));
       })
       .catch(error => dispatch(authorizeClaimError(error)));
+  };
+}
+
+export function handleSetClaimsFromStorage() {
+  return function (dispatch) {
+    dispatch(setAllClaims());
+    return Promise.resolve(API.getAllClaims())
+      .then((claims) => {
+        dispatch(setAllClaimsSuccess(claims));
+      })
+      .catch(error => dispatch(setAllClaimsError(error)));
   };
 }

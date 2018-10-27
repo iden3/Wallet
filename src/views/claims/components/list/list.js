@@ -1,10 +1,10 @@
-import React, { PureComponent } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { Map as ImmutableMap } from 'immutable';
 import {
   List as ListCmpt,
   Scrollable,
 } from 'base_components';
-import * as _claimsList from 'fixtures/fixtures';
 import * as CLAIM from 'constants/claim';
 import Claim from '../claim-row';
 
@@ -23,23 +23,39 @@ class List extends PureComponent {
      Call back to execute when the claim is pinned or unpinned
      */
     togglePinned: PropTypes.func.isRequired,
+    /*
+     Lit of the claims to list
+     */
+    list: PropTypes.instanceOf(ImmutableMap),
   };
 
   /**
    * Generates each row of a claim with the information needed.
    * Depending on the type (emitted, received or grouped) some props or others are sent.
+   *
    * @returns {array} of React elements with a Claim row
    * @private
    */
   _getClaimsList() {
-    const claims = _claimsList.claims.map((claim) => {
+    const claimsList = this.props.list.toJS();
+    const claims = Object.keys(claimsList).map((claim) => {
       // common props to the three types of claims: emitted, received or grouped
       const claimProps = {
-        date: claim.date,
-        isPinned: claim.isPinned,
-        id: claim.id,
+        date: claimsList[claim].date,
+        isPinned: claimsList[claim].isPinned || false,
+        id: claimsList[claim].id,
         togglePinned: this.props.togglePinned,
-        key: `claim-${claim.id}`,
+        key: `claim-${claimsList[claim].id}`,
+        data: [(
+          <Fragment>
+            <span className="" style={{ fontWeight: 'bold', display: 'block' }}>
+              Proof of claim:
+            </span>
+            <span>
+              {claimsList[claim].data}
+            </span>
+          </Fragment>),
+        ],
       };
       let ClaimCmpt;
 
@@ -47,22 +63,20 @@ class List extends PureComponent {
         case CLAIM.TYPE.RECEIVED.NAME:
           ClaimCmpt = (
             <Claim
-              content={`Issued by ${claim.issuer}`}
-              type={CLAIM.TYPE[claim.type.toUpperCase()].ICON}
+              content={`Issued by ${claimsList[claim].issuer || 'Unknown identity'}`}
               {...claimProps} />);
           break;
         case CLAIM.TYPE.EMITTED.NAME:
           ClaimCmpt = (
             <Claim
-              content={`Emitted to ${claim.to}`}
-              type={CLAIM.TYPE[claim.type.toUpperCase()].ICON}
+              content={`Emitted to ${claimsList[claim].to || 'iden3.io'}`}
               {...claimProps} />);
           break;
         case CLAIM.TYPE.GROUPED.NAME:
-          ClaimCmpt = claim.groups.length > 0 && (
+          ClaimCmpt = claimsList[claim].groups.length > 0 && (
             <Claim
-              content={`Grouped in ${claim.groups.join(', ')}`}
-              groups={claim.groups}
+              content={`Grouped in ${claimsList[claim].groups.join(', ') || 'It is not in any group'}`}
+              groups={claimsList[claim].groups || []}
               {...claimProps} />);
           break;
         default:
@@ -76,7 +90,9 @@ class List extends PureComponent {
   }
 
   render() {
-    const claimsList = this._getClaimsList();
+    const claimsList = this.props.list.size > 0
+      ? this._getClaimsList()
+      : <div>No claims neither over here or over there</div>;
 
     return (
       <div>

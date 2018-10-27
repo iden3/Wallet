@@ -2,9 +2,13 @@ import iden3 from 'iden3';
 import { List as ImmutableList } from 'immutable';
 import { getUnixTime } from 'helpers/utils';
 import * as APP_SETTINGS from 'constants/app';
+import * as CLAIM from 'constants/claim';
 import API from 'helpers/api';
 import LocalStorage from 'helpers/local-storage';
 
+/**
+ * Class related to everything about claims: authorize, creates, decode what is read from a QR, etc...
+ */
 class Claim {
   constructor(identity) {
     this.identity = identity;
@@ -58,9 +62,28 @@ class Claim {
       identity: idAddrOwner,
       data: claim,
       date: new Date(),
+      id: claimId,
       type,
     };
+
     return this.storage.setItem(claimKey, claimData);
+  };
+
+  getAllClaimsFromStorage = () => {
+    const claimsInStorage = this.storage.getKeys('claim');
+    const claimsInStorageLength = claimsInStorage.length;
+    const claims = {
+      [CLAIM.TYPE.EMITTED.NAME]: {},
+      [CLAIM.TYPE.RECEIVED.NAME]: {},
+      [CLAIM.TYPE.GROUPED.NAME]: {},
+    };
+
+    for (let i = 0; i < claimsInStorageLength; i++) {
+      const idKey = claimsInStorage[i];
+      const claimFromStorage = this.storage.getItem(idKey);
+      claims[claimFromStorage.type][claimFromStorage.id] = claimFromStorage;
+    }
+    return Promise.resolve(claims);
   }
 }
 

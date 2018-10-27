@@ -42,5 +42,7 @@
     color: $row-collapsible-content-color;
     border-bottom-left-radius: $border-row-radius;
     border-bottom-right-radius: $border-row-radius;
+    overflow-wrap: break-word;
+    padding: 10px;
   }
 }

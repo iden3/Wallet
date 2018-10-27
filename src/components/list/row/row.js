@@ -22,6 +22,10 @@ class Row extends PureComponent {
      */
     className: PropTypes.string,
     /*
+     Key of the component
+     */
+    key: PropTypes.string.isRequired,
+    /*
       If we receive something in this prop, we should place an icon
       with an arrow and do the content of this prop visible or not
       and the row should be collapsible
@@ -63,7 +67,9 @@ class Row extends PureComponent {
     });
 
     return (
-      <div className="i3-ww-list__row">
+      <div
+        key={this.props.key}
+        className="i3-ww-list__row">
         <div
           className={rowClasses}
           role="row">

@@ -17,6 +17,7 @@ const {
     getIdentitiesFetching,
     getIdentity,
     getDefaultIdentity,
+    getIdentities,
   },
 } = identities;
 
@@ -40,6 +41,10 @@ function withIdentities(IdentitiesComponent) {
        Expect the identity address as parameter
        */
       getIdentity: PropTypes.func.isRequired,
+      /*
+       Selector to retrieve all the identities
+       */
+      identities: PropTypes.PropTypes.instanceOf(ImmutableMap).isRequired,
       /*
        Selector to get the current loaded identity information
        */
@@ -67,6 +72,7 @@ function withIdentities(IdentitiesComponent) {
       identitiesError: getIdentitiesError(state),
       getIdentity: idAddr => getIdentity(state, idAddr),
       defaultIdentity: getDefaultIdentity(state),
+      identities: getIdentities(state),
     };
   }
 

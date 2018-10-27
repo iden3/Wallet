@@ -1,10 +1,14 @@
 import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
+import { compose } from 'redux';
 import {
-  DropDown,
+  withClaims,
+} from 'hocs';
+import {
   Tabs,
   Widget,
 } from 'base_components';
-import * as CLAIM from 'constants/claim';
+import * as CLAIMS from 'constants/claim';
 import { capitalizeFirstLetter } from 'helpers/utils';
 import List from '../components/list';
 
@@ -14,9 +18,18 @@ import './claims.scss';
  * Main Claims view showing the list of them and actions to manage them
  */
 class Claims extends Component {
+  static propTypes = {
+    /*
+     Selector to get the list of claims.
+     Expect the type of the claims as parameter
+    */
+    getClaims: PropTypes.func.isRequired,
+  };
+
   /**
-   * Togle whether a claim is pinned or not in the app state
-   * @param {number} id - Claim id
+   * Togle whether a claim is pinned or not in the app state.
+   *
+   * @param {} id - Claim id
    */
   togglePinned = (id) => {
     // TODO set in the state app
@@ -30,20 +43,19 @@ class Claims extends Component {
    * TODO: Add dropdown to sort by an option
    */
   _getTabs() {
-    // const sortDropDown = (<DropDown title="Sort by" options={['Issuer', 'Date', 'Pinned first', 'Pinned last']} />);
+    const received = { type: CLAIMS.TYPE.RECEIVED.NAME, list: this.props.getClaims(CLAIMS.TYPE.RECEIVED.NAME) };
+    const emitted = { type: CLAIMS.TYPE.EMITTED.NAME, list: this.props.getClaims(CLAIMS.TYPE.EMITTED.NAME) };
+    const grouped = { type: CLAIMS.TYPE.GROUPED.NAME, list: this.props.getClaims(CLAIMS.TYPE.GROUPED.NAME) };
 
-    return [CLAIM.TYPE.EMITTED, CLAIM.TYPE.RECEIVED, CLAIM.TYPE.GROUPED].map((claim) => {
+    return [emitted, received, grouped].map((claimsList) => {
       return {
-        title: capitalizeFirstLetter(claim.NAME),
-        icon: claim.ICON,
+        title: capitalizeFirstLetter(claimsList.type),
         children: (
           <Fragment>
-            {/* <div className="i3-ww-claims__drop-down">
-              {sortDropDown}
-            </div> */}
             <List
               togglePinned={this.togglePinned}
-              type={claim.NAME} />
+              list={claimsList.list}
+              type={claimsList.type} />
           </Fragment>),
       };
     });
@@ -66,4 +78,4 @@ class Claims extends Component {
   }
 }
 
-export default Claims;
+export default compose(withClaims)(Claims);

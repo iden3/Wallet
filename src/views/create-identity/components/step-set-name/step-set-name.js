@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import * as FORMS from 'constants/forms';
 import {
   Button,
-  Icon, Input,
+  Icon,
+  Input,
 } from 'base_components';
+import notificationsHelper from 'helpers/notifications';
 
 import './step-set-name.scss';
 
@@ -62,11 +64,34 @@ class StepSetName extends PureComponent {
    * the passphrase from the app state, we don't need it anymore.
    */
   moveForward = () => {
-    this.props.createIdentity({ label: this.state.label, domain: this.state.domain });
-    this._updateForm();
-    //this.props.move('forward');
+    const isValidLabel = this._checkLabel();
+    if (isValidLabel) {
+      this.props.createIdentity({ label: this.state.label, domain: this.state.domain });
+      this._updateForm();
+    } else {
+      // show notification with error
+      notificationsHelper.showNotification('error', {
+        message: 'Error',
+        description: 'Only alphanumeric characters, dashes and underscores are allowed.',
+        style: {
+          background: '#f95555',
+          color: 'white',
+        },
+      });
+    }
   };
 
+  /**
+   * Check if the label entered has no spaces, is an alphanumeric string
+   * and if there are symbols are only allowed dashes and underscores.
+   *
+   * @returns {boolean} True with a valid label, false otherwise
+   * @private
+   */
+  _checkLabel() {
+    const regexp = /^[a-zA-Z0-9-_]+$/;
+    return this.state.label.search(regexp) !== -1;
+  }
   /**
    * Trigger call back from props to update the identity
    * name in the app state.

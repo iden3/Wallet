@@ -19,12 +19,12 @@ const miniCssExtractPlugin = new MiniCssExtractPlugin({
 });
 
 module.exports = merge(common, {
-  devtool: 'cheap-module-source-map',
+  devtool: 'source-map',
   mode: 'production',
   optimization: {
     minimizer: [
       new UglifyJsPlugin({
-        cache: true,
+        cache: false,
         parallel: true,
         sourceMap: true, // set to true to have JS source maps
       }),

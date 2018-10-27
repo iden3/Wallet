@@ -8,11 +8,12 @@ const {
   actions: {
     handleCreateClaim,
     handleAuthorizeClaim,
+    handleSetClaimsFromStorage,
   },
   selectors: {
     getClaimsError,
     getClaimsFetching,
-    getClaim,
+    getClaims,
   },
 } = claims;
 
@@ -28,10 +29,14 @@ function withClaims(ClaimsComponent) {
        */
       handleAuthorizeClaim: PropTypes.func.isRequired,
       /*
-       Selector to get the information related to a claim.
-       Expect the local id of the claim as parameter
+       Action to retrieve all claims from storage (for set the later in the app state)
+       */
+      handleSetClaimsFromStorage: PropTypes.func.isRequired,
+      /*
+       Selector to get the list of claims.
+       Expect the type of the claims as parameter
       */
-      getClaim: PropTypes.func.isRequired,
+      getClaims: PropTypes.func.isRequired,
       /*
        Flag to check if the app is fetching the claims
        */
@@ -53,7 +58,7 @@ function withClaims(ClaimsComponent) {
     return {
       isFetchingClaims: getClaimsFetching(state),
       claimsError: getClaimsError(state),
-      getClaim: claimId => getClaim(state, claimId),
+      getClaims: type => getClaims(state, type),
     };
   }
 
@@ -61,6 +66,7 @@ function withClaims(ClaimsComponent) {
     return bindActionCreators({
       handleCreateClaim,
       handleAuthorizeClaim,
+      handleSetClaimsFromStorage,
     }, dispatch);
   }
 

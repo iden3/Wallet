@@ -25,7 +25,7 @@ class StepWelcome extends PureComponent {
     return (
       <div className="i3-ww-ci__step  i3-ww-ci__welcome">
         <div className="i3-ww-ci__title">
-          <p className="i3-ww-title">Welcome to IDEN3</p>
+          <p className="i3-ww-title">Welcome to iden3</p>
           <p className="i3-ww-subtitle">Create your decentralized identity</p>
         </div>
         <div className="i3-ww-ci__content">

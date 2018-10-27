@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import * as FORMS from 'constants/forms';
+import notificationsHelper from 'helpers/notifications';
 import classNames from 'classnames';
 import {
   Button,
@@ -20,10 +21,6 @@ class StepSetPassphrase extends PureComponent {
       Callback triggered when one of the action buttons are pressed
      */
     move: PropTypes.func.isRequired,
-    /*
-     Callback triggered when there is an error about the passphrase to show a notification
-     */
-    showNotification: PropTypes.func.isRequired,
     /*
      Callback to retrieve the value of the passphrase form is there was any before moving
      over the different views of the wizard
@@ -72,7 +69,7 @@ class StepSetPassphrase extends PureComponent {
       // show error nofitication
       this.setState({ areSamePassphrases: false });
       // show notification with error
-      this.props.showNotification('error', {
+      notificationsHelper.showNotification('error', {
         message: 'Error',
         description: 'Passphrases don\'t have the same value',
         style: {
@@ -84,7 +81,7 @@ class StepSetPassphrase extends PureComponent {
       // show error nofitication
       this.setState({ areSamePassphrases: false });
       // show notification with error
-      this.props.showNotification('error', {
+      notificationsHelper.showNotification('error', {
         message: 'Error',
         description: 'Passphrases can\'t be empty',
         style: {

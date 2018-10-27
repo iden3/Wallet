@@ -116,22 +116,64 @@ const API = {
     return Promise.reject(new Error('Not storage found when update identity'));
   },
 
+  /**
+   * Call iden3 library to send authorization to the centralized server
+   * to do the action requested in the QR read before.
+   *
+   * @param {ImmutableMap} data - With the values
+   * @returns {*} - Response from the server with universal code of success or not
+   */
   sendClaimToCentralizedServer(data) {
     return iden3.auth.resolv(...data.valueSeq().toJS());
   },
 
+  /**
+   * Authorize a claim.
+   *
+   * @param {ImmutableMap} identity - With the identity which is authorizing the claim
+   * @param {string} data - The data read from the claim to authorize (use to be a QR)
+   * @param {string} claimId - Id of the claim in the local storage, nothing about relay or dapp, etc...
+   * @returns {Promise<void>}
+   */
   authorizeClaim(identity, data, claimId) {
     const claim = new Claim(identity);
+
     claim.createClaimInStorage(identity.get('idAddr'), data, claimId, CLAIMS.TYPE.EMITTED.NAME);
     return Promise.resolve(claim.decodeReadedData(data));
   },
 
+  /**
+   * Authorize an identity use their keys to sign a claim.
+   *
+   * @param {ImmutableMap} identity - With the identity which is authorizing the claim
+   * @param {ImmutableMap} data - With the keys and data to sign
+   * @param {Object} keysContainer - Created when the identity was created
+   * @param {string} ko - Operational key
+   * @param {string} krec - Recovery key
+   * @param {string} krev - Revoke key
+   * @returns {Promise<any>}
+   */
   authorizeKSignClaim(identity, data, keysContainer, ko, krec, krev) {
-    const idRelay = identity.get('relay').toJS();
-    const relay = new iden3.Relay(idRelay.url);
+    // TODO: fix this hack
+    const idRelay = identity.get('relay');
+    const relay = new iden3.Relay(idRelay.url || idRelay.toJS().url);
     const id = new iden3.Id(krec, krev, ko, relay, '');
+
     id.idaddr = identity.get('idAddr');
     return Promise.resolve(id.AuthorizeKSignClaim(...data.valueSeq().toJS()));
+  },
+
+  /**
+   * Get from the storage all the claims stored and their information.
+   * Usually used (i.e.) first time we load the application to hydrate the app state.
+   *
+   * @param {string} storage - type of storage selected
+   * @returns {Promise<any>} - Promise with an Object containing the claims and their information
+   */
+  getAllClaims() {
+    const claim = new Claim();
+
+    return claim.getAllClaimsFromStorage();
   },
 };
 

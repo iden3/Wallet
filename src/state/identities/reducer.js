@@ -56,15 +56,16 @@ function identities(state = initialState, action) {
       const newIdentity = {
         label: action.data.get('label') || action.data.get('name') || '',
         domain: action.data.get('domain'),
-        keys: {
-          revoke: action.data.get('keys').keyRevoke,
-          recovery: action.data.get('keys').keyRecovery,
-          operational: action.data.get('keys').keyOp,
-          container: action.data.get('keys').keyContainer,
-        },
+        keys: new ImmutableMap({
+          keyRevoke: action.data.get('keys').keyRevoke,
+          keyRecovery: action.data.get('keys').keyRecovery,
+          keyOp: action.data.get('keys').keyOp,
+          keyContainer: action.data.get('keys').keyContainer,
+        }),
         seed: action.data.get('seed') || [],
         relay: action.data.get('relay'),
         id: action.data.get('id'),
+        idAddr: action.data.get('idAddr'),
       };
 
       // TODO: check if there is a current identity or sent by the action.data
