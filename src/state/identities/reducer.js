@@ -56,6 +56,7 @@ function identities(state = initialState, action) {
       const newIdentity = {
         label: action.data.get('label') || action.data.get('name') || '',
         icon: action.data.get('icon'),
+        date: new Date(),
         domain: action.data.get('domain'),
         keys: new ImmutableMap({
           keyRevoke: action.data.get('keys').keyRevoke,

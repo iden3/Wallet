@@ -2,6 +2,7 @@ import React, { Fragment, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Map as ImmutableMap } from 'immutable';
 import { format } from 'date-fns';
+import * as utils from 'helpers/utils';
 import {
   List as ListCmpt,
   Scrollable,
@@ -17,10 +18,6 @@ class List extends PureComponent {
      Lit of the claims to list
      */
     list: PropTypes.instanceOf(ImmutableMap),
-    /*
-     Selector to get the current loaded identity information
-     */
-    defaultIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
   };
 
   /**
@@ -32,13 +29,14 @@ class List extends PureComponent {
    */
   _getIdentitiesList() {
     const identities = [];
+    const identitiesList = this.props.list.toJS();
 
-    this.props.list.forEach((identity) => {
+    Object.keys(identitiesList).forEach((identity) => {
       identities.push(
         <Identity
-          id={identity.get('idAddr')}
-          content={identity.get('label')}
-          data={this._setExtraData(identity)} />,
+          id={identitiesList[identity].idAddr}
+          content={identitiesList[identity].label}
+          data={this._setExtraData(identitiesList[identity])} />,
       );
     });
 
@@ -48,33 +46,50 @@ class List extends PureComponent {
   /**
    * Data to show when a row show the collapsible content.
    *
+   * @parameter {Object} identity- with its data
    * @returns {array} of React nodes
    * @private
    */
   _setExtraData(identity) {
-    const data = [];
+    return Object.keys(identity).map((key) => {
+      let finalValue;
+      let finalKey;
 
-    identity.forEach((value, key) => {
-      if (key !== 'keys' && key !== 'id') {
-        const _value = key === 'date'
-          ? format(value, 'd/MMM/yyyy')
-          : key === 'relay'
-            ? value.get('url')
-            : value;
-        data.push(
-          <Fragment>
+      switch (key) {
+        case 'idAddr':
+          finalKey = 'Address:';
+          finalValue = identity[key];
+          break;
+        case 'relay':
+          finalKey = 'Relay:';
+          finalValue = identity.relay.url;
+          break;
+        case 'date':
+          finalKey = 'Created on:';
+          finalValue = format(identity[key], 'd/MMM/yyyy at hh:mm');
+          break;
+        case 'label':
+          finalKey = 'Identity: ';
+          finalValue = `${identity.label}@${identity.domain}`;
+          break;
+        default:
+          finalValue = null;
+      }
+
+      return finalValue && (
+        <Fragment>
+          <div>
             <span style={{ fontWeight: 'bold', display: 'block' }}>
-              {key}
+              {finalKey}
             </span>
             <span>
-              {_value}
+              {finalValue}
             </span>
-          </Fragment>,
-        );
-      }
+          </div>
+          <br />
+        </Fragment>
+      );
     });
-
-    return data;
   }
 
   render() {

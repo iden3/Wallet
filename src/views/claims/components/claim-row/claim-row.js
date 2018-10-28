@@ -1,6 +1,5 @@
 import React, { Fragment, PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { format } from 'date-fns';
 import {
   Icon,
   Row,
@@ -78,14 +77,10 @@ class ClaimRow extends PureComponent {
   };
 
   render() {
-    const formatedDate = format(
-      this.props.date,
-      'd/MMM/yyyy',
-    );
     const initialContent = !this.props.groups && (
       <div className="i3-ww-claim-row__initial-content">
         <div className="i3-ww-claim-row__date">
-          {`${formatedDate}`}
+          {`${this.props.date}`}
         </div>
         <div
           className="i3-ww-claim-row__pin-it"

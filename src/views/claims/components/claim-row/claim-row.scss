@@ -1,11 +1,11 @@
 .i3-ww-claim-row {
   height: rem(91px);
   border-radius: $border-row-radius;
-      .i3-ww-claim-row__initial-content {
+  color: $claim-row-color !important;
+  .i3-ww-claim-row__initial-content {
     display: flex;
     align-items: center;
     height: inherit;
-    color: $claim-row-color;
   }
   .i3-ww-claim-row__main-content {
     height: inherit;

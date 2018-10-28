@@ -1,0 +1,31 @@
+.i3-ww-identity-row {
+  height: rem(91px);
+  border-radius: $border-row-radius;
+  color: $identities-row-color;
+  .i3-ww-row__main-content {
+    display: flex !important;
+    justify-content: center !important;
+  }
+  .i3-ww-identity-row__initial-content {
+    display: flex;
+    align-items: center;
+    height: inherit;
+    color: $claim-row-color;
+  }
+  .i3-ww-identity-row__main-content {
+    height: inherit;
+    display: flex;
+    align-items: center;
+  }
+  .i3-ww-identity-row__final-content {
+    height: inherit;
+    display: flex;
+    align-items: center;
+  }
+  .i3-ww-identity-row__description {
+    margin-left: rem(10px);
+  }
+  .i3-ww-row__collapsible-content--visible {
+    margin-top: -3px;
+  }
+}

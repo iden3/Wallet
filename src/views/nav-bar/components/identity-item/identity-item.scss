@@ -21,6 +21,9 @@
       margin-right: 15px;
       background-image: url($generic-avatar);
     }
+    .ant-menu-item-selected {
+      border: none;
+    }
     .ant-menu-horizontal {
       border-bottom: none;
     }

@@ -1,6 +1,7 @@
 import React, { Fragment, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Map as ImmutableMap } from 'immutable';
+import { format } from 'date-fns';
 import {
   List as ListCmpt,
   Scrollable,
@@ -40,20 +41,44 @@ class List extends PureComponent {
     const claimsList = this.props.list.toJS();
     const claims = Object.keys(claimsList).map((claim) => {
       // common props to the three types of claims: emitted, received or grouped
+      const formatedDate = format(
+        claimsList[claim].date,
+        'd/MMM/yyyy',
+      );
+      const formatedTime = format(
+        claimsList[claim].date,
+        'hh:mm',
+      );
       const claimProps = {
-        date: claimsList[claim].date,
+        date: formatedDate,
         isPinned: claimsList[claim].isPinned || false,
         id: claimsList[claim].id,
         togglePinned: this.props.togglePinned,
         key: `claim-${claimsList[claim].id}`,
         data: [(
           <Fragment>
-            <span className="" style={{ fontWeight: 'bold', display: 'block' }}>
+            <div>
+              <span className="" style={{ fontWeight: 'bold', display: 'block' }}>
+              Created:
+              </span>
+              <span>
+                {formatedDate}
+                {' '}
+                at
+                {' '}
+                {formatedTime}
+              </span>
+            </div>
+            <br />
+            <div>
+              <span className="" style={{ fontWeight: 'bold', display: 'block' }}>
               Proof of claim:
-            </span>
-            <span>
-              {claimsList[claim].data}
-            </span>
+              </span>
+              <span>
+                {claimsList[claim].data}
+              </span>
+            </div>
+
           </Fragment>),
         ],
       };
