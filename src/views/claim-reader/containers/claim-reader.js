@@ -10,7 +10,6 @@ import {
 import {
   Box,
   Button,
-  Input,
   QRScanner as QRScannerCmpt,
   TextArea,
 } from 'base_components';

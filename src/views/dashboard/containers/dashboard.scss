@@ -1,4 +1,10 @@
 .i3-ww-dashboard {
   flex: 1;
   margin-top: 20px;
+  .i3-ww-claims {
+    width: inherit;
+    .i3-ww-claims-list {
+      width: inherit;
+    }
+  }
 }

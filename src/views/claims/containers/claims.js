@@ -1,9 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
-import {
-  withClaims,
-} from 'hocs';
+import { Map as ImmutableMap } from 'immutable';
+import { withClaims } from 'hocs';
 import {
   Tabs,
   Widget,
@@ -20,10 +19,29 @@ import './claims.scss';
 class Claims extends Component {
   static propTypes = {
     /*
+     if is the list of pinned, retrieve only the pinned and with no tabs in the list
+     */
+    isPinnedList: PropTypes.bool,
+    //
+    // from withClaims HoC
+    //
+    /*
+     List of the pinned pins to the dashboard
+     */
+    pinnedClaims: PropTypes.instanceOf(ImmutableMap),
+    /*
+     Action to update when a claim is pinned to dashboard or removed from the pinned
+     */
+    handleUpdatePinnedClaims: PropTypes.func.isRequired,
+    /*
      Selector to get the list of claims.
      Expect the type of the claims as parameter
     */
     getClaims: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    isPinnedList: false,
   };
 
   /**
@@ -33,7 +51,33 @@ class Claims extends Component {
    */
   togglePinned = (id) => {
     // TODO set in the state app
+    this.props.handleUpdatePinnedClaims(this.props.pinnedClaims, id);
   };
+
+  /**
+   * Get the list of the pinned claims.
+   *
+   * @returns {Element} React list to render or a message pointing that there are not pinned claims
+   * @private
+   */
+  _getPinned() {
+    return (
+      this.props.pinnedClaims.size > 0
+        ? (
+          <List
+            togglePinned={this.togglePinned}
+            type="all"
+            list={this.props.pinnedClaims} />
+        )
+        : (
+          <div>
+          Not pinned claims yet.
+            <br />
+          Why do not you take a walk on your claims list and pin some?
+          </div>
+        )
+    );
+  }
 
   /**
    * Compose the tabs to show and the drop-down to choose the sort option
@@ -61,10 +105,13 @@ class Claims extends Component {
   }
 
   render() {
-    const tabs = this._getTabs();
+    let content;
 
-    return (
-      <div className="i3-ww-claims">
+    if (this.props.isPinnedList) {
+      content = this._getPinned();
+    } else {
+      const tabs = this._getTabs();
+      content = (
         <Widget
           isFetching={false}
           hasError={false}
@@ -72,6 +119,12 @@ class Claims extends Component {
           title="Claims">
           <Tabs tabs={tabs} />
         </Widget>
+      );
+    }
+
+    return (
+      <div className="i3-ww-claims">
+        {content}
       </div>
     );
   }

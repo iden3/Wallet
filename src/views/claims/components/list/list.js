@@ -10,7 +10,7 @@ import Claim from '../claim-row';
 
 import './list.scss';
 
-const claimTypes = [CLAIM.TYPE.RECEIVED.NAME, CLAIM.TYPE.EMITTED.NAME, CLAIM.TYPE.GROUPED.NAME];
+const claimTypes = [CLAIM.TYPE.RECEIVED.NAME, CLAIM.TYPE.EMITTED.NAME, CLAIM.TYPE.GROUPED.NAME, 'all'];
 
 /**
  * Creates a scrollable list to show the claims (that can be received, emitted or grouped)
@@ -80,6 +80,9 @@ class List extends PureComponent {
           content = `Grouped in ${claim.groups.join(', ') || 'It is not in any group'}`;
           groups = claim.groups || [];
         }
+        break;
+      case 'all': // for the pinned list
+        content = `Issued to ${claim.to || 'iden3.io'}`;
         break;
       default:
         throw new Error('No claim type allowed');

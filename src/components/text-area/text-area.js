@@ -2,14 +2,14 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Input } from 'antd';
 
-const { TextArea } = Input;
+const { TextArea: TextAreaCmpt } = Input;
 
 /**
  * Wraps antd Input.TextArea component to isolate the views from
  * any UI framework that we decide to use.
  * Please, visit to https://ant.design/components/input/ to check props.
  */
-class Tree extends PureComponent {
+class TextArea extends PureComponent {
   static propTypes = {
     /*
      For some browsers if they can capitalize the text
@@ -22,7 +22,7 @@ class Tree extends PureComponent {
     /*
       Autosize height to set minRows and maxRows
      */
-    autosize: PropTypes.bool || PropTypes.object,
+    autoSize: PropTypes.bool || PropTypes.object,
     /*
      Input content value
      */
@@ -30,11 +30,11 @@ class Tree extends PureComponent {
     /*
      Placeholder to indicates the user
      */
-    placeHolder: PropTypes.string.isRequired,
+    placeholder: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
-    autosize: {
+    autoSize: {
       minRows: 2,
       maxRows: 6,
     },
@@ -44,9 +44,9 @@ class Tree extends PureComponent {
 
   render() {
     return (
-      <TextArea {...this.props} />
+      <TextAreaCmpt {...this.props} />
     );
   }
 }
 
-export default Tree;
+export default TextArea;

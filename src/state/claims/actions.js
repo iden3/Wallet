@@ -1,5 +1,6 @@
 import API from 'helpers/api';
 import { Map as ImmutableMap } from 'immutable';
+import * as selectors from './selectors';
 import * as utils from 'helpers/utils';
 import {
   AUTHORIZE_CLAIM,
@@ -14,6 +15,9 @@ import {
   SET_ALL_CLAIMS,
   SET_ALL_CLAIMS_SUCCESS,
   SET_ALL_CLAIMS_ERROR,
+  UPDATE_PINNED_CLAIMS,
+  UPDATE_PINNED_CLAIMS_SUCCESS,
+  UPDATE_PINNED_CLAIMS_ERROR,
 } from './constants';
 
 
@@ -84,16 +88,36 @@ function setAllClaims() {
   };
 }
 
-function setAllClaimsSuccess(data) {
+function setAllClaimsSuccess(claims, pinnedClaims) {
   return {
     type: SET_ALL_CLAIMS_SUCCESS,
-    data: new ImmutableMap({ ...data }),
+    data: new ImmutableMap({ claims, pinnedClaims }),
   };
 }
 
 function setAllClaimsError(error) {
   return {
     type: SET_ALL_CLAIMS_ERROR,
+    data: error,
+  };
+}
+
+function updatePinnedClaims() {
+  return {
+    type: UPDATE_PINNED_CLAIMS,
+  };
+}
+
+function updatePinnedClaimsSuccess(data, idToUpdate) {
+  return {
+    type: UPDATE_PINNED_CLAIMS_SUCCESS,
+    data: { updatedList: data, idToUpdate },
+  };
+}
+
+function updatePinnedClaimsError(error) {
+  return {
+    type: UPDATE_PINNED_CLAIMS_ERROR,
     data: error,
   };
 }
@@ -137,8 +161,20 @@ export function handleSetClaimsFromStorage() {
     dispatch(setAllClaims());
     return Promise.resolve(API.getAllClaims())
       .then((claims) => {
-        dispatch(setAllClaimsSuccess(claims));
+        const pinnedClaims = API.getPinnedClaims();
+        dispatch(setAllClaimsSuccess(claims, pinnedClaims));
       })
       .catch(error => dispatch(setAllClaimsError(error)));
+  };
+}
+
+export function handleUpdatePinnedClaims(pinnedClaims, idToUpdate) {
+  return function (dispatch, getState) {
+    dispatch(updatePinnedClaims());
+    return Promise.resolve(API.updatePinnedClaims(selectors.getClaims(getState()), pinnedClaims, idToUpdate))
+      .then((updatedList) => {
+        dispatch(updatePinnedClaimsSuccess(updatedList, idToUpdate));
+      })
+      .catch(error => dispatch(updatePinnedClaimsError(error)));
   };
 }

@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import { compose } from 'redux';
 import { Link } from 'react-router-dom';
 import {
   Icon,
   Widget,
 } from 'base_components';
+import { Claims } from 'views';
+import { withClaims } from 'hocs';
 import * as ROUTES from 'constants/routes';
 
 import './dashboard.scss';
@@ -31,7 +34,7 @@ class Dashboard extends Component {
           <div>
               Zero!!! Cero!!! Zéro!!! ноль!!!
             <br />
-              You are a hero, you're up to date!
+              You are a hero, you are up to date!
           </div>
         </Widget>
         <Widget
@@ -40,15 +43,11 @@ class Dashboard extends Component {
           hasData
           title="My claims"
           headerButtons={headerButtons}>
-          <div>
-            Not pinned claims yet.
-            <br />
-            Why don't you take a walk in your claims list and pin some?
-          </div>
+          <Claims isPinnedList />
         </Widget>
       </div>
     );
   }
 }
 
-export default Dashboard;
+export default compose(withClaims)(Dashboard);

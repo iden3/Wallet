@@ -53,7 +53,6 @@ class Claim {
             res.data.proofOfClaim,
           ]);
           resolve({ proofOfClaim: res.data.proofOfClaim, dataToSentToSenToServer, url: JSONdata.url });
-          //return API.sendClaimToCentralizedServer(dataToSentToSenToServer);
           // }
         })
         .catch((error) => { reject(error); });
@@ -65,6 +64,7 @@ class Claim {
     const date = new Date();
     const newClaimData = {
       identity: idAddrOwner,
+      isPinned: false,
       data: claimData,
       date: format(date, 'd/MMM/yyyy'),
       time: format(date, 'HH:mm'),
@@ -78,7 +78,7 @@ class Claim {
   };
 
   getAllClaimsFromStorage = () => {
-    const claimsInStorage = this.storage.getKeys('claim');
+    const claimsInStorage = this.storage.getKeys('claim-');
     const claimsInStorageLength = claimsInStorage.length;
     const claims = {
       [CLAIM.TYPE.EMITTED.NAME]: {},
@@ -92,6 +92,14 @@ class Claim {
       claims[claimFromStorage.type][claimFromStorage.id] = claimFromStorage;
     }
     return Promise.resolve(claims);
+  };
+
+  getPinnedClaimsFromStorage = () => {
+    return (this.storage.getItem('pinned-claims'));
+  };
+
+  setPinnedClaimsInStorage = (list) => {
+    return this.storage.setItem('pinned-claims', list);
   }
 }
 

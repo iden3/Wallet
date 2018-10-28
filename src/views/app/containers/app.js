@@ -13,7 +13,8 @@ import {
 import LocalStorage from 'helpers/local-storage';
 import {
   withClaims,
-  withIdentities, } from 'hocs';
+  withIdentities,
+} from 'hocs';
 import * as ROUTES from 'constants/routes';
 
 import './app.scss';

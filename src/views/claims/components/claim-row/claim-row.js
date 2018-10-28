@@ -73,7 +73,7 @@ class ClaimRow extends PureComponent {
   };
 
   render() {
-    const initialContent = !this.props.groups && (
+    const initialContent = (
       <div className="i3-ww-claim-row__initial-content">
         <div className="i3-ww-claim-row__date">
           {`${this.props.date}`}

@@ -1,6 +1,4 @@
-import {
-  Map as ImmutableMap,
-} from 'immutable';
+import { Map as ImmutableMap } from 'immutable';
 import * as CLAIMS from 'constants/claim';
 import {
   AUTHORIZE_CLAIM,
@@ -13,11 +11,15 @@ import {
   SET_ALL_CLAIMS,
   SET_ALL_CLAIMS_SUCCESS,
   SET_ALL_CLAIMS_ERROR,
+  UPDATE_PINNED_CLAIMS,
+  UPDATE_PINNED_CLAIMS_SUCCESS,
+  UPDATE_PINNED_CLAIMS_ERROR,
 } from './constants';
 
 const initialState = new ImmutableMap({
   error: '',
   isFetchingClaims: true,
+  pinned: ImmutableMap({}),
   emitted: ImmutableMap({}),
   received: ImmutableMap({}),
   grouped: ImmutableMap({}),
@@ -62,6 +64,7 @@ function claims(state = initialState, action) {
             proof: action.data.get('proof'),
             url: action.data.get('url'),
             id: action.data.get('id'),
+            isPinned: action.data.get('isPinned'),
           },
         ),
       });
@@ -77,11 +80,50 @@ function claims(state = initialState, action) {
     case SET_ALL_CLAIMS_SUCCESS:
       return state.merge({
         isFetchingClaims: false,
-        emitted: action.data.get(CLAIMS.TYPE.EMITTED.NAME),
-        received: action.data.get(CLAIMS.TYPE.RECEIVED.NAME),
-        grouped: action.data.get(CLAIMS.TYPE.GROUPED.NAME),
+        emitted: action.data.get('claims')[CLAIMS.TYPE.EMITTED.NAME],
+        received: action.data.get('claims')[CLAIMS.TYPE.RECEIVED.NAME],
+        grouped: action.data.get('claims')[CLAIMS.TYPE.GROUPED.NAME],
+        pinned: action.data.get('pinnedClaims'),
       });
     case SET_ALL_CLAIMS_ERROR:
+      return state.merge({
+        isFetchingClaims: false,
+        error: action.data,
+      });
+    case UPDATE_PINNED_CLAIMS:
+      return state.merge({
+        isFetchingClaims: true,
+      });
+    case UPDATE_PINNED_CLAIMS_SUCCESS: {
+      const emitted = state.get('emitted');
+      const received = state.get('received');
+      const grouped = state.get('grouped');
+
+      return state.merge({
+        isFetchingClaims: false,
+        pinned: action.data.updatedList,
+        emitted: emitted.get(action.data.idToUpdate)
+          ? emitted.setIn(
+            [action.data.idToUpdate, 'isPinned'],
+            !emitted.get(action.data.idToUpdate).get('isPinned'),
+          )
+          : emitted,
+        received: received.get(action.data.idToUpdate)
+          ? received.setIn(
+            [action.data.idToUpdate, 'isPinned'],
+            !received.get(action.data.idToUpdate).get('isPinned'),
+          )
+          : received,
+        grouped: grouped.get(action.data.idToUpdate)
+          ? grouped.setIn(
+            [action.data.idToUpdate, 'isPinned'],
+            !grouped.get(action.data.idToUpdate).get('isPinned'),
+          )
+          : grouped
+        ,
+      });
+    }
+    case UPDATE_PINNED_CLAIMS_ERROR:
       return state.merge({
         isFetchingClaims: false,
         error: action.data,

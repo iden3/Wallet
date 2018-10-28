@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Map as ImmutableMap } from 'immutable';
 import PropTypes from 'prop-types';
 import claims from 'state/claims';
 
@@ -9,11 +10,13 @@ const {
     handleCreateClaim,
     handleAuthorizeClaim,
     handleSetClaimsFromStorage,
+    handleUpdatePinnedClaims,
   },
   selectors: {
     getClaimsError,
     getClaimsFetching,
     getClaims,
+    getPinnedClaims,
   },
 } = claims;
 
@@ -33,10 +36,18 @@ function withClaims(ClaimsComponent) {
        */
       handleSetClaimsFromStorage: PropTypes.func.isRequired,
       /*
+       Action to update when a claim is pinned to dashboard or removed from the pinned
+       */
+      handleUpdatePinnedClaims: PropTypes.func.isRequired,
+      /*
        Selector to get the list of claims.
        Expect the type of the claims as parameter
       */
       getClaims: PropTypes.func.isRequired,
+      /*
+       List of the pinned pins to the dashboard
+       */
+      pinnedClaims: PropTypes.instanceOf(ImmutableMap).isRequired,
       /*
        Flag to check if the app is fetching the claims
        */
@@ -44,7 +55,7 @@ function withClaims(ClaimsComponent) {
       /*
        Flag indicating any error when retrieve claims
        */
-      claimsError: PropTypes.string.isRequired,
+      claimsError: PropTypes.object.isRequired,
     };
 
     render() {
@@ -59,6 +70,7 @@ function withClaims(ClaimsComponent) {
       isFetchingClaims: getClaimsFetching(state),
       claimsError: getClaimsError(state),
       getClaims: type => getClaims(state, type),
+      pinnedClaims: getPinnedClaims(state),
     };
   }
 
@@ -67,6 +79,7 @@ function withClaims(ClaimsComponent) {
       handleCreateClaim,
       handleAuthorizeClaim,
       handleSetClaimsFromStorage,
+      handleUpdatePinnedClaims,
     }, dispatch);
   }
 

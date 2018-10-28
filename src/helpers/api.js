@@ -1,4 +1,5 @@
 import iden3 from 'iden3';
+import { Mas as ImmutableMap } from 'immutable';
 import * as APP_SETTINGS from 'constants/app';
 import * as CLAIMS from 'constants/claim';
 import identitiesHelper from 'helpers/identities';
@@ -211,6 +212,30 @@ const API = {
     const claim = new Claim();
 
     return claim.getAllClaimsFromStorage();
+  },
+
+  getPinnedClaims() {
+    const claim = new Claim();
+    const pinnedClaims = claim.getPinnedClaimsFromStorage();
+
+    return pinnedClaims || new ImmutableMap({});
+  },
+
+  updatePinnedClaims(allClaims, pinnedClaimsMap, idToUpdate) {
+    let newPinnedMap;
+    const claim = new Claim();
+    const keys = pinnedClaimsMap.keySeq().toArray();
+    if (keys.indexOf(idToUpdate) !== -1) {
+      // id exists, remove it (has been unpinned)
+      newPinnedMap = pinnedClaimsMap.delete(idToUpdate);
+    } else { // add it to the end because has been pinned
+      const updatedClaim = allClaims.setIn([idToUpdate, 'isPinned'], !allClaims.get(idToUpdate).isPinned);
+      newPinnedMap = pinnedClaimsMap.set(idToUpdate, updatedClaim);
+    }
+
+    return claim.setPinnedClaimsInStorage(newPinnedMap.toJS())
+      ? Promise.resolve(newPinnedMap)
+      : Promise.reject(new Error('Could not store the pinned claims in the storage'));
   },
 };
 
