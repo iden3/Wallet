@@ -73,7 +73,7 @@ class List extends PureComponent {
         content = `Issued by ${claim.issuer || 'Unknown identity'}`;
         break;
       case CLAIM.TYPE.EMITTED.NAME:
-        content = `Emitted to ${claim.to || 'iden3.io'}`;
+        content = `Issued to ${claim.to || 'iden3.io'}`;
         break;
       case CLAIM.TYPE.GROUPED.NAME:
         if (claim.groups.length > 0) {

@@ -6,9 +6,9 @@ import { Icon } from 'base_components';
 const { TreeNode } = TreeCmpt;
 
 /**
- * Wraps antd Layout.Header component to isolate the views from
+ * Wraps antd Tree component to isolate the views from
  * any UI framework that we decide to use.
- * Please, visit to https://ant.design/components/layout/ to check props.
+ * Please, visit to https://ant.design/components/tree/ to check props.
  */
 class Tree extends PureComponent {
   static propTypes = {

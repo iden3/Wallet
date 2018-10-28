@@ -12,6 +12,7 @@ import {
   Button,
   Input,
   QRScanner as QRScannerCmpt,
+  TextArea,
 } from 'base_components';
 import notificationsHelper from 'helpers/notifications';
 import * as BOX_CONSTANTS from 'constants/box';
@@ -62,29 +63,33 @@ class ClaimReader extends PureComponent {
    * @param {string} data - read from a QR or introduced by user in the input
    */
   authorizeKSignClaim = (data) => {
-    this.props.handleAuthorizeClaim(this.props.defaultIdentity, data)
-      .then(() => {
-        this.props.toggleCameraVisibility();
-        notificationsHelper.showNotification('success', {
-          message: 'Claim created!',
-          description: 'You have authorized a new claim',
-          style: {
-            background: 'green',
-            color: 'white',
-          },
+    if (data) {
+      this.props.handleAuthorizeClaim(this.props.defaultIdentity, data)
+        .then(() => {
+          this.props.toggleCameraVisibility();
+          this.setState({ inputClaimData: '' });
+          notificationsHelper.showNotification('success', {
+            message: 'Claim created!',
+            description: 'You have authorized a new claim',
+            style: {
+              background: 'green',
+              color: 'white',
+            },
+          });
+        })
+        .catch((error) => {
+          this.props.toggleCameraVisibility();
+          notificationsHelper.showNotification('error', {
+            message: 'Error',
+            description: `We are sorry... There was an error creating the claim:\n ${error}`,
+            style: {
+              background: '#f95555',
+              color: 'white',
+            },
+          });
         });
-      })
-      .catch((error) => {
-        this.props.toggleCameraVisibility();
-        notificationsHelper.showNotification('error', {
-          message: 'Error',
-          description: `We are sorry... There was an error creating the claim:\n ${error}`,
-          style: {
-            background: '#f95555',
-            color: 'white',
-          },
-        });
-      });
+    }
+
   };
 
   /**
@@ -97,18 +102,24 @@ class ClaimReader extends PureComponent {
     this.setState({ inputClaimData: value });
   };
 
+  /**
+   * Input to introduce the data of a claim to authorize it.
+   *
+   * @returns {*}
+   * @private
+   */
   _getInput() {
     return (
       <div className="i3-ww-claim-reader__manual-input">
-        <Input
+        <TextArea
           value={this.state.inputClaimData}
-          placeholder="Introduce a code"
+          placeholder="Introduce code"
           onChange={e => this.handleInputChange(e.target.value)} />
         <Button
           onClick={() => this.authorizeKSignClaim(this.state.inputClaimData)}
           type="primary"
           htmlType="button">
-          Read introduced code
+          Authorize code
         </Button>
       </div>
     );
@@ -117,6 +128,10 @@ class ClaimReader extends PureComponent {
   _getQRScanner() {
     return (
       <div className="i3-ww-claim-reader__camera">
+        <p>
+          Scan a QR code from the application, or introduce the code given
+          by the third party application in the text area below:
+        </p>
         <QRScannerCmpt actionAfterRead={this.authorizeKSignClaim} />
       </div>);
   }
@@ -126,7 +141,7 @@ class ClaimReader extends PureComponent {
       ? (
         <div className="i3-ww-claim-reader">
           {this._getQRScanner()}
-          {/* this._getInput() */}
+          {this._getInput()}
         </div>
       )
       : <div />;

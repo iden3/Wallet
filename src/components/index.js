@@ -33,5 +33,6 @@ export Spinner from './spinner/spinner';
 export SubMenu from './menu/sub-menu';
 export Tabs from './tabs/tabs';
 export Tag from './tag/tag';
+export TextArea from './text-area/text-area';
 export Tree from './tree/tree';
 export Widget from './widget/widget';
