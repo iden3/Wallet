@@ -1,5 +1,6 @@
 import iden3 from 'iden3';
 import bip39 from 'bip39';
+import { format } from 'date-fns';
 import * as utils from 'helpers/utils';
 import LocalStorage from 'helpers/local-storage';
 import * as APP_SETTINGS from 'constants/app';
@@ -67,6 +68,7 @@ const identitiesHelper = {
     const _storage = this.getStorage(storage);
     let created;
     let newIdValues = {};
+    const date = new Date();
 
     // if doesn't exist identity
     if (!this.getIdentity(idAddr)) {
@@ -75,6 +77,8 @@ const identitiesHelper = {
       const key = `id-${idAddr}`;
       newIdValues = {
         label: '',
+        date: format(date, 'd/MMM/yyyy'),
+        time: format(date, 'HH:mm'),
         icon: utils.generateHash(),
         keys: {
           recovery: data.keys.keyRecovery,

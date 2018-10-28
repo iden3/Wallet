@@ -41,16 +41,16 @@ class List extends PureComponent {
     const claimsList = this.props.list.toJS();
     const claims = Object.keys(claimsList).map((claim) => {
       // common props to the three types of claims: emitted, received or grouped
-      const formatedDate = format(
+      /*const formatedDate = format(
         claimsList[claim].date,
         'd/MMM/yyyy',
       );
       const formatedTime = format(
         claimsList[claim].date,
         'hh:mm',
-      );
+      );*/
       const claimProps = {
-        date: formatedDate,
+        date: claimsList[claim].date,
         isPinned: claimsList[claim].isPinned || false,
         id: claimsList[claim].id,
         togglePinned: this.props.togglePinned,
@@ -59,14 +59,10 @@ class List extends PureComponent {
           <Fragment key={`claim-${claimsList[claim].id}-data`}>
             <div>
               <span className="" style={{ fontWeight: 'bold', display: 'block' }}>
-              Created:
+              Created on:
               </span>
               <span>
-                {formatedDate}
-                {' '}
-                at
-                {' '}
-                {formatedTime}
+                {`${claimsList[claim].date} at ${claimsList[claim].time}`}
               </span>
             </div>
             <br />

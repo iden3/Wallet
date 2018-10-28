@@ -1,7 +1,6 @@
 import React, { Fragment, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Map as ImmutableMap } from 'immutable';
-import { format } from 'date-fns';
 import {
   List as ListCmpt,
   Scrollable,
@@ -66,7 +65,7 @@ class List extends PureComponent {
           break;
         case 'date':
           finalKey = 'Created on:';
-          finalValue = format(identity[key], 'd/MMM/yyyy at hh:mm');
+          finalValue = `${identity.date} at ${identity.time}`;
           break;
         case 'label':
           finalKey = 'Identity: ';

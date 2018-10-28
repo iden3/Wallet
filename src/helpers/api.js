@@ -29,7 +29,13 @@ const API = {
           const createdId = this.createIdentityInStorage(idAddr, { keys, relay }, storage);
           Object.keys(createdId).length > 0
             ? resolve({
-              id, idAddr, keys, relay, icon: createdId.icon,
+              id,
+              idAddr,
+              keys,
+              relay,
+              icon: createdId.icon,
+              date: createdId.date,
+              time: createdId.time,
             })
             : reject(
               new Error(`Couldn't create the identity because already exists or can't access to the ${storage}`),
