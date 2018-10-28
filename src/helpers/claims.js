@@ -1,5 +1,6 @@
 import iden3 from 'iden3';
 import { List as ImmutableList } from 'immutable';
+import { format } from 'date-fns';
 import { getUnixTime } from 'helpers/utils';
 import * as APP_SETTINGS from 'constants/app';
 import * as CLAIM from 'constants/claim';
@@ -39,34 +40,41 @@ class Claim {
     ]);
 
     keysContainer.unlock('a'); // for 30 seconds available
-    this.createAuthorizeKSignClaim(dataToCreateAuth, keysContainer, ko, krec, krev)
-      .then((res) => {
-        // if (res.states === 200) {
-        const dataToSentToSentServer = new ImmutableList([
-          JSONdata.url,
-          this.identity.get('idAddr'),
-          JSONdata.challenge,
-          JSONdata.signature,
-          KSign,
-          res.data.proofOfClaim,
-        ]);
-        return API.sendClaimToCentralizedServer(dataToSentToSentServer);
-        // }
-      })
-      .catch((error) => { throw new Error(error); });
+    return new Promise((resolve, reject) => {
+      this.createAuthorizeKSignClaim(dataToCreateAuth, keysContainer, ko, krec, krev)
+        .then((res) => {
+          // if (res.states === 200) {
+          const dataToSentToSenToServer = new ImmutableList([
+            JSONdata.url,
+            this.identity.get('idAddr'),
+            JSONdata.challenge,
+            JSONdata.signature,
+            KSign,
+            res.data.proofOfClaim,
+          ]);
+          resolve({ proofOfClaim: res.data.proofOfClaim, dataToSentToSenToServer, url: JSONdata.url });
+          //return API.sendClaimToCentralizedServer(dataToSentToSenToServer);
+          // }
+        })
+        .catch((error) => { reject(error); });
+    });
   };
 
-  createClaimInStorage = (idAddrOwner, claim, claimId, type) => {
+  createClaimInStorage = (idAddrOwner, claimData, claimId, proofOfClaim, sourceUrl, type) => {
     const claimKey = `claim-${claimId}`;
-    const claimData = {
+    const date = new Date();
+    const newClaimData = {
       identity: idAddrOwner,
-      data: claim,
-      date: new Date(),
+      data: claimData,
+      date: format(date, 'd/MMM/yyyy'),
+      time: format(date, 'HH:mm'),
       id: claimId,
+      proof: proofOfClaim.ClaimProof, // Leaf, Root and Proof
+      url: sourceUrl,
       type,
     };
 
-    return this.storage.setItem(claimKey, claimData);
+    return this.storage.setItem(claimKey, newClaimData) ? newClaimData : null;
   };
 
   getAllClaimsFromStorage = () => {

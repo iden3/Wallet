@@ -21,7 +21,7 @@ class ClaimRow extends PureComponent {
     /*
      Last date of modification (creation or last version)
      */
-    date: PropTypes.object.isRequired,
+    date: PropTypes.string.isRequired,
     /*
      To show a filled icon or not if it's pinned to the dashboard pinned widget
      */
@@ -39,13 +39,9 @@ class ClaimRow extends PureComponent {
      */
     togglePinned: PropTypes.func.isRequired,
     /*
-     Key of the DOM element
-     */
-    key: PropTypes.string,
-    /*
      Extra data of the claim, to show it in the collapsible content
      */
-    data: PropTypes.arrayOf(PropTypes.node),
+    data: PropTypes.node,
   };
 
   state = {
@@ -106,7 +102,7 @@ class ClaimRow extends PureComponent {
     return (
       <Fragment>
         <Row
-          id={this.props.key}
+          id={this.props.id}
           collapsible={this.props.data}
           className="i3-ww-claim-row"
           initialContent={initialContent}

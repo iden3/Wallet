@@ -141,8 +141,9 @@ const API = {
    * @param {ImmutableMap} data - With the values
    * @returns {*} - Response from the server with universal code of success or not
    */
-  sendClaimToCentralizedServer(data) {
-    return iden3.auth.resolv(...data.valueSeq().toJS());
+  async sendClaimToCentralizedServer(data) {
+    const sent = await iden3.auth.resolv(...data.valueSeq().toJS());
+    return sent;
   },
 
   /**
@@ -151,13 +152,31 @@ const API = {
    * @param {ImmutableMap} identity - With the identity which is authorizing the claim
    * @param {string} data - The data read from the claim to authorize (use to be a QR)
    * @param {string} claimId - Id of the claim in the local storage, nothing about relay or dapp, etc...
-   * @returns {Promise<void>}
+   * @returns {Object}
    */
   authorizeClaim(identity, data, claimId) {
     const claim = new Claim(identity);
+    const idAddr = identity.get('idAddr');
 
-    claim.createClaimInStorage(identity.get('idAddr'), data, claimId, CLAIMS.TYPE.EMITTED.NAME);
-    return Promise.resolve(claim.decodeReadedData(data));
+    return new Promise((resolve, reject) => {
+      claim.decodeReadedData(data)
+        .then((res) => {
+          this.sendClaimToCentralizedServer(res.dataToSentToSenToServer);
+          return ({ proof: res.proofOfClaim, url: res.url });
+        })
+        .then(({ proof, url }) => {
+          const createdClaim = claim.createClaimInStorage(
+            idAddr,
+            data,
+            claimId,
+            proof,
+            url,
+            CLAIMS.TYPE.EMITTED.NAME,
+          );
+          resolve(createdClaim);
+        })
+        .catch(error => reject(error));
+    });
   },
 
   /**

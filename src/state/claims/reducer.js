@@ -52,13 +52,16 @@ function claims(state = initialState, action) {
         isFetchingClaims: false,
         error: '',
         emitted: state.get(CLAIMS.TYPE.EMITTED.NAME).set(
-          action.data.get('claimId'),
+          action.data.get('id'),
           {
-            identity: action.data.get('identity').get('idAddr'),
-            data: action.data.get('claim'),
-            type: CLAIMS.TYPE.EMITTED.NAME,
-            date: new Date(),
-            id: action.data.get('claimId'),
+            identity: action.data.get('identity'),
+            data: action.data.get('data'),
+            type: action.data.get('type'),
+            date: action.data.get('date'),
+            time: action.data.get('time'),
+            proof: action.data.get('proof'),
+            url: action.data.get('url'),
+            id: action.data.get('id'),
           },
         ),
       });

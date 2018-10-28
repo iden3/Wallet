@@ -127,9 +127,7 @@ export function handleAuthorizeClaim(identity, claim) {
     dispatch(authorizeClaim());
     const claimId = utils.createUniqueAlphanumericId();
     return API.authorizeClaim(identity, claim, claimId)
-      .then(() => {
-        dispatch(authorizeClaimSuccess({ identity, claim, claimId }));
-      })
+      .then(authorizedClaim => dispatch(authorizeClaimSuccess(authorizedClaim)))
       .catch(error => dispatch(authorizeClaimError(error)));
   };
 }
