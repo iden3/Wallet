@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Icon,
-  Widget
+  Widget,
 } from 'base_components';
 import * as ROUTES from 'constants/routes';
 
@@ -16,7 +16,9 @@ class Dashboard extends Component {
   render() {
     const headerButtons = (
       <Link to={ROUTES.CLAIMS.MAIN}>
-        All claims <Icon type="right" />
+        All claims
+        {' '}
+        <Icon type="right" />
       </Link>);
 
     return (
@@ -28,7 +30,7 @@ class Dashboard extends Component {
           title="Pending actions">
           <div>
               Zero!!! Cero!!! Zéro!!! ноль!!!
-            <br/>
+            <br />
               You are a hero, you're up to date!
           </div>
         </Widget>
@@ -40,7 +42,7 @@ class Dashboard extends Component {
           headerButtons={headerButtons}>
           <div>
             Not pinned claims yet.
-            <br/>
+            <br />
             Why don't you take a walk in your claims list and pin some?
           </div>
         </Widget>

@@ -77,6 +77,18 @@ const API = {
   },
 
   /**
+   * Delete all the identities from the storage.
+   *
+   * @returns {boolean} - True if there were deleted from the storage, false otherwise
+   */
+  deleteAllIdentities(storage = APP_SETTINGS.LOCAL_STORAGE) {
+    if (storage === APP_SETTINGS.LOCAL_STORAGE) {
+      return identitiesHelper.deleteAllIdentities();
+    }
+    return false;
+  },
+
+  /**
    * Update the counter of the identities in the current storage.
    *
    * @param {boolean} isToAdd - True for adding, false for subtract

@@ -11,6 +11,7 @@ const {
     handleSetIdentitiesFromStorage,
     handleUpdateIdentitiesNumber,
     handleUpdateIdentity,
+    handleDeleteAllIdentities,
   },
   selectors: {
     getIdentitiesError,
@@ -36,6 +37,10 @@ function withIdentities(IdentitiesComponent) {
        Action to set in the app state the identities from the app state first time app is loaded
        */
       handleSetIdentitiesFromStorage: PropTypes.func.isRequired,
+      /*
+       Action to delete all identities from the app
+       */
+      handleDeleteAllIdentities: PropTypes.func.isRequired,
       /*
        Selector to get the information related to an identity.
        Expect the identity address as parameter
@@ -82,6 +87,7 @@ function withIdentities(IdentitiesComponent) {
       handleCreateIdentity,
       handleUpdateIdentitiesNumber,
       handleSetIdentitiesFromStorage,
+      handleDeleteAllIdentities,
     }, dispatch);
   }
 

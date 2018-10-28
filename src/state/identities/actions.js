@@ -12,6 +12,9 @@ import {
   UPDATE_IDENTITY,
   UPDATE_IDENTITY_SUCCESS,
   UPDATE_IDENTITY_ERROR,
+  DELETE_ALL_IDENTITIES,
+  DELETE_ALL_IDENTITIES_SUCCESS,
+  DELETE_ALL_IDENTITIES_ERROR,
 } from './constants';
 
 function createIdentity() {
@@ -84,6 +87,33 @@ function updateIdentityError(error) {
   };
 }
 
+function deleteAllIdentities() {
+  return {
+    type: DELETE_ALL_IDENTITIES,
+  };
+}
+
+function deleteAllIdentitiesSuccess() {
+  return {
+    type: DELETE_ALL_IDENTITIES_SUCCESS,
+  };
+}
+
+function deleteAllIdentitiesError(error) {
+  console.log(error);
+  return {
+    type: DELETE_ALL_IDENTITIES_ERROR,
+    data: error,
+  };
+}
+
+/**
+ * Create an identity storing it in the storate and in the app state
+ *.
+ * @param {string} passphrase - To use user keys
+ * @param {Object} data - With the new identity data
+ * @returns {function(*, *): Promise<T | never>}
+ */
 export function handleCreateIdentity(passphrase, data) {
   return function (dispatch, getState) {
     dispatch(createIdentity());
@@ -152,5 +182,18 @@ export function handleSetIdentitiesFromStorage() {
         dispatch(setAllIdentitiesSuccess({ identities, currentIdentity: defaultIdentity }));
       })
       .catch(error => dispatch(setAllIdentitiesError(error)));
+  };
+}
+
+export function handleDeleteAllIdentities(passphrase) {
+  return function (dispatch) {
+    dispatch(deleteAllIdentities());
+    return Promise.resolve(API.deleteAllIdentities(passphrase))
+      .then((areDeleted) => {
+        areDeleted
+          ? dispatch(deleteAllIdentitiesSuccess())
+          : dispatch(deleteAllIdentitiesError('Could not be deleted the identities'));
+      })
+      .catch(error => dispatch(deleteAllIdentitiesError(error)));
   };
 }

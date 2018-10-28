@@ -11,6 +11,9 @@ import {
   UPDATE_IDENTITY,
   UPDATE_IDENTITY_SUCCESS,
   UPDATE_IDENTITY_ERROR,
+  DELETE_ALL_IDENTITIES,
+  DELETE_ALL_IDENTITIES_SUCCESS,
+  DELETE_ALL_IDENTITIES_ERROR,
 } from './constants';
 
 /*
@@ -109,6 +112,22 @@ function identities(state = initialState, action) {
         identities: state.get('identities').set(action.data.get('idAddr'), action.data),
       });
     case UPDATE_IDENTITY_ERROR:
+      return state.merge({
+        isFetching: false,
+        error: action.data,
+      });
+    case DELETE_ALL_IDENTITIES:
+      return state.merge({
+        isFetching: true,
+      });
+    case DELETE_ALL_IDENTITIES_SUCCESS:
+      return state.merge({
+        isFetching: false,
+        error: '',
+        identities: ImmutableMap({}),
+        currentIdentity: '',
+      });
+    case DELETE_ALL_IDENTITIES_ERROR:
       return state.merge({
         isFetching: false,
         error: action.data,

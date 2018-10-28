@@ -346,6 +346,15 @@ const identitiesHelper = {
     return _storage.getItem(`${APP_SETTINGS.ST_DEFAULT_ID}`);
   },
 
+  /**
+   * Remove all the information in the local storage domain from the app
+   */
+  deleteAllIdentities() {
+    const areDeleted = localStorage.clear();
+    // if are deleted we get an 'undefined', for tha we return the negation
+    return areDeleted === undefined;
+  },
+
 };
 
 export default identitiesHelper;
