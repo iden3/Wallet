@@ -24,7 +24,7 @@ class Row extends PureComponent {
     /*
      Key of the component
      */
-    key: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
     /*
       If we receive something in this prop, we should place an icon
       with an arrow and do the content of this prop visible or not
@@ -68,7 +68,7 @@ class Row extends PureComponent {
 
     return (
       <div
-        key={this.props.key}
+        key={`row-${this.props.id}`}
         className="i3-ww-list__row">
         <div
           className={rowClasses}

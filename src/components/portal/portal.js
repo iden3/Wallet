@@ -54,7 +54,9 @@ class Portal extends Component {
       document.getElementById(this.props.parentId).removeChild(this.domNode);
     }
 
-    if (this.props.parentClassName && document.getElementsByClassName(this.props.parentClassName)[0]) {
+    if (this.props.parentClassName
+      && document.getElementsByClassName(this.props.parentClassName)[0]
+      && document.getElementsByClassName(this.props.parentClassName)[0].hasChildNodes()) {
       document.getElementsByClassName(this.props.parentClassName)[0].removeChild(this.domNode);
     }
   }

@@ -17,11 +17,11 @@
   }
   .i3-ww-box__header-buttons-area {
     border-left: 1px $box-header-border-color solid;
-    color: $app-font-color;
     margin-right: 1%;
     button {
       background: transparent;
       border: none;
+      color: $app-font-color;
     }
   }
 }

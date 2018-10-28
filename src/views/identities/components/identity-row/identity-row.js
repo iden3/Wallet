@@ -40,7 +40,8 @@ class IdentityRow extends PureComponent {
     return (
       <Fragment>
         <Row
-          key={this.props.id}
+          key={`identity-row-${this.props.id}`}
+          id={this.props.id}
           className="i3-ww-identity-row"
           collapsible={this.props.data}
           mainContent={mainContent} />

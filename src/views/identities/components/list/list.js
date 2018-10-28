@@ -2,7 +2,6 @@ import React, { Fragment, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Map as ImmutableMap } from 'immutable';
 import { format } from 'date-fns';
-import * as utils from 'helpers/utils';
 import {
   List as ListCmpt,
   Scrollable,
@@ -34,6 +33,7 @@ class List extends PureComponent {
     Object.keys(identitiesList).forEach((identity) => {
       identities.push(
         <Identity
+          key={`identity-${identitiesList[identity].idAddr}`}
           id={identitiesList[identity].idAddr}
           content={identitiesList[identity].label}
           data={this._setExtraData(identitiesList[identity])} />,
@@ -77,7 +77,7 @@ class List extends PureComponent {
       }
 
       return finalValue && (
-        <Fragment>
+        <Fragment key={`content-${identity.idAddr}-${finalKey}`}>
           <div>
             <span style={{ fontWeight: 'bold', display: 'block' }}>
               {finalKey}

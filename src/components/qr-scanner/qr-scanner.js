@@ -82,7 +82,6 @@ class QRScanner extends PureComponent {
 
       // check if QR code found
       if (code) {
-        console.log('=====> QR CODE FOUND: ', code.data);
         if (this.props.actionAfterRead) this.props.actionAfterRead(code.data);
         this.closeCamera();
       }

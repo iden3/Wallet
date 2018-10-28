@@ -8,6 +8,7 @@ const {
   actions: {
     handleFetchingForms,
     handleUpdateForm,
+    handleClearCreateIdentityForms,
   },
   selectors: {
     getForm,
@@ -35,8 +36,12 @@ function withFormsValuesWrapper(FormComponent) {
        */
       handleUpdateForm: PropTypes.func.isRequired,
       /*
+       Action to clear the forms and store passphrase
+       */
+      handleClearCreateIdentityForms: PropTypes.func.isRequired,
+      /*
        If fetching data about the value of the forms
-     */
+      */
       isFetchingForms: PropTypes.bool.isRequired,
       /*
        If there is an error fetching value
@@ -65,6 +70,7 @@ function withFormsValuesWrapper(FormComponent) {
     return bindActionCreators({
       handleFetchingForms,
       handleUpdateForm,
+      handleClearCreateIdentityForms,
     }, dispatch);
   }
 

@@ -37,6 +37,10 @@ class CreateIdentity extends Component {
      */
     handleUpdateForm: PropTypes.func.isRequired,
     /*
+     Action to clear the forms and store passphrase
+     */
+    handleClearCreateIdentityForms: PropTypes.func.isRequired,
+    /*
      Selector to retrieve the value of a form
      */
     getForm: PropTypes.func.isRequired,
@@ -109,6 +113,7 @@ class CreateIdentity extends Component {
    */
   createIdentity = (data) => {
     this.props.handleCreateIdentity(this.state.passphrase, data)
+      .then(() => this.props.handleClearCreateIdentityForms())
       .catch(error => notificationsHelper.showNotification('error', {
         message: 'Error',
         description: `We are sorry... There was an error creating the identity:\n${error}`,

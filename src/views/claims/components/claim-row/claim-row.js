@@ -106,7 +106,7 @@ class ClaimRow extends PureComponent {
     return (
       <Fragment>
         <Row
-          key={this.props.key}
+          id={this.props.key}
           collapsible={this.props.data}
           className="i3-ww-claim-row"
           initialContent={initialContent}

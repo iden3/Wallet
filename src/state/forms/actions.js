@@ -4,7 +4,11 @@ import {
   FETCHING_FORMS,
   FETCHING_FORMS_SUCCESS,
   FETCHING_FORMS_ERROR,
-  UPDATE_PASSPHRASE_FORM, UPDATE_IDENTITY_NAME_FORM,
+  UPDATE_PASSPHRASE_FORM,
+  UPDATE_IDENTITY_NAME_FORM,
+  CLEAR_CREATE_IDENTITY_FORMS,
+  CLEAR_CREATE_IDENTITY_FORMS_SUCCESS,
+  CLEAR_CREATE_IDENTITY_FORMS_ERROR,
 } from './constants';
 
 
@@ -26,6 +30,26 @@ function fetchingFormsError(error) {
   return {
     type: FETCHING_FORMS_ERROR,
     error: 'Fetching forms error',
+  };
+}
+
+function clearCreateIdentityForms() {
+  return {
+    type: CLEAR_CREATE_IDENTITY_FORMS,
+  };
+}
+
+function clearCreateIdentityFormsSuccess() {
+  return {
+    type: CLEAR_CREATE_IDENTITY_FORMS_SUCCESS,
+  };
+}
+
+function clearCreateIdentityFormsError(error) {
+  console.log(error);
+  return {
+    type: FETCHING_FORMS_ERROR,
+    error: 'Clear create identity forms error',
   };
 }
 
@@ -59,5 +83,21 @@ export function handleUpdateForm(form, newValues) {
   return {
     type,
     data: new ImmutableMap({ ...newValues }),
+  };
+}
+
+/**
+ * Clear the forms that are in the wizard of create the identity
+ * and store the passphrase in the app state and in the storage
+ *
+ * TODO: not store passphrase, this is only for demo purposes
+ * @returns {function(*): Promise<void | never>}
+ */
+export function handleClearCreateIdentityForms() {
+  return function (dispatch) {
+    dispatch(clearCreateIdentityForms());
+    return Promise.resolve()
+      .then(() => dispatch(clearCreateIdentityFormsSuccess()))
+      .catch(error => dispatch(clearCreateIdentityFormsError(error)));
   };
 }

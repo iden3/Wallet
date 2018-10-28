@@ -33,7 +33,6 @@ class Claims extends Component {
    */
   togglePinned = (id) => {
     // TODO set in the state app
-    console.log(`----> toggle Claim: ${id}`);
   };
 
   /**

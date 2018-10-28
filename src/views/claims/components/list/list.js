@@ -56,7 +56,7 @@ class List extends PureComponent {
         togglePinned: this.props.togglePinned,
         key: `claim-${claimsList[claim].id}`,
         data: [(
-          <Fragment>
+          <Fragment key={`claim-${claimsList[claim].id}-data`}>
             <div>
               <span className="" style={{ fontWeight: 'bold', display: 'block' }}>
               Created:
