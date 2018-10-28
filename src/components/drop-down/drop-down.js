@@ -29,11 +29,16 @@ class DropDown extends PureComponent {
      Placement of the popup with the options regarding its parent
      */
     placement: PropTypes.oneOf(['bottomLeft', 'bottomCenter', 'bottomRight', 'topLeft', 'topCenter', 'topRight']),
+    /*
+     Optional call back to trigger when any click is done
+     */
+    onClick: PropTypes.func,
   };
 
   static defaultProps = {
     header: 'Choose an option',
     placement: 'bottomRight',
+    onClick: () => {},
   };
 
   render() {
@@ -45,7 +50,9 @@ class DropDown extends PureComponent {
     );
 
     return (
-      <div className="i3-ww-drop-down">
+      <div
+        className="i3-ww-drop-down"
+        onClick={this.props.onClick}>
         <DropDownCmpt
           {...rest}
           overlay={items}

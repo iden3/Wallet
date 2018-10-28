@@ -52,6 +52,7 @@ class MobileMenu extends PureComponent {
     return (
       <div className="i3-ww-nav-bar-mobile">
         <DropDown
+          onClick={this.toggleMenuMobileIcon}
           onVisibleChange={this.toggleMenuMobileIcon}
           options={this.props.items}
           header={mobileMenuButton} />
