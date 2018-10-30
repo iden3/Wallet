@@ -1,0 +1,5 @@
+# Created by .ignore support plugin (hsz.mobi)
+/__tests__/!reports/
+/__tests__/!tmp/
+/dist/
+/package-lock.json

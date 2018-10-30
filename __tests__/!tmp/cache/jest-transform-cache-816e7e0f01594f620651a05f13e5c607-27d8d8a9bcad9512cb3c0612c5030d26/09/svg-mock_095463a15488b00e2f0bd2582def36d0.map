@@ -1,1 +1,0 @@
-{"version":3,"sources":["svg-mock.js"],"names":["module","exports"],"mappings":";;AAAAA,MAAM,CAACC,OAAP,GAAiB;AAAA,SAAM,IAAN;AAAA,CAAjB","sourcesContent":["module.exports = () => null;\n"]}

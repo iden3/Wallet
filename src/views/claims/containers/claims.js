@@ -107,7 +107,10 @@ class Claims extends Component {
    */
   toggleCreateClaimForm = () => {
     this.setState(
-      prevState => ({ isCreateClaimFormVisible: !prevState.isCreateClaimFormVisible }),
+      prevState => ({
+        isCreateClaimFormVisible: !prevState.isCreateClaimFormVisible,
+        inputClaimData: '',
+      }),
     );
   };
 
