@@ -2,12 +2,19 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import { Map as ImmutableMap } from 'immutable';
-import { withClaims } from 'hocs';
 import {
+  withClaims,
+  withIdentities,
+} from 'hocs';
+import {
+  Box,
+  Button,
   Tabs,
+  TextArea,
   Widget,
 } from 'base_components';
 import * as CLAIMS from 'constants/claim';
+import * as BOX_CONSTANTS from 'constants/box';
 import { capitalizeFirstLetter } from 'helpers/utils';
 import List from '../components/list';
 
@@ -28,20 +35,50 @@ class Claims extends Component {
     /*
      List of the pinned pins to the dashboard
      */
-    pinnedClaims: PropTypes.instanceOf(ImmutableMap),
+    // pinnedClaims: PropTypes.instanceOf(ImmutableMap),
     /*
      Action to update when a claim is pinned to dashboard or removed from the pinned
      */
-    handleUpdatePinnedClaims: PropTypes.func.isRequired,
+    // handleUpdatePinnedClaims: PropTypes.func.isRequired,
     /*
      Selector to get the list of claims.
      Expect the type of the claims as parameter
     */
     getClaims: PropTypes.func.isRequired,
+    /*
+     Handle to create a claim
+     */
+    handleCreateDefaultClaim: PropTypes.func.isRequired,
+    //
+    // from withIdentities HoC
+    //
+    /*
+     Selector to get the current loaded identity information
+     */
+    defaultIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
   };
 
   static defaultProps = {
     isPinnedList: false,
+  };
+
+  state = {
+    inputClaimData: '',
+    isCreateClaimFormVisible: false,
+  };
+
+  createDefaultClaim = () => {
+    this.props.handleCreateDefaultClaim(this.props.defaultIdentity, this.state.inputClaimData);
+  };
+
+  /**
+   * Handle the Input controlled components values when changed. Set the
+   * state of each input with current  value.
+   *
+   * @param {string} value - from the input
+   */
+  handleInputChange = (value) => {
+    this.setState({ inputClaimData: value });
   };
 
   /**
@@ -51,8 +88,36 @@ class Claims extends Component {
    */
   togglePinned = (id) => {
     // TODO set in the state app
-    this.props.handleUpdatePinnedClaims(this.props.pinnedClaims, id);
+    // this.props.handleUpdatePinnedClaims(this.props.pinnedClaims, id);
   };
+
+  /**
+   * Update the state to show or not the box with the camera.
+   * This callback is called from the camera button.
+   */
+  toggleCreateClaimForm = () => {
+    this.setState(
+      prevState => ({ isCreateClaimFormVisible: !prevState.isCreateClaimFormVisible }),
+    );
+  };
+
+  _getCreateClaimContent() {
+    return (
+      <div className="i3-ww-claim-__create-input">
+        Please, insert the content for the new claim:
+        <TextArea
+          value={this.state.inputClaimData}
+          placeholder="Content of the the new claim"
+          onChange={e => this.handleInputChange(e.target.value)} />
+        <Button
+          onClick={this.createDefaultClaim}
+          type="primary"
+          htmlType="button">
+          Create claim
+        </Button>
+      </div>
+    );
+  }
 
   /**
    * Get the list of the pinned claims.
@@ -61,7 +126,7 @@ class Claims extends Component {
    * @private
    */
   _getPinned() {
-    return (
+    /* return (
       this.props.pinnedClaims.size > 0
         ? (
           <List
@@ -76,6 +141,13 @@ class Claims extends Component {
           Why do not you take a walk on your claims list and pin some?
           </div>
         )
+    ); */
+    return (
+      <div>
+      Not pinned claims yet.
+        <br />
+      Why do not you take a walk on your claims list and pin some?
+      </div>
     );
   }
 
@@ -106,17 +178,27 @@ class Claims extends Component {
 
   render() {
     let content;
+    const createClaimContent = this._getCreateClaimContent();
 
     if (this.props.isPinnedList) {
       content = this._getPinned();
     } else {
       const tabs = this._getTabs();
+      const headerButtons = (
+        <Button
+          type="primary"
+          htmlType="button"
+          onClick={this.toggleCreateClaimForm}>
+          Create
+        </Button>
+      );
       content = (
         <Widget
           isFetching={false}
           hasError={false}
           hasData
-          title="Claims">
+          title="Claims"
+          headerButtons={headerButtons}>
           <Tabs tabs={tabs} />
         </Widget>
       );
@@ -125,9 +207,21 @@ class Claims extends Component {
     return (
       <div className="i3-ww-claims">
         {content}
+        <div>
+          <Box
+            type={BOX_CONSTANTS.TYPE.SIDE_PANEL}
+            side={BOX_CONSTANTS.SIDE.RIGHT}
+            onClose={this.toggleCreateClaimForm}
+            content={createClaimContent}
+            title="Create a claim"
+            show={this.state.isCreateClaimFormVisible} />
+        </div>
       </div>
     );
   }
 }
 
-export default compose(withClaims)(Claims);
+export default compose(
+  withClaims,
+  withIdentities,
+)(Claims);

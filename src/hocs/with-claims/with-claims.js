@@ -10,13 +10,14 @@ const {
     handleCreateClaim,
     handleAuthorizeClaim,
     handleSetClaimsFromStorage,
-    handleUpdatePinnedClaims,
+    handleCreateDefaultClaim,
+    // handleUpdatePinnedClaims,
   },
   selectors: {
     getClaimsError,
     getClaimsFetching,
     getClaims,
-    getPinnedClaims,
+    // getPinnedClaims,
   },
 } = claims;
 
@@ -36,9 +37,13 @@ function withClaims(ClaimsComponent) {
        */
       handleSetClaimsFromStorage: PropTypes.func.isRequired,
       /*
+       Handle to create a claim
+       */
+      handleCreateDefaultClaim: PropTypes.func.isRequired,
+      /*
        Action to update when a claim is pinned to dashboard or removed from the pinned
        */
-      handleUpdatePinnedClaims: PropTypes.func.isRequired,
+      // handleUpdatePinnedClaims: PropTypes.func.isRequired,
       /*
        Selector to get the list of claims.
        Expect the type of the claims as parameter
@@ -47,7 +52,7 @@ function withClaims(ClaimsComponent) {
       /*
        List of the pinned pins to the dashboard
        */
-      pinnedClaims: PropTypes.instanceOf(ImmutableMap).isRequired,
+      // pinnedClaims: PropTypes.instanceOf(ImmutableMap).isRequired,
       /*
        Flag to check if the app is fetching the claims
        */
@@ -55,7 +60,7 @@ function withClaims(ClaimsComponent) {
       /*
        Flag indicating any error when retrieve claims
        */
-      claimsError: PropTypes.object.isRequired,
+      claimsError: PropTypes.object || PropTypes.string,
     };
 
     render() {
@@ -70,7 +75,7 @@ function withClaims(ClaimsComponent) {
       isFetchingClaims: getClaimsFetching(state),
       claimsError: getClaimsError(state),
       getClaims: type => getClaims(state, type),
-      pinnedClaims: getPinnedClaims(state),
+      // pinnedClaims: getPinnedClaims(state),
     };
   }
 
@@ -79,7 +84,8 @@ function withClaims(ClaimsComponent) {
       handleCreateClaim,
       handleAuthorizeClaim,
       handleSetClaimsFromStorage,
-      handleUpdatePinnedClaims,
+      handleCreateDefaultClaim,
+      // handleUpdatePinnedClaims,
     }, dispatch);
   }
 

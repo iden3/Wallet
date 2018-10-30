@@ -64,7 +64,7 @@ class Claim {
     const date = new Date();
     const newClaimData = {
       identity: idAddrOwner,
-      isPinned: false,
+      introducedContent: sourceUrl ? claimData : '',
       data: claimData,
       date: format(date, 'd/MMM/yyyy'),
       time: format(date, 'HH:mm'),
@@ -94,13 +94,17 @@ class Claim {
     return Promise.resolve(claims);
   };
 
-  getPinnedClaimsFromStorage = () => {
+  /*getPinnedClaimsFromStorage = () => {
     return (this.storage.getItem('pinned-claims'));
   };
 
   setPinnedClaimsInStorage = (list) => {
     return this.storage.setItem('pinned-claims', list);
   }
+
+  updateClaimInStorage = (id, claim) => {
+    return this.storage.setItem(`claim-${id}`, claim) ? claim : null;
+  }*/
 }
 
 export default Claim;

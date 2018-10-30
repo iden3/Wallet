@@ -31,7 +31,7 @@ class Dashboard extends Component {
           hasError={false}
           hasData
           title="Pending actions">
-          <div>
+          <div className="i3-ww-dashboard__notifications">
               Zero!!! Cero!!! Zéro!!! ноль!!!
             <br />
               You are a hero, you are up to date!

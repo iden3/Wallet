@@ -157,7 +157,7 @@
     "bip39": "^2.5.0",
     "classnames": "^2.2.6",
     "date-fns": "^2.0.0-alpha.24",
-    "iden3": "0.0.9",
+    "iden3": "0.0.10",
     "identicon.js": "^2.3.3",
     "immutable": "^3.8.2",
     "jsqr": "^1.1.1",

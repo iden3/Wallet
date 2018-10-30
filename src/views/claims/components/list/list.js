@@ -70,7 +70,9 @@ class List extends PureComponent {
 
     switch (this.props.type) {
       case CLAIM.TYPE.RECEIVED.NAME:
-        content = `Issued by ${claim.issuer || 'Unknown identity'}`;
+        content = claim.introducedContent
+          ? claim.introducedContent
+          : `Issued by ${claim.issuer || 'Unknown identity'}`;
         break;
       case CLAIM.TYPE.EMITTED.NAME:
         content = `Issued to ${claim.to || 'iden3.io'}`;
@@ -109,16 +111,18 @@ class List extends PureComponent {
         <Fragment key={`claim-${claim.id}-data`}>
           <div>
             <span className="" style={{ fontWeight: 'bold', display: 'block' }}>
-              Authorized to:
+              { claim.url ? 'Authorized to:' : 'Created by you' }
             </span>
             <span>
-              {`${claim.url} on ${claim.date} at ${claim.time}`}
+              {claim.url
+                ? `${claim.url} on ${claim.date} at ${claim.time}`
+                : `On ${claim.date} at ${claim.time}`}
             </span>
           </div>
           <br />
           <div>
             <span className="" style={{ fontWeight: 'bold', display: 'block' }}>
-              Authorized claim data:
+              { claim.url ? 'Authorized claim data:' : 'Claim data' }
             </span>
             <span>
               {claim.data}

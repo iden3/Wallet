@@ -1,5 +1,4 @@
 import * as CLAIMS from 'constants/claim';
-import { Map as ImmutableMap } from 'immutable';
 
 export const getClaimsState = state => state.claims;
 export const getClaimsFetching = state => getClaimsState(state).get('isFetchingClaims');
@@ -8,7 +7,7 @@ export const getClaims = (state, type = CLAIMS.TYPE.EMITTED.NAME) => {
   const list = getClaimsState(state).get(type);
   return list;
 };
-export const getPinnedClaims = (state) => {
+/*export const getPinnedClaims = (state) => {
   const pinnedKeys = Object.keys(getClaimsState(state).get('pinned').toJS());
   const pinnedMap = {};
 
@@ -28,4 +27,4 @@ export const getPinnedClaims = (state) => {
   return new ImmutableMap({});
 
 
-};
+};*/

@@ -1,5 +1,4 @@
 import iden3 from 'iden3';
-import { Mas as ImmutableMap } from 'immutable';
 import * as APP_SETTINGS from 'constants/app';
 import * as CLAIMS from 'constants/claim';
 import identitiesHelper from 'helpers/identities';
@@ -135,6 +134,47 @@ const API = {
     return Promise.reject(new Error('Not storage found when update identity'));
   },
 
+  createDefaultClaim(identity, data, claimId) {
+    const claim = new Claim(identity);
+    const idAddr = identity.get('idAddr');
+
+    return new Promise((resolve, reject) => {
+      const keysContainer = new iden3.KeyContainer('localstorage');
+      //TODO: hack, change this
+      const idRelay = identity.get('relay');
+      const relay = new iden3.Relay(idRelay.url || idRelay.toJS().url);
+      const id = new iden3.Id(
+        identity.get('keys').get('keyRecovery'),
+        identity.get('keys').get('keyRevoke'),
+        identity.get('keys').get('keyOp'),
+        relay,
+        '',
+      );
+      id.idaddr = identity.get('idAddr');
+      keysContainer.unlock('a');
+      id.ClaimDefault(
+        keysContainer,
+        identity.get('keys').get('keyOp'),
+        'iden3.io',
+        'default',
+        data,
+        ''
+      )
+        .then((res) => {
+          const createdClaim = claim.createClaimInStorage(
+            idAddr,
+            data,
+            claimId,
+            res.data.proofOfClaim,
+            res.url || '',
+            CLAIMS.TYPE.EMITTED.NAME,
+          );
+          resolve(createdClaim);
+        })
+        .catch(error => reject(new Error('Could not create the claim')));
+    });
+  },
+
   /**
    * Call iden3 library to send authorization to the centralized server
    * to do the action requested in the QR read before.
@@ -214,7 +254,7 @@ const API = {
     return claim.getAllClaimsFromStorage();
   },
 
-  getPinnedClaims() {
+  /* getPinnedClaims() {
     const claim = new Claim();
     const pinnedClaims = claim.getPinnedClaimsFromStorage();
 
@@ -229,14 +269,16 @@ const API = {
       // id exists, remove it (has been unpinned)
       newPinnedMap = pinnedClaimsMap.delete(idToUpdate);
     } else { // add it to the end because has been pinned
-      const updatedClaim = allClaims.setIn([idToUpdate, 'isPinned'], !allClaims.get(idToUpdate).isPinned);
-      newPinnedMap = pinnedClaimsMap.set(idToUpdate, updatedClaim);
+      const _claim = allClaims.get(idToUpdate);
+      _claim.isPinned = !_claim.isPinned;
+      claim.updateClaimInStorage(allClaims.get(idToUpdate).id, _claim)
+      newPinnedMap = pinnedClaimsMap.set(idToUpdate, _claim);
     }
 
     return claim.setPinnedClaimsInStorage(newPinnedMap.toJS())
       ? Promise.resolve(newPinnedMap)
       : Promise.reject(new Error('Could not store the pinned claims in the storage'));
-  },
+  }, */
 };
 
 export default API;

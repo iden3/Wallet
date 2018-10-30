@@ -11,6 +11,9 @@ import {
   SET_ALL_CLAIMS,
   SET_ALL_CLAIMS_SUCCESS,
   SET_ALL_CLAIMS_ERROR,
+  CREATE_DEFAULT_CLAIM,
+  CREATE_DEFAULT_CLAIM_SUCCESS,
+  CREATE_DEFAULT_CLAIM_ERROR,
   UPDATE_PINNED_CLAIMS,
   UPDATE_PINNED_CLAIMS_SUCCESS,
   UPDATE_PINNED_CLAIMS_ERROR,
@@ -45,6 +48,35 @@ function claims(state = initialState, action) {
       });
     case CREATE_CLAIM_SUCCESS:
       return state;
+    case CREATE_DEFAULT_CLAIM:
+      return state.merge({
+        isFetchingClaims: true,
+      });
+    case CREATE_DEFAULT_CLAIM_SUCCESS:
+      return state.merge({
+        isFetchingClaims: false,
+        error: '',
+        emitted: state.get(CLAIMS.TYPE.EMITTED.NAME).set(
+          action.data.get('id'),
+          {
+            introducedContent: action.data.get('introducedContent'),
+            identity: action.data.get('identity'),
+            data: action.data.get('data'),
+            type: action.data.get('type'),
+            date: action.data.get('date'),
+            time: action.data.get('time'),
+            proof: action.data.get('proof'),
+            url: action.data.get('url'),
+            id: action.data.get('id'),
+            //isPinned: action.data.get('isPinned'),
+          },
+        ),
+      });
+    case CREATE_DEFAULT_CLAIM_ERROR:
+      return state.merge({
+        isFetchingClaims: false,
+        error: action.data,
+      });
     case AUTHORIZE_CLAIM:
       return state.merge({
         isFetchingClaims: true,
@@ -64,7 +96,7 @@ function claims(state = initialState, action) {
             proof: action.data.get('proof'),
             url: action.data.get('url'),
             id: action.data.get('id'),
-            isPinned: action.data.get('isPinned'),
+            //isPinned: action.data.get('isPinned'),
           },
         ),
       });
@@ -83,14 +115,13 @@ function claims(state = initialState, action) {
         emitted: action.data.get('claims')[CLAIMS.TYPE.EMITTED.NAME],
         received: action.data.get('claims')[CLAIMS.TYPE.RECEIVED.NAME],
         grouped: action.data.get('claims')[CLAIMS.TYPE.GROUPED.NAME],
-        pinned: action.data.get('pinnedClaims'),
       });
     case SET_ALL_CLAIMS_ERROR:
       return state.merge({
         isFetchingClaims: false,
         error: action.data,
       });
-    case UPDATE_PINNED_CLAIMS:
+    /*case UPDATE_PINNED_CLAIMS:
       return state.merge({
         isFetchingClaims: true,
       });
@@ -98,14 +129,15 @@ function claims(state = initialState, action) {
       const emitted = state.get('emitted');
       const received = state.get('received');
       const grouped = state.get('grouped');
+      const pinned = state.get('pinned');
 
       return state.merge({
         isFetchingClaims: false,
-        pinned: action.data.updatedList,
+        pinned: pinned.merge(action.data.updatedList),
         emitted: emitted.get(action.data.idToUpdate)
           ? emitted.setIn(
             [action.data.idToUpdate, 'isPinned'],
-            !emitted.get(action.data.idToUpdate).get('isPinned'),
+            !emitted.get(action.data.idToUpdate).isPinned,
           )
           : emitted,
         received: received.get(action.data.idToUpdate)
@@ -127,7 +159,7 @@ function claims(state = initialState, action) {
       return state.merge({
         isFetchingClaims: false,
         error: action.data,
-      });
+      });*/
     default:
       return state;
   }
