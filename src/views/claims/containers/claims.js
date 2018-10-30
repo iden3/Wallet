@@ -13,6 +13,7 @@ import {
   TextArea,
   Widget,
 } from 'base_components';
+import notificationsHelper from 'helpers/notifications';
 import * as CLAIMS from 'constants/claim';
 import * as BOX_CONSTANTS from 'constants/box';
 import { capitalizeFirstLetter } from 'helpers/utils';
@@ -68,7 +69,16 @@ class Claims extends Component {
   };
 
   createDefaultClaim = () => {
-    this.props.handleCreateDefaultClaim(this.props.defaultIdentity, this.state.inputClaimData);
+    this.props.handleCreateDefaultClaim(this.props.defaultIdentity, this.state.inputClaimData)
+      .then(() => this.toggleCreateClaimForm())
+      .catch(error => notificationsHelper.showNotification('error', {
+        message: 'Error',
+        description: `We are sorry... There was an error creating the claim:\n ${error}`,
+        style: {
+          background: '#f95555',
+          color: 'white',
+        },
+      }))
   };
 
   /**

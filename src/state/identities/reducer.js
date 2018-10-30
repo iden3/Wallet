@@ -121,13 +121,6 @@ function identities(state = initialState, action) {
       return state.merge({
         isFetching: true,
       });
-    case DELETE_ALL_IDENTITIES_SUCCESS:
-      return state.merge({
-        isFetching: false,
-        error: '',
-        identities: ImmutableMap({}),
-        currentIdentity: '',
-      });
     case DELETE_ALL_IDENTITIES_ERROR:
       return state.merge({
         isFetching: false,

@@ -50,7 +50,7 @@ class List extends PureComponent {
         data: this._getClaimScrollableData(claimsList[claim]),
       };
 
-      return this._getRow(claim, claimProps);
+      return this._getRow(claimsList[claim], claimProps);
     });
 
     return (<ListCmpt rows={claims} />);
@@ -75,7 +75,9 @@ class List extends PureComponent {
           : `Issued by ${claim.issuer || 'Unknown identity'}`;
         break;
       case CLAIM.TYPE.EMITTED.NAME:
-        content = `Issued to ${claim.to || 'iden3.io'}`;
+        content = claim.introducedContent
+          ? claim.introducedContent
+          : 'Issued to iden3.io';
         break;
       case CLAIM.TYPE.GROUPED.NAME:
         if (claim.groups.length > 0) {

@@ -1,6 +1,5 @@
 import API from 'helpers/api';
 import { Map as ImmutableMap } from 'immutable';
-import * as selectors from './selectors';
 import * as utils from 'helpers/utils';
 import {
   AUTHORIZE_CLAIM,

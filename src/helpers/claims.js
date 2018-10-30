@@ -64,7 +64,7 @@ class Claim {
     const date = new Date();
     const newClaimData = {
       identity: idAddrOwner,
-      introducedContent: sourceUrl ? claimData : '',
+      introducedContent: !sourceUrl ? claimData : '',
       data: claimData,
       date: format(date, 'd/MMM/yyyy'),
       time: format(date, 'HH:mm'),
