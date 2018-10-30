@@ -45,4 +45,11 @@
     overflow-wrap: break-word;
     padding: 10px;
   }
+
+  @media screen and (min-width: $small-mobile-min-width) and (max-width: $tablet-portrait-big-width) {
+    margin-right: 0;
+    .i3-ww-row__main-content {
+      margin-right: 10px;
+    }
+  }
 }

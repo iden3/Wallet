@@ -127,6 +127,9 @@ class StepSetName extends PureComponent {
               value={this.state.label}
               placeholder="Enter a name"
               onChange={e => this.handleInputChange(e.target.value)} />
+            <span className="i3-ww-ci__relay_text">@iden3.io</span>
+            {' '}
+            (default Relay)
           </div>
         </div>
         <div className="i3-ww-ci__buttons">

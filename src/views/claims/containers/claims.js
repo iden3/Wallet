@@ -78,7 +78,7 @@ class Claims extends Component {
           background: '#f95555',
           color: 'white',
         },
-      }))
+      }));
   };
 
   /**
@@ -113,18 +113,25 @@ class Claims extends Component {
 
   _getCreateClaimContent() {
     return (
-      <div className="i3-ww-claim-__create-input">
-        Please, insert the content for the new claim:
-        <TextArea
-          value={this.state.inputClaimData}
-          placeholder="Content of the the new claim"
-          onChange={e => this.handleInputChange(e.target.value)} />
-        <Button
-          onClick={this.createDefaultClaim}
-          type="primary"
-          htmlType="button">
-          Create claim
-        </Button>
+      <div className="i3-ww-claims__create">
+        <div className="i3-ww-claims__create-text">
+          Please, insert the content for the new claim:
+        </div>
+        <div className="i3-ww-claims__create-area-text">
+          <TextArea
+            value={this.state.inputClaimData}
+            placeholder="Content of the the new claim"
+            onChange={e => this.handleInputChange(e.target.value)} />
+        </div>
+        <div className="i3-ww-claims__create-button">
+          <Button
+            onClick={this.createDefaultClaim}
+            type="primary"
+            htmlType="button">
+            Create claim
+          </Button>
+        </div>
+
       </div>
     );
   }

@@ -40,6 +40,12 @@
       outline: none;
     }
   }
+  @media screen and (min-width: $small-mobile-min-width) and (max-width: $tablet-portrait-big-width) {
+    .i3-ww-claim-row__pin-it {
+      padding: 0 rem(15px);
+    }
+  }
+
   .i3-ww-claim-row__type {
     display: inline-block;
     height: 40px;
