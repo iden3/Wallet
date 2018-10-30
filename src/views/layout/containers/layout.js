@@ -8,7 +8,6 @@ import {
   Redirect,
 } from 'react-router-dom';
 import { Map as ImmutableMap } from 'immutable';
-
 import classNames from 'classnames';
 import { withIdentities } from 'hocs';
 import {
@@ -57,7 +56,7 @@ class Layout extends React.Component {
           'i3-ww-header': true,
           'i3-ww-header__no-nav-bar': !usersExist,
         })}>
-          <HeaderWithLogo />
+          <HeaderWithLogo enableLink={usersExist} />
           { usersExist && <NavBar /> }
         </Header>
         <Content className="i3-ww-content">
