@@ -26,11 +26,13 @@ class ButtonsBar extends PureComponent {
     addCamButton: PropTypes.bool,
     addNotificationsButton: PropTypes.bool,
     mobileMenuItems: PropTypes.arrayOf(PropTypes.node),
+    isDesktopVisible: PropTypes.bool,
   };
 
   static defaultProps = {
     addCamButton: false,
     addNotificationsButton: false,
+    isDesktopVisible: false,
   };
 
   state = {
@@ -52,15 +54,20 @@ class ButtonsBar extends PureComponent {
       <Fragment>
         <div className="i3-ww-nav-bar__buttons">
           { this.props.addCamButton && (
-            <Menu mode="horizontal" onClick={this.toggleCameraVisibility}>
-              <MenuItem>
+            <Menu
+              mode="horizontal"
+              onClick={this.toggleCameraVisibility}
+              selectedKeys={[this.state.isCameraVisible && 'cameraButton']}>
+              <MenuItem key="cameraButton">
                 <Icon type={CAMERA} theme="filled" />
               </MenuItem>
             </Menu>
           )}
           { this.props.addNotificationsButton && (
-            <Menu mode="horizontal">
-              <MenuItem>
+            <Menu
+              selectedKeys={[this.props.isDesktopVisible && 'notificationsButton']}
+              mode="horizontal">
+              <MenuItem key="notificationsButton">
                 <Badge count={0}>
                   <Icon type={NOTIFICATIONS} />
                 </Badge>
