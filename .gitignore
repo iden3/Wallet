@@ -3,3 +3,5 @@
 /__tests__/!tmp/
 /dist/
 /package-lock.json
+.idea
+/node_modules/

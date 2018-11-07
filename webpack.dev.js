@@ -10,13 +10,13 @@ const environmentPlugin = new webpack.DefinePlugin({
 
 module.exports = merge(common, {
   mode: 'development',
-  devtool: 'cheap-module-source-map',
+  devtool: 'cheap-eval-source-map',
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     compress: true,
     publicPath: '/',
     port: 9000,
-    stats: 'minimal',
+    stats: 'normal',
     watchContentBase: true,
     historyApiFallback: true,
     hot: true,
