@@ -1,13 +1,11 @@
-import React, { PureComponent } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { format } from 'date-fns';
-import { Icon } from 'base_components';
-import * as CLAIM from 'constants/claim';
+import {
+  Icon,
+  Row,
+} from 'base_components';
 
 import './claim-row.scss';
-
-const claimTypes = [CLAIM.TYPE.ASSIGN_NAME.NAME, CLAIM.TYPE.SIGN.NAME, CLAIM.TYPE.DEFAULT.NAME];
 
 /**
  * Generates a row with the information needed to show in the list of claims.
@@ -23,11 +21,7 @@ class ClaimRow extends PureComponent {
     /*
      Last date of modification (creation or last version)
      */
-    date: PropTypes.object.isRequired,
-    /*
-      Type of the claim to show the icon or not (if it's grouped)
-     */
-    type: PropTypes.oneOf(claimTypes).isRequired,
+    date: PropTypes.string.isRequired,
     /*
      To show a filled icon or not if it's pinned to the dashboard pinned widget
      */
@@ -39,11 +33,15 @@ class ClaimRow extends PureComponent {
     /*
      Id of the claim
      */
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
     /*
      Call back to trigger when pin icon is clicked
      */
     togglePinned: PropTypes.func.isRequired,
+    /*
+     Extra data of the claim, to show it in the collapsible content
+     */
+    data: PropTypes.node,
   };
 
   state = {
@@ -62,7 +60,8 @@ class ClaimRow extends PureComponent {
   /**
    * Handle if key is intro (code 13) when pinned
    * claim icon is controlled by keyboard, then
-   * trigger togglePinned call back
+   * trigger togglePinned call back.
+   *
    * @param {object} e - event key
    */
   togglePinnedHandleKeyUp = (e) => {
@@ -74,45 +73,41 @@ class ClaimRow extends PureComponent {
   };
 
   render() {
-    const typeClassNames = classNames({
-      'i3-ww-claim-row__type': true,
-      default: this.props.type === CLAIM.TYPE.DEFAULT.NAME,
-      'assign-name': this.props.type === CLAIM.TYPE.ASSIGN_NAME.NAME,
-      sign: this.props.type === CLAIM.TYPE.SIGN.NAME,
-    });
-    const formatedDate = format(
-      this.props.date,
-      ' on MMMM do, yyyy',
-    );
-
-    return (
-      <div
-        style={{ marginBottom: 2, marginLeft: 5 }}
-        className="i3-ww-claim-row"
-        role="row">
-        {!this.props.groups && (
-          <div
-            className={typeClassNames}
-            tabIndex="-1"
-            role="gridcell">
-            {this.props.type.charAt(0).toUpperCase()}
-          </div>
-        )}
-        <div
-          className="i3-ww-claim-row__content"
-          tabIndex="-1"
-          role="gridcell">
-          {`${this.props.content} ${formatedDate}`}
+    const initialContent = (
+      <div className="i3-ww-claim-row__initial-content">
+        <div className="i3-ww-claim-row__date">
+          {`${this.props.date}`}
         </div>
         <div
-          className="i3-ww-claim-row__pinned"
-          tabIndex={0}
+          className="i3-ww-claim-row__pin-it"
           role="gridcell"
+          tabIndex={0}
           onKeyUp={this.togglePinnedHandleKeyUp}
           onClick={this.togglePinned}>
           {this.state.isPinned ? <Icon type="star" theme="filled" /> : <Icon type="star" />}
         </div>
       </div>
+    );
+    const mainContent = (
+      <div
+        className="i3-ww-claim-row__main-content"
+        tabIndex="-1"
+        role="gridcell">
+        <div className="i3-ww-claim-row__description">
+          {this.props.content}
+        </div>
+      </div>
+    );
+
+    return (
+      <Fragment>
+        <Row
+          id={this.props.id}
+          collapsible={this.props.data}
+          className="i3-ww-claim-row"
+          initialContent={initialContent}
+          mainContent={mainContent} />
+      </Fragment>
     );
   }
 }

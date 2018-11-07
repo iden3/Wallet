@@ -83,4 +83,5 @@ About testing it's very important to test:
 - If there is any immutable entity, test that you can't mutate it.
 - If component has classes, once mounted check that has these classes.
 - Test that the component has the corresponding accessibility tags (`role`, etc...).
-
+### Licenses
+Avatar Icon made by [Pixelmeetup](https://www.flaticon.com/authors/pixelmeetup) from www.flaticon.com 

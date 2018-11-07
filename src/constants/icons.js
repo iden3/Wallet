@@ -5,9 +5,11 @@
  * https://ant.design/components/icon/
  *
  */
+export const BURGER_MENU = 'menu-fold';
+export const CAMERA = 'camera';
 export const CLAIMS = 'idcard';
-export const HISTORY = 'database';
+export const CLOSE = 'close';
 export const DASHBOARD = 'desktop';
-export const BURGER_MENU_FOLD = 'menu-fold';
-export const BURGER_MENU_UNFOLD = 'menu-unfold';
+export const HISTORY = 'database';
 export const IDENTITY = 'user';
+export const NOTIFICATIONS = 'mail';

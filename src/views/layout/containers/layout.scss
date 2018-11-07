@@ -1,43 +1,29 @@
 .i3-ww-layout {
   display: flex;
-  //min-height: 100vh;
-  @include with-tablet-landscape-width {
-    height: 100vh;
-  }
-  @include with-small-mobile-width {
-    height: 100%;
-  }
+  min-height: 100vh; // to fit height to the screen size
   flex-direction: column;
-  //override ant styles
-  .ant-layout-header {
-    padding: 0;
-    background: $nav-bar-bg-color;
-    height: $nav-bar-header-height;
-    $map: ($desktop-width: 1240px,
-            $tablet-landscape-width: 350px,
-            $tablet-portrait-width: 350px,
-            $mobile-max-width: 256px,
-            $small-mobile-min-width: 256px,
-    );
-    @include fluid-sizing('width', $map, true);
-  }
   .ant-layout-footer {
     z-index: -1;
-    /*position: absolute;
-    width: 100%;
-    bottom: 0;*/
-    //background: #ddd;
   }
   .i3-ww-header {
     flex: none;
     z-index: $header-z-index;
+    padding-left: 0;
+    padding-right: 0;
+    height: auto;
+    line-height: normal;
+  }
+  .i3-ww-header__no-nav-bar {
+    height: 75px;
+    display: flex;
   }
   .i3-ww-content {
     z-index: $main-content-z-index;
     flex: 1 0 auto;
-  }
-  .i3-ww-footer {
-    margin: 0;
-    z-index: $footer-z-index;
+    background-image: url($app-bg-gradient);
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 }

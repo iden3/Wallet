@@ -1,0 +1,59 @@
+.i3-ww-nav-bar {
+  // cam and notifications buttons
+  .i3-ww-nav-bar__buttons {
+    @include with-desktop-width {
+      margin-left: inherit;
+    }
+    margin-left: auto;
+    padding-right: 5%;
+    -webkit-display: flex;
+    -moz-display: flex;
+    -ms-display: flex;
+    -o-display: flex;
+    display: flex;
+    align-items: center;
+    -webkit-align-items: center;
+    .ant-menu:not(:last-child) {
+      display: flex;
+      -webkit-display: flex;
+      -moz-display: flex;
+      -ms-display: flex;
+      -o-display: flex;
+      align-self: normal;
+      -webkit-align-self: normal;
+      align-items: center;
+      -webkit-align-items: center;
+      border: none;
+      line-height: $nav-bar-fixed-item-height;
+      background: transparent;
+      .ant-menu-item {
+        display: flex;
+        -webkit-display: flex;
+        -moz-display: flex;
+        -ms-display: flex;
+        -o-display: flex;
+        border: none;
+        background: transparent;
+      }
+    }
+
+    .anticon {
+      font-size: $app-title-fs;
+      width: 25px;
+    }
+    .anticon:hover {
+      color: $nav-bar-hover-item-color;
+    }
+    .ant-badge-count {
+      right: 10px;
+      background: $nav-bar-badge-bg-color;
+      box-shadow: 0 0 0 1px $nav-bar-badge-bg-color;
+    }
+    .i3-ww-drop-down {
+      display: block;
+      @include with-desktop-width {
+        display: none;
+      }
+    }
+  }
+}

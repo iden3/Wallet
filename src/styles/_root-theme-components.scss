@@ -3,10 +3,10 @@
 // Separated in order to make it easier to load them in a project
 //
 
-//@import "variables";
-//@import "mixins";
+/*@import "variables";
+@import "mixins";
 @import "app";
-@import "fonts";
+@import "fonts";*/
 
 html body {
   @import "~views/app/containers/app";

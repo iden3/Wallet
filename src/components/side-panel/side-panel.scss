@@ -29,6 +29,7 @@
   transform: translateX(-100%);
   &.i3-ww-side-panel--visible {
     transform: translateX(0);
+    width: 100%;
   }
 }
 

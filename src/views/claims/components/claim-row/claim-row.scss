@@ -1,17 +1,51 @@
 .i3-ww-claim-row {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  overflow: hidden;
-  height: rem(60px);
-  background: $claim-row-bg-color;
-  .i3-ww-claim-row__content {
-    flex-grow: 1;
+  height: rem(91px);
+  border-radius: $border-row-radius;
+  color: $claim-row-color !important;
+  .i3-ww-claim-row__initial-content {
     display: flex;
-    justify-content: start;
-    padding-left: 30px;
-    cursor: pointer;
+    align-items: center;
+    height: inherit;
   }
+  .i3-ww-claim-row__main-content {
+    height: inherit;
+    align-items: center;
+    display: flex;
+  }
+  .i3-ww-claim-row__final-content {
+    height: inherit;
+    display: flex;
+    align-items: center;
+  }
+  .i3-ww-claim-row__description {
+    margin-left: rem(10px);
+  }
+  .i3-ww-claim-row__date {
+    background: $claim-row-date-cell-bg-color;
+    height: inherit;
+    display: flex;
+    align-items: center;
+    padding: 0 rem(28px);
+    font-size: $app-regular-small-fs;
+  }
+  @media screen and (min-width: $small-mobile-min-width) and (max-width: $tablet-portrait-width) {
+    .i3-ww-claim-row__date {
+      display: none !important;
+    }
+  }
+  .i3-ww-claim-row__pin-it {
+    padding: 0 rem(28px);
+    cursor: pointer;
+    &:focus {
+      outline: none;
+    }
+  }
+  @media screen and (min-width: $small-mobile-min-width) and (max-width: $tablet-portrait-big-width) {
+    .i3-ww-claim-row__pin-it {
+      padding: 0 rem(15px);
+    }
+  }
+
   .i3-ww-claim-row__type {
     display: inline-block;
     height: 40px;
@@ -19,24 +53,9 @@
     line-height: 40px;
     text-align: center;
     border-radius: 40px;
-    color: $claim-row-bg-color;
+    color: $claim-row-color;
     font-size: 1.5em;
-    margin-left: 15px;
     cursor: pointer;
-    &.default {
-      background: $claim-type-default-color;
-    }
-    &.assign-name {
-      background: $claim-type-assign-name-color;
-    }
-    &.sign {
-      background: $claim-type-sign-color;
-    }
-  }
-  .i3-ww-claim-row__pinned {
-    text-align: side(right);
-    font-size: $claim-list-pinned-icon-fs;
-    padding-right: 15px;
-    cursor: pointer;
+    background: $claim-type-default-color;
   }
 }

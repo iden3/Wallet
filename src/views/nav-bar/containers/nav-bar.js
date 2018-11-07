@@ -6,22 +6,17 @@ import {
   withRouter,
 } from 'react-router-dom';
 import memoizeOne from 'memoize-one';
-import {
-  Badge,
-  Button,
-  Icon,
-  Menu,
-  MenuItem,
-  SubMenu,
-} from 'base_components';
-import { QRScanner } from 'views';
+import { Map as ImmutableMap } from 'immutable';
+import { withIdentities } from 'hocs';
+import { MenuItem } from 'base_components';
 import * as ROUTES from 'constants/routes';
-import {
-  BURGER_MENU_FOLD,
-  BURGER_MENU_UNFOLD,
-  IDENTITY,
-} from 'constants/icons';
 import { capitalizeFirstLetter } from 'helpers/utils';
+import {
+  ButtonsBar,
+  IdentityItem,
+  DesktopMenu,
+} from '../components';
+
 
 import './nav-bar.scss';
 
@@ -36,31 +31,31 @@ class NavBar extends Component {
   memoizedPath = memoizeOne(key => capitalizeFirstLetter(key.replace(/\//g, '')));
 
   static propTypes = {
-    // from withRouter Hoc
+    //
+    // from withRouter HoC
+    //
     location: PropTypes.object.isRequired,
+    //
+    // from withIdentities HoC
+    //
+    /*
+     Selector to get the current loaded identity information
+     */
+    defaultIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
   };
 
   state = {
-    collapsed: true,
-    mobileMenuIcon: BURGER_MENU_UNFOLD,
     isCameraVisible: false,
   };
 
+  /**
+   * Update the state to show or not the box with the camera.
+   * This callback is called from the camera button.
+   */
   toggleCameraVisibility = () => {
     this.setState(
       prevState => ({ isCameraVisible: !prevState.isCameraVisible }),
     );
-  };
-
-  /**
-   * Toggle the icon of the 'burger' icon shown in tablet and mobile size to indicate to open it o close it
-   */
-  toggleMenuMobileIcon = () => {
-    this.setState(prevState => (
-      {
-        mobileMenuIcon: prevState.mobileMenuIcon === BURGER_MENU_FOLD ? BURGER_MENU_UNFOLD : BURGER_MENU_FOLD,
-        collapsed: !prevState.collapsed,
-      }));
   };
 
   /**
@@ -82,12 +77,10 @@ class NavBar extends Component {
       // Please, FMI, visit: https://reacttraining.com/react-router/web/api/Link/replace-bool
       if (_route.ORDER !== -1) {
         items.push(
-          <MenuItem
-            key={_route.KEY}
-            onClick={this.toggleMenuMobileIcon}>
-            <Link to={_route.MAIN} replace />
-            <Icon type={_route.ICON} />
-            {_route.KEY}
+          <MenuItem key={_route.KEY}>
+            <Link to={_route.MAIN} replace>
+              {_route.KEY}
+            </Link>
           </MenuItem>,
         );
       }
@@ -96,94 +89,25 @@ class NavBar extends Component {
     return items;
   }
 
-  /**
-   * Set the submenu for the setting/user menu. Valid for desktop and mobile size.
-   * We will have an icon, the name of the current identity and a
-   * badge in the top of the icon with the number of notifications
-   * @returns {element} React node with the settings SubMenu
-   */
-  _getSettingSubmenu() {
-    const title = (
-      <span>
-        <Badge count={5}>
-          <Icon type={IDENTITY} />
-        </Badge>
-        Identity A
-      </span>
-    );
-
-    return (
-      <SubMenu title={title}>
-        <MenuItem>
-          Identity 2
-        </MenuItem>
-        <MenuItem>
-          Identity 3
-        </MenuItem>
-        <MenuItem>
-          <Button
-            type="primary"
-            htmlType="button">
-            <Link to={ROUTES.IDENTITIES.MAIN} replace>
-              Manage my identities
-            </Link>
-          </Button>
-        </MenuItem>
-      </SubMenu>
-    );
-  }
-
   render() {
     const menuItems = this._getMenuItems();
-    const settingsMenu = this._getSettingSubmenu();
-    const selectedMenuItem = this.memoizedPath(this.props.location.pathname);
+    const selectedMainMenuItem = this.memoizedPath(this.props.location.pathname);
 
     return (
       <div className="i3-ww-nav-bar">
-        {/* Collapsed menu in small devices */}
-        <div className="i3-ww-nav-bar-mobile">
-          <Button
-            className="i3-ww-nav-bar-mobile__menu-button"
-            type="primary"
-            htmlType="button"
-            onClick={this.toggleMenuMobileIcon}
-            onKeyUp={this.toggleMenuMobileIcon}>
-            <Icon type={this.state.mobileMenuIcon} />
-          </Button>
-          <Menu
-            defaultSelectedKeys={[selectedMenuItem]}
-            mode="inline"
-            inlineCollapsed={this.state.collapsed}>
-            { !this.state.collapsed && menuItems }
-            { !this.state.collapsed && settingsMenu }
-          </Menu>
-        </div>
         {/* Regular menu for desktop */}
         <div className="i3-ww-nav-bar__header-items">
-          <div className="i3-ww-nav-bar-desktop">
-            <Menu
-              mode="horizontal"
-              selectedKeys={[selectedMenuItem]}>
-              { menuItems }
-            </Menu>
-          </div>
-          <div className="i3-ww-nav-bar__cam-button">
-            <Menu mode="horizontal" onClick={this.toggleCameraVisibility}>
-              <MenuItem>
-                <Icon type="camera-o" />
-              </MenuItem>
-            </Menu>
-          </div>
-          <div className="i3-ww-nav-bar-settings">
-            <Menu mode="horizontal">
-              { settingsMenu }
-            </Menu>
-          </div>
+          <IdentityItem
+            title={this.props.defaultIdentity.get('name') || this.props.defaultIdentity.get('label')}
+            icon={this.props.defaultIdentity.get('icon')} />
+          <DesktopMenu
+            items={menuItems}
+            selectedItem={selectedMainMenuItem} />
+          <ButtonsBar
+            addCamButton
+            addNotificationsButton
+            mobileMenuItems={menuItems} />
         </div>
-        {/* Box to show camera for reading QR */}
-        <QRScanner
-          isCameraVisible={this.state.isCameraVisible}
-          toggleCameraVisibility={this.toggleCameraVisibility} />
       </div>
     );
   }
@@ -191,4 +115,5 @@ class NavBar extends Component {
 
 export default compose(
   withRouter,
+  withIdentities,
 )(NavBar);

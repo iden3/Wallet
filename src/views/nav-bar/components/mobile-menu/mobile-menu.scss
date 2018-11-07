@@ -1,0 +1,44 @@
+.i3-ww-nav-bar {
+  // from 1280px and below is shown
+  .i3-ww-nav-bar-mobile {
+    @include with-desktop-width {
+      display: none;
+      -webkit-display: none;
+      -moz-display: none;
+      -ms-display: none;
+      -o-display: none;
+    };
+    .i3-ww-nav-bar-mobile__menu-button {
+      button {
+        font-size: inherit;
+        background-color: transparent;
+        border: none;
+        &:hover, &:focus {
+          background: inherit;
+          border: none;
+        }
+        .anticon {
+          font-size: $app-title-fs;
+          width: 25px;
+        }
+      }
+    }
+    .ant-menu {
+      .ant-menu-item:after {
+        border-right: 2px solid $nav-bar-mobile-selected-item-border-color;
+      }
+      .ant-menu-item:hover {
+        border: none;
+      }
+      .ant-menu-submenu > .ant-menu-item, .ant-menu-sub {
+        background: $nav-bar-item-hover-color;
+      }
+      .ant-badge-count {
+        right: 12px;
+      }
+      .ant-menu-submenu-title, .ant-menu-submenu-active {
+        color: inherit;
+      }
+    }
+  }
+}

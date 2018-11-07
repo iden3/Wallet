@@ -29,6 +29,10 @@ class Widget extends PureComponent {
      */
     minHeight: PropTypes.string,
     /*
+     React component to show in the right of the header instead the default (minimize, maximize)
+     */
+    headerButtons: PropTypes.node,
+    /*
       Children
      */
     children: PropTypes.node.isRequired,
@@ -54,7 +58,8 @@ class Widget extends PureComponent {
           <Header
             isMinimized={this.state.isMinimized}
             onClick={this.toggleMinimizeMaximizeWidget}
-            title={title} />
+            title={title}
+            actionButtons={this.props.headerButtons} />
         </div>
         <div className={contentClasses}>
           <Content isMinimized={this.state.isMinimized} {...rest} />

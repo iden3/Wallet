@@ -1,0 +1,19 @@
+.ant-tabs-nav {
+  color: $tab-color;
+  .ant-tabs-tab-active {
+    color: $tab-color;
+    background: $tab-active-bg-color;
+    width: 32%;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom: $tab-color;
+    margin-bottom: 2px;
+  }
+  .ant-tabs-tab:hover, .ant-tabs-tab:active, .ant-tabs-tab:focus {
+    color: $tab-active-focus-hover-color;
+  }
+  .ant-tabs-ink-bar{
+    background-color: transparent;
+  }
+}
+

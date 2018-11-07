@@ -15,7 +15,7 @@ class Button extends PureComponent {
     /*
       One of the antd framework types. If not set, is 'default'
      */
-    type: PropTypes.oneOf(['primary', 'ghost', 'dashed', 'danger', 'default']),
+    type: PropTypes.oneOf(['primary', 'ghost', 'dashed', 'danger', 'default', 'secondary']),
     /*
       Set the HTML type. If not set, is 'button'
      */
@@ -24,15 +24,28 @@ class Button extends PureComponent {
       Children
      */
     children: PropTypes.node,
+    /*
+     Indicates if own button classes want to be used (if true if because only functionality is needed)
+     */
+    overrideOwnClasses: PropTypes.bool,
+    /*
+      Class name with own styles to add
+     */
+    className: PropTypes.string,
+  };
+
+  static defaultProps = {
+    overrideOwnClasses: false,
   };
 
   render() {
-    const { children, ...restProps } = this.props;
+    const { children, overrideOwnClasses, ...restProps } = this.props;
     const cmptClasses = classNames({
       'i3-ww-button': true,
-      'i3-ww-button__primary': this.props.type === 'primary',
-      'i3-ww-button__secondary': this.props.type === 'secondary',
-      'i3-ww-button__danger': this.props.type === 'danger',
+      'i3-ww-button__primary': !overrideOwnClasses && this.props.type === 'primary',
+      'i3-ww-button__secondary': !overrideOwnClasses && this.props.type === 'secondary',
+      'i3-ww-button__danger': !overrideOwnClasses && this.props.type === 'danger',
+      [`${this.props.className}`]: this.props.className,
     });
 
     return (

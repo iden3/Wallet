@@ -2,7 +2,9 @@ import React, { PureComponent } from 'react';
 import { Badge as BadgeCmpt } from 'antd';
 
 /**
- * Component to show a badge. Extends the Antd Badge component
+ * Wraps antd Badge component to isolate the views from
+ * any UI framework that we decide to use.
+ * Please, visit to https://ant.design/components/badge/ to check props.
  */
 class Badge extends PureComponent {
   render() {

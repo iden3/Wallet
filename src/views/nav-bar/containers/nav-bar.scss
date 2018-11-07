@@ -1,187 +1,48 @@
 .i3-ww-nav-bar {
-  display: flex;
-  -webkit-display: flex;
-  -moz-display: flex;
-  -ms-display: flex;
-  -o-display: flex;
-  @include with-desktop-width {
-    display: block;
-    -webkit-display: block;
-    -moz-display: block;
-    -ms-display: block;
-    -o-display: block;
-  }
+  font-size: $nav-bar-fs;
+  height: 75px;
+  display: block;
+  -webkit-display: block;
+  -moz-display: block;
+  -ms-display: block;
+  -o-display: block;
   .ant-menu {
     font-size: inherit;
-    background: $nav-bar-bg-color;
+    background: transparent;
     color: $nav-bar-item-color;
-    line-height: $nav-bar-item-height;
-    .anticon {
-      color: $nav-bar-item-color;
-      font-size: 20px;
-    }
-    .ant-badge-count {
-      right: 18px;
-    }
+    //line-height: $nav-bar-item-height;
     .ant-menu-item, a {
       color: $nav-bar-item-color;
+      transition: unset;
     }
     .ant-menu-item-selected {
-      background: $nav-bar-selected-item-bg-color;
+      background: transparent;
+      color: $nav-bar-selected-item-color;
     }
-    // .ant-menu-submenu-open, .ant-menu-submenu:hover>.ant-menu-submenu-title
-    .ant-menu-item:hover, .ant-menu-submenu:hover {
-      background: $nav-bar-item-hover-color;
-      color: inherit;
-    }
-    .ant-menu-submenu-title, .ant-menu-submenu-active {
-      color: inherit;
+    .ant-menu-item:hover, .ant-menu-submenu:hover, .ant-menu-item:active {
+      background: transparent;
+      color: $nav-bar-hover-item-color;
     }
   }
 
-  // items that appears in the header always (like cam button) or when are in desktop size
   .i3-ww-nav-bar__header-items {
+    background: #0f9fbf; /* Old browsers */
+    background: -moz-linear-gradient(left, #0f9fbf 0%, #346abc 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(left, #0f9fbf 0%,#346abc 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to right, #0f9fbf 0%,#346abc 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0f9fbf', endColorstr='#346abc',GradientType=1 ); /* IE6-9 */
     display: flex;
     -webkit-display: flex;
     -moz-display: flex;
     -ms-display: flex;
     -o-display: flex;
-    height: $nav-bar-item-height;
-    margin-left: auto;
-    @include with-desktop-width {
-      height: inherit;
-      margin-left: inherit;
-    }
-  }
-  // cam button
-  .i3-ww-nav-bar__cam-button {
-    margin-left: auto;
-    -webkit-display: flex;
-    -moz-display: flex;
-    -ms-display: flex;
-    -o-display: flex;
-    display: flex;
+    height: inherit;
+    margin-left: inherit;
     align-items: center;
-    -webkit-align-items: center;
-    .ant-menu {
-      display: flex;
-      -webkit-display: flex;
-      -moz-display: flex;
-      -ms-display: flex;
-      -o-display: flex;
-      align-self: normal;
-      -webkit-align-self: normal;
-      align-items: center;
-      -webkit-align-items: center;
-      border: none;
-      line-height: $nav-bar-fixed-item-height;
-      background: $nav-bar-fixed-item-color;
-    }
-    .ant-menu-item {
-      display: flex;
-      -webkit-display: flex;
-      -moz-display: flex;
-      -ms-display: flex;
-      -o-display: flex;
-      border: none;
-      background: $nav-bar-fixed-item-color;
-    }
-    .anticon{
-      font-size: 35px;
-      width: 25px;
-    }
-  }
-
-  // from 1280px and above is shown
-  .i3-ww-nav-bar-desktop {
-    display: none;
-    -webkit-display: none;
-    -moz-display: none;
-    -ms-display: none;
-    -o-display: none;
-    @include with-desktop-width {
-      display: flex;
-      -webkit-display: flex;
-      -moz-display: flex;
-      -ms-display: flex;
-      -o-display: flex;
-    }
-    .ant-menu-horizontal {
-      border-bottom: none;
-    }
     .ant-menu-item-selected {
-      border-bottom: 2px solid $nav-bar-selected-item-border-color;
-    }
-    .ant-menu-item:hover, .ant-menu-submenu:hover {
-      border-bottom: 2px solid $nav-bar-selected-item-border-color;
-    }
-  }
-
-  .i3-ww-nav-bar-settings {
-    display: none;
-    -webkit-display: none;
-    -moz-display: none;
-    -ms-display: none;
-    -o-display: none;
-    @include with-desktop-width {
-      display: flex;
-      -webkit-display: flex;
-      -moz-display: flex;
-      -ms-display: flex;
-      -o-display: flex;
-    }
-    margin-left: auto;
-    .anticon {
-      margin-right: 15px;
-      margin-bottom: 3px;
-    }
-  }
-
-  // from 1280px and below is shown
-  .i3-ww-nav-bar-mobile {
-    display: block;
-    -webkit-display: block;
-    -moz-display: block;
-    -ms-display: block;
-    -o-display: block;
-    width: 256px;
-    @include with-desktop-width {
-      display: none;
-      -webkit-display: none;
-      -moz-display: none;
-      -ms-display: none;
-      -o-display: none;
-    }
-  ;
-    .i3-ww-nav-bar-mobile__menu-button{
-      font-size: inherit;
-      margin-bottom: 16px;
-      background: $nav-bar-bg-color;
-      border-color: $nav-bar-bg-color;
-      &:hover, &:focus {
-        background: inherit;
-        border: none;
-      }
-    }
-    .ant-menu {
-      $map: ($desktop-width: 1240px,
-              $tablet-landscape-width: 350px,
-              $tablet-portrait-width: 350px,
-              $mobile-max-width: 200px,
-              $small-mobile-min-width: 200px,
-      );
-      @include fluid-sizing('width', $map, false);
-      .ant-menu-item:after {
-        border-right: 2px solid $nav-bar-mobile-selected-item-border-color;
-      }
-      .ant-menu-item:hover {
-        border: none;
-      }
-      .ant-menu-submenu > .ant-menu-item, .ant-menu-sub {
-        background: $nav-bar-item-hover-color;
-      }
-      .ant-badge-count {
-        right: 12px;
+      vertical-align: top;
+      a {
+        color: $nav-bar-selected-item-color;
       }
     }
   }

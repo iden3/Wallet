@@ -4,6 +4,8 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 // optimize and minimize the CSS
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+// to analyze the weight of the bundle visually
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const merge = require('webpack-merge');
 const common = require('./webpack.config.js');
 
@@ -22,39 +24,28 @@ module.exports = merge(common, {
   optimization: {
     minimizer: [
       new UglifyJsPlugin({
-        cache: true,
+        cache: false,
         parallel: true,
         sourceMap: true, // set to true to have JS source maps
       }),
       new OptimizeCSSAssetsPlugin({}),
     ],
+    // separate in a file called vendors.js all used in node_modules
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
+    },
   },
   plugins: [
     miniCssExtractPlugin,
     environmentPlugin,
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+    }),
   ],
-  module: {
-    rules: [
-      {
-        test: /\.(sa|sc|c)ss$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          {
-            loader: 'css-loader', // to resolve css files
-            options: {
-              // make CSS modular, class name will be scoped locally and specific to only the component in question
-              modules: true,
-              importLoaders: 1,
-              // to configure the generated identification: [name of the component]_[name of class/id]_[random unique hash]
-              localIdentName: '[name]_[local]_[hash:base64]',
-              sourceMap: true,
-              minimize: true,
-            },
-          },
-          // Loads a Sass/SCSS file and compiles it to CSS
-          'sass-loader',
-        ],
-      },
-    ],
-  },
 });

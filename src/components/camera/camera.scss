@@ -1,9 +1,9 @@
 .i3-ww-camera {
-  position: absolute;
+  /* position: absolute;
   top: 50%;
   left: 50%;
   margin-right: -50%;
-  transform: translate(-50%, -58%);
+  transform: translate(-50%, -58%); */
   .i3-ww-camera__container {
     button {
       left: 14%;
@@ -23,6 +23,8 @@
               $small-mobile-min-width: 200px,
       );
       @include fluid-sizing('max-height', $map, false);
+      //max-width: 400px;
+      padding: 20px;
     }
   }
 }

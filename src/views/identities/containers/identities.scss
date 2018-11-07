@@ -3,5 +3,17 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-top: 5%;
+  margin-top: 20px;
+}
+.i3-ww-identities__delete-confirmation {
+  .i3-ww-identities__delete-confirmation-text {
+    padding: 65px 10px 35px 10px;
+    text-align: center;
+  }
+  .i3-ww-identities__delete-confirmation-button {
+    display: flex;
+    .i3-ww-button {
+      margin: auto;
+    }
+  }
 }

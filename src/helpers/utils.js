@@ -107,8 +107,25 @@ export const areEqualObjects = function (obj1, obj2) {
  * Generate a random an unique key in base 36 such as "0.94rz766tytb"
  * @returns {string} with the generated alphanumeric key
  */
-export const createUniqueAlphanumericId = function (radix = 36) {
-  return Math.random().toString(radix);
+export const createUniqueAlphanumericId = function (radix = 36, onlyAlphanumeric = true) {
+  return onlyAlphanumeric ? Math.random().toString(radix).slice(2) : Math.random().toString(radix);
+};
+
+/**
+ * Generates a random hash string.
+ *
+ * @param {number} length - of the hash
+ * @returns {string} with the generated hash
+ */
+export const generateHash = function (length = 15) {
+  const letters = '0123456789abcdef';
+  let hash = '';
+
+  for (let i = 0; i < length; i++) {
+    hash += letters[(Math.floor(Math.random() * 16))];
+  }
+
+  return hash;
 };
 
 /**
@@ -238,4 +255,28 @@ export const capitalizeFirstLetter = function (str) {
   return str
     ? str.charAt(0).toUpperCase() + str.slice(1)
     : str;
+};
+
+/**
+ * Mask with regular expressions a string with the expression/char sent
+ * I.e. to mask with asterisk a string
+ * @param {string} unmaskedString - String to mask
+ * @param {string} expression - Expression to place at any char of the unmasked String
+ * @returns {string} A string with the expression sent masking all the characters of the unmasked string
+ */
+export const maskWithExpression = function (unmaskedString, expression) {
+  if (unmaskedString && expression) {
+    const regex = /^[a-z0-9._]+$/i; // any character
+    return unmaskedString.replace(regex, expression);
+  }
+  return unmaskedString;
+};
+
+/**
+ * Return time in Unix format.
+ *
+ * @returns {number} - With the time in Unix format
+ */
+export const getUnixTime = function () {
+  return Math.round(+new Date() / 1000);
 };

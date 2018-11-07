@@ -1,77 +1,214 @@
+import API from 'helpers/api';
+import { Map as ImmutableMap } from 'immutable';
+import * as utils from 'helpers/utils';
 import {
-  FETCHING_EMITTED_CLAIMS,
-  FETCHING_EMITTED_CLAIMS_SUCCESS,
-  FETCHING_EMITTED_CLAIMS_ERROR,
-  FETCHING_RECEIVED_CLAIMS,
-  FETCHING_RECEIVED_CLAIMS_ERROR,
-  FETCHING_RECEIVED_CLAIMS_SUCCESS,
+  AUTHORIZE_CLAIM,
+  AUTHORIZE_CLAIM_SUCCESS,
+  AUTHORIZE_CLAIM_ERROR,
+  FETCHING_CLAIMS,
+  FETCHING_CLAIMS_SUCCESS,
+  FETCHING_CLAIMS_ERROR,
+  CREATE_CLAIM,
+  CREATE_CLAIM_SUCCESS,
+  CREATE_CLAIM_ERROR,
+  SET_ALL_CLAIMS,
+  SET_ALL_CLAIMS_SUCCESS,
+  SET_ALL_CLAIMS_ERROR,
+  CREATE_DEFAULT_CLAIM,
+  CREATE_DEFAULT_CLAIM_SUCCESS,
+  CREATE_DEFAULT_CLAIM_ERROR,
+  UPDATE_PINNED_CLAIMS,
+  UPDATE_PINNED_CLAIMS_SUCCESS,
+  UPDATE_PINNED_CLAIMS_ERROR,
 } from './constants';
 
 
-function fetchingEmittedClaims() {
+function fetchingClaims() {
   return {
-    type: FETCHING_EMITTED_CLAIMS,
+    type: FETCHING_CLAIMS,
   };
 }
 
-function fetchingEmittedClaimsSuccess(response) {
+function fetchingClaimsSuccess(data) {
   return {
-    type: FETCHING_EMITTED_CLAIMS_SUCCESS,
-    response,
+    type: FETCHING_CLAIMS_SUCCESS,
+    data,
   };
 }
 
-function fetchingEmittedClaimsError(error) {
+function fetchingClaimsError(error) {
   console.log(error);
   return {
-    type: FETCHING_EMITTED_CLAIMS_ERROR,
-    error: 'Fetching emitted claims error',
+    type: FETCHING_CLAIMS_ERROR,
+    error: 'Fetching claims error',
   };
 }
 
-function fetchingReceivedClaims() {
+function createClaim() {
   return {
-    type: FETCHING_RECEIVED_CLAIMS,
+    type: CREATE_CLAIM,
   };
 }
 
-function fetchingReceivedClaimsSuccess(response) {
+function createClaimSuccess(data) {
   return {
-    type: FETCHING_RECEIVED_CLAIMS_SUCCESS,
-    response,
+    type: CREATE_CLAIM_SUCCESS,
+    data: new ImmutableMap({ ...data }),
   };
 }
 
-function fetchingReceivedClaimsError(error) {
-  console.log(error);
+function createClaimError(data) {
   return {
-    type: FETCHING_RECEIVED_CLAIMS_ERROR,
-    error: 'Fetching received claims error',
+    type: CREATE_CLAIM_ERROR,
+    data,
   };
 }
 
-export function handleFetchingEmittedClaims() {
+function createDefaultClaim() {
+  return {
+    type: CREATE_DEFAULT_CLAIM,
+  };
+}
+
+function createDefaultClaimSuccess(data) {
+  return {
+    type: CREATE_DEFAULT_CLAIM_SUCCESS,
+    data: new ImmutableMap({ ...data }),
+  };
+}
+
+function createDefaultClaimError(data) {
+  return {
+    type: CREATE_DEFAULT_CLAIM_ERROR,
+    data,
+  };
+}
+
+function authorizeClaim() {
+  return {
+    type: AUTHORIZE_CLAIM,
+  };
+}
+
+function authorizeClaimSuccess(data) {
+  return {
+    type: AUTHORIZE_CLAIM_SUCCESS,
+    data: new ImmutableMap({ ...data }),
+  };
+}
+
+function authorizeClaimError(error) {
+  return {
+    type: AUTHORIZE_CLAIM_ERROR,
+    data: error,
+  };
+}
+
+function setAllClaims() {
+  return {
+    type: SET_ALL_CLAIMS,
+  };
+}
+
+function setAllClaimsSuccess(claims) {
+  return {
+    type: SET_ALL_CLAIMS_SUCCESS,
+    data: new ImmutableMap({ claims }),
+  };
+}
+
+function setAllClaimsError(error) {
+  return {
+    type: SET_ALL_CLAIMS_ERROR,
+    data: error,
+  };
+}
+
+/*function updatePinnedClaims() {
+  return {
+    type: UPDATE_PINNED_CLAIMS,
+  };
+}
+
+function updatePinnedClaimsSuccess(data, idToUpdate) {
+  return {
+    type: UPDATE_PINNED_CLAIMS_SUCCESS,
+    data: { updatedList: data, idToUpdate },
+  };
+}
+
+function updatePinnedClaimsError(error) {
+  return {
+    type: UPDATE_PINNED_CLAIMS_ERROR,
+    data: error,
+  };
+}*/
+
+export default function handleFetchingClaims() {
   return function (dispatch) {
-    dispatch(fetchingEmittedClaims());
+    dispatch(fetchingClaims());
     return Promise.resolve()
       .then(({ data }) => {
-        dispatch(fetchingEmittedClaimsSuccess({
+        dispatch(fetchingClaimsSuccess({
           claims: data,
         }));
       })
-      .catch(error => dispatch(fetchingEmittedClaimsError(error)));
+      .catch(error => dispatch(fetchingClaimsError(error)));
   };
 }
 
-export function handleFetchingReceivedClaims() {
+export function handleCreateClaim(claim) {
   return function (dispatch) {
-    dispatch(fetchingReceivedClaims());
+    dispatch(createClaim());
     return Promise.resolve()
-      .then(({ data }) => {
-        dispatch(fetchingReceivedClaimsSuccess({
-          claims: data,
-        }));
+      .then(() => {
+        dispatch(createClaimSuccess(claim));
       })
-      .catch(error => dispatch(fetchingReceivedClaimsError(error)));
+      .catch(error => dispatch(createClaimError(error)));
   };
 }
+
+export function handleCreateDefaultClaim(identity, claim) {
+  return function (dispatch) {
+    dispatch(createDefaultClaim());
+    const claimId = utils.createUniqueAlphanumericId();
+    return API.createDefaultClaim(identity, claim, claimId)
+      .then((newClaim) => {
+        dispatch(createDefaultClaimSuccess(newClaim));
+      })
+      .catch(error => dispatch(createDefaultClaimError(error)));
+  };
+}
+
+export function handleAuthorizeClaim(identity, claim) {
+  return function (dispatch) {
+    dispatch(authorizeClaim());
+    const claimId = utils.createUniqueAlphanumericId();
+    return API.authorizeClaim(identity, claim, claimId)
+      .then(authorizedClaim => dispatch(authorizeClaimSuccess(authorizedClaim)))
+      .catch(error => dispatch(authorizeClaimError(error)));
+  };
+}
+
+export function handleSetClaimsFromStorage() {
+  return function (dispatch) {
+    dispatch(setAllClaims());
+    return Promise.resolve(API.getAllClaims())
+      .then((claims) => {
+        // const pinnedClaims = API.getPinnedClaims();
+        dispatch(setAllClaimsSuccess(claims));
+      })
+      .catch(error => dispatch(setAllClaimsError(error)));
+  };
+}
+
+/*export function handleUpdatePinnedClaims(pinnedClaims, idToUpdate) {
+  return function (dispatch, getState) {
+    dispatch(updatePinnedClaims());
+    return Promise.resolve(API.updatePinnedClaims(selectors.getClaims(getState()), pinnedClaims, idToUpdate))
+      .then((updatedList) => {
+        dispatch(updatePinnedClaimsSuccess(updatedList, idToUpdate));
+      })
+      .catch(error => dispatch(updatePinnedClaimsError(error)));
+  };
+}*/

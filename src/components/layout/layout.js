@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Layout as LayoutCmpt } from 'antd';
 
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.less';
 
 /**
  * Wraps antd Layout.Content component to isolate the views from

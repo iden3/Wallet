@@ -13,6 +13,7 @@ $small-mobile-min-width: 200px;
 $mobile-min-width: 320px;
 $mobile-max-width: 480px;
 $tablet-portrait-width: 600px;
+$tablet-portrait-big-width: 768px;
 $tablet-landscape-width: 900px;
 $desktop-width: 1200px;
 $large-desktop-width: 1600px;
@@ -48,84 +49,123 @@ $galaxy-s7-max-width: 640px;
 /*
 * Fonts sizes
  */
-$app-title-fs: 24px;
-$app-regular-fs: 20px;
+$app-title-fs: 25px;
+$app-subtitle-fs: 20px;
+$app-regular-fs: 16px;
 
-$app-title-large-desktop-fs: 24px;
-$app-title-desktop-fs: 24px;
-$app-title-tablet-landscape-fs: 22px;
-$app-title-tablet-portrait-fs: 22px;
-$app-title-mobile-fs: 18px;
-$app-title-small-fs: 16px;
+$app-title-large-desktop-fs: 40px;
+$app-title-desktop-fs: 40px;
+$app-title-tablet-landscape-fs: 40px;
+$app-title-tablet-portrait-fs: 35px;
+$app-title-mobile-fs: 25px;
+$app-title-small-fs: 22px;
 
-$app-regular-large-desktop-fs: 20px;
-$app-regular-desktop-fs: 20px;
-$app-regular-tablet-landscape-fs: 18px;
+$app-subtitle-large-desktop-fs: 22px;
+$app-subtitle-desktop-fs: 22px;
+$app-subtitle-tablet-landscape-fs: 22px;
+$app-subtitle-tablet-portrait-fs: 22px;
+$app-subtitle-mobile-fs: 20px;
+$app-subtitle-small-fs: 18px;
+
+$app-regular-large-desktop-fs: 16px;
+$app-regular-desktop-fs: 16px;
+$app-regular-tablet-landscape-fs: 16px;
 $app-regular-tablet-portrait-fs: 16px;
-$app-regular-mobile-fs: 15px;
-$app-regular-small-fs: 13px;
+$app-regular-mobile-fs: 14px;
+$app-regular-small-fs: 12px;
 
 $claim-list-pinned-icon-fs: 30px;
+
+$nav-bar-fs: $app-subtitle-fs;
+$widget-header-title: $app-title-fs;
+$widget-header-subtitle: $app-regular-fs;
 
 /*
 * Colors
 */
 
 // App
-$app-bg-color: $grey-9;
-$app-font-color: $grey-70;
-$app-border-color: $navy-35;
+$app-bg-color: $white;
+$app-font-color: $white;
+$app-border-color: $white;
+
+// Header logo
+$header-logo-bg-color: $white;
 
 // Nav bar
-$nav-bar-bg-color: $navy-97;
-$nav-bar-item-color: $grey-9;
-$nav-bar-selected-item-color: $navy-97;
-$nav-bar-selected-item-bg-color: $navy-88;
-$nav-bar-selected-item-border-color: $navy-35;
-$nav-bar-item-hover-color: $navy-100;
-$nav-bar-fixed-item-color: $navy-100;
+$nav-bar-item-color: $white;
+$nav-bar-selected-item-color: $blue-10;
+$nav-bar-hover-item-color: $blue-10;
+$nav-bar-badge-bg-color: $blue-10;
+$nav-bar-selected-item-bg-color: $blue-10;
+$nav-bar-selected-item-border-color: $blue-10;
+$nav-bar-item-hover-color: $blue-10;
+$nav-bar-fixed-item-color: $blue-10;
 
 // Nav bar mobile
-$nav-bar-mobile-item-selected-color: $grey-9;
-$nav-bar-mobile-selected-item-border-color: $navy-35;
-
-// Box: side panel and pop-up
-$box-bg-color: $white-100;
-$box-border-color: $navy-57;
+$nav-bar-mobile-selected-item-border-color: $blue-10;
 
 // Button
-$button-primary-main-color: $blue-75;
-$button-primary-content-color: $white-20;
-$button-primary-hover-main-color: $blue-40;
-$button-primary-hover-content-color: $grey-52;
-$button-primary-pressed-color: $blue-100;
-$button-primary-pressed-content-color: $white-20;
+$button-primary-bg-color: $blue-10;
+$button-primary-content-color: $white;
+$button-primary-hover-bg-color: $white;
+$button-primary-hover-content-color: $blue-10;
+$button-primary-pressed-bg-color: $blue-10;
+$button-primary-pressed-content-color: $purple;
 
-$button-secondary-main-color: transparent;
-$button-secondary-content-color: $grey-70;
-$button-secondary-hover-main-color: $grey-23;
-$button-secondary-hover-content-color: $grey-52;
-$button-secondary-pressed-color: $blue-100;
-$button-secondary-pressed-content-color: $white-20;
+$button-secondary-bg-color: $white;
+$button-secondary-content-color: $blue-10;
+$button-secondary-hover-bg-color: $blue-10;
+$button-secondary-hover-content-color: $white;
+$button-secondary-pressed-bg-color: $white;
+$button-secondary-pressed-content-color: $purple;
 
-$button-danger-main-color: $grey-23;
-$button-danger-content-color: $white-20;
-$button-danger-hover-main-color: $grey-52;
-$button-danger-hover-content-color: $white-20;
-$button-danger-pressed-color: $grey-70;
-$button-danger-pressed-content-color: $white-20;
+$button-danger-bg-color: $red;
+$button-danger-content-color: $white;
+$button-danger-hover-bg-color: $white;
+$button-danger-hover-content-color: $red;
+$button-danger-pressed-bg-color: $white;
+$button-danger-pressed-content-color: $purple;
+
+// Inputs
+$input-bg-color: $blue-30;
+$input-color: $white;
+$input-error-border-color: $red;
 
 // Claim types
-$claim-type-assign-name-color: $orange-40;
-$claim-type-sign-color: $green-40;
 $claim-type-default-color: $grey-23;
 
 // Claim list
-$claim-row-bg-color: $white-10;
+$claim-row-bg-color: $white;
+$claim-row-date-cell-bg-color: $grey-9;
+$claim-row-color: $black-100;
+
+// Identities list
+$identities-row-color: $black-100;
+
+// Tabs
+$tab-active-bg-color: $blue-20;
+$tab-color: $white;
+$tab-active-focus-hover-color: $blue-30;
+
+// Widgets
+$widget-header-border-color: $blue-20;
+$widget-header-bg-color: $blue-11;
+
+// Lists
+$row-collapsible-content-color: $white;
+$row-collapsible-content-bg-color: $blue-30;
+
+// Box: Side panel and pop ups
+$box-bg-color: $blue-40-rgba;
+$box-header-border-color: $blue-30;
 
 /*
 * Other settings
 */
+
+// Header
+$app-header-height: 155px;
 
 // Nav bar
 $nav-bar-item-height: 63px;
@@ -143,3 +183,15 @@ $header-z-index: 50;
 $main-content-z-index: 1;
 $side-bar-z-index: 100;
 $pop-up-z-index: 100;
+
+// Images
+$logo-image: url('~static_images/logo-iden3.png');
+$generic-avatar: '~static_images/generic-avatar-1.png';
+$app-bg-gradient: '~static_images/gradient_app.jpg';
+
+// Widget
+$widget-header-height: 60px;
+$widget-max-width: 800px;
+
+// Rows
+$border-row-radius: 5px;

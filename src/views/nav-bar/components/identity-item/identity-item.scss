@@ -1,0 +1,48 @@
+.i3-ww-nav-bar {
+  .i3-ww-nav-bar__identity {
+    padding-left: 5%;
+    display: flex;
+    -webkit-display: flex;
+    -moz-display: flex;
+    -ms-display: flex;
+    -o-display: flex;
+    .i3-ww-nav-bar--identity-icon-name {
+      display: flex;
+      align-items: center;
+      .i3-ww-nav-bar--identity-name {
+        padding-left: 5px;
+      }
+    }
+    .anticon {
+      margin-right: 15px;
+      margin-bottom: 3px;
+    }
+    .ant-avatar {
+      margin-right: 15px;
+      background-image: url($generic-avatar);
+    }
+    .ant-menu-item-selected {
+      border: none;
+    }
+    .ant-menu-horizontal {
+      border-bottom: none;
+    }
+    .ant-menu-item > a:hover {
+      color: $nav-bar-hover-item-color;
+    }
+    .ant-menu-item:hover {
+      border-bottom: none;
+    }
+    @media screen and (min-width: $small-mobile-min-width) and (max-width: $mobile-max-width) {
+      padding-left: 0;
+      .i3-ww-nav-bar--identity-name {
+          display: none;
+      }
+      .ant-avatar {
+        margin-right: 0;
+        width: 40px;
+        height: 40px;
+      }
+    }
+  }
+}

@@ -23,6 +23,7 @@ module.exports = {
         "arrow-body-style": [0],
         "class-methods-use-this": [0],
         "no-unused-vars": [2, { "varsIgnorePattern": "export^" }],
+        "no-unused-expressions": [0],
         "func-names": [0],
         "global-require": [0],
         "max-len": ["error", { "code": 120, "comments": 200 }],
@@ -31,8 +32,10 @@ module.exports = {
             "error",
             {"devDependencies": true, "optionalDependencies": false, "peerDependencies": false}
         ],
+        "no-prototype-builtins": [0],
         "no-plusplus": [0],
         "no-restricted-syntax": [0],
+        "no-return-assign": [0],
         "react/prefer-stateless-function": [0],
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
         "react/require-default-props": [0],

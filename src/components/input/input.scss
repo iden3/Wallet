@@ -1,0 +1,33 @@
+.i3-ww-input {
+  input {
+    border-radius: 28px;
+    height: 50px;
+    background: $input-bg-color;
+    border: none;
+    color: $input-color;
+  }
+  .ant-input-group > .ant-input:last-child, .ant-input-group-addon:last-child {
+    cursor: pointer;
+    border-bottom-right-radius: 28px;
+    border-top-right-radius: 28px;
+    color: $input-color;
+    background: $input-bg-color;
+    border-color: $input-bg-color;
+  };
+}
+
+.i3-ww-input--error {
+  input {
+    // TODO: do it regarding if we should colour all the borders or not
+    //border: $input-error-border-color 2px solid;
+    border-bottom: $input-error-border-color 2px solid;
+    border-left: $input-error-border-color 2px solid;
+    border-top: $input-error-border-color 2px solid;
+  }
+  // colour the icon at the end of the input (if there is any)
+  .ant-input-group-addon {
+    border-bottom: $input-error-border-color 2px solid !important;
+    border-right: $input-error-border-color 2px solid !important;
+    border-top: $input-error-border-color 2px solid !important;
+  }
+}

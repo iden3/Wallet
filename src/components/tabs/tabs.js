@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Tabs as TabsCmpt } from 'antd';
 import { Icon } from 'base_components';
 
+import './tabs.scss';
+
 const { TabPane: TabPaneCmpt } = TabsCmpt;
 
 /**

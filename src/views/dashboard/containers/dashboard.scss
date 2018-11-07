@@ -1,10 +1,17 @@
 .i3-ww-dashboard {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  margin-top: 5%;
-  .i3-ww-widget:not(:first-child){
-    margin-top: 5%;
+  flex: 1;
+  margin-top: 20px;
+  .i3-ww-claims {
+    width: inherit;
+    .i3-ww-claims-list {
+      width: inherit;
+    }
+  }
+  .i3-ww-dashboard__notifications {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 20px;
   }
 }
