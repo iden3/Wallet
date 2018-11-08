@@ -103,12 +103,12 @@ const identitiesHelper = {
  * @returns {{keyRecovery: string, keyRevoke: string, keyOp: string. keyContainer: Object}}
  */
   createKeys(passphrase, storage = APP_SETTINGS.LOCAL_STORAGE) {
-    const keyContainer = new iden3.KeyContainer(storage.toLowerCase());
+    const keyContainer = new iden3.KeyContainer(storage);
     // keyContainer.unlock(passphrase); // for 30 seconds available
     keyContainer.unlock('a');
-    const keyRecovery = keyContainer.generateKey();
-    const keyRevoke = keyContainer.generateKey();
-    const keyOp = keyContainer.generateKey();
+    const keyRecovery = keyContainer.generateKeyRand();
+    const keyRevoke = keyContainer.generateKeyRand();
+    const keyOp = keyContainer.generateKeyRand();
 
     return {
       keyRecovery, keyRevoke, keyOp, keyContainer,

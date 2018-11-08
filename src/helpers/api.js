@@ -58,7 +58,7 @@ const API = {
 
     // identity.keys.keyContainer.unlock(passphrase); // for 30 seconds to update the identity
     identity.keys.keyContainer.unlock('a');
-    identity.id.vinculateID(identity.keys.keyContainer, data.label || data.name)
+    identity.id.bindID(identity.keys.keyContainer, data.label || data.name)
       .then(res => identityUpdated = Object.assign({}, identityUpdated, res.data));
     return identityUpdated;
   },
@@ -139,7 +139,7 @@ const API = {
     const idAddr = identity.get('idAddr');
 
     return new Promise((resolve, reject) => {
-      const keysContainer = new iden3.KeyContainer('localstorage');
+      const keysContainer = new iden3.KeyContainer(APP_SETTINGS.LOCAL_STORAGE);
       //TODO: hack, change this
       const idRelay = identity.get('relay');
       const relay = new iden3.Relay(idRelay.url || idRelay.toJS().url);
@@ -152,7 +152,7 @@ const API = {
       );
       id.idaddr = identity.get('idAddr');
       keysContainer.unlock('a');
-      id.ClaimDefault(
+      id.claimDefault(
         keysContainer,
         identity.get('keys').get('keyOp'),
         'iden3.io',
@@ -238,7 +238,7 @@ const API = {
     const id = new iden3.Id(krec, krev, ko, relay, '');
 
     id.idaddr = identity.get('idAddr');
-    return Promise.resolve(id.AuthorizeKSignClaim(...data.valueSeq().toJS()));
+    return Promise.resolve(id.authorizeKSignClaim(...data.valueSeq().toJS()));
   },
 
   /**

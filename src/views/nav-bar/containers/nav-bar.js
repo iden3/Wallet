@@ -17,7 +17,6 @@ import {
   DesktopMenu,
 } from '../components';
 
-
 import './nav-bar.scss';
 
 /**

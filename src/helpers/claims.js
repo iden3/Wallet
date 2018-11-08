@@ -24,7 +24,7 @@ class Claim {
     const JSONdata = iden3.auth.parseQRhex(data); // Object {challenge, signature, url}
     const KSign = iden3.utils.addrFromSig(JSONdata.challenge, JSONdata.signature); // string
     const unixTime = getUnixTime(); // number
-    const keysContainer = new iden3.KeyContainer('localstorage');
+    const keysContainer = new iden3.KeyContainer(APP_SETTINGS.LOCAL_STORAGE);
     const ko = this.identity.get('keys').get('keyOp');
     const krec = this.identity.get('keys').get('keyRecovery');
     const krev = this.identity.get('keys').get('keyRevoke');
