@@ -7,7 +7,7 @@ export App from 'views/app';
 export Claims from 'views/claims';
 export CreateIdentity from 'views/create-identity';
 export Dashboard from 'views/dashboard';
-export History from 'views/history';
+export Historical from 'views/historical';
 export Identities from 'views/identities';
 export Layout from 'views/layout';
 export NavBar from 'views/nav-bar';

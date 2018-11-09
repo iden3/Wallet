@@ -10,6 +10,6 @@ export const CAMERA = 'camera';
 export const CLAIMS = 'idcard';
 export const CLOSE = 'close';
 export const DASHBOARD = 'desktop';
-export const HISTORY = 'database';
+export const HISTORICAL = 'database';
 export const IDENTITY = 'user';
 export const NOTIFICATIONS = 'mail';

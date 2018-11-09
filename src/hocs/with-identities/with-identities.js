@@ -59,7 +59,7 @@ function withIdentities(IdentitiesComponent) {
        */
       isFetchingIdentities: PropTypes.bool.isRequired,
       /*
-       Flag indicating any error when retrieve identities
+       If there is any error when retrieve identities
        */
       identitiesError: PropTypes.string.isRequired,
     };
@@ -75,7 +75,7 @@ function withIdentities(IdentitiesComponent) {
     return {
       isFetchingIdentities: getIdentitiesFetching(state),
       identitiesError: getIdentitiesError(state),
-      getIdentity: idAddr => getIdentity(state, idAddr),
+      getIdentity: identityAddr => getIdentity(state, identityAddr),
       defaultIdentity: getDefaultIdentity(state),
       identities: getIdentities(state),
     };
