@@ -7,9 +7,7 @@ import {
   withRouter,
   Redirect,
 } from 'react-router-dom';
-import {
-  Layout,
-} from 'views';
+import { Layout } from 'views';
 import LocalStorage from 'helpers/local-storage';
 import {
   withClaims,

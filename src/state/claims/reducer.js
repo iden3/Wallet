@@ -1,4 +1,7 @@
-import { Map as ImmutableMap } from 'immutable';
+import {
+  Map as ImmutableMap,
+  Record as ImmutableRecord,
+} from 'immutable';
 import * as CLAIMS from 'constants/claim';
 import {
   AUTHORIZE_CLAIM,
@@ -20,12 +23,12 @@ import {
 } from './constants';
 
 const initialState = new ImmutableMap({
-  error: '',
+  error: ImmutableRecord({ message: '' }),
   isFetchingClaims: true,
-  pinned: ImmutableMap({}),
-  emitted: ImmutableMap({}),
-  received: ImmutableMap({}),
-  grouped: ImmutableMap({}),
+  pinned: new ImmutableMap({}),
+  emitted: new ImmutableMap({}),
+  received: new ImmutableMap({}),
+  grouped: new ImmutableMap({}),
 });
 
 function claims(state = initialState, action) {
@@ -38,13 +41,12 @@ function claims(state = initialState, action) {
       return state.merge({
         isFetchingClaims: false,
         claims: action.data,
-        error: '',
+        error: new ImmutableRecord({ message: '' }),
       });
     case FETCHING_CLAIMS_ERROR:
       return state.merge({
         isFetchingClaims: false,
-        claims: ImmutableMap(),
-        error: action.error,
+        error: state.get('error').set('message', action.error),
       });
     case CREATE_CLAIM_SUCCESS:
       return state;
@@ -55,7 +57,7 @@ function claims(state = initialState, action) {
     case CREATE_DEFAULT_CLAIM_SUCCESS:
       return state.merge({
         isFetchingClaims: false,
-        error: '',
+        error: new ImmutableRecord({ message: '' }),
         emitted: state.get(CLAIMS.TYPE.EMITTED.NAME).set(
           action.data.get('id'),
           {
@@ -75,7 +77,7 @@ function claims(state = initialState, action) {
     case CREATE_DEFAULT_CLAIM_ERROR:
       return state.merge({
         isFetchingClaims: false,
-        error: action.data,
+        error: state.get('error').set('message', action.error),
       });
     case AUTHORIZE_CLAIM:
       return state.merge({
@@ -103,7 +105,7 @@ function claims(state = initialState, action) {
     case AUTHORIZE_CLAIM_ERROR:
       return state.merge({
         isFetchingClaims: false,
-        error: action.data,
+        error: state.get('error').set('message', action.error),
       });
     case SET_ALL_CLAIMS:
       return state.merge({
@@ -119,7 +121,7 @@ function claims(state = initialState, action) {
     case SET_ALL_CLAIMS_ERROR:
       return state.merge({
         isFetchingClaims: false,
-        error: action.data,
+        error: state.get('error').set('message', action.error),
       });
     /*case UPDATE_PINNED_CLAIMS:
       return state.merge({

@@ -56,7 +56,7 @@ class Layout extends React.Component {
           'i3-ww-header': true,
           'i3-ww-header__no-nav-bar': !usersExist,
         })}>
-          <HeaderWithLogo enableLink={usersExist} />
+          <HeaderWithLogo location={this.props.location} enableLink={usersExist} />
           { usersExist && <NavBar /> }
         </Header>
         <Content className="i3-ww-content">

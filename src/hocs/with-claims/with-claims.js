@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Map as ImmutableMap } from 'immutable';
 import PropTypes from 'prop-types';
 import claims from 'state/claims';
 
@@ -60,7 +59,7 @@ function withClaims(ClaimsComponent) {
       /*
        Flag indicating any error when retrieve claims
        */
-      claimsError: PropTypes.object || PropTypes.string,
+      claimsError: PropTypes.string.isRequired,
     };
 
     render() {

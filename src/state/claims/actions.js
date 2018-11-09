@@ -60,7 +60,7 @@ function createClaimSuccess(data) {
 function createClaimError(data) {
   return {
     type: CREATE_CLAIM_ERROR,
-    data,
+    error: data,
   };
 }
 
@@ -80,7 +80,7 @@ function createDefaultClaimSuccess(data) {
 function createDefaultClaimError(data) {
   return {
     type: CREATE_DEFAULT_CLAIM_ERROR,
-    data,
+    error: data,
   };
 }
 
@@ -97,10 +97,10 @@ function authorizeClaimSuccess(data) {
   };
 }
 
-function authorizeClaimError(error) {
+function authorizeClaimError(data) {
   return {
     type: AUTHORIZE_CLAIM_ERROR,
-    data: error,
+    error: data,
   };
 }
 
@@ -117,10 +117,10 @@ function setAllClaimsSuccess(claims) {
   };
 }
 
-function setAllClaimsError(error) {
+function setAllClaimsError(data) {
   return {
     type: SET_ALL_CLAIMS_ERROR,
-    data: error,
+    error: data,
   };
 }
 
