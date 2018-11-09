@@ -86,7 +86,7 @@ function claims(state = initialState, action) {
     case AUTHORIZE_CLAIM_SUCCESS:
       return state.merge({
         isFetchingClaims: false,
-        error: '',
+        error: new ImmutableRecord({ message: '' }),
         emitted: state.get(CLAIMS.TYPE.EMITTED.NAME).set(
           action.data.get('id'),
           {

@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import * as FORMS from 'constants/forms';
+import { TYPE as NOTIFICATIONS } from 'constants/notifications';
 import {
   Button,
   Icon,
@@ -65,18 +66,15 @@ class StepSetName extends PureComponent {
    */
   moveForward = () => {
     const isValidLabel = this._checkLabel();
+
     if (isValidLabel) {
       this.props.createIdentity({ label: this.state.label, domain: this.state.domain });
       this._updateForm();
     } else {
       // show notification with error
-      notificationsHelper.showNotification('error', {
-        message: 'Error',
+      notificationsHelper.showNotification({
+        type: NOTIFICATIONS.ERROR,
         description: 'Not valid name, please try again.',
-        style: {
-          background: '#f95555',
-          color: 'white',
-        },
       });
     }
   };

@@ -14,6 +14,7 @@ import {
   TextArea,
 } from 'base_components';
 import notificationsHelper from 'helpers/notifications';
+import { TYPE as NOTIFICATIONS } from 'constants/notifications';
 import * as BOX_CONSTANTS from 'constants/box';
 
 import './claim-reader.scss';
@@ -67,24 +68,17 @@ class ClaimReader extends PureComponent {
         .then(() => {
           this.props.toggleCameraVisibility();
           this.setState({ inputClaimData: '' });
-          notificationsHelper.showNotification('success', {
+          notificationsHelper.showNotification({
+            type: NOTIFICATIONS.SUCCESS,
             message: 'Claim created!',
             description: 'You have authorized a new claim',
-            style: {
-              background: 'green',
-              color: 'white',
-            },
           });
         })
         .catch((error) => {
           this.props.toggleCameraVisibility();
-          notificationsHelper.showNotification('error', {
-            message: 'Error',
+          notificationsHelper.showNotification({
+            type: NOTIFICATIONS.ERROR,
             description: `We are sorry... There was an error creating the claim:\n ${error}`,
-            style: {
-              background: '#f95555',
-              color: 'white',
-            },
           });
         });
     }

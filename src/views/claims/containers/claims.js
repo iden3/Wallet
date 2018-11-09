@@ -1,21 +1,14 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
-import { Map as ImmutableMap } from 'immutable';
+import { withClaims } from 'hocs';
+import { CreateClaim } from 'views';
 import {
-  withClaims,
-  withIdentities,
-} from 'hocs';
-import {
-  Box,
   Button,
   Tabs,
-  TextArea,
   Widget,
 } from 'base_components';
-import notificationsHelper from 'helpers/notifications';
 import * as CLAIMS from 'constants/claim';
-import * as BOX_CONSTANTS from 'constants/box';
 import { capitalizeFirstLetter } from 'helpers/utils';
 import List from '../components/list';
 
@@ -46,17 +39,6 @@ class Claims extends Component {
      Expect the type of the claims as parameter
     */
     getClaims: PropTypes.func.isRequired,
-    /*
-     Handle to create a claim
-     */
-    handleCreateDefaultClaim: PropTypes.func.isRequired,
-    //
-    // from withIdentities HoC
-    //
-    /*
-     Selector to get the current loaded identity information
-     */
-    defaultIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
   };
 
   static defaultProps = {
@@ -64,31 +46,7 @@ class Claims extends Component {
   };
 
   state = {
-    inputClaimData: '',
     isCreateClaimFormVisible: false,
-  };
-
-  createDefaultClaim = () => {
-    this.props.handleCreateDefaultClaim(this.props.defaultIdentity, this.state.inputClaimData)
-      .then(() => this.toggleCreateClaimForm())
-      .catch(error => notificationsHelper.showNotification('error', {
-        message: 'Error',
-        description: `We are sorry... There was an error creating the claim:\n ${error}`,
-        style: {
-          background: '#f95555',
-          color: 'white',
-        },
-      }));
-  };
-
-  /**
-   * Handle the Input controlled components values when changed. Set the
-   * state of each input with current  value.
-   *
-   * @param {string} value - from the input
-   */
-  handleInputChange = (value) => {
-    this.setState({ inputClaimData: value });
   };
 
   /**
@@ -109,35 +67,9 @@ class Claims extends Component {
     this.setState(
       prevState => ({
         isCreateClaimFormVisible: !prevState.isCreateClaimFormVisible,
-        inputClaimData: '',
       }),
     );
   };
-
-  _getCreateClaimContent() {
-    return (
-      <div className="i3-ww-claims__create">
-        <div className="i3-ww-claims__create-text">
-          Please, insert the content for the new claim:
-        </div>
-        <div className="i3-ww-claims__create-area-text">
-          <TextArea
-            value={this.state.inputClaimData}
-            placeholder="Content of the the new claim"
-            onChange={e => this.handleInputChange(e.target.value)} />
-        </div>
-        <div className="i3-ww-claims__create-button">
-          <Button
-            onClick={this.createDefaultClaim}
-            type="primary"
-            htmlType="button">
-            Create claim
-          </Button>
-        </div>
-
-      </div>
-    );
-  }
 
   /**
    * Get the list of the pinned claims.
@@ -198,7 +130,6 @@ class Claims extends Component {
 
   render() {
     let content;
-    const createClaimContent = this._getCreateClaimContent();
 
     if (this.props.isPinnedList) {
       content = this._getPinned();
@@ -228,20 +159,14 @@ class Claims extends Component {
       <div className="i3-ww-claims">
         {content}
         <div>
-          <Box
-            type={BOX_CONSTANTS.TYPE.SIDE_PANEL}
-            side={BOX_CONSTANTS.SIDE.RIGHT}
+          {/* Box to show a form to create a claim */}
+          <CreateClaim
             onClose={this.toggleCreateClaimForm}
-            content={createClaimContent}
-            title="Create a claim"
-            show={this.state.isCreateClaimFormVisible} />
+            isVisible={this.state.isCreateClaimFormVisible} />
         </div>
       </div>
     );
   }
 }
 
-export default compose(
-  withClaims,
-  withIdentities,
-)(Claims);
+export default compose(withClaims)(Claims);
