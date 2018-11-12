@@ -11,35 +11,26 @@ const API = {
    * set to create the identity (the promise returned).
    * So this is an AJAX call to the Relay.
    *
-   * @param {string } passphrase - The passphrase to unlock for 30 seconds the key container
+   * @param {Object} data - with new identity values
+   * @param {string} passphrase - The passphrase to unlock for 30 seconds the key container
    * @param {string} relayAddr - with the URL of the relay to get the counterfactual address
    * @returns {Promise<any>} Return a Promise with the field "idaddr" that contains
    * the address of the counterfactual contract of the new identity
    */
-  createIdentity(passphrase, relayAddr = APP_SETTINGS.RELAY_ADDR) {
-    const keys = identitiesHelper.createKeys(passphrase);
-    const relay = identitiesHelper.setRelay(relayAddr);
-    const id = new iden3.Id(keys.keyRecovery, keys.keyRevoke, keys.keyOp, relay, '');
-    const storage = APP_SETTINGS.LOCAL_STORAGE;
+  createIdentity(data, passphrase, relayAddr = APP_SETTINGS.RELAY_ADDR) {
+    const identity = identitiesHelper.getNewIdentity(passphrase, relayAddr);
 
     return new Promise((resolve, reject) => {
-      id.createID()
-        .then((idAddr) => {
+      identity.createID()
+        .then((address) => {
           // once we have the address returned by the ID, set it in the local storage
-          const createdId = this.createIdentityInStorage(idAddr, { keys, relay }, storage);
-          Object.keys(createdId).length > 0
-            ? resolve({
-              id,
-              idAddr,
-              keys,
-              relay,
-              icon: createdId.icon,
-              date: createdId.date,
-              time: createdId.time,
-            })
-            : reject(
-              new Error(`Couldn't create the identity because already exists or can't access to the ${storage}`),
-            );
+          const newIdentity = identitiesHelper.createIdentity({ address, ...identity });
+
+          if (newIdentity && this.createIdentityInStorage(newIdentity)) {
+            resolve(newIdentity);
+          } else {
+            reject(new Error('New identity could not be created'));
+          }
         })
         .catch(error => reject(new Error(error)));
     });
@@ -66,18 +57,13 @@ const API = {
   /**
    * Create the identity in the storage selected.
    *
-   * @param {string} idAddress - address of the identity
    * @param {Object} data - with the data of the identity
-   * @param {string} data.label - First time is empty
-   * @param {Object} data.keys - With the keys of recovery, revoke and operational
-   * @param {Array} data.seed - With the words of seed of the identity
-   * @param {Object} data.relay - Object with the Relay information, sucha as the url field
    * @param {string} storage - where to store this information
    * @returns {Object} - Populated if was successfully created, empty otherwise
    */
-  createIdentityInStorage(idAddress, data, storage = APP_SETTINGS.LOCAL_STORAGE) {
+  createIdentityInStorage(data, storage = APP_SETTINGS.LOCAL_STORAGE) {
     if (storage === APP_SETTINGS.LOCAL_STORAGE) {
-      return identitiesHelper.createIdentity(idAddress, data);
+      return identitiesHelper.createIdentityInStorage(data);
     }
     return {};
   },
@@ -140,7 +126,7 @@ const API = {
 
     return new Promise((resolve, reject) => {
       const keysContainer = new iden3.KeyContainer(APP_SETTINGS.LOCAL_STORAGE);
-      //TODO: hack, change this
+      // TODO: hack, change this
       const idRelay = identity.get('relay');
       const relay = new iden3.Relay(idRelay.url || idRelay.toJS().url);
       const id = new iden3.Id(
@@ -158,7 +144,7 @@ const API = {
         'iden3.io',
         'default',
         data,
-        ''
+        '',
       )
         .then((res) => {
           const createdClaim = claim.createClaimInStorage(

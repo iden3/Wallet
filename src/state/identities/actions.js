@@ -1,6 +1,7 @@
 import { Map as ImmutableMap } from 'immutable';
 import API from 'helpers/api';
 import identitiesHelper from 'helpers/identities';
+import { parseObject } from './schema';
 import * as selectors from './selectors';
 import {
   CREATE_IDENTITY,
@@ -117,9 +118,11 @@ function deleteAllIdentitiesError(error) {
 export function handleCreateIdentity(passphrase, data) {
   return function (dispatch, getState) {
     dispatch(createIdentity());
-    return API.createIdentity(passphrase)
+    return API.createIdentity(data, passphrase)
       .then((identity) => {
-        const newIdentity = Object.assign(identity, data);
+        const newIdentity = Object.assign({}, identity);
+        //const newIdentity = parseObject(Object.assign(identity, data));
+        if (!newIdentity) throw new Error('Identity does not match with the model');
         // check if there are no identities, set as default
         if (selectors.getIdentitiesNumber(getState()) === 0) {
           newIdentity.isDefault = identitiesHelper.setIdentityAsDefault(newIdentity);

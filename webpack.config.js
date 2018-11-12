@@ -26,6 +26,7 @@ module.exports = {
       app_context: path.resolve(__dirname, './src/app-context.js'),
       fixtures: path.resolve(__dirname, './src/fixtures'),
       hocs: path.resolve(__dirname, './src/hocs/'),
+      schemas: path.resolve(__dirname, './src/schemas/'),
       state: path.resolve(__dirname, './src/state/'),
       static: path.resolve(__dirname, './static/'),
       static_fonts: path.resolve(__dirname, './static/fonts/'),

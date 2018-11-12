@@ -61,6 +61,7 @@ function identities(state = initialState, action) {
         icon: action.data.get('icon'),
         date: action.data.get('date'),
         time: action.data.get('time'),
+        originalDateTime: action.data.get('originalDateTime'),
         domain: action.data.get('domain'),
         keys: new ImmutableMap({
           keyRevoke: action.data.get('keys').keyRevoke,

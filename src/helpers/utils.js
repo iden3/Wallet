@@ -280,3 +280,17 @@ export const maskWithExpression = function (unmaskedString, expression) {
 export const getUnixTime = function () {
   return Math.round(+new Date() / 1000);
 };
+
+/**
+ * Check if data received is a primitive (Boolean, String, Number or Symbol).
+ * We don't check Null or Undefined.
+ * @param {*} data - Data to compare
+ * @returns {boolean}
+ */
+export const isPrimitive = function (data) {
+  const dataType = data.constructor;
+  return dataType === Number
+    || dataType === String
+    || dataType === Boolean
+    || dataType === Symbol;
+};

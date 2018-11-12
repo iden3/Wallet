@@ -1,7 +1,5 @@
 import iden3 from 'iden3';
-import bip39 from 'bip39';
-import { format } from 'date-fns';
-import * as utils from 'helpers/utils';
+import * as schemasCore from 'schemas';
 import LocalStorage from 'helpers/local-storage';
 import * as APP_SETTINGS from 'constants/app';
 
@@ -52,47 +50,41 @@ const identitiesHelper = {
 
   /**
    * Create an identity with address and data received.
-   * This is defined to create it in the storage selecte, not in the Relay.
+   * This is defined to create it in the storage selected, not in the Relay.
    *
-   * @param {string} idAddr - Counterfactual address of the new identity (sent by the Relay)
    * @param {Object} data - with the data of the identity
-   * @param {string} data.label - First time is empty
-   * @param {Object} data.keys - With the keys of recovery, revoke and operational
-   * @param {Array} data.seed - With the words of seed of the identity
-   * @param {Object} data.relay - Object with the Relay information, sucha as the url field
-   * @param {string} storage - where to store this information
-   * @returns {boolean} True if created successfully, false otherwise
+   * @returns {Object} With the identity created or an Error if already existed
    */
-  createIdentity(idAddr, data, storage = APP_SETTINGS.LOCAL_STORAGE) {
-    // set the object storage
-    const _storage = this.getStorage(storage);
-    let created;
-    let newIdValues = {};
-    const date = new Date();
+  createIdentity(data) {
+    let newIdentity;
 
-    // if doesn't exist identity
-    if (!this.getIdentity(idAddr)) {
-      // update the counter of the number of identities in the LS
-      const mnemonic = bip39.generateMnemonic();
-      const key = `id-${idAddr}`;
-      newIdValues = {
-        label: '',
-        date: format(date, 'd/MMM/yyyy'),
-        time: format(date, 'HH:mm'),
-        icon: utils.generateHash(),
-        keys: {
-          recovery: data.keys.keyRecovery,
-          revoke: data.keys.keyRevoke,
-          operational: data.keys.keyOp,
-          container: data.keys.keyContainer,
-        },
-        relay: data.relay,
-        mnemonic,
-        isDefault: false,
-      };
-      created = _storage.setItem(key, newIdValues); // returns a boolean
+    if (!this.getIdentity(data.address)) { // if doesn't exist identity
+      newIdentity = schemasCore.parseIdentitySchema(data);
+    } else {
+      throw new Error('Identity already exists');
     }
-    return created ? newIdValues : null;
+
+    return newIdentity;
+  },
+
+  /**
+   * Create identity in the storage requested.
+   *
+   * @param {Object} identity - With identity information
+   * @param {string} storage - With the storage to store ir
+   * @returns {boolean} - True if created, false otherwise
+   */
+  createIdentityInStorage(identity, storage = APP_SETTINGS.LOCAL_STORAGE) {
+    let created = false;
+
+    if (identity) {
+      // set the object storage
+      const _storage = this.getStorage(storage);
+      const key = `id-${identity.address}`;
+      created = _storage.setItem(key, identity); // returns a boolean
+    }
+
+    return created;
   },
 
   /**
@@ -189,6 +181,13 @@ const identitiesHelper = {
     }
 
     return identity;
+  },
+
+  getNewIdentity(passphrase, relayAddress) {
+    const keys = this.createKeys(passphrase);
+    const relay = this.setRelay(relayAddress);
+
+    return new iden3.Id(keys.keyRecovery, keys.keyRevoke, keys.keyOp, relay, '');
   },
 
   /**
