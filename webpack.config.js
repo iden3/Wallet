@@ -21,6 +21,7 @@ module.exports = {
   },
   resolve: {
     alias: {
+      helpers: path.resolve(__dirname, './src/helpers/'),
       base_components: path.resolve(__dirname, './src/components/'),
       constants: path.resolve(__dirname, './src/constants/'),
       app_context: path.resolve(__dirname, './src/app-context.js'),
@@ -32,7 +33,6 @@ module.exports = {
       static_fonts: path.resolve(__dirname, './static/fonts/'),
       static_images: path.resolve(__dirname, './static/images/'),
       store: path.resolve(__dirname, './src/store/'),
-      helpers: path.resolve(__dirname, './src/helpers/'),
       test_helpers: path.resolve(__dirname, './__tests__/utils/helpers.js'),
       views: path.resolve(__dirname, './src/views/'),
     },

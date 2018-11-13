@@ -46,7 +46,7 @@ class Claim {
           // if (res.states === 200) {
           const dataToSentToSenToServer = new ImmutableList([
             JSONdata.url,
-            this.identity.get('idAddr'),
+            this.identity.get('address'),
             JSONdata.challenge,
             JSONdata.signature,
             KSign,

@@ -3,7 +3,7 @@ const model = {
   date: '',
   domain: '',
   icon: '',
-  id: Object.getPrototypeOf({}),
+  id: Object.create({}),
   implementation: '',
   isDefault: false,
   keys: {
@@ -18,7 +18,7 @@ const model = {
   },
   label: '',
   originalDateTime: {},
-  relay: Object.getPrototypeOf({}),
+  relay: Object.create({}),
   relayURL: '',
   seed: [],
   time: '',

@@ -33,7 +33,7 @@ const identitiesHelper = {
    *
    */
   isIdentityConsistent(identity) {
-    return !!(identity.idAddr
+    return !!(identity.address
     && identity.keys
     && identity.keys.keyOp
     && identity.keys.keyRecovery
@@ -155,7 +155,21 @@ const identitiesHelper = {
     for (let i = 0; i < idsInStorageLength; i++) {
       const idKey = idsInStorage[i];
       const idFromStorage = _storage.getItem(idKey);
-      ids[idFromStorage.idAddr] = idFromStorage;
+      const identity = idFromStorage;
+
+      // set again prototypes of the objects because can't be stored in the local storage
+      // TODO: Change this in iden3js to get functions
+      identity.relay = Object.getPrototypeOf(this.setRelay(identity.relayURL));
+      identity.id = Object.getPrototypeOf(
+        new iden3.Id(
+          identity.keys.recovery,
+          identity.keys.revoke,
+          identity.keys.operational,
+          identity.relay,
+          '',
+        ),
+      );
+      ids[idFromStorage.address] = identity;
     }
 
     return Promise.resolve(ids);
@@ -183,11 +197,26 @@ const identitiesHelper = {
     return identity;
   },
 
-  getNewIdentity(passphrase, relayAddress) {
-    const keys = this.createKeys(passphrase);
-    const relay = this.setRelay(relayAddress);
+  /**
+   * Create a Relay object with its prototype and new keys before call the Relay with the new identity data.
+   *
+   * @param {string} passphrase - To unlock keys for some seconds and create the keys
+   * @param {string} relayAddress - URL of the Relay in which create the identity
+   * @returns {{id: Id, keys: (*|{keyRecovery: string, keyRevoke: string, keyOp: string, keyContainer: Object}), relay: (*|Object)}}
+   */
+  prepareCreateIdentity(passphrase, relayAddress) {
+    if (passphrase && relayAddress) {
+      const keys = this.createKeys(passphrase);
+      const relay = this.setRelay(relayAddress);
 
-    return new iden3.Id(keys.keyRecovery, keys.keyRevoke, keys.keyOp, relay, '');
+      return {
+        id: new iden3.Id(keys.keyRecovery, keys.keyRevoke, keys.keyOp, relay, ''),
+        keys,
+        relay,
+      };
+    }
+
+    throw new Error('No passphrase or relay address set');
   },
 
   /**
@@ -210,28 +239,28 @@ const identitiesHelper = {
  *
  * @param {Object} identity - With the information of the new identity that will be the default
  * @param {string} storage - type of storage selected
+ * @throws Will throw an error if the no identity provided.
  * @returns {boolean} - True if could be updated, false, otherwise
  */
   setIdentityAsDefault(identity = null, storage = APP_SETTINGS.LOCAL_STORAGE) {
     const _storage = this.getStorage(storage);
-    const newDefaultId = identity || this.getIdentity();
     const currentDefaultIdKey = _storage.getItem(`${APP_SETTINGS.ST_DEFAULT_ID}`);
     const currentDefaultId = this.getIdentity(currentDefaultIdKey);
 
     // set the former default identity to false
     if (currentDefaultId) {
       currentDefaultId.isDefault = false;
-      _storage.updateKey(`${APP_SETTINGS.ST_IDENTITY_PREFIX}-${currentDefaultId.idAddr}`, currentDefaultId);
+      _storage.updateKey(`${APP_SETTINGS.ST_IDENTITY_PREFIX}-${currentDefaultId.address}`, currentDefaultId);
     }
 
     // set the new default identity
-    if (newDefaultId) {
-      _storage.updateKey(`${APP_SETTINGS.ST_IDENTITY_PREFIX}-${newDefaultId.idAddr}`, newDefaultId);
-      _storage.updateKey(`${APP_SETTINGS.ST_DEFAULT_ID}`, newDefaultId.idAddr);
+    if (identity) {
+      _storage.updateKey(`${APP_SETTINGS.ST_IDENTITY_PREFIX}-${identity.address}`, identity);
+      _storage.updateKey(`${APP_SETTINGS.ST_DEFAULT_ID}`, identity.address);
       return true;
     }
 
-    return false;
+    throw new Error('No identity provided to set as default');
   },
 
   /**
@@ -303,7 +332,7 @@ const identitiesHelper = {
 
       // if does not exist field of default id or if ther are zero identities number
       if (!existsDefaultID || (existsDefaultID && identitiesNumber && identitiesNumber === 0)) {
-        _storage.setItem(`${APP_SETTINGS.ST_DEFAULT_ID}`, identity.idAddr);
+        _storage.setItem(`${APP_SETTINGS.ST_DEFAULT_ID}`, identity.address);
       }
 
       return _storage.updateKey(idAddrLabel, updatedIdentity)

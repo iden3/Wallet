@@ -27,7 +27,7 @@ function createIdentity() {
 /**
  * Action when create user has been made in the storage and Relay returned the id address
  * @param {Object} data
- * @param {string} data.idAddr - The identity address returned by the Relay
+ * @param {string} data.address - The identity address returned by the Relay
  * @param {Object} data.keys - The key of revocation, recovery and operational
  * @param {string} data.relay - The URL of the relay
  * @returns {{type: string, data: Immutable.Map}}
@@ -113,20 +113,18 @@ function deleteAllIdentitiesError(error) {
  *.
  * @param {string} passphrase - To use user keys
  * @param {Object} data - With the new identity data
+ * @throws Will throw an error if could not create the identity in the API layer
  * @returns {function(*, *): Promise<T | never>}
  */
 export function handleCreateIdentity(passphrase, data) {
   return function (dispatch, getState) {
+    const isDefault = selectors.getIdentitiesNumber(getState()) === 0;
+
     dispatch(createIdentity());
-    return API.createIdentity(data, passphrase)
+    return API.createIdentity(data, passphrase, isDefault)
       .then((identity) => {
         const newIdentity = Object.assign({}, identity);
-        //const newIdentity = parseObject(Object.assign(identity, data));
         if (!newIdentity) throw new Error('Identity does not match with the model');
-        // check if there are no identities, set as default
-        if (selectors.getIdentitiesNumber(getState()) === 0) {
-          newIdentity.isDefault = identitiesHelper.setIdentityAsDefault(newIdentity);
-        }
         // update the number of identities
         API.updateIdentitiesNumber(true);
         dispatch(createIdentitySuccess(newIdentity));

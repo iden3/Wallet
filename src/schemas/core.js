@@ -6,7 +6,15 @@ import bip39 from 'bip39';
 import { format } from 'date-fns';
 import identitySchema from './identity';
 
-export const areSameSchemas = function (model, data) {
+/**
+ * Compares the types of the values of a data object regarding the model sent.
+ *
+ * @param {Object} model - With the original/parent schema to be compared
+ * @param {Object} data - With the object to check with the model
+ * @param {boolean} deepComparison - If we find and Object, compare key/values inside as well
+ * @returns {boolean} True if are data has the same schema than the model, false otherwise
+ */
+export const areSameSchemas = function (model, data, deepComparison = false) {
   let areSameTypes = false;
 
   if (model && data && model.constructor === Object && data.constructor === Object) {
@@ -16,15 +24,18 @@ export const areSameSchemas = function (model, data) {
     const dataLength = dataKeys.length;
 
     if (modelLength === dataLength) {
-      for (let i = 0; i < modelKeys; i++) {
-        if (modelKeys[i].constructor === dataKeys[i].constructor) {
-          if (isPrimitive(model[i]) && isPrimitive(data[i])) {
-            areSameTypes = dataKeys[i] === modelKeys[i];
-          } else if (model[i].constructor === Object
-            && data[i].constructor === Object) {
-            // if both are objects, iterate (recursive call)
-            areSameTypes = areSameSchemas(model[i], data[i]);
-          }
+      for (let i = 0; i < modelLength; i++) {
+        const modelValue = model[modelKeys[i]];
+        const dataValue = data[modelKeys[i]]; // if not, keys should be in the same order than the model
+
+        if (isPrimitive(modelValue) && isPrimitive(dataValue)
+          && modelValue.constructor === dataValue.constructor) {
+          areSameTypes = true;
+        } else if (typeof modelValue === 'object'
+          && typeof dataValue === 'object') {
+          areSameTypes = deepComparison
+            ? areSameSchemas(modelValue, dataValue)
+            : true;
         } else {
           areSameTypes = false;
         }
@@ -38,10 +49,20 @@ export const areSameSchemas = function (model, data) {
   return areSameTypes;
 };
 
-export const checkSchemas = function (model, data) {
+/**
+ * Given a model and constructed object to store, check that this last
+ * has the same schema than the model.
+ *
+ * @param {Object} model - With the original/parent schema to be compared
+ * @param {Object} data - With the object to check with the model
+ * @param {boolean} deepComparison - If we find and Object, compare key/values inside as well
+ * @throws Will throw an error if the argument is model or data are null or undefined
+ * @returns {boolean} True if are data has the same schema than the model, false otherwise
+ */
+export const checkSchemas = function (model, data, deepComparison = false) {
   // check there are no null or undefined types
   if (model === null || model === undefined || data === null || model === null) {
-    return new Error('One or both values to compare are null or undefined');
+    throw new Error('One or both values to compare are null or undefined');
   }
 
   // if same constructor or if we are receiving and Array non empty and we want to check
@@ -60,7 +81,7 @@ export const checkSchemas = function (model, data) {
 
     // if it's an object, check it's keys and values
     if (modelType === Object) {
-      _areSameSchemas = areSameSchemas(model, data);
+      _areSameSchemas = areSameSchemas(model, data, deepComparison);
     }
 
     // if data to compare it's an array, iterate and compare each element with the model
@@ -83,47 +104,43 @@ export const checkSchemas = function (model, data) {
   return _areSameSchemas;
 };
 
-export const parseIdentitySchema = function (data, isDefault = false) {
-  /*  date: "12/Nov/2018"
-    domain: "iden3.io"
-    icon: "0deddd00f7c7adc"
-    id: Id {keyRecover: "0x4bf833e8bf91abae8c07f6cb89a5af051de028dd", keyRevoke: "0x9144e67c65862c642ac6d9773d23d2af83a5a0d4", keyOperational: "0x550c027c66a16ed37951b19685bd06e841a4367c", relay: Relay, idaddr: "0x85fa65dfe7237cee339038fda4c916d8ebf7b0d2", …}
-    idAddr: "0x85fa65dfe7237cee339038fda4c916d8ebf7b0d2"
-    keys: {keyRecovery: "0x4bf833e8bf91abae8c07f6cb89a5af051de028dd", keyRevoke: "0x9144e67c65862c642ac6d9773d23d2af83a5a0d4", keyOp: "0x550c027c66a16ed37951b19685bd06e841a4367c", keyContainer: LocalStorageContainer}
-    label: "asased"
-    relay: Relay {url: "https://relay.iden3.io"}
-    time: "12:34"*/
-
+/**
+ * Given an object with identity data from the Relay, parse it
+ * to store regarding the local schema.
+ *
+ * @param {Object} data - With identity data
+ * @returns {*} - The final identity object or null
+ */
+export const parseIdentitySchema = function (data) {
   const date = new Date();
 
   const parsedObject = {
-    address: data.idaddr,
+    address: data.address,
     date: format(date, 'd/MMM/yyyy'),
     domain: data.domain,
     icon: generateHash(),
-    id: Object.getPrototypeOf({}),
-    implementation: data.implementation,
+    id: Object.getPrototypeOf(data.id),
+    implementation: data.id.implementation,
     keys: {
       recovery: data.keys.keyRecovery,
       revoke: data.keys.keyRevoke,
       operational: data.keys.keyOp,
     },
     keysContainer: {
-      prefix: data.keys.container.prefix,
-      type: data.keys.container.type,
-      encryptionKey: data.keys.container.encryptionKey,
+      prefix: data.keys.keyContainer.prefix,
+      type: data.keys.keyContainer.type,
+      encryptionKey: data.keys.keyContainer.encryptionKey,
     },
     label: data.label,
     originalDateTime: date,
-    relay: Object.getPrototypeOf({}),
-    relayURL: data.relay.url,
-    seed: bip39.generateMnemonic(),
+    relay: Object.getPrototypeOf(data.id.relay),
+    relayURL: data.id.relay.url,
+    seed: bip39.generateMnemonic().split(' '),
     time: format(date, 'HH:mm'),
-    isDefault,
+    isDefault: data.isDefault,
   };
 
   return checkSchemas(identitySchema, parsedObject)
     ? parsedObject
-    : undefined;
-
+    : null;
 };

@@ -14,19 +14,24 @@ const API = {
    * @param {Object} data - with new identity values
    * @param {string} passphrase - The passphrase to unlock for 30 seconds the key container
    * @param {string} relayAddr - with the URL of the relay to get the counterfactual address
-   * @returns {Promise<any>} Return a Promise with the field "idaddr" that contains
+   * @returns {Promise<any>} Return a Promise with the field "address" that contains
    * the address of the counterfactual contract of the new identity
    */
-  createIdentity(data, passphrase, relayAddr = APP_SETTINGS.RELAY_ADDR) {
-    const identity = identitiesHelper.getNewIdentity(passphrase, relayAddr);
+  createIdentity(data, passphrase, isDefault = false, relayAddr = APP_SETTINGS.RELAY_ADDR) {
+    const identity = identitiesHelper.prepareCreateIdentity(passphrase, relayAddr);
 
     return new Promise((resolve, reject) => {
-      identity.createID()
+      identity.id.createID()
         .then((address) => {
           // once we have the address returned by the ID, set it in the local storage
-          const newIdentity = identitiesHelper.createIdentity({ address, ...identity });
+          const newIdentity = identitiesHelper.createIdentity({
+            address, ...identity, ...data, isDefault,
+          });
 
           if (newIdentity && this.createIdentityInStorage(newIdentity)) {
+            if (newIdentity.isDefault) {
+              identitiesHelper.setIdentityAsDefault(newIdentity);
+            }
             resolve(newIdentity);
           } else {
             reject(new Error('New identity could not be created'));
@@ -48,8 +53,8 @@ const API = {
     let identityUpdated = {};
 
     // identity.keys.keyContainer.unlock(passphrase); // for 30 seconds to update the identity
-    identity.keys.keyContainer.unlock('a');
-    identity.id.bindID(identity.keys.keyContainer, data.label || data.name)
+    identity.keysContainer.unlock('a');
+    identity.id.bindID(identity.keysContainer, data.label || data.name)
       .then(res => identityUpdated = Object.assign({}, identityUpdated, res.data));
     return identityUpdated;
   },
@@ -122,7 +127,7 @@ const API = {
 
   createDefaultClaim(identity, data, claimId) {
     const claim = new Claim(identity);
-    const idAddr = identity.get('idAddr');
+    const address = identity.get('address');
 
     return new Promise((resolve, reject) => {
       const keysContainer = new iden3.KeyContainer(APP_SETTINGS.LOCAL_STORAGE);
@@ -136,7 +141,7 @@ const API = {
         relay,
         '',
       );
-      id.idaddr = identity.get('idAddr');
+      id.address = identity.get('address');
       keysContainer.unlock('a');
       id.claimDefault(
         keysContainer,
@@ -148,7 +153,7 @@ const API = {
       )
         .then((res) => {
           const createdClaim = claim.createClaimInStorage(
-            idAddr,
+            address,
             data,
             claimId,
             res.data.proofOfClaim,
@@ -183,7 +188,7 @@ const API = {
    */
   authorizeClaim(identity, data, claimId) {
     const claim = new Claim(identity);
-    const idAddr = identity.get('idAddr');
+    const address = identity.get('address');
 
     return new Promise((resolve, reject) => {
       claim.decodeReadedData(data)
@@ -193,7 +198,7 @@ const API = {
         })
         .then(({ proof, url }) => {
           const createdClaim = claim.createClaimInStorage(
-            idAddr,
+            address,
             data,
             claimId,
             proof,
@@ -223,7 +228,7 @@ const API = {
     const relay = new iden3.Relay(idRelay.url || idRelay.toJS().url);
     const id = new iden3.Id(krec, krev, ko, relay, '');
 
-    id.idaddr = identity.get('idAddr');
+    id.idaddr = identity.get('address');
     return Promise.resolve(id.authorizeKSignClaim(...data.valueSeq().toJS()));
   },
 

@@ -56,7 +56,7 @@ function identities(state = initialState, action) {
         isFetching: true,
       });
     case CREATE_IDENTITY_SUCCESS: {
-      const newIdentity = {
+      /*const newIdentity = {
         label: action.data.get('label') || action.data.get('name') || '',
         icon: action.data.get('icon'),
         date: action.data.get('date'),
@@ -73,14 +73,14 @@ function identities(state = initialState, action) {
         relay: action.data.get('relay'),
         id: action.data.get('id'),
         idAddr: action.data.get('idAddr'),
-      };
+      };*/
 
       // TODO: check if there is a current identity or sent by the action.data
       return state.merge({
         isFetching: false,
         error: '',
-        identities: state.get('identities').set(action.data.get('idAddr'), newIdentity),
-        currentIdentity: action.data.get('idAddr'),
+        identities: state.get('identities').set(action.data.get('address'), action.data),
+        currentIdentity: action.data.get('address'),
       });
     }
     case CREATE_IDENTITY_ERROR:
@@ -111,7 +111,7 @@ function identities(state = initialState, action) {
       return state.merge({
         isFetching: false,
         error: '',
-        identities: state.get('identities').set(action.data.get('idAddr'), action.data),
+        identities: state.get('identities').set(action.data.get('address'), action.data),
       });
     case UPDATE_IDENTITY_ERROR:
       return state.merge({
