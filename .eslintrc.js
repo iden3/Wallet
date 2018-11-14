@@ -18,6 +18,10 @@ module.exports = {
         "node": true,
         "jest": true
     },
+    "parserOptions": {
+      "ecmaVersion": 2018,
+      "sourceType": "module",
+    },
     "parser": "babel-eslint", // to use global variables as document along the app
     "rules": {
         "arrow-body-style": [0],

@@ -78,11 +78,10 @@ class ClaimReader extends PureComponent {
           this.props.toggleCameraVisibility();
           notificationsHelper.showNotification({
             type: NOTIFICATIONS.ERROR,
-            description: `We are sorry... There was an error creating the claim:\n ${error}`,
+            description: `We are sorry... There was an error creating the claim:\n ${error.message}`,
           });
         });
     }
-
   };
 
   /**

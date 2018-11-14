@@ -3,6 +3,7 @@ import * as APP_SETTINGS from 'constants/app';
 import * as CLAIMS from 'constants/claim';
 import identitiesHelper from 'helpers/identities';
 import Claim from 'helpers/claims';
+//import { List as ImmutableList } from 'immutable';
 
 const API = {
   /**
@@ -173,28 +174,51 @@ const API = {
    * @param {ImmutableMap} data - With the values
    * @returns {*} - Response from the server with universal code of success or not
    */
-  async sendClaimToCentralizedServer(data) {
-    const sent = await iden3.auth.resolv(...data.valueSeq().toJS());
-    return sent;
+  sendClaimToCentralizedServer(data) {
+    return Promise.resolve(iden3.auth.resolv(...data.valueSeq().toJS()));
   },
 
   /**
    * Authorize a claim.
    *
-   * @param {ImmutableMap} identity - With the identity which is authorizing the claim
-   * @param {string} data - The data read from the claim to authorize (use to be a QR)
+   * @param {Immutable.Map<any>} identity - With the identity which is authorizing the claim
+   * @param {Object} data - The data read from the claim to authorize (use to be a QR)
+   * @param {string} data.challenge - Challenge that proofs the claim
+   * @param {string} data.signature - Of the claim
+   * @param {string} data.url - From the third party that ask the identity to authorize a claim
    * @param {string} claimId - Id of the claim in the local storage, nothing about relay or dapp, etc...
    * @returns {Object}
    */
-  authorizeClaim(identity, data, claimId) {
+  /*authorizeClaim(identity, data, claimId) {
     const claim = new Claim(identity);
     const address = identity.get('address');
+    let JSONData;
+    let KSign;
 
     return new Promise((resolve, reject) => {
-      claim.decodeReadedData(data)
+      claim.decodeReadData(data)
         .then((res) => {
-          this.sendClaimToCentralizedServer(res.dataToSentToSenToServer);
+          JSONData = res.JSONData;
+          return this.authorizeKSignClaim(identity, res.dataForAuthorization);
+        })
+        .then((res) => {
+          this.sendClaimToCentralizedServer(res.dataToTheServer);
           return ({ proof: res.proofOfClaim, url: res.url });
+        })
+        .then((res) => {
+          const dataToTheServer = new ImmutableList([
+            JSONData.url,
+            address,
+            JSONData.challenge,
+            JSONData.signature,
+            KSign,
+            res.data.proofOfClaim,
+          ]);
+          resolve({
+            proofOfClaim: res.data.proofOfClaim,
+            dataToTheServer,
+            url: JSONData.url,
+          });
         })
         .then(({ proof, url }) => {
           const createdClaim = claim.createClaimInStorage(
@@ -209,28 +233,7 @@ const API = {
         })
         .catch(error => reject(error));
     });
-  },
-
-  /**
-   * Authorize an identity use their keys to sign a claim.
-   *
-   * @param {ImmutableMap} identity - With the identity which is authorizing the claim
-   * @param {ImmutableMap} data - With the keys and data to sign
-   * @param {Object} keysContainer - Created when the identity was created
-   * @param {string} ko - Operational key
-   * @param {string} krec - Recovery key
-   * @param {string} krev - Revoke key
-   * @returns {Promise<any>}
-   */
-  authorizeKSignClaim(identity, data, keysContainer, ko, krec, krev) {
-    // TODO: fix this hack
-    const idRelay = identity.get('relay');
-    const relay = new iden3.Relay(idRelay.url || idRelay.toJS().url);
-    const id = new iden3.Id(krec, krev, ko, relay, '');
-
-    id.idaddr = identity.get('address');
-    return Promise.resolve(id.authorizeKSignClaim(...data.valueSeq().toJS()));
-  },
+  },*/
 
   /**
    * Get from the storage all the claims stored and their information.
