@@ -24,6 +24,7 @@ module.exports = {
       helpers: path.resolve(__dirname, './src/helpers/'),
       base_components: path.resolve(__dirname, './src/components/'),
       constants: path.resolve(__dirname, './src/constants/'),
+      dal: path.resolve(__dirname, './src/dal/core.js'),
       app_context: path.resolve(__dirname, './src/app-context.js'),
       fixtures: path.resolve(__dirname, './src/fixtures'),
       hocs: path.resolve(__dirname, './src/hocs/'),

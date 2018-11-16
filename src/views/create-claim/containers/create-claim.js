@@ -11,7 +11,7 @@ import {
 import * as BOX_CONSTANTS from 'constants/box';
 import * as CLAIMS_CONSTANTS from 'constants/claim';
 import { TYPE as NOTIFICATIONS } from 'constants/notifications';
-import { DefaultClaim } from '../components';
+import { GenericClaim } from '../components';
 
 /**
  * Render in a box the content to create a claim.
@@ -34,9 +34,9 @@ class CreateClaim extends Component {
     // from withClaims HoC
     //
     /*
-     Handle to create a claim
+     Handle to create a generic claim
      */
-    handleCreateDefaultClaim: PropTypes.func.isRequired,
+    handleCreateGenericClaim: PropTypes.func.isRequired,
     //
     // from withIdentities HoC
     //
@@ -60,10 +60,10 @@ class CreateClaim extends Component {
 
     switch (this.props.type) {
       case CLAIMS_CONSTANTS.TYPE.DEFAULT.NAME:
-        createClaimCB = this.props.handleCreateDefaultClaim;
+        createClaimCB = this.props.handleCreateGenericClaim;
         break;
       default:
-        createClaimCB = this.props.handleCreateDefaultClaim;
+        createClaimCB = this.props.handleCreateGenericClaim;
     }
 
     createClaimCB(this.props.defaultIdentity, data)
@@ -89,9 +89,9 @@ class CreateClaim extends Component {
   _getContent() {
     switch (this.props.type) {
       case CLAIMS_CONSTANTS.TYPE.DEFAULT.NAME:
-        return <DefaultClaim handleCreateDefaultClaim={this.createClaim} />;
+        return <GenericClaim handleCreateGenericClaim={this.createClaim} />;
       default:
-        return <DefaultClaim handleCreateDefaultClaim={this.createClaim} />;
+        return <GenericClaim handleCreateGenericClaim={this.createClaim} />;
     }
   }
 

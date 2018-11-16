@@ -5,17 +5,17 @@ import {
   TextArea,
 } from 'base_components';
 
-import './default-claim.scss';
+import './generic-claim.scss';
 
 /**
  * View to create a default claim. Has an area text and a button.
  */
-class DefaultClaim extends PureComponent {
+class GenericClaim extends PureComponent {
   static propTypes = {
     /*
      Call back to create a claim
      */
-    handleCreateDefaultClaim: PropTypes.func.isRequired,
+    handleCreateGenericClaim: PropTypes.func.isRequired,
   };
 
   state = {
@@ -26,8 +26,8 @@ class DefaultClaim extends PureComponent {
    * Trigger call back from props to create the claim.
    * After create it, clean the input value
    */
-  createDefaultClaim = () => {
-    this.props.handleCreateDefaultClaim(this.state.inputClaimData);
+  createGenericClaim = () => {
+    this.props.handleCreateGenericClaim(this.state.inputClaimData);
     this.setState({ inputClaimData: '' });
   };
 
@@ -56,7 +56,7 @@ class DefaultClaim extends PureComponent {
         </div>
         <div className="i3-ww-claims__create-button">
           <Button
-            onClick={this.createDefaultClaim}
+            onClick={this.createGenericClaim}
             type="primary"
             htmlType="button">
             Create claim
@@ -67,4 +67,4 @@ class DefaultClaim extends PureComponent {
   }
 }
 
-export default DefaultClaim;
+export default GenericClaim;

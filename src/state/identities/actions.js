@@ -1,7 +1,6 @@
 import { Map as ImmutableMap } from 'immutable';
 import API from 'helpers/api';
 import identitiesHelper from 'helpers/identities';
-import { parseObject } from './schema';
 import * as selectors from './selectors';
 import {
   CREATE_IDENTITY,
@@ -40,7 +39,7 @@ function createIdentitySuccess(data) {
 }
 
 function createIdentityError(error) {
-  console.log(error);
+  console.error(error);
   return {
     type: CREATE_IDENTITY_ERROR,
     data: error,
@@ -81,7 +80,7 @@ function updateIdentitySuccess(data) {
 }
 
 function updateIdentityError(error) {
-  console.log(error);
+  console.error(error);
   return {
     type: UPDATE_IDENTITY_ERROR,
     data: error,
@@ -101,7 +100,7 @@ function deleteAllIdentitiesSuccess() {
 }
 
 function deleteAllIdentitiesError(error) {
-  console.log(error);
+  console.error(error);
   return {
     type: DELETE_ALL_IDENTITIES_ERROR,
     data: error,

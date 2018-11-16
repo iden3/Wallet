@@ -282,7 +282,7 @@ export const getUnixTime = function () {
 };
 
 /**
- * Check if data received is a primitive (Boolean, String, Number or Symbol).
+ * Check if data received is a primitive (Boolean, String, Array, Number or Symbol).
  * We don't check Null or Undefined.
  * @param {*} data - Data to compare
  * @returns {boolean}
@@ -292,5 +292,6 @@ export const isPrimitive = function (data) {
   return dataType === Number
     || dataType === String
     || dataType === Boolean
+    || dataType === Array
     || dataType === Symbol;
 };

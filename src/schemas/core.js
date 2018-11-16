@@ -2,7 +2,7 @@ import {
   generateHash,
   isPrimitive,
 } from 'helpers/utils';
-import bip39 from 'bip39';
+import * as SCHEMAS from 'constants/schemas';
 import { format } from 'date-fns';
 import identitySchema from './identity';
 
@@ -104,6 +104,19 @@ export const checkSchemas = function (model, data, deepComparison = false) {
   return _areSameSchemas;
 };
 
+export const compareSchemas = function (schema, data) {
+  let _schema;
+
+  switch (schema) {
+    case SCHEMAS.IDENTITY:
+      _schema = identitySchema;
+      break;
+    default:
+      throw new Error('No schema provided');
+  }
+
+  return checkSchemas(_schema, data);
+};
 /**
  * Given an object with identity data from the Relay, parse it
  * to store regarding the local schema.
@@ -125,17 +138,19 @@ export const parseIdentitySchema = function (data) {
       recovery: data.keys.keyRecovery,
       revoke: data.keys.keyRevoke,
       operational: data.keys.keyOp,
-    },
-    keysContainer: {
-      prefix: data.keys.keyContainer.prefix,
-      type: data.keys.keyContainer.type,
-      encryptionKey: data.keys.keyContainer.encryptionKey,
+      container: {
+        prefix: data.keys.keysContainer.prefix,
+        type: data.keys.keysContainer.type,
+        encryptionKey: data.keys.keysContainer.encryptionKey,
+        ...Object.getPrototypeOf(data.keys.keysContainer),
+      },
     },
     label: data.label,
     originalDateTime: date,
+    passphrase: data.passphrase,
     relay: Object.getPrototypeOf(data.id.relay),
     relayURL: data.id.relay.url,
-    seed: bip39.generateMnemonic().split(' '),
+    seed: data.keys.mnemonic.split(),
     time: format(date, 'HH:mm'),
     isDefault: data.isDefault,
   };

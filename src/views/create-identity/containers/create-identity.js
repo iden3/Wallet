@@ -3,7 +3,6 @@ import { compose } from 'redux';
 import PropTypes from 'prop-types';
 import * as FORMS from 'constants/forms';
 import { TYPE as NOTIFICATIONS } from 'constants/notifications';
-import LocalStorage from 'helpers/local-storage';
 import {
   withFormsValues,
   withIdentities,
@@ -63,11 +62,6 @@ class CreateIdentity extends Component {
     passphrase: '',
     goToDashboard: false,
   };
-
-  constructor(props) {
-    super(props);
-    this.localStorage = new LocalStorage('iden3');
-  }
 
   /**
    * Get the fields of the two inputs of when passphrase is asked

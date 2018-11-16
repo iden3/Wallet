@@ -5,10 +5,15 @@ import { getUnixTime } from 'helpers/utils';
 import * as APP_SETTINGS from 'constants/app';
 import * as CLAIMS from 'constants/claim';
 import API from 'helpers/api';
-import LocalStorage from 'helpers/local-storage';
+import DAL from 'dal';
+
+let instance;
 
 /**
+ *
  * Class related to everything about claims: authorize, creates, decode what is read from a QR, etc...
+ * Singleton to create it only once when we change to another identity, create the first one or (re) load the app
+ *
  */
 class Claim {
   /**
@@ -16,47 +21,85 @@ class Claim {
    * @param {Immutable.Map} identity - Identity to work with this claim
    */
   constructor(identity) {
-    this.identity = identity;
-    this.storage = new LocalStorage(APP_SETTINGS.ST_DOMAIN);
+    if (!instance) {
+      this.identity = identity;
+      // this.storage = new LocalStorage(APP_SETTINGS.ST_DOMAIN);
+      this.DAL = new DAL(APP_SETTINGS.LOCAL_STORAGE);
+      instance = this;
+    }
+
+    return instance;
   }
 
+  /**
+   * Authorize a claim read from a QR or because a code was introduced.
+   * This case is for a centralized app.
+   *
+   * @param {Object} data - Read from the QR or introduced by the user
+   * @param {string} data.challenge - Challenge that proofs the claim
+   * @param {string} data.signature - Of the claim
+   * @param {string} data.url - From the third party that ask the identity to authorize a claim
+   * @param {string} localId - the id of the claim in the app storage
+   * @returns {Promise<any>}
+   */
   authorizeClaim(data, localId) {
     let JSONData;
-    let KSign;
+    let keyToAuthorize;
     let proofOfClaim;
 
     return new Promise((resolve, reject) => {
       this.decodeReadData(data)
         .then((res) => {
-          ({ JSONData, KSign } = res);
+          ({ JSONData, keyToAuthorize } = res);
           return this.authorizeKSignClaim(res.dataForAuthorization);
         })
         .then((res) => {
-          ({ proofOfClaim } = res.data.proofOfClaim);
+          if (res && res.status === 200) {
+            ({ proofOfClaim } = res.data);
+            return this.authClaimToCentralizedServer(proofOfClaim, JSONData, keyToAuthorize);
+          }
 
-          return API.sendClaimToCentralizedServer(new ImmutableList([
-            JSONData.url,
-            this.identity.get('address'),
-            JSONData.challenge,
-            JSONData.signature,
-            KSign,
-            proofOfClaim,
-          ]));
+          return reject(new Error(`Error authorizing claim. Reason: ${res.status}`));
         })
         .then((res) => {
-          const createdClaim = this.createClaimInStorage(
-            this.identity.get('address'),
-            data,
-            localId,
-            proofOfClaim,
-            JSONData.url,
-            CLAIMS.TYPE.EMITTED.NAME,
-          );
+          if (res && res.status === 200) {
+            const createdClaim = this.createClaimInStorage(
+              CLAIMS.TYPE.EMITTED.NAME,
+              this.identity.get('address'),
+              data,
+              localId,
+              proofOfClaim,
+              JSONData.url,
+            );
 
-          resolve(createdClaim);
+            resolve(createdClaim);
+          }
+
+          return reject(new Error(`Error sending the claim created to the Relay. Reason: ${res.status}`));
         })
         .catch(error => reject(error));
     });
+  }
+
+  /**
+   * Call the API to send to centalized server an authorization of a claim.
+   *
+   * @param {Object} proofOfClaim - With the proof of claim
+   * @param {Object} JSONData - With the data of the claim sent by the centralized server (read by a QR i.e.)
+   * @param {string} keyToAuthorize - Key returned by the Relay to authorize this claim
+   * @returns {Promise<any>}
+   */
+  authClaimToCentralizedServer(proofOfClaim, JSONData, keyToAuthorize) {
+    return Promise.resolve(
+      API.authClaimToCentralizedServer(new ImmutableList([
+        JSONData.url,
+        this.identity.get('address'),
+        JSONData.challenge,
+        JSONData.signature,
+        keyToAuthorize,
+        proofOfClaim,
+      ])),
+    );
   }
 
   /**
@@ -67,74 +110,30 @@ class Claim {
    * @returns {Promise<any>}
    */
   authorizeKSignClaim(data) {
-    // TODO: fix this hack
-    /* const idRelay = identity.get('relay');
-    const relay = new iden3.Relay(idRelay.url || idRelay.toJS().url);
-    const id = new iden3.Id(krec, krev, ko, relay, ''); */
+    const id = new iden3.Id(
+      this.identity.get('keys').get('recovery'),
+      this.identity.get('keys').get('revoke'),
+      this.identity.get('keys').get('operational'),
+      new iden3.Relay(this.identity.get('relayURL')), // to get the prototype
+      '',
+    );
 
-    const id = Object.assign({}, this.identity.toJS());
     id.idaddr = this.identity.get('address');
-    return Promise.resolve(id.authorizeKSignClaim(...data.valueSeq().toJS()));
+    return Promise.resolve(API.authorizeKSignClaim(id, data));
   }
 
-  /*createAuthorizeKSignClaim = (data, keysContainer, ko, krec, krev) => {
-    return API.authorizeKSignClaim(this.identity, data, keysContainer, ko, krec, krev);
-  };*/
-
   /**
-   * Decode the data read from a QR code or copied data that is in a QR code.
+   * Create in storage the claim.
    *
-   * @param {Object} data - With the data to decode
-   * @param {string} data.challenge - Challenge that proofs the claim
-   * @param {string} data.signature - Of the claim
-   * @param {string} data.url - From the third party that ask the identity to authorize a claim
-   * @returns {Promise<{dataForAuthorization: Immutable.List | Immutable.List<any>, JSONData: {challenge, signature, url}, KSign: String}>}
+   * @param {string} type - OF the claim: emitted or received
+   * @param {string} idAddrOwner - Address of the owner of this claim
+   * @param {Object} claimData - Claim information
+   * @param {string} claimId - Local id of the claim
+   * @param {Object} proofOfClaim - Proof of the claim
+   * @param {string} sourceUrl - Of the app/dapp (if needed)
+   * @returns {*}
    */
-  decodeReadData = (data) => {
-    const JSONData = iden3.auth.parseQRhex(data); // Object {challenge, signature, url}
-    const KSign = iden3.utils.addrFromSig(JSONData.challenge, JSONData.signature); // string
-    const unixTime = getUnixTime(); // number
-    const keysContainer = this.identity.get('keysContainer').toJS();
-    const ko = this.identity.get('keys').get('operational');
-    /*const krec = this.identity.keys.recovery;
-    const krev = this.identity.keys.revoke;*/
-    const dataForAuthorization = new ImmutableList([
-      keysContainer,
-      ko,
-      APP_SETTINGS.DEFAULT_RELAY_DOMAIN,
-      KSign,
-      'appToAuthName',
-      'authz',
-      unixTime,
-      unixTime,
-    ]);
-
-    keysContainer.unlock('a'); // for 30 seconds available
-    return Promise.resolve({ dataForAuthorization, JSONData, KSign });
-    /*return new Promise((resolve, reject) => {
-      this.createAuthorizeKSignClaim(dataToCreateAuth, keysContainer, ko, krec, krev)
-        .then((res) => {
-          // if (res.states === 200) {
-          const dataToTheServer = new ImmutableList([
-            JSONdata.url,
-            identity.address,
-            JSONdata.challenge,
-            JSONdata.signature,
-            KSign,
-            res.data.proofOfClaim,
-          ]);
-          resolve({
-            proofOfClaim: res.data.proofOfClaim,
-            dataToTheServer,
-            url: JSONdata.url,
-          });
-          // }
-        })
-        .catch(error => reject(error));
-    });*/
-  };
-
-  createClaimInStorage = (idAddrOwner, claimData, claimId, proofOfClaim, sourceUrl, type) => {
+  createClaimInStorage = (type, idAddrOwner, claimData, claimId, proofOfClaim, sourceUrl = '' ) => {
     const claimKey = `claim-${claimId}`;
     const date = new Date();
     const newClaimData = {
@@ -149,11 +148,42 @@ class Claim {
       type,
     };
 
-    return this.storage.setItem(claimKey, newClaimData) ? newClaimData : null;
+    // return this.storage.setItem(claimKey, newClaimData) ? newClaimData : null;
+    return this.DAL.setItem(claimKey, newClaimData) ? newClaimData : null;
+  };
+
+  /**
+   * Decode the data read from a QR code or copied data that is in a QR code.
+   *
+   * @param {Object} data - With the data to decode
+   * @param {string} data.challenge - Challenge that proofs the claim
+   * @param {string} data.signature - Of the claim
+   * @param {string} data.url - From the third party that ask the identity to authorize a claim
+   * @returns {Promise<{dataForAuthorization: Immutable.List | Immutable.List<any>, JSONData: {challenge, signature, url}, keyToAuthorize: String}>}
+   */
+  decodeReadData = (data) => {
+    const JSONData = iden3.auth.parseQRhex(data); // Object {challenge, signature, url}
+    const keyToAuthorize = iden3.utils.addrFromSig(JSONData.challenge, JSONData.signature); // string
+    const unixTime = getUnixTime(); // number
+    const keysContainer = this.identity.get('keys').get('container');
+    const ko = this.identity.get('keys').get('operational');
+    const dataForAuthorization = new ImmutableList([
+      keysContainer,
+      ko, // kSign in this case is the operational
+      keyToAuthorize,
+      'appToAuthName',
+      'authz',
+      unixTime,
+      unixTime,
+    ]);
+
+    keysContainer.unlock(this.identity.get('passphrase')); // for 30 seconds available
+    return Promise.resolve({ dataForAuthorization, JSONData, keyToAuthorize });
   };
 
   getAllClaimsFromStorage = () => {
-    const claimsInStorage = this.storage.getKeys('claim-');
+    // TODO: Retrieve them from the API
+    const claimsInStorage = this.DAL.getKeys('claim-');
     const claimsInStorageLength = claimsInStorage.length;
     const claims = {
       [CLAIMS.TYPE.EMITTED.NAME]: {},
@@ -163,23 +193,23 @@ class Claim {
 
     for (let i = 0; i < claimsInStorageLength; i++) {
       const idKey = claimsInStorage[i];
-      const claimFromStorage = this.storage.getItem(idKey);
+      const claimFromStorage = this.DAL.getItem(idKey);
       claims[claimFromStorage.type][claimFromStorage.id] = claimFromStorage;
     }
     return Promise.resolve(claims);
   };
 
-  /*getPinnedClaimsFromStorage = () => {
-    return (this.storage.getItem('pinned-claims'));
+  /* getPinnedClaimsFromStorage = () => {
+    return (this.DAL.getItem('pinned-claims'));
   };
 
   setPinnedClaimsInStorage = (list) => {
-    return this.storage.setItem('pinned-claims', list);
+    return this.DAL.setItem('pinned-claims', list);
   }
 
   updateClaimInStorage = (id, claim) => {
-    return this.storage.setItem(`claim-${id}`, claim) ? claim : null;
-  }*/
+    return this.DAL.setItem(`claim-${id}`, claim) ? claim : null;
+  } */
 }
 
 export default Claim;

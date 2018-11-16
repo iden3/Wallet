@@ -14,9 +14,9 @@ import {
   SET_ALL_CLAIMS,
   SET_ALL_CLAIMS_SUCCESS,
   SET_ALL_CLAIMS_ERROR,
-  CREATE_DEFAULT_CLAIM,
-  CREATE_DEFAULT_CLAIM_SUCCESS,
-  CREATE_DEFAULT_CLAIM_ERROR,
+  CREATE_GENERIC_CLAIM,
+  CREATE_GENERIC_CLAIM_SUCCESS,
+  CREATE_GENERIC_CLAIM_ERROR,
   UPDATE_PINNED_CLAIMS,
   UPDATE_PINNED_CLAIMS_SUCCESS,
   UPDATE_PINNED_CLAIMS_ERROR,
@@ -50,11 +50,11 @@ function claims(state = initialState, action) {
       });
     case CREATE_CLAIM_SUCCESS:
       return state;
-    case CREATE_DEFAULT_CLAIM:
+    case CREATE_GENERIC_CLAIM:
       return state.merge({
         isFetchingClaims: true,
       });
-    case CREATE_DEFAULT_CLAIM_SUCCESS:
+    case CREATE_GENERIC_CLAIM_SUCCESS:
       return state.merge({
         isFetchingClaims: false,
         error: new ImmutableRecord({ message: '' }),
@@ -74,7 +74,7 @@ function claims(state = initialState, action) {
           },
         ),
       });
-    case CREATE_DEFAULT_CLAIM_ERROR:
+    case CREATE_GENERIC_CLAIM_ERROR:
       return state.merge({
         isFetchingClaims: false,
         error: state.get('error').set('message', action.error),
@@ -105,7 +105,7 @@ function claims(state = initialState, action) {
     case AUTHORIZE_CLAIM_ERROR:
       return state.merge({
         isFetchingClaims: false,
-        error: state.get('error').set('message', action.error),
+        error: state.get('error')().set('message', action.error.message),
       });
     case SET_ALL_CLAIMS:
       return state.merge({

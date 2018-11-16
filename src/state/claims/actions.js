@@ -15,9 +15,9 @@ import {
   SET_ALL_CLAIMS,
   SET_ALL_CLAIMS_SUCCESS,
   SET_ALL_CLAIMS_ERROR,
-  CREATE_DEFAULT_CLAIM,
-  CREATE_DEFAULT_CLAIM_SUCCESS,
-  CREATE_DEFAULT_CLAIM_ERROR,
+  CREATE_GENERIC_CLAIM,
+  CREATE_GENERIC_CLAIM_SUCCESS,
+  CREATE_GENERIC_CLAIM_ERROR,
   UPDATE_PINNED_CLAIMS,
   UPDATE_PINNED_CLAIMS_SUCCESS,
   UPDATE_PINNED_CLAIMS_ERROR,
@@ -65,22 +65,22 @@ function createClaimError(data) {
   };
 }
 
-function createDefaultClaim() {
+function createGenericClaim() {
   return {
-    type: CREATE_DEFAULT_CLAIM,
+    type: CREATE_GENERIC_CLAIM,
   };
 }
 
-function createDefaultClaimSuccess(data) {
+function createGenericClaimSuccess(data) {
   return {
-    type: CREATE_DEFAULT_CLAIM_SUCCESS,
+    type: CREATE_GENERIC_CLAIM_SUCCESS,
     data: new ImmutableMap({ ...data }),
   };
 }
 
-function createDefaultClaimError(data) {
+function createGenericClaimError(data) {
   return {
-    type: CREATE_DEFAULT_CLAIM_ERROR,
+    type: CREATE_GENERIC_CLAIM_ERROR,
     error: data,
   };
 }
@@ -99,6 +99,7 @@ function authorizeClaimSuccess(data) {
 }
 
 function authorizeClaimError(data) {
+  console.error(data);
   return {
     type: AUTHORIZE_CLAIM_ERROR,
     error: data,
@@ -169,15 +170,15 @@ export function handleCreateClaim(claim) {
   };
 }
 
-export function handleCreateDefaultClaim(identity, claim) {
+export function handleCreateGenericClaim(identity, claim) {
   return function (dispatch) {
-    dispatch(createDefaultClaim());
+    dispatch(createGenericClaim());
     const claimId = utils.createUniqueAlphanumericId();
-    return API.createDefaultClaim(identity, claim, claimId)
+    return API.createGenericClaim(identity, claim, claimId)
       .then((newClaim) => {
-        dispatch(createDefaultClaimSuccess(newClaim));
+        dispatch(createGenericClaimSuccess(newClaim));
       })
-      .catch(error => dispatch(createDefaultClaimError(error)));
+      .catch(error => dispatch(createGenericClaimError(error)));
   };
 }
 

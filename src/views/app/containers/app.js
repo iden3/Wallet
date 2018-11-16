@@ -8,7 +8,6 @@ import {
   Redirect,
 } from 'react-router-dom';
 import { Layout } from 'views';
-import LocalStorage from 'helpers/local-storage';
 import {
   withClaims,
   withIdentities,
@@ -39,11 +38,6 @@ class App extends Component {
     */
     handleSetClaimsFromStorage: PropTypes.func.isRequired,
   };
-
-  constructor(props) {
-    super(props);
-    this.localStorage = new LocalStorage('iden3');
-  }
 
   /**
    * First time app is loaded set in the app state the identities

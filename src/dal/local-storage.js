@@ -33,22 +33,9 @@ class LocalStorage {
   };
 
   /**
-   * Set a key value in the local storage. Should not exist before, otherwise throw an error
-   * @param {string} key
-   * @param {*} value
-   */
-  createKey = (key, value) => {
-    const finalKey = `${this.domain}-${key}`;
-
-    if (!this.getItem(finalKey)) {
-      return this.setItem(finalKey, value);
-    }
-    return false;
-  };
-
-  /**
    * Compose the key to search in the storage. Basically if hasn't the domain
-   * as prefix, add it
+   * as prefix, add it.
+   *
    * @param {string} key - to search
    * @returns {string} - With the key well formed
    */
@@ -59,7 +46,8 @@ class LocalStorage {
   }
 
   /**
-   * Check if a key exists in the domain stored in the local storage
+   * Check if a key exists in the domain stored in the local storage.
+   *
    * @param {string} key - The key to look for
    * @returns {boolean} True if exists, false otherwise
    */

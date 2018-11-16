@@ -1,1 +1,1 @@
-export DefaultClaim from './default-claim/default-claim';
+export GenericClaim from './generic-claim/generic-claim';

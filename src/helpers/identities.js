@@ -1,27 +1,12 @@
 import iden3 from 'iden3';
 import * as schemasCore from 'schemas';
-import LocalStorage from 'helpers/local-storage';
+import { DAL as DALFactory } from 'dal';
+import * as SCHEMAS from 'constants/schemas';
 import * as APP_SETTINGS from 'constants/app';
 
-const ls = new LocalStorage(APP_SETTINGS.ST_DOMAIN);
+const DAL = new DALFactory(APP_SETTINGS.LOCAL_STORAGE);
 
 const identitiesHelper = {
-  /**
-   * Return the interface of the storage in which we are keep the data
-   * (localStorage, USB, etc...)
-   *
-   * @param {string} storage - type of storage selected
-   * @returns {Object} - With the interface/API of the storage selected
-   */
-  getStorage(storage) {
-    switch (storage) {
-      case (APP_SETTINGS.LOCAL_STORAGE):
-        return ls;
-      default:
-        return ls;
-    }
-  },
-
   /**
    * Check if an identity is consistent. It means that has iddAddr field, keys object
    * with their keys, a key container object, a Relay object and a name or label field.
@@ -33,19 +18,7 @@ const identitiesHelper = {
    *
    */
   isIdentityConsistent(identity) {
-    return !!(identity.address
-    && identity.keys
-    && identity.keys.keyOp
-    && identity.keys.keyRecovery
-    && identity.keys.keyRevoke
-    && identity.id
-    && identity.id.relay
-    && identity.id.keyOperational
-    && identity.id.keyRecover
-    && identity.id.keyRevoke
-    && identity.id.idaddr
-    && identity.id.implementation.constructor === String // because use to be ""
-    && identity.relay);
+    return schemasCore.compareSchemas(SCHEMAS.IDENTITY, identity);
   },
 
   /**
@@ -74,14 +47,12 @@ const identitiesHelper = {
    * @param {string} storage - With the storage to store ir
    * @returns {boolean} - True if created, false otherwise
    */
-  createIdentityInStorage(identity, storage = APP_SETTINGS.LOCAL_STORAGE) {
+  createIdentityInStorage(identity) {
     let created = false;
 
     if (identity) {
-      // set the object storage
-      const _storage = this.getStorage(storage);
       const key = `id-${identity.address}`;
-      created = _storage.setItem(key, identity); // returns a boolean
+      created = DAL.setItem(key, identity); // returns a boolean
     }
 
     return created;
@@ -95,15 +66,13 @@ const identitiesHelper = {
  * @returns {{keyRecovery: string, keyRevoke: string, keyOp: string. keyContainer: Object}}
  */
   createKeys(passphrase, storage = APP_SETTINGS.LOCAL_STORAGE) {
-    const keyContainer = new iden3.KeyContainer(storage);
-    // keyContainer.unlock(passphrase); // for 30 seconds available
-    keyContainer.unlock('a');
-    const keyRecovery = keyContainer.generateKeyRand();
-    const keyRevoke = keyContainer.generateKeyRand();
-    const keyOp = keyContainer.generateKeyRand();
+    const keysContainer = new iden3.KeyContainer(storage);
+    keysContainer.unlock(passphrase);
+    const newKeys = keysContainer.generateKeysMnemonic();
+    const [keyRecovery, keyRevoke, keyOp] = newKeys.keys;
 
     return {
-      keyRecovery, keyRevoke, keyOp, keyContainer,
+      keyRecovery, keyRevoke, keyOp, keysContainer, mnemonic: newKeys.mnemonic,
     };
   },
 
@@ -119,18 +88,16 @@ const identitiesHelper = {
  * And has information about its id address, has a key container, relay and keys (operational,
  * revocation and recovery)
  *
- * @param {string} storage - where to get the information
  * @returns {boolean} - True if identities exist and they have right information, false, otherwise
  */
-  areIdentitiesConsistent(storage = APP_SETTINGS.LOCAL_STORAGE) {
+  areIdentitiesConsistent() {
     let rightIds = 0;
-    const _storage = this.getStorage(storage);
-    const storageIdKeys = _storage.getKeys('id-0x');
+    const storageIdKeys = DAL.getKeys('id-0x');
     const storageKeysLength = storageIdKeys.length;
 
     for (let i = 0; i < storageKeysLength; i++) {
-      const currentItem = _storage.getItem(storageIdKeys[i]);
-      const isIdConsistent = this.isIdentityConsistent(currentItem, storage);
+      const currentItem = DAL.getItem(storageIdKeys[i]);
+      const isIdConsistent = this.isIdentityConsistent(currentItem);
       rightIds = isIdConsistent
         ? rightIds + 1
         : this.removeIdentity(storageIdKeys[i]) && (rightIds > 0 && rightIds - 1);
@@ -143,22 +110,22 @@ const identitiesHelper = {
  * Get from the storage all the identities stored and their information.
  * Usually used (i.e.) first time we load the application to hydrate the app state.
  *
- * @param {string} storage - type of storage selected
  * @returns {Promise<any>} - Promise with an Object containing the identities and their information
  */
-  getAllIdentities(storage = APP_SETTINGS.LOCAL_STORAGE) {
-    const _storage = this.getStorage(storage);
-    const idsInStorage = _storage.getKeys('id-0x');
+  getAllIdentities() {
+    const idsInStorage = DAL.getKeys('id-0x');
     const idsInStorageLength = idsInStorage.length;
     const ids = {};
 
     for (let i = 0; i < idsInStorageLength; i++) {
       const idKey = idsInStorage[i];
-      const idFromStorage = _storage.getItem(idKey);
+      const idFromStorage = DAL.getItem(idKey);
       const identity = idFromStorage;
+      const keysContainerProto = Object.getPrototypeOf(new iden3.KeyContainer(APP_SETTINGS.LOCAL_STORAGE));
 
       // set again prototypes of the objects because can't be stored in the local storage
-      // TODO: Change this in iden3js to get functions
+      // TODO: Change this in iden3js to get functions, because now returning Objects that can't be stored in Local Storage
+      identity.keys.container = Object.assign({ __proto__: keysContainerProto }, identity.keys.container);
       identity.relay = Object.getPrototypeOf(this.setRelay(identity.relayURL));
       identity.id = Object.getPrototypeOf(
         new iden3.Id(
@@ -169,6 +136,7 @@ const identitiesHelper = {
           '',
         ),
       );
+
       ids[idFromStorage.address] = identity;
     }
 
@@ -176,22 +144,21 @@ const identitiesHelper = {
   },
 
   /**
- * Check if exists an identity in the current localStorage
+ * Check if exists an identity in the current storage.
+ *
  * @param {string} iddAddr - Counterfactual address of the identity sent by the Relay.
- * @param {string} storage - type of storage selected
  * @returns {object | undefined} with the settings of the identity in the LS or undefined ir doesn't exist
  */
-  getIdentity(iddAddr, storage = APP_SETTINGS.LOCAL_STORAGE) {
-    const _storage = this.getStorage(storage);
+  getIdentity(iddAddr) {
     let identity;
 
     // if not identity address sent, look for the first found in the storage
     if (!iddAddr) {
       this.getAllIdentities()
         .then(ids => identity = ids[0]
-        && _storage.getItem(`${APP_SETTINGS.ST_IDENTITY_PREFIX}-${ids[0].iddAddr}`));
+        && DAL.getItem(`${APP_SETTINGS.ST_IDENTITY_PREFIX}-${ids[0].iddAddr}`));
     } else {
-      identity = _storage.getItem(`${APP_SETTINGS.ST_IDENTITY_PREFIX}-${iddAddr}`);
+      identity = DAL.getItem(`${APP_SETTINGS.ST_IDENTITY_PREFIX}-${iddAddr}`);
     }
 
     return identity;
@@ -222,14 +189,12 @@ const identitiesHelper = {
   /**
  * Remove from the storage the identity key-value.
  *
- * @param {string} identityKey - with format 'id-Address of the id'
+ * @param {string} identityKey - With format 'id-Address of the id'
  * @param {string} storage - where to store this information
  * @returns {boolean} True if removed, false otherwise
  */
-  removeIdentity(identityKey, storage = APP_SETTINGS.LOCAL_STORAGE) {
-    const _storage = this.getStorage(storage);
-
-    return _storage.removeItem(identityKey);
+  removeIdentity(identityKey) {
+    return DAL.deleteItem(identityKey);
   },
 
   /**
@@ -238,25 +203,23 @@ const identitiesHelper = {
  * in the selected storage.
  *
  * @param {Object} identity - With the information of the new identity that will be the default
- * @param {string} storage - type of storage selected
  * @throws Will throw an error if the no identity provided.
  * @returns {boolean} - True if could be updated, false, otherwise
  */
-  setIdentityAsDefault(identity = null, storage = APP_SETTINGS.LOCAL_STORAGE) {
-    const _storage = this.getStorage(storage);
-    const currentDefaultIdKey = _storage.getItem(`${APP_SETTINGS.ST_DEFAULT_ID}`);
+  setIdentityAsDefault(identity = null) {
+    const currentDefaultIdKey = DAL.getItem(`${APP_SETTINGS.ST_DEFAULT_ID}`);
     const currentDefaultId = this.getIdentity(currentDefaultIdKey);
 
     // set the former default identity to false
     if (currentDefaultId) {
       currentDefaultId.isDefault = false;
-      _storage.updateKey(`${APP_SETTINGS.ST_IDENTITY_PREFIX}-${currentDefaultId.address}`, currentDefaultId);
+      DAL.updateItem(`${APP_SETTINGS.ST_IDENTITY_PREFIX}-${currentDefaultId.address}`, currentDefaultId);
     }
 
     // set the new default identity
     if (identity) {
-      _storage.updateKey(`${APP_SETTINGS.ST_IDENTITY_PREFIX}-${identity.address}`, identity);
-      _storage.updateKey(`${APP_SETTINGS.ST_DEFAULT_ID}`, identity.address);
+      DAL.updateItem(`${APP_SETTINGS.ST_IDENTITY_PREFIX}-${identity.address}`, identity);
+      DAL.updateItem(`${APP_SETTINGS.ST_DEFAULT_ID}`, identity.address);
       return true;
     }
 
@@ -277,14 +240,13 @@ const identitiesHelper = {
  * Update the default id field in the storage. If we can't update it because
  * there are no right identities, storage is removed since all the information
  * does not make sense anymore.
- * @param {string} storage - In which set de the default identity
+ *
  * @returns {boolean} - True if success, false otherwise
  */
-  updateDefaultId(storage = APP_SETTINGS.LOCAL_STORAGE) {
+  updateDefaultId() {
   // set the object storage
-    const _storage = this.getStorage(storage);
-    const defaultIdAddr = _storage.getItem(APP_SETTINGS.ST_DEFAULT_ID);
-    const identity = _storage.getItem(`${APP_SETTINGS.ST_IDENTITY_PREFIX}-${defaultIdAddr}`);
+    const defaultIdAddr = DAL.getItem(APP_SETTINGS.ST_DEFAULT_ID);
+    const identity = DAL.getItem(`${APP_SETTINGS.ST_IDENTITY_PREFIX}-${defaultIdAddr}`);
 
     // the default identity is alright
     if (identity && this.isIdentityConsistent(identity)) {
@@ -296,15 +258,15 @@ const identitiesHelper = {
 
     if (rightIds > 0) {
     // if we have right id's set the de default the first that we find
-      const idItems = _storage.getKeys('id-0x');
+      const idItems = DAL.getKeys('id-0x');
 
       if (idItems > 0) {
-        if (_storage.setItem(`${APP_SETTINGS.ST_DEFAULT_ID}`, idItems[0])) return true;
+        if (DAL.setItem(`${APP_SETTINGS.ST_DEFAULT_ID}`, idItems[0])) return true;
       }
     }
 
     // if not default id set, and not right identities in the storage, remove the storage
-    _storage.clear();
+    DAL.clear();
     return false;
   },
 
@@ -313,29 +275,27 @@ const identitiesHelper = {
  *
  * @param {Object} identity - With all the data
  * @param {Object} data - With the new data to update
- * @param {string} storage - where to store this information
  * @returns {Object} - The updated identity if was updated the number, false otherwise
  */
-  updateIdentity(identity, data, storage = APP_SETTINGS.LOCAL_STORAGE) {
+  updateIdentity(identity, data) {
   // set the object storage
-    const _storage = this.getStorage(storage);
     const idAddrLabel = `${APP_SETTINGS.ST_IDENTITY_PREFIX}-${identity.idAddr}`;
-    const _identity = _storage.getItem(idAddrLabel);
+    const _identity = DAL.getItem(idAddrLabel);
 
     if (_identity) {
       const updatedIdentity = Object.assign({}, identity, data);
 
       // if there was no identities before or default field, put it in the storage
       // to load this identity next time that wallet is loaded
-      const existsDefaultID = _storage.getItem(`${APP_SETTINGS.ST_DEFAULT_ID}`);
-      const identitiesNumber = _storage.getItem(`${APP_SETTINGS.ST_IDENTITIES_NUMBER}`);
+      const existsDefaultID = DAL.getItem(`${APP_SETTINGS.ST_DEFAULT_ID}`);
+      const identitiesNumber = DAL.getItem(`${APP_SETTINGS.ST_IDENTITIES_NUMBER}`);
 
       // if does not exist field of default id or if ther are zero identities number
       if (!existsDefaultID || (existsDefaultID && identitiesNumber && identitiesNumber === 0)) {
-        _storage.setItem(`${APP_SETTINGS.ST_DEFAULT_ID}`, identity.address);
+        DAL.setItem(`${APP_SETTINGS.ST_DEFAULT_ID}`, identity.address);
       }
 
-      return _storage.updateKey(idAddrLabel, updatedIdentity)
+      return DAL.updateItem(idAddrLabel, updatedIdentity)
         ? updatedIdentity
         : null;
     }
@@ -346,13 +306,10 @@ const identitiesHelper = {
  * Update the number of identities in the application.
  *
  * @param {boolean} isToAdd - True if we are adding an identity, false if we are removing it
- * @param {string} storage - where to store this information
  * @returns {boolean} - True if was updated the number, false otherwise
  */
-  updateIdentitiesNumber(isToAdd, storage = APP_SETTINGS.LOCAL_STORAGE) {
-  // set the object storage
-    const _storage = this.getStorage(storage);
-    const idsNumberItem = _storage.getItem(APP_SETTINGS.ST_IDENTITIES_NUMBER);
+  updateIdentitiesNumber(isToAdd) {
+    const idsNumberItem = DAL.getItem(APP_SETTINGS.ST_IDENTITIES_NUMBER);
     const idsNumber = idsNumberItem ? 0 : idsNumberItem;
 
     // if it's the first identity set it as default
@@ -361,28 +318,24 @@ const identitiesHelper = {
     }
 
     return isToAdd
-      ? _storage.updateKey(APP_SETTINGS.ST_IDENTITIES_NUMBER, idsNumber + 1)
-      : idsNumber > 0 && _storage.updateKey(APP_SETTINGS.ST_IDENTITIES_NUMBER, idsNumber - 1);
+      ? DAL.updateItem(APP_SETTINGS.ST_IDENTITIES_NUMBER, idsNumber + 1)
+      : idsNumber > 0 && DAL.updateItem(APP_SETTINGS.ST_IDENTITIES_NUMBER, idsNumber - 1);
   },
 
   /**
  * Returns the default identity from the storage.
  *
- * @param {string} storage - From where to get the information
  * @returns {string} - With the default identity address
  */
-  getDefaultIdentity(storage = APP_SETTINGS.LOCAL_STORAGE) {
-  // set the object storage
-    const _storage = this.getStorage(storage);
-
-    return _storage.getItem(`${APP_SETTINGS.ST_DEFAULT_ID}`);
+  getDefaultIdentity() {
+    return DAL.getItem(`${APP_SETTINGS.ST_DEFAULT_ID}`);
   },
 
   /**
    * Remove all the information in the local storage domain from the app
    */
   deleteAllIdentities() {
-    const areDeleted = localStorage.clear();
+    const areDeleted = DAL.clear();
     // if are deleted we get an 'undefined', for tha we return the negation
     return areDeleted === undefined;
   },

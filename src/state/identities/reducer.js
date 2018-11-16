@@ -56,26 +56,7 @@ function identities(state = initialState, action) {
         isFetching: true,
       });
     case CREATE_IDENTITY_SUCCESS: {
-      /*const newIdentity = {
-        label: action.data.get('label') || action.data.get('name') || '',
-        icon: action.data.get('icon'),
-        date: action.data.get('date'),
-        time: action.data.get('time'),
-        originalDateTime: action.data.get('originalDateTime'),
-        domain: action.data.get('domain'),
-        keys: new ImmutableMap({
-          keyRevoke: action.data.get('keys').keyRevoke,
-          keyRecovery: action.data.get('keys').keyRecovery,
-          keyOp: action.data.get('keys').keyOp,
-          keyContainer: action.data.get('keys').keyContainer,
-        }),
-        seed: action.data.get('seed') || [],
-        relay: action.data.get('relay'),
-        id: action.data.get('id'),
-        idAddr: action.data.get('idAddr'),
-      };*/
-
-      // TODO: check if there is a current identity or sent by the action.data
+      // TODO: check if already exists the identity sent by the action
       return state.merge({
         isFetching: false,
         error: '',

@@ -9,7 +9,7 @@ const {
     handleCreateClaim,
     handleAuthorizeClaim,
     handleSetClaimsFromStorage,
-    handleCreateDefaultClaim,
+    handleCreateGenericClaim,
     // handleUpdatePinnedClaims,
   },
   selectors: {
@@ -38,7 +38,7 @@ function withClaims(ClaimsComponent) {
       /*
        Handle to create a claim
        */
-      handleCreateDefaultClaim: PropTypes.func.isRequired,
+      handleCreateGenericClaim: PropTypes.func.isRequired,
       /*
        Action to update when a claim is pinned to dashboard or removed from the pinned
        */
@@ -83,7 +83,7 @@ function withClaims(ClaimsComponent) {
       handleCreateClaim,
       handleAuthorizeClaim,
       handleSetClaimsFromStorage,
-      handleCreateDefaultClaim,
+      handleCreateGenericClaim,
       // handleUpdatePinnedClaims,
     }, dispatch);
   }
