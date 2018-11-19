@@ -210,7 +210,7 @@ class Claim {
    * Create a Generic (or default) claim.
    *
    * @param {Immutable.Map} identity - Identity object owner of this claim
-   * @param {Object} data - Of the claim
+   * @param {string} data - Of the claim
    * @param {string} localClaimId - The local storage id of this claim to store it
    * @returns {Promise<any>}
    */
@@ -218,13 +218,12 @@ class Claim {
     return new Promise((resolve, reject) => {
       const { keysContainer, id } = this._preNewClaim();
 
-      id.genericClaim(
+      API.createGenericClaim(
+        id,
         keysContainer,
         this.identity.get('keys').get('operational'),
         APP_SETTINGS.DEFAULT_RELAY_DOMAIN,
-        'default',
         data,
-        '',
       )
         .then((res) => {
           const createdClaim = this.createClaimInStorage(
@@ -239,7 +238,7 @@ class Claim {
         })
         .catch(error => reject(new Error(`Could not create the claim: ${error.message || error}`)));
     });
-  };
+  }
 
   /**
    * Retrieve all the claims stored in the storage.

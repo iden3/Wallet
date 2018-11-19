@@ -1,6 +1,7 @@
 import iden3 from 'iden3';
 import schemas from 'schemas';
 import DALFactory from 'dal';
+import { API } from 'helpers';
 import * as SCHEMAS from 'constants/schemas';
 import * as APP_SETTINGS from 'constants/app';
 
@@ -28,7 +29,7 @@ const identitiesHelper = {
    * @param {Object} data - with the data of the identity
    * @returns {Object} With the identity created or an Error if already existed
    */
-  createIdentity(data) {
+  _checkIdentitySchema(data) {
     let newIdentity;
 
     if (!this.getIdentity(data.address)) { // if doesn't exist identity
@@ -38,6 +39,42 @@ const identitiesHelper = {
     }
 
     return newIdentity;
+  },
+
+  /**
+   * Create an identity, creating the keys that are stored in the local storage
+   * by the iden3 library. Then set the relay, and finally call the Relay
+   * set to create the identity (the promise returned).
+   * So this is an AJAX call to the Relay.
+   *
+   * @param {Object} data - with new identity values
+   * @param {string} passphrase - The passphrase to unlock for 30 seconds the key container
+   * @param {string} relayAddr - with the URL of the relay to get the counterfactual address
+   * @returns {Promise<any>} Return a Promise with the field "address" that contains
+   * the address of the counterfactual contract of the new identity
+   */
+  createIdentity(data, passphrase, isDefault = false, relayAddr = APP_SETTINGS.RELAY_ADDR) {
+    const identity = this.prepareCreateIdentity(passphrase, relayAddr);
+
+    return new Promise((resolve, reject) => {
+      API.createID()
+        .then((address) => {
+          // once we have the address returned by the ID, set it in the local storage
+          const newIdentity = identitiesHelper._checkIdentitySchema({
+            address, ...identity, ...data, passphrase, isDefault,
+          });
+
+          if (newIdentity && this.createIdentityInStorage(newIdentity)) {
+            if (newIdentity.isDefault) {
+              this.setIdentityAsDefault(newIdentity);
+            }
+            resolve(newIdentity);
+          } else {
+            reject(new Error('New identity could not be created'));
+          }
+        })
+        .catch(error => reject(new Error(error)));
+    });
   },
 
   /**

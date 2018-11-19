@@ -122,7 +122,7 @@ export function handleCreateIdentity(passphrase, data) {
     const isDefault = selectors.getIdentitiesNumber(getState()) === 0;
 
     dispatch(createIdentity());
-    return API.createIdentity(data, passphrase, isDefault)
+    return identitiesHelper.createIdentity(data, passphrase, isDefault)
       .then((identity) => {
         const newIdentity = Object.assign({}, identity);
         if (!newIdentity) throw new Error('Identity does not match with the model');

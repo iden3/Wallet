@@ -30,7 +30,7 @@ module.exports = {
         "no-unused-expressions": [0],
         "func-names": [0],
         "global-require": [0],
-        "max-len": ["error", { "code": 120, "comments": 200 }],
+        "max-len": ["error", { "code": 120, "comments": 800 }],
         "no-underscore-dangle": [0],
         "import/no-extraneous-dependencies": [
             "error",
