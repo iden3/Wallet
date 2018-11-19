@@ -3,8 +3,16 @@ import { notification } from 'base_components';
 const notifications = {
   notificationTypes: ['success', 'error', 'info', 'warning', 'warn', 'open', 'close', 'destroy'],
 
+  /**
+   * The content of the notification, with the colour and the message to show.
+   *
+   * @paran {Object} config - Object to set the notification object
+   * @param {string} config.type - Should be one of 'success', 'error', 'info', 'warning', 'warn', 'open', 'close', 'destroy'
+   * @param {string} config.message - Message to show in the notification
+   * @returns {{style: {color: string, background: string}, message: (*|string)}}
+   */
   getContent(config) {
-    const style = { color: 'white', background: '' }
+    const style = { color: 'white', background: '' };
     let message = '';
 
     switch (config.type) {
@@ -31,9 +39,11 @@ const notifications = {
 
     return { style, message };
   },
+
   /**
    * Open a notification box with a message sent in config.
-   * @paran {Object} config - Object to set the nofitication object
+   *
+   * @paran {Object} config - Object to set the notification object
    * @param {string} config.type - Should be one of 'success', 'error', 'info', 'warning', 'warn', 'open', 'close', 'destroy'
    * @param {string} config.message - Message to show in the notification
    * contains the content message to show

@@ -1,6 +1,8 @@
 import { Map as ImmutableMap } from 'immutable';
-import API from 'helpers/api';
-import identitiesHelper from 'helpers/identities';
+import {
+  API,
+  identitiesHelper,
+} from 'helpers';
 import * as selectors from './selectors';
 import {
   CREATE_IDENTITY,
@@ -188,7 +190,7 @@ export function handleSetIdentitiesFromStorage() {
 export function handleDeleteAllIdentities(passphrase) {
   return function (dispatch) {
     dispatch(deleteAllIdentities());
-    return Promise.resolve(API.deleteAllIdentities(passphrase))
+    return Promise.resolve(identitiesHelper.deleteAllIdentities(passphrase))
       .then((areDeleted) => {
         areDeleted
           ? dispatch(deleteAllIdentitiesSuccess())

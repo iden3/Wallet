@@ -7,6 +7,7 @@ import {
   withRouter,
   Redirect,
 } from 'react-router-dom';
+import { Map as ImmutableMap } from 'immutable';
 import { Layout } from 'views';
 import {
   withClaims,
@@ -30,6 +31,10 @@ class App extends Component {
       Action to set in the app state the identities from the app state first time app is loaded
      */
     handleSetIdentitiesFromStorage: PropTypes.func.isRequired,
+    /*
+     Selector to get the current loaded identity information
+     */
+    defaultIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
     //
     // From withClaims HoC
     //
@@ -41,11 +46,11 @@ class App extends Component {
 
   /**
    * First time app is loaded set in the app state the identities
-   * that are in the storage.
+   * and claims that belong to this identity, that are in the storage.
    */
   componentDidMount() {
     this.props.handleSetIdentitiesFromStorage()
-      .then(() => this.props.handleSetClaimsFromStorage());
+      .then(() => this.props.handleSetClaimsFromStorage(this.props.defaultIdentity));
   }
 
   render() {

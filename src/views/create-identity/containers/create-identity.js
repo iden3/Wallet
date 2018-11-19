@@ -7,7 +7,7 @@ import {
   withFormsValues,
   withIdentities,
 } from 'hocs';
-import notificationsHelper from 'helpers/notifications';
+import { notificationsHelper } from 'helpers';
 import {
   StepSetPassphrase,
   StepSetName,
@@ -115,6 +115,12 @@ class CreateIdentity extends Component {
       }));
   };
 
+  /**
+   * Set the passphrase in the component state needed to sign the identity keys
+   * when created.
+   *
+   * @param passphrase
+   */
   setPassphrase = (passphrase) => {
     this.setState({ passphrase });
   };

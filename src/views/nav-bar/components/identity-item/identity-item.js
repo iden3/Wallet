@@ -6,7 +6,7 @@ import {
   Menu,
   MenuItem,
 } from 'base_components';
-import * as utils from 'helpers/utils';
+import { utils } from 'helpers';
 import * as ROUTES from 'constants/routes';
 
 import './identity-item.scss';

@@ -15,13 +15,24 @@ class LocalStorage {
     return instance;
   }
 
+  /**
+   * Getter of the domain of the application (i.e: i3)
+   *
+   * @returns {string} - With the domain of the application
+   */
   get domain() {
     return this._domain;
   }
 
-  set domain(value) {
-    if (value.constructor === String) {
-      this._domain = value;
+  /**
+   * Setter to the domain of the application used to store the key/values.
+   * (i.e: i3)
+   *
+   * @param {string} value - With the chosen domain
+   */
+  set domain(domain) {
+    if (domain && domain.constructor === String) {
+      this._domain = domain;
     }
   }
 

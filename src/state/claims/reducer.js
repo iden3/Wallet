@@ -70,7 +70,7 @@ function claims(state = initialState, action) {
             proof: action.data.get('proof'),
             url: action.data.get('url'),
             id: action.data.get('id'),
-            //isPinned: action.data.get('isPinned'),
+            // isPinned: action.data.get('isPinned'),
           },
         ),
       });
@@ -98,7 +98,7 @@ function claims(state = initialState, action) {
             proof: action.data.get('proof'),
             url: action.data.get('url'),
             id: action.data.get('id'),
-            //isPinned: action.data.get('isPinned'),
+            // isPinned: action.data.get('isPinned'),
           },
         ),
       });
@@ -123,7 +123,7 @@ function claims(state = initialState, action) {
         isFetchingClaims: false,
         error: state.get('error').set('message', action.error),
       });
-    /*case UPDATE_PINNED_CLAIMS:
+    /* case UPDATE_PINNED_CLAIMS:
       return state.merge({
         isFetchingClaims: true,
       });
@@ -161,7 +161,7 @@ function claims(state = initialState, action) {
       return state.merge({
         isFetchingClaims: false,
         error: action.data,
-      });*/
+      }); */
     default:
       return state;
   }

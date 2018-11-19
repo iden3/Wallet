@@ -1,3 +1,8 @@
+/**
+ * Bos constants related to the side bar or the pop-up.
+ *
+ * @type {{LEFT: string, RIGHT: string}}
+ */
 export const SIDE = {
   LEFT: 'left',
   RIGHT: 'right',

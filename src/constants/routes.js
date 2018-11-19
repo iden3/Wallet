@@ -1,3 +1,6 @@
+/**
+ * Strictly related to the Icons used in the application
+ */
 import * as ICONS from './icons';
 
 export const DASHBOARD = {

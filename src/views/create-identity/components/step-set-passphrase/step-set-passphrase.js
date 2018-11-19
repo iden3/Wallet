@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import * as FORMS from 'constants/forms';
 import { TYPE as NOTIFICATIONS } from 'constants/notifications';
-import notificationsHelper from 'helpers/notifications';
+import { notificationsHelper } from 'helpers';
 import classNames from 'classnames';
 import {
   Button,
@@ -141,7 +141,7 @@ class StepSetPassphrase extends PureComponent {
                   onChange={e => this.handleInputChange(e.target.value, 'passphrase')}
                   isPasswordType />
               </div>
-                <div className="i3-ww-ci__input-wrapper">
+              <div className="i3-ww-ci__input-wrapper">
                 <Input
                   placeholder="Repeat the passphrase"
                   value={this.state.repeatedPasshphrase}

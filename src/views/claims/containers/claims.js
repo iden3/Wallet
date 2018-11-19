@@ -9,7 +9,7 @@ import {
   Widget,
 } from 'base_components';
 import * as CLAIMS from 'constants/claim';
-import { capitalizeFirstLetter } from 'helpers/utils';
+import { utils } from 'helpers';
 import List from '../components/list';
 
 import './claims.scss';
@@ -116,7 +116,7 @@ class Claims extends Component {
 
     return [emitted, received, grouped].map((claimsList) => {
       return {
-        title: capitalizeFirstLetter(claimsList.type),
+        title: utils.capitalizeFirstLetter(claimsList.type),
         children: (
           <Fragment>
             <List

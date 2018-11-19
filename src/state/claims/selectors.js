@@ -7,7 +7,7 @@ export const getClaims = (state, type = CLAIMS.TYPE.EMITTED.NAME) => {
   const list = getClaimsState(state).get(type);
   return list;
 };
-/*export const getPinnedClaims = (state) => {
+/* export const getPinnedClaims = (state) => {
   const pinnedKeys = Object.keys(getClaimsState(state).get('pinned').toJS());
   const pinnedMap = {};
 
@@ -27,4 +27,4 @@ export const getClaims = (state, type = CLAIMS.TYPE.EMITTED.NAME) => {
   return new ImmutableMap({});
 
 
-};*/
+}; */

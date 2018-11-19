@@ -1,7 +1,9 @@
-import API from 'helpers/api';
+import {
+  API,
+  ClaimsHelper,
+  utils,
+} from 'helpers';
 import { Map as ImmutableMap } from 'immutable';
-import * as utils from 'helpers/utils';
-import Claim from 'helpers/claims';
 import {
   AUTHORIZE_CLAIM,
   AUTHORIZE_CLAIM_SUCCESS,
@@ -18,11 +20,10 @@ import {
   CREATE_GENERIC_CLAIM,
   CREATE_GENERIC_CLAIM_SUCCESS,
   CREATE_GENERIC_CLAIM_ERROR,
-  UPDATE_PINNED_CLAIMS,
+/*  UPDATE_PINNED_CLAIMS,
   UPDATE_PINNED_CLAIMS_SUCCESS,
-  UPDATE_PINNED_CLAIMS_ERROR,
+  UPDATE_PINNED_CLAIMS_ERROR, */
 } from './constants';
-
 
 function fetchingClaims() {
   return {
@@ -38,7 +39,7 @@ function fetchingClaimsSuccess(data) {
 }
 
 function fetchingClaimsError(error) {
-  console.log(error);
+  console.error(error);
   return {
     type: FETCHING_CLAIMS_ERROR,
     error: 'Fetching claims error',
@@ -79,6 +80,7 @@ function createGenericClaimSuccess(data) {
 }
 
 function createGenericClaimError(data) {
+  console.error(data);
   return {
     type: CREATE_GENERIC_CLAIM_ERROR,
     error: data,
@@ -126,7 +128,7 @@ function setAllClaimsError(data) {
   };
 }
 
-/*function updatePinnedClaims() {
+/* function updatePinnedClaims() {
   return {
     type: UPDATE_PINNED_CLAIMS,
   };
@@ -144,7 +146,7 @@ function updatePinnedClaimsError(error) {
     type: UPDATE_PINNED_CLAIMS_ERROR,
     data: error,
   };
-}*/
+} */
 
 export default function handleFetchingClaims() {
   return function (dispatch) {
@@ -173,8 +175,10 @@ export function handleCreateClaim(claim) {
 export function handleCreateGenericClaim(identity, claim) {
   return function (dispatch) {
     dispatch(createGenericClaim());
-    const claimId = utils.createUniqueAlphanumericId();
-    return API.createGenericClaim(identity, claim, claimId)
+    const localClaimId = utils.createUniqueAlphanumericId();
+    const claims = new ClaimsHelper(identity);
+
+    return claims.createGenericClaim(claim, localClaimId)
       .then((newClaim) => {
         dispatch(createGenericClaimSuccess(newClaim));
       })
@@ -186,17 +190,20 @@ export function handleAuthorizeClaim(identity, claimData) {
   return function (dispatch) {
     dispatch(authorizeClaim());
     const localClaimId = utils.createUniqueAlphanumericId();
-    const claim = new Claim(identity);
-    return claim.authorizeClaim(claimData, localClaimId)
+    const claims = new ClaimsHelper(identity);
+
+    return claims.authorizeClaim(claimData, localClaimId)
       .then(authorizedClaim => dispatch(authorizeClaimSuccess(authorizedClaim)))
       .catch(error => dispatch(authorizeClaimError(error)));
   };
 }
 
-export function handleSetClaimsFromStorage() {
+export function handleSetClaimsFromStorage(identity) {
   return function (dispatch) {
     dispatch(setAllClaims());
-    return Promise.resolve(API.getAllClaims())
+    const claim = new ClaimsHelper(identity);
+
+    return Promise.resolve(claim.getAllClaimsFromStorage())
       .then((claims) => {
         // const pinnedClaims = API.getPinnedClaims();
         dispatch(setAllClaimsSuccess(claims));
@@ -205,7 +212,7 @@ export function handleSetClaimsFromStorage() {
   };
 }
 
-/*export function handleUpdatePinnedClaims(pinnedClaims, idToUpdate) {
+/* export function handleUpdatePinnedClaims(pinnedClaims, idToUpdate) {
   return function (dispatch, getState) {
     dispatch(updatePinnedClaims());
     return Promise.resolve(API.updatePinnedClaims(selectors.getClaims(getState()), pinnedClaims, idToUpdate))
@@ -214,4 +221,4 @@ export function handleSetClaimsFromStorage() {
       })
       .catch(error => dispatch(updatePinnedClaimsError(error)));
   };
-}*/
+} */

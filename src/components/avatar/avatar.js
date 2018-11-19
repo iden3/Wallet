@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import * as utils from 'helpers/utils';
+import { utils } from 'helpers';
 import Identicon from 'identicon.js';
 
 import './avatar.scss';

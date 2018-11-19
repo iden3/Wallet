@@ -13,7 +13,7 @@ import {
   QRScanner as QRScannerCmpt,
   TextArea,
 } from 'base_components';
-import notificationsHelper from 'helpers/notifications';
+import { notificationsHelper } from 'helpers';
 import { TYPE as NOTIFICATIONS } from 'constants/notifications';
 import * as BOX_CONSTANTS from 'constants/box';
 
@@ -117,6 +117,12 @@ class ClaimReader extends PureComponent {
     );
   }
 
+  /**
+   * QR reader component and the title.
+   *
+   * @returns {Object} - With the React element node containing a title and the Camera to read a QR
+   * @private
+   */
   _getQRScanner() {
     return (
       <div className="i3-ww-claim-reader__camera">

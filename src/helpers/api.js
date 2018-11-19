@@ -1,11 +1,13 @@
 import iden3 from 'iden3';
 import * as APP_SETTINGS from 'constants/app';
 import * as CLAIMS from 'constants/claim';
-import identitiesHelper from 'helpers/identities';
-import Claim from 'helpers/claims';
+import {
+  ClaimsHelper,
+  identitiesHelper,
+} from 'helpers';
 
 /**
- * Any interaction with a Storage, Relay or external agent should be by a call set here.
+ * Any interaction with a Relay or external agent (an AJAX call) should be done by a call set here.
  */
 const API = {
   /**
@@ -47,47 +49,6 @@ const API = {
     identity.id.bindID(identity.keys.container, data.label || data.name)
       .then(res => identityUpdated = Object.assign({}, identityUpdated, res.data));
     return identityUpdated;
-  },
-
-  createGenericClaim(identity, data, claimId) {
-    const claim = new Claim(identity);
-    const address = identity.get('address');
-
-    return new Promise((resolve, reject) => {
-      const keysContainer = new iden3.KeyContainer(APP_SETTINGS.LOCAL_STORAGE);
-      // TODO: hack, change this
-      const idRelay = identity.get('relay');
-      const relay = new iden3.Relay(idRelay.url || idRelay.toJS().url);
-      const id = new iden3.Id(
-        identity.get('keys').get('recovery'),
-        identity.get('keys').get('revoke'),
-        identity.get('keys').get('operational'),
-        relay,
-        '',
-      );
-      id.address = identity.get('address');
-      keysContainer.unlock(identity.get('passphrase'));
-      id.genericClaim(
-        keysContainer,
-        identity.get('keys').get('keyOp'),
-        'iden3.io',
-        'default',
-        data,
-        '',
-      )
-        .then((res) => {
-          const createdClaim = claim.createClaimInStorage(
-            CLAIMS.TYPE.EMITTED.NAME,
-            address,
-            data,
-            claimId,
-            res.data.proofOfClaim,
-            res.url || '',
-          );
-          resolve(createdClaim);
-        })
-        .catch(error => reject(new Error('Could not create the claim')));
-    });
   },
 
   /**
@@ -135,35 +96,11 @@ const API = {
    * @returns {Object} - Populated if was successfully created, empty otherwise
    */
   createIdentityInStorage(data, storage = APP_SETTINGS.LOCAL_STORAGE) {
+    // TODO: Move this , call it from action or the parent function straigth forward to the helper
     if (storage === APP_SETTINGS.LOCAL_STORAGE) {
       return identitiesHelper.createIdentityInStorage(data);
     }
     return {};
-  },
-
-  /**
-   * Delete all the identities from the storage.
-   *
-   * @returns {boolean} - True if there were deleted from the storage, false otherwise
-   */
-  deleteAllIdentities(storage = APP_SETTINGS.LOCAL_STORAGE) {
-    if (storage === APP_SETTINGS.LOCAL_STORAGE) {
-      return identitiesHelper.deleteAllIdentities();
-    }
-    return false;
-  },
-
-  /**
-   * Get from the storage all the claims stored and their information.
-   * Usually used (i.e.) first time we load the application to hydrate the app state.
-   *
-   * @param {string} storage - type of storage selected
-   * @returns {Promise<any>} - Promise with an Object containing the claims and their information
-   */
-  getAllClaims() {
-    const claim = new Claim();
-
-    return claim.getAllClaimsFromStorage();
   },
 
   /**

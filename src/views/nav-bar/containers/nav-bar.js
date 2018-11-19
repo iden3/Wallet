@@ -10,7 +10,7 @@ import { Map as ImmutableMap } from 'immutable';
 import { withIdentities } from 'hocs';
 import { MenuItem } from 'base_components';
 import * as ROUTES from 'constants/routes';
-import { capitalizeFirstLetter } from 'helpers/utils';
+import { utils } from 'helpers';
 import {
   ButtonsBar,
   IdentityItem,
@@ -27,7 +27,7 @@ import './nav-bar.scss';
  */
 class NavBar extends Component {
   // change the selected menu item when location has changed (when user has introduced by hand the URL i.e.)
-  memoizedPath = memoizeOne(key => capitalizeFirstLetter(key.replace(/\//g, '')));
+  memoizedPath = memoizeOne(key => utils.capitalizeFirstLetter(key.replace(/\//g, '')));
 
   static propTypes = {
     //

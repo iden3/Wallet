@@ -1,6 +1,6 @@
 import iden3 from 'iden3';
-import * as schemasCore from 'schemas';
-import { DAL as DALFactory } from 'dal';
+import schemas from 'schemas';
+import DALFactory from 'dal';
 import * as SCHEMAS from 'constants/schemas';
 import * as APP_SETTINGS from 'constants/app';
 
@@ -18,7 +18,7 @@ const identitiesHelper = {
    *
    */
   isIdentityConsistent(identity) {
-    return schemasCore.compareSchemas(SCHEMAS.IDENTITY, identity);
+    return schemas.compareSchemas(SCHEMAS.IDENTITY, identity);
   },
 
   /**
@@ -32,7 +32,7 @@ const identitiesHelper = {
     let newIdentity;
 
     if (!this.getIdentity(data.address)) { // if doesn't exist identity
-      newIdentity = schemasCore.parseIdentitySchema(data);
+      newIdentity = schemas.parseIdentitySchema(data);
     } else {
       throw new Error('Identity already exists');
     }
@@ -41,10 +41,33 @@ const identitiesHelper = {
   },
 
   /**
+   * Return an iden3 Id object to use basically prototype.
+   *
+   * @param {Object} keys - With the keys of the identity
+   * @param {string} keys.recovery - With the recovery key of the identity
+   * @param {string} keys.revoke - With the revoke key of the identity
+   * @param {string} keys.operational - With the operational key of the identity
+   * @param {string} relayURL - URL of the current Relay of the identity
+   * @param {string} idAddress - Of the current identity
+   * @returns {iden3.Id}
+   */
+  createId(keys, relayURL, idAddress = '') {
+    const id = new iden3.Id(
+      keys.recovery,
+      keys.revoke,
+      keys.operational,
+      new iden3.Relay(relayURL), // to get the prototype
+      '',
+    );
+
+    id.idaddr = idAddress;
+    return id;
+  },
+
+  /**
    * Create identity in the storage requested.
    *
    * @param {Object} identity - With identity information
-   * @param {string} storage - With the storage to store ir
    * @returns {boolean} - True if created, false otherwise
    */
   createIdentityInStorage(identity) {
@@ -59,14 +82,14 @@ const identitiesHelper = {
   },
 
   /**
- * Create the keys of an identity and sets them in the storage selected
+ * Create the keys of an identity and sets them in the storage selected.
  *
  * @param {string} passphrase - to sign the keys
  * @param {string} storage - where to store this information
  * @returns {{keyRecovery: string, keyRevoke: string, keyOp: string. keyContainer: Object}}
  */
-  createKeys(passphrase, storage = APP_SETTINGS.LOCAL_STORAGE) {
-    const keysContainer = new iden3.KeyContainer(storage);
+  createKeys(passphrase) {
+    const keysContainer = new iden3.KeyContainer(DAL.storageName);
     keysContainer.unlock(passphrase);
     const newKeys = keysContainer.generateKeysMnemonic();
     const [keyRecovery, keyRevoke, keyOp] = newKeys.keys;
@@ -92,7 +115,7 @@ const identitiesHelper = {
  */
   areIdentitiesConsistent() {
     let rightIds = 0;
-    const storageIdKeys = DAL.getKeys('id-0x');
+    const storageIdKeys = DAL.getKeys(APP_SETTINGS.IDENTITY_STORAGE_PREFIX);
     const storageKeysLength = storageIdKeys.length;
 
     for (let i = 0; i < storageKeysLength; i++) {
@@ -113,7 +136,7 @@ const identitiesHelper = {
  * @returns {Promise<any>} - Promise with an Object containing the identities and their information
  */
   getAllIdentities() {
-    const idsInStorage = DAL.getKeys('id-0x');
+    const idsInStorage = DAL.getKeys(APP_SETTINGS.IDENTITY_STORAGE_PREFIX);
     const idsInStorageLength = idsInStorage.length;
     const ids = {};
 
@@ -177,7 +200,10 @@ const identitiesHelper = {
       const relay = this.setRelay(relayAddress);
 
       return {
-        id: new iden3.Id(keys.keyRecovery, keys.keyRevoke, keys.keyOp, relay, ''),
+        id: this.createId(
+          { recovery: keys.keyRecovery, revoke: keys.keyRevoke, operational: keys.keyOp },
+          relay.url,
+        ),
         keys,
         relay,
       };
@@ -258,7 +284,7 @@ const identitiesHelper = {
 
     if (rightIds > 0) {
     // if we have right id's set the de default the first that we find
-      const idItems = DAL.getKeys('id-0x');
+      const idItems = DAL.getKeys(APP_SETTINGS.IDENTITY_STORAGE_PREFIX);
 
       if (idItems > 0) {
         if (DAL.setItem(`${APP_SETTINGS.ST_DEFAULT_ID}`, idItems[0])) return true;

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { compose } from 'redux';
 import PropTypes from 'prop-types';
 import { Map as ImmutableMap } from 'immutable';
-import notificationsHelper from 'helpers/notifications';
+import { notificationsHelper } from 'helpers';
 import { Box } from 'base_components';
 import {
   withClaims,
