@@ -204,7 +204,7 @@ class Claim {
 
     // return this.storage.setItem(claimKey, newClaimData) ? newClaimData : null;
     return this.DAL.setItem(claimKey, newClaimData) ? newClaimData : null;
-  };
+  }
 
   /**
    * Create a Generic (or default) claim.

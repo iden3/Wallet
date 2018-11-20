@@ -41,6 +41,7 @@ module.exports = {
         "no-restricted-syntax": [0],
         "no-return-assign": [0],
         "no-console": [2, { "allow": ["warn", "error"] }],
+        "no-use-before-define": ["error", { "functions": false, "classes": false }],
         "react/prefer-stateless-function": [0],
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
         "react/require-default-props": [0],

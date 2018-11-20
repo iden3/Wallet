@@ -1,11 +1,10 @@
 import iden3 from 'iden3';
-import * as APP_SETTINGS from 'constants/app';
-import { identitiesHelper } from 'helpers';
 
 /**
  * Any interaction with a Relay or external agent (an AJAX call) should be done by a call set here.
+ * It's a module pattern.
  */
-const API = {
+const API = (function () {
   /**
    * Call to the relay to authorize sign a new claim.
    *
@@ -13,9 +12,9 @@ const API = {
    * @param {Immutable.List} data - With the data of the claim to authorize
    * @returns {*|Promise<any>|Object|void}
    */
-  authorizeKSignClaim(id, data) {
+  function authorizeKSignClaim(id, data) {
     return id.authorizeKSignClaim(...data.valueSeq().toJS());
-  },
+  }
 
   /**
    * Call iden3 library to send authorization to the centralized server
@@ -24,28 +23,20 @@ const API = {
    * @param {Immutable.List} data - With the values
    * @returns {*} - Response from the server with universal code of success or not
    */
-  authClaimToCentralizedServer(data) {
+  function authClaimToCentralizedServer(data) {
     return iden3.auth.resolv(...data.valueSeq().toJS());
-  },
+  }
 
   /**
    * Call to the Relay to bind the label/name of an identity to an address.
    *
    * @param {Object} identity - With its information, above all, it's needed the keys and the id address
-   * @param {Object} data - With label or name field to bind it to the identity
-   * @param {string} passphrase - to sign the petition
+   * @param {string} username - With label or name field to bind it to the identity
    * @returns {Promise<void>}
    */
-  bindIdToUsername(identity, data, passphrase) {
-    // TODO: Move this to identitiesHelper and only leave here the call to the Relay
-    let identityUpdated = {};
-
-    // identity.keys.keyContainer.unlock(passphrase); // for 30 seconds to update the identity
-    identity.keys.container.unlock(passphrase);
-    identity.id.bindID(identity.keys.container, data.label || data.name)
-      .then(res => identityUpdated = Object.assign({}, identityUpdated, res.data));
-    return identityUpdated;
-  },
+  function bindIdToUsername(identity, username) {
+    return identity.id.bindID(identity.keys.container, username);
+  }
 
   /**
    * Call the Relay to create a generic claim.
@@ -101,7 +92,7 @@ const API = {
    * @param {string} claimData - Of the created generic data
    * @returns {*}
    */
-  createGenericClaim(id, keysContainer, operationalKey, relayDomain, claimData) {
+  function createGenericClaim(id, keysContainer, operationalKey, relayDomain, claimData) {
     return id.genericClaim(
       keysContainer,
       operationalKey,
@@ -110,7 +101,7 @@ const API = {
       claimData,
       '',
     );
-  },
+  }
 
   /**
    * Create an identity, creating the keys that are stored in the local storage
@@ -122,24 +113,9 @@ const API = {
    * @returns {Promise<any>} Return a Promise with the field "address" that contains
    * the address of the counterfactual contract of the new identity
    */
-  createIdentity(id) {
+  function createIdentity(id) {
     return id.createID();
-  },
-
-  /**
-   * Create the identity in the storage selected.
-   *
-   * @param {Object} data - with the data of the identity
-   * @param {string} storage - where to store this information
-   * @returns {Object} - Populated if was successfully created, empty otherwise
-   */
-  createIdentityInStorage(data, storage = APP_SETTINGS.LOCAL_STORAGE) {
-    // TODO: Move this , call it from action or the parent function straight forward to the helper
-    if (storage === APP_SETTINGS.LOCAL_STORAGE) {
-      return identitiesHelper.createIdentityInStorage(data);
-    }
-    return {};
-  },
+  }
 
   /**
    * Just a function to do a generic AJAX call.
@@ -149,9 +125,9 @@ const API = {
    * @param {Object} bindObject - The object to bind in the call if needed
    * @returns {*}
    */
-  genericCall(callBack, args, bindObject = undefined) {
+  function genericCall(callBack, args, bindObject = undefined) {
     return callBack.call(bindObject, ...args);
-  },
+  }
 
   /* getPinnedClaims() {
     const claim = new Claim();
@@ -179,46 +155,14 @@ const API = {
       : Promise.reject(new Error('Could not store the pinned claims in the storage'));
   }, */
 
-  /**
-   * Update an identity in the storage and if we are changing the label,
-   * send to relay to Vinculate the identity address to this new label.
-   *
-   * @param {Object} identity - The identity to update
-   * @param {Object} data - With the identity's data to update
-   * @param {string } passphrase - The passphrase to unlock for 30 seconds the key container
-   * @param {string } storage - The storage in which should be updated
-   * @returns {Object} - With the identity object with new data and the data received from the Relay
-   */
-  updateIdentity(identity, data, passphrase, storage = APP_SETTINGS.LOCAL_STORAGE) {
-    // TODO: Move this to identitiesHelper and only leave here the call to the Relay
-    let identityUpdated = Object.assign({}, identity, data);
-
-    if (storage === APP_SETTINGS.LOCAL_STORAGE) {
-      // if label changed, we need to bind it to the identity and call the Relay
-      if (data.hasOwnProperty('label') || data.hasOwnProperty('name')) {
-        identityUpdated = this.bindIdToUsername(identity, data, passphrase);
-      }
-      // dataUpdated should contain (if we called the Relay) this fields:
-      // ethId, name and signature
-      const storedIdentity = identitiesHelper.updateIdentity(identity, identityUpdated);
-      return Promise.resolve(storedIdentity);
-    }
-    return Promise.reject(new Error('Not storage found when update identity'));
-  },
-
-  /**
-   * Update the counter of the identities in the current storage.
-   *
-   * @param {boolean} isToAdd - True for adding, false for subtract
-   * @param {string} storage - The storage in which should be updated
-   * @returns {boolean} - True if successful, false otherwise
-   */
-  updateIdentitiesNumber(isToAdd, storage = APP_SETTINGS.LOCAL_STORAGE) {
-    if (storage === APP_SETTINGS.LOCAL_STORAGE) {
-      return identitiesHelper.updateIdentitiesNumber(isToAdd);
-    }
-    return false;
-  },
-};
+  return {
+    authorizeKSignClaim,
+    authClaimToCentralizedServer,
+    bindIdToUsername,
+    createGenericClaim,
+    createIdentity,
+    genericCall,
+  };
+}());
 
 export default API;

@@ -127,7 +127,7 @@ export function handleCreateIdentity(passphrase, data) {
         const newIdentity = Object.assign({}, identity);
         if (!newIdentity) throw new Error('Identity does not match with the model');
         // update the number of identities
-        API.updateIdentitiesNumber(true);
+        identitiesHelper.updateIdentitiesNumber(true);
         dispatch(createIdentitySuccess(newIdentity));
         // return data from new user because is needed to bind it to a name in next step of the UI
         return newIdentity;
@@ -145,7 +145,7 @@ export function handleCreateIdentity(passphrase, data) {
 export function handleUpdateIdentitiesNumber(isToAdd) {
   return function () {
     return new Promise((resolve, reject) => {
-      const updated = API.updateIdentitiesNumber(isToAdd);
+      const updated = identitiesHelper.updateIdentitiesNumber(isToAdd);
 
       updated
         ? resolve(updated)
