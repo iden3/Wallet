@@ -49,7 +49,6 @@ class Identities extends Component {
    * and in the storage, and redirect to to the wizard to create an identity
    */
   deleteAllIdentities = () => {
-    // TODO: An error is displayed in the console. Check it
     this.toggleAskConfirmation();
     this.state.askForDelete && this.props.handleDeleteAllIdentities();
   };

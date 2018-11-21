@@ -90,7 +90,6 @@ export function handleUpdateForm(form, newValues) {
  * Clear the forms that are in the wizard of create the identity
  * and store the passphrase in the app state and in the storage
  *
- * TODO: not store passphrase, this is only for demo purposes
  * @returns {function(*): Promise<void | never>}
  */
 export function handleClearCreateIdentityForms() {

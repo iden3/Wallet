@@ -75,7 +75,7 @@ class DAL {
    * @returns {*}
    */
   clear() {
-    return this.storageName.clear();
+    return this._storage.clear();
   }
 
   /**

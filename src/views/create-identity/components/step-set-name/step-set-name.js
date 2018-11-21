@@ -14,7 +14,7 @@ import './step-set-name.scss';
 
 /**
  * Show an input to ask to users which name they want
- * TODO: Select domain regarding the Relay selected (for now mocked with @iden3.eth)
+ * TODO: Select domain regarding the Relay selected (for now mocked with @iden3.io)
  */
 class StepSetName extends PureComponent {
   static propTypes = {
