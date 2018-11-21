@@ -123,6 +123,9 @@ const identitiesHelper = (function () {
    *
    * @param {object} identity - Retrieved from the selected store
    * @returns {boolean} - True if this identity is consistent and has right data, False otherwise
+   *
+   * TODO: not the best check. Light check only looking if values exist. So need to improve it a lot.
+   *
    */
   function _isIdentityConsistent(identity) {
     return schemas.compareSchemas(SCHEMAS.IDENTITY, identity);
