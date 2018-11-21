@@ -56,30 +56,12 @@ function identities(state = initialState, action) {
         isFetching: true,
       });
     case CREATE_IDENTITY_SUCCESS: {
-      const newIdentity = {
-        label: action.data.get('label') || action.data.get('name') || '',
-        icon: action.data.get('icon'),
-        date: action.data.get('date'),
-        time: action.data.get('time'),
-        domain: action.data.get('domain'),
-        keys: new ImmutableMap({
-          keyRevoke: action.data.get('keys').keyRevoke,
-          keyRecovery: action.data.get('keys').keyRecovery,
-          keyOp: action.data.get('keys').keyOp,
-          keyContainer: action.data.get('keys').keyContainer,
-        }),
-        seed: action.data.get('seed') || [],
-        relay: action.data.get('relay'),
-        id: action.data.get('id'),
-        idAddr: action.data.get('idAddr'),
-      };
-
-      // TODO: check if there is a current identity or sent by the action.data
+      // TODO: check if already exists the identity sent by the action
       return state.merge({
         isFetching: false,
         error: '',
-        identities: state.get('identities').set(action.data.get('idAddr'), newIdentity),
-        currentIdentity: action.data.get('idAddr'),
+        identities: state.get('identities').set(action.data.get('address'), action.data),
+        currentIdentity: action.data.get('address'),
       });
     }
     case CREATE_IDENTITY_ERROR:
@@ -110,7 +92,7 @@ function identities(state = initialState, action) {
       return state.merge({
         isFetching: false,
         error: '',
-        identities: state.get('identities').set(action.data.get('idAddr'), action.data),
+        identities: state.get('identities').set(action.data.get('address'), action.data),
       });
     case UPDATE_IDENTITY_ERROR:
       return state.merge({
@@ -120,6 +102,12 @@ function identities(state = initialState, action) {
     case DELETE_ALL_IDENTITIES:
       return state.merge({
         isFetching: true,
+      });
+    case DELETE_ALL_IDENTITIES_SUCCESS:
+      return state.merge({
+        isFetching: false,
+        identities: new ImmutableMap({}),
+        error: '',
       });
     case DELETE_ALL_IDENTITIES_ERROR:
       return state.merge({

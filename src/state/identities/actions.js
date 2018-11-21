@@ -1,6 +1,8 @@
 import { Map as ImmutableMap } from 'immutable';
-import API from 'helpers/api';
-import identitiesHelper from 'helpers/identities';
+import {
+  API,
+  identitiesHelper,
+} from 'helpers';
 import * as selectors from './selectors';
 import {
   CREATE_IDENTITY,
@@ -26,7 +28,7 @@ function createIdentity() {
 /**
  * Action when create user has been made in the storage and Relay returned the id address
  * @param {Object} data
- * @param {string} data.idAddr - The identity address returned by the Relay
+ * @param {string} data.address - The identity address returned by the Relay
  * @param {Object} data.keys - The key of revocation, recovery and operational
  * @param {string} data.relay - The URL of the relay
  * @returns {{type: string, data: Immutable.Map}}
@@ -39,7 +41,7 @@ function createIdentitySuccess(data) {
 }
 
 function createIdentityError(error) {
-  console.log(error);
+  console.error(error);
   return {
     type: CREATE_IDENTITY_ERROR,
     data: error,
@@ -80,7 +82,7 @@ function updateIdentitySuccess(data) {
 }
 
 function updateIdentityError(error) {
-  console.log(error);
+  console.error(error);
   return {
     type: UPDATE_IDENTITY_ERROR,
     data: error,
@@ -100,7 +102,7 @@ function deleteAllIdentitiesSuccess() {
 }
 
 function deleteAllIdentitiesError(error) {
-  console.log(error);
+  console.error(error);
   return {
     type: DELETE_ALL_IDENTITIES_ERROR,
     data: error,
@@ -112,20 +114,20 @@ function deleteAllIdentitiesError(error) {
  *.
  * @param {string} passphrase - To use user keys
  * @param {Object} data - With the new identity data
+ * @throws Will throw an error if could not create the identity in the API layer
  * @returns {function(*, *): Promise<T | never>}
  */
 export function handleCreateIdentity(passphrase, data) {
   return function (dispatch, getState) {
+    const isDefault = selectors.getIdentitiesNumber(getState()) === 0;
+
     dispatch(createIdentity());
-    return API.createIdentity(passphrase)
+    return identitiesHelper.createIdentity(data, passphrase, isDefault)
       .then((identity) => {
-        const newIdentity = Object.assign(identity, data);
-        // check if there are no identities, set as default
-        if (selectors.getIdentitiesNumber(getState()) === 0) {
-          newIdentity.isDefault = identitiesHelper.setIdentityAsDefault(newIdentity);
-        }
+        const newIdentity = Object.assign({}, identity);
+        if (!newIdentity) throw new Error('Identity does not match with the model');
         // update the number of identities
-        API.updateIdentitiesNumber(true);
+        identitiesHelper.updateIdentitiesNumber(true);
         dispatch(createIdentitySuccess(newIdentity));
         // return data from new user because is needed to bind it to a name in next step of the UI
         return newIdentity;
@@ -143,7 +145,7 @@ export function handleCreateIdentity(passphrase, data) {
 export function handleUpdateIdentitiesNumber(isToAdd) {
   return function () {
     return new Promise((resolve, reject) => {
-      const updated = API.updateIdentitiesNumber(isToAdd);
+      const updated = identitiesHelper.updateIdentitiesNumber(isToAdd);
 
       updated
         ? resolve(updated)
@@ -188,7 +190,7 @@ export function handleSetIdentitiesFromStorage() {
 export function handleDeleteAllIdentities(passphrase) {
   return function (dispatch) {
     dispatch(deleteAllIdentities());
-    return Promise.resolve(API.deleteAllIdentities(passphrase))
+    return Promise.resolve(identitiesHelper.deleteAllIdentities(passphrase))
       .then((areDeleted) => {
         areDeleted
           ? dispatch(deleteAllIdentitiesSuccess())

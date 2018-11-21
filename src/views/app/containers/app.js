@@ -7,10 +7,8 @@ import {
   withRouter,
   Redirect,
 } from 'react-router-dom';
-import {
-  Layout,
-} from 'views';
-import LocalStorage from 'helpers/local-storage';
+import { Map as ImmutableMap } from 'immutable';
+import { Layout } from 'views';
 import {
   withClaims,
   withIdentities,
@@ -33,6 +31,10 @@ class App extends Component {
       Action to set in the app state the identities from the app state first time app is loaded
      */
     handleSetIdentitiesFromStorage: PropTypes.func.isRequired,
+    /*
+     Selector to get the current loaded identity information
+     */
+    defaultIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
     //
     // From withClaims HoC
     //
@@ -42,18 +44,13 @@ class App extends Component {
     handleSetClaimsFromStorage: PropTypes.func.isRequired,
   };
 
-  constructor(props) {
-    super(props);
-    this.localStorage = new LocalStorage('iden3');
-  }
-
   /**
    * First time app is loaded set in the app state the identities
-   * that are in the storage.
+   * and claims that belong to this identity, that are in the storage.
    */
   componentDidMount() {
     this.props.handleSetIdentitiesFromStorage()
-      .then(() => this.props.handleSetClaimsFromStorage());
+      .then(() => this.props.handleSetClaimsFromStorage(this.props.defaultIdentity));
   }
 
   render() {

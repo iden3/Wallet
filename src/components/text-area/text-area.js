@@ -22,7 +22,7 @@ class TextArea extends PureComponent {
     /*
       Autosize height to set minRows and maxRows
      */
-    autosize: PropTypes.object,
+    autosize: PropTypes.bool || PropTypes.object,
     /*
      Input content value
      */
@@ -34,12 +34,9 @@ class TextArea extends PureComponent {
   };
 
   static defaultProps = {
-    autosize: {
-      minRows: 2,
-      maxRows: 6,
-    },
     autoComplete: 'off',
     autoCapitalize: 'none',
+    autosize: true,
   };
 
   render() {

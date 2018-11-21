@@ -15,13 +15,24 @@ class LocalStorage {
     return instance;
   }
 
+  /**
+   * Getter of the domain of the application (i.e: i3)
+   *
+   * @returns {string} - With the domain of the application
+   */
   get domain() {
     return this._domain;
   }
 
-  set domain(value) {
-    if (value.constructor === String) {
-      this._domain = value;
+  /**
+   * Setter to the domain of the application used to store the key/values.
+   * (i.e: i3)
+   *
+   * @param {string} value - With the chosen domain
+   */
+  set domain(domain) {
+    if (domain && domain.constructor === String) {
+      this._domain = domain;
     }
   }
 
@@ -33,22 +44,9 @@ class LocalStorage {
   };
 
   /**
-   * Set a key value in the local storage. Should not exist before, otherwise throw an error
-   * @param {string} key
-   * @param {*} value
-   */
-  createKey = (key, value) => {
-    const finalKey = `${this.domain}-${key}`;
-
-    if (!this.getItem(finalKey)) {
-      return this.setItem(finalKey, value);
-    }
-    return false;
-  };
-
-  /**
    * Compose the key to search in the storage. Basically if hasn't the domain
-   * as prefix, add it
+   * as prefix, add it.
+   *
    * @param {string} key - to search
    * @returns {string} - With the key well formed
    */
@@ -59,11 +57,12 @@ class LocalStorage {
   }
 
   /**
-   * Check if a key exists in the domain stored in the local storage
+   * Check if a key exists in the domain stored in the local storage.
+   *
    * @param {string} key - The key to look for
    * @returns {boolean} True if exists, false otherwise
    */
-  existsKey = (key) => {
+  itemExists = (key) => {
     const item = this.getItem(key);
     return item !== null && item !== undefined;
   };
@@ -110,11 +109,11 @@ class LocalStorage {
    * @param {string} key - to remove
    * @returns {boolean} - True if exists key and was removed, false otherwise
    */
-  removeItem = (key) => {
+  deleteItem = (key) => {
     const finalKey = this.composeKey(key);
 
     if (!this.getItem(finalKey)) {
-      localStorage.removeItem(finalKey);
+      localStorage.deleteItem(finalKey);
       return true;
     }
 
@@ -144,7 +143,7 @@ class LocalStorage {
    * @param {string} key to update
    * @param {*} newValue to update
    */
-  updateKey = (key, newValue) => {
+  updateItem = (key, newValue) => {
     if (this.getItem(key) !== null || this.getItem(key) !== undefined) {
       return this.setItem(key, newValue);
     }

@@ -1,4 +1,7 @@
-import { Map as ImmutableMap } from 'immutable';
+import {
+  Map as ImmutableMap,
+  Record as ImmutableRecord,
+} from 'immutable';
 import * as CLAIMS from 'constants/claim';
 import {
   AUTHORIZE_CLAIM,
@@ -11,21 +14,21 @@ import {
   SET_ALL_CLAIMS,
   SET_ALL_CLAIMS_SUCCESS,
   SET_ALL_CLAIMS_ERROR,
-  CREATE_DEFAULT_CLAIM,
-  CREATE_DEFAULT_CLAIM_SUCCESS,
-  CREATE_DEFAULT_CLAIM_ERROR,
+  CREATE_GENERIC_CLAIM,
+  CREATE_GENERIC_CLAIM_SUCCESS,
+  CREATE_GENERIC_CLAIM_ERROR,
   UPDATE_PINNED_CLAIMS,
   UPDATE_PINNED_CLAIMS_SUCCESS,
   UPDATE_PINNED_CLAIMS_ERROR,
 } from './constants';
 
 const initialState = new ImmutableMap({
-  error: '',
+  error: ImmutableRecord({ message: '' }),
   isFetchingClaims: true,
-  pinned: ImmutableMap({}),
-  emitted: ImmutableMap({}),
-  received: ImmutableMap({}),
-  grouped: ImmutableMap({}),
+  pinned: new ImmutableMap({}),
+  emitted: new ImmutableMap({}),
+  received: new ImmutableMap({}),
+  grouped: new ImmutableMap({}),
 });
 
 function claims(state = initialState, action) {
@@ -38,24 +41,23 @@ function claims(state = initialState, action) {
       return state.merge({
         isFetchingClaims: false,
         claims: action.data,
-        error: '',
+        error: new ImmutableRecord({ message: '' }),
       });
     case FETCHING_CLAIMS_ERROR:
       return state.merge({
         isFetchingClaims: false,
-        claims: ImmutableMap(),
-        error: action.error,
+        error: state.get('error').set('message', action.error),
       });
     case CREATE_CLAIM_SUCCESS:
       return state;
-    case CREATE_DEFAULT_CLAIM:
+    case CREATE_GENERIC_CLAIM:
       return state.merge({
         isFetchingClaims: true,
       });
-    case CREATE_DEFAULT_CLAIM_SUCCESS:
+    case CREATE_GENERIC_CLAIM_SUCCESS:
       return state.merge({
         isFetchingClaims: false,
-        error: '',
+        error: new ImmutableRecord({ message: '' }),
         emitted: state.get(CLAIMS.TYPE.EMITTED.NAME).set(
           action.data.get('id'),
           {
@@ -68,14 +70,14 @@ function claims(state = initialState, action) {
             proof: action.data.get('proof'),
             url: action.data.get('url'),
             id: action.data.get('id'),
-            //isPinned: action.data.get('isPinned'),
+            // isPinned: action.data.get('isPinned'),
           },
         ),
       });
-    case CREATE_DEFAULT_CLAIM_ERROR:
+    case CREATE_GENERIC_CLAIM_ERROR:
       return state.merge({
         isFetchingClaims: false,
-        error: action.data,
+        error: state.get('error').set('message', action.error),
       });
     case AUTHORIZE_CLAIM:
       return state.merge({
@@ -84,7 +86,7 @@ function claims(state = initialState, action) {
     case AUTHORIZE_CLAIM_SUCCESS:
       return state.merge({
         isFetchingClaims: false,
-        error: '',
+        error: new ImmutableRecord({ message: '' }),
         emitted: state.get(CLAIMS.TYPE.EMITTED.NAME).set(
           action.data.get('id'),
           {
@@ -96,14 +98,14 @@ function claims(state = initialState, action) {
             proof: action.data.get('proof'),
             url: action.data.get('url'),
             id: action.data.get('id'),
-            //isPinned: action.data.get('isPinned'),
+            // isPinned: action.data.get('isPinned'),
           },
         ),
       });
     case AUTHORIZE_CLAIM_ERROR:
       return state.merge({
         isFetchingClaims: false,
-        error: action.data,
+        error: state.get('error')().set('message', action.error.message),
       });
     case SET_ALL_CLAIMS:
       return state.merge({
@@ -119,9 +121,9 @@ function claims(state = initialState, action) {
     case SET_ALL_CLAIMS_ERROR:
       return state.merge({
         isFetchingClaims: false,
-        error: action.data,
+        error: state.get('error').set('message', action.error),
       });
-    /*case UPDATE_PINNED_CLAIMS:
+    /* case UPDATE_PINNED_CLAIMS:
       return state.merge({
         isFetchingClaims: true,
       });
@@ -159,7 +161,7 @@ function claims(state = initialState, action) {
       return state.merge({
         isFetchingClaims: false,
         error: action.data,
-      });*/
+      }); */
     default:
       return state;
   }

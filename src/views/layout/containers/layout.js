@@ -18,7 +18,7 @@ import {
 import {
   Claims,
   Dashboard,
-  History,
+  Historical,
   Identities,
   NavBar,
   CreateIdentity,
@@ -39,6 +39,10 @@ import './layout.scss';
 class Layout extends React.Component {
   static propTypes = {
     //
+    // from react-router-dom
+    //
+    location: PropTypes.object.isRequired,
+    //
     // from withIdentities HoC
     //
     /*
@@ -56,7 +60,7 @@ class Layout extends React.Component {
           'i3-ww-header': true,
           'i3-ww-header__no-nav-bar': !usersExist,
         })}>
-          <HeaderWithLogo enableLink={usersExist} />
+          <HeaderWithLogo location={this.props.location} enableLink={usersExist} />
           { usersExist && <NavBar /> }
         </Header>
         <Content className="i3-ww-content">
@@ -73,8 +77,8 @@ class Layout extends React.Component {
                   path={ROUTES.CLAIMS.MAIN}
                   component={Claims} />
                 <Route
-                  path={ROUTES.HISTORY.MAIN}
-                  component={History} />
+                  path={ROUTES.HISTORICAL.MAIN}
+                  component={Historical} />
                 <Route
                   path={ROUTES.IDENTITIES.MAIN}
                   component={Identities} />

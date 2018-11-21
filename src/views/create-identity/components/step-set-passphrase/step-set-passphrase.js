@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import * as FORMS from 'constants/forms';
-import notificationsHelper from 'helpers/notifications';
+import { TYPE as NOTIFICATIONS } from 'constants/notifications';
+import { notificationsHelper } from 'helpers';
 import classNames from 'classnames';
 import {
   Button,
@@ -69,25 +70,17 @@ class StepSetPassphrase extends PureComponent {
       // show error nofitication
       this.setState({ areSamePassphrases: false });
       // show notification with error
-      notificationsHelper.showNotification('error', {
-        message: 'Error',
-        description: 'Passphrases don\'t have the same value',
-        style: {
-          background: '#f95555',
-          color: 'white',
-        },
+      notificationsHelper.showNotification({
+        type: NOTIFICATIONS.ERROR,
+        description: 'Is not the same passphrase in both fields',
       });
     } else if (this.state.passphrase.length === 0 || this.state.repeatedPasshphrase.length === 0) {
       // show error nofitication
       this.setState({ areSamePassphrases: false });
       // show notification with error
-      notificationsHelper.showNotification('error', {
-        message: 'Error',
-        description: 'Passphrases can\'t be empty',
-        style: {
-          background: '#f95555',
-          color: 'white',
-        },
+      notificationsHelper.showNotification({
+        type: NOTIFICATIONS.ERROR,
+        description: 'Passphrase can\'t be empty',
       });
     } else {
       // move forward
@@ -148,7 +141,7 @@ class StepSetPassphrase extends PureComponent {
                   onChange={e => this.handleInputChange(e.target.value, 'passphrase')}
                   isPasswordType />
               </div>
-                <div className="i3-ww-ci__input-wrapper">
+              <div className="i3-ww-ci__input-wrapper">
                 <Input
                   placeholder="Repeat the passphrase"
                   value={this.state.repeatedPasshphrase}

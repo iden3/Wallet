@@ -1,15 +1,21 @@
-import { generateRandomDate } from 'helpers/utils';
+import { utils } from 'helpers';
 import * as CLAIMS from 'constants/claim';
 
 const randomVersion = function () {
   return Math.floor(Math.random() * (10000 - 1)) + 1;
 };
 
+/**
+ * Fixtures to import to if we don't have relay or just we wanna mock
+ * the list of claims to work.
+ *
+ * @type {*[]}
+ */
 export const claims = [
   {
     id: 1,
     issuer: '1 -- FIRST',
-    date: generateRandomDate(),
+    date: utils.generateRandomDate(),
     type: CLAIMS.TYPE.ASSIGN_NAME.NAME,
     version: randomVersion(),
     isPinned: true,
@@ -18,7 +24,7 @@ export const claims = [
   {
     id: 2,
     issuer: '2 b',
-    date: generateRandomDate(),
+    date: utils.generateRandomDate(),
     type: CLAIMS.TYPE.ASSIGN_NAME.NAME,
     version: randomVersion(),
     isPinned: false,
@@ -27,7 +33,7 @@ export const claims = [
   {
     id: 3,
     issuer: '3 c',
-    date: generateRandomDate(),
+    date: utils.generateRandomDate(),
     type: CLAIMS.TYPE.ASSIGN_NAME.NAME,
     version: randomVersion(),
     isPinned: false,
@@ -36,7 +42,7 @@ export const claims = [
   {
     id: 4,
     issuer: '4 d',
-    date: generateRandomDate(),
+    date: utils.generateRandomDate(),
     type: CLAIMS.TYPE.ASSIGN_NAME.NAME,
     version: randomVersion(),
     isPinned: false,
@@ -45,7 +51,7 @@ export const claims = [
   {
     id: 5,
     issuer: '5 e',
-    date: generateRandomDate(),
+    date: utils.generateRandomDate(),
     type: CLAIMS.TYPE.ASSIGN_NAME.NAME,
     version: randomVersion(),
     isPinned: false,
@@ -54,7 +60,7 @@ export const claims = [
   {
     id: 6,
     issuer: '6 f',
-    date: generateRandomDate(),
+    date: utils.generateRandomDate(),
     type: CLAIMS.TYPE.ASSIGN_NAME.NAME,
     version: randomVersion(),
     isPinned: true,
@@ -63,7 +69,7 @@ export const claims = [
   {
     id: 7,
     issuer: '7 g',
-    date: generateRandomDate(),
+    date: utils.generateRandomDate(),
     type: CLAIMS.TYPE.ASSIGN_NAME.NAME,
     version: randomVersion(),
     isPinned: false,
@@ -72,7 +78,7 @@ export const claims = [
   {
     id: 8,
     issuer: '8 a',
-    date: generateRandomDate(),
+    date: utils.generateRandomDate(),
     type: CLAIMS.TYPE.SIGN.NAME,
     version: randomVersion(),
     isPinned: false,
@@ -81,7 +87,7 @@ export const claims = [
   {
     id: 9,
     issuer: '9 b',
-    date: generateRandomDate(),
+    date: utils.generateRandomDate(),
     type: CLAIMS.TYPE.SIGN.NAME,
     version: randomVersion(),
     isPinned: false,
@@ -90,7 +96,7 @@ export const claims = [
   {
     id: 10,
     issuer: '10 c',
-    date: generateRandomDate(),
+    date: utils.generateRandomDate(),
     type: CLAIMS.TYPE.SIGN.NAME,
     version: randomVersion(),
     isPinned: false,
@@ -99,7 +105,7 @@ export const claims = [
   {
     id: 11,
     issuer: '11 d',
-    date: generateRandomDate(),
+    date: utils.generateRandomDate(),
     type: CLAIMS.TYPE.SIGN.NAME,
     version: randomVersion(),
     isPinned: false,
@@ -108,7 +114,7 @@ export const claims = [
   {
     id: 12,
     issuer: '12 e',
-    date: generateRandomDate(),
+    date: utils.generateRandomDate(),
     type: CLAIMS.TYPE.SIGN.NAME,
     version: randomVersion(),
     isPinned: true,
@@ -117,7 +123,7 @@ export const claims = [
   {
     id: 13,
     issuer: '13 f',
-    date: generateRandomDate(),
+    date: utils.generateRandomDate(),
     type: CLAIMS.TYPE.SIGN.NAME,
     version: randomVersion(),
     isPinned: true,
@@ -126,7 +132,7 @@ export const claims = [
   {
     id: 14,
     issuer: '14 g',
-    date: generateRandomDate(),
+    date: utils.generateRandomDate(),
     type: CLAIMS.TYPE.SIGN.NAME,
     version: randomVersion(),
     isPinned: false,
@@ -135,7 +141,7 @@ export const claims = [
   {
     id: 15,
     issuer: '15 a',
-    date: generateRandomDate(),
+    date: utils.generateRandomDate(),
     type: CLAIMS.TYPE.DEFAULT.NAME,
     version: randomVersion(),
     isPinned: false,
@@ -144,7 +150,7 @@ export const claims = [
   {
     id: 16,
     issuer: '16 b',
-    date: generateRandomDate(),
+    date: utils.generateRandomDate(),
     type: CLAIMS.TYPE.DEFAULT.NAME,
     version: randomVersion(),
     isPinned: false,
@@ -153,7 +159,7 @@ export const claims = [
   {
     id: 17,
     issuer: '17 b',
-    date: generateRandomDate(),
+    date: utils.generateRandomDate(),
     type: CLAIMS.TYPE.DEFAULT.NAME,
     version: randomVersion(),
     isPinned: false,
@@ -162,7 +168,7 @@ export const claims = [
   {
     id: 18,
     issuer: '18 c',
-    date: generateRandomDate(),
+    date: utils.generateRandomDate(),
     type: CLAIMS.TYPE.DEFAULT.NAME,
     version: randomVersion(),
     isPinned: false,
@@ -171,7 +177,7 @@ export const claims = [
   {
     id: 19,
     issuer: '19 d',
-    date: generateRandomDate(),
+    date: utils.generateRandomDate(),
     type: CLAIMS.TYPE.DEFAULT.NAME,
     version: randomVersion(),
     isPinned: false,
@@ -180,7 +186,7 @@ export const claims = [
   {
     id: 20,
     issuer: '20 e',
-    date: generateRandomDate(),
+    date: utils.generateRandomDate(),
     type: CLAIMS.TYPE.DEFAULT.NAME,
     version: randomVersion(),
     isPinned: false,
@@ -189,7 +195,7 @@ export const claims = [
   {
     id: 21,
     issuer: '21 f',
-    date: generateRandomDate(),
+    date: utils.generateRandomDate(),
     type: CLAIMS.TYPE.DEFAULT.NAME,
     version: randomVersion(),
     isPinned: true,
@@ -198,7 +204,7 @@ export const claims = [
   {
     id: 22,
     issuer: '22 -- LAST',
-    date: generateRandomDate(),
+    date: utils.generateRandomDate(),
     type: CLAIMS.TYPE.DEFAULT.NAME,
     version: randomVersion(),
     isPinned: false,

@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { compose } from 'redux';
 import PropTypes from 'prop-types';
 import * as FORMS from 'constants/forms';
-import LocalStorage from 'helpers/local-storage';
+import { TYPE as NOTIFICATIONS } from 'constants/notifications';
 import {
   withFormsValues,
   withIdentities,
 } from 'hocs';
-import notificationsHelper from 'helpers/notifications';
+import { notificationsHelper } from 'helpers';
 import {
   StepSetPassphrase,
   StepSetName,
@@ -63,11 +63,6 @@ class CreateIdentity extends Component {
     goToDashboard: false,
   };
 
-  constructor(props) {
-    super(props);
-    this.localStorage = new LocalStorage('iden3');
-  }
-
   /**
    * Get the fields of the two inputs of when passphrase is asked
    * just to fill them if we are moving forward or backwards to the
@@ -114,16 +109,18 @@ class CreateIdentity extends Component {
   createIdentity = (data) => {
     this.props.handleCreateIdentity(this.state.passphrase, data)
       .then(() => this.props.handleClearCreateIdentityForms())
-      .catch(error => notificationsHelper.showNotification('error', {
-        message: 'Error',
+      .catch(error => notificationsHelper.showNotification({
+        type: NOTIFICATIONS.ERROR,
         description: `We are sorry... There was an error creating the identity:\n${error}`,
-        style: {
-          background: '#f95555',
-          color: 'white',
-        },
       }));
   };
 
+  /**
+   * Set the passphrase in the component state needed to sign the identity keys
+   * when created.
+   *
+   * @param passphrase
+   */
   setPassphrase = (passphrase) => {
     this.setState({ passphrase });
   };
@@ -140,13 +137,9 @@ class CreateIdentity extends Component {
   render() {
     const Step = sortedSteps[this.state.currentStep];
     if (this.props.identitiesError) {
-      notificationsHelper.showNotification('error', {
-        message: 'Error',
+      notificationsHelper.showNotification({
+        type: NOTIFICATIONS.ERROR,
         description: `We are sorry... There was an error creating the identity:\n${this.props.identitiesError}`,
-        style: {
-          background: '#f95555',
-          color: 'white',
-        },
       });
     }
 

@@ -1,12 +1,14 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import * as FORMS from 'constants/forms';
+import * as APP_SETTINGS from 'constants/app';
+import { TYPE as NOTIFICATIONS } from 'constants/notifications';
 import {
   Button,
   Icon,
   Input,
 } from 'base_components';
-import notificationsHelper from 'helpers/notifications';
+import { notificationsHelper } from 'helpers';
 
 import './step-set-name.scss';
 
@@ -37,7 +39,7 @@ class StepSetName extends PureComponent {
 
   state = {
     label: this.props.getFormValue(FORMS.IDENTITY_NAME),
-    domain: 'iden3.io',
+    domain: APP_SETTINGS.DEFAULT_RELAY_DOMAIN,
   };
 
   /**
@@ -65,18 +67,15 @@ class StepSetName extends PureComponent {
    */
   moveForward = () => {
     const isValidLabel = this._checkLabel();
+
     if (isValidLabel) {
       this.props.createIdentity({ label: this.state.label, domain: this.state.domain });
       this._updateForm();
     } else {
       // show notification with error
-      notificationsHelper.showNotification('error', {
-        message: 'Error',
+      notificationsHelper.showNotification({
+        type: NOTIFICATIONS.ERROR,
         description: 'Not valid name, please try again.',
-        style: {
-          background: '#f95555',
-          color: 'white',
-        },
       });
     }
   };

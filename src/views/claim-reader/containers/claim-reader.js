@@ -13,7 +13,8 @@ import {
   QRScanner as QRScannerCmpt,
   TextArea,
 } from 'base_components';
-import notificationsHelper from 'helpers/notifications';
+import { notificationsHelper } from 'helpers';
+import { TYPE as NOTIFICATIONS } from 'constants/notifications';
 import * as BOX_CONSTANTS from 'constants/box';
 
 import './claim-reader.scss';
@@ -67,28 +68,20 @@ class ClaimReader extends PureComponent {
         .then(() => {
           this.props.toggleCameraVisibility();
           this.setState({ inputClaimData: '' });
-          notificationsHelper.showNotification('success', {
+          notificationsHelper.showNotification({
+            type: NOTIFICATIONS.SUCCESS,
             message: 'Claim created!',
             description: 'You have authorized a new claim',
-            style: {
-              background: 'green',
-              color: 'white',
-            },
           });
         })
         .catch((error) => {
           this.props.toggleCameraVisibility();
-          notificationsHelper.showNotification('error', {
-            message: 'Error',
-            description: `We are sorry... There was an error creating the claim:\n ${error}`,
-            style: {
-              background: '#f95555',
-              color: 'white',
-            },
+          notificationsHelper.showNotification({
+            type: NOTIFICATIONS.ERROR,
+            description: `We are sorry... There was an error creating the claim:\n ${error.message}`,
           });
         });
     }
-
   };
 
   /**
@@ -124,6 +117,12 @@ class ClaimReader extends PureComponent {
     );
   }
 
+  /**
+   * QR reader component and the title.
+   *
+   * @returns {Object} - With the React element node containing a title and the Camera to read a QR
+   * @private
+   */
   _getQRScanner() {
     return (
       <div className="i3-ww-claim-reader__camera">

@@ -1,3 +1,6 @@
+/**
+ * Strictly related to the Icons used in the application
+ */
 import * as ICONS from './icons';
 
 export const DASHBOARD = {
@@ -14,10 +17,10 @@ export const CLAIMS = {
   CHILDREN: [],
   ORDER: 0,
 };
-export const HISTORY = {
-  MAIN: '/history',
-  KEY: 'History',
-  ICON: ICONS.HISTORY,
+export const HISTORICAL = {
+  MAIN: '/historical',
+  KEY: 'Historical',
+  ICON: ICONS.HISTORICAL,
   CHILDREN: [],
   ORDER: 3,
 };

@@ -18,6 +18,10 @@ module.exports = {
         "node": true,
         "jest": true
     },
+    "parserOptions": {
+      "ecmaVersion": 2018,
+      "sourceType": "module",
+    },
     "parser": "babel-eslint", // to use global variables as document along the app
     "rules": {
         "arrow-body-style": [0],
@@ -26,7 +30,7 @@ module.exports = {
         "no-unused-expressions": [0],
         "func-names": [0],
         "global-require": [0],
-        "max-len": ["error", { "code": 120, "comments": 200 }],
+        "max-len": ["error", { "code": 120, "comments": 800 }],
         "no-underscore-dangle": [0],
         "import/no-extraneous-dependencies": [
             "error",
@@ -36,6 +40,8 @@ module.exports = {
         "no-plusplus": [0],
         "no-restricted-syntax": [0],
         "no-return-assign": [0],
+        "no-console": [2, { "allow": ["warn", "error"] }],
+        "no-use-before-define": ["error", { "functions": false, "classes": false }],
         "react/prefer-stateless-function": [0],
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
         "react/require-default-props": [0],

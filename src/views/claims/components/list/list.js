@@ -6,6 +6,7 @@ import {
   Scrollable,
 } from 'base_components';
 import * as CLAIM from 'constants/claim';
+import * as APP_SETTINGS from 'constants/app';
 import Claim from '../claim-row';
 
 import './list.scss';
@@ -86,7 +87,7 @@ class List extends PureComponent {
         }
         break;
       case 'all': // for the pinned list
-        content = `Issued to ${claim.to || 'iden3.io'}`;
+        content = `Issued to ${claim.to || APP_SETTINGS.DEFAULT_RELAY_DOMAIN}`;
         break;
       default:
         throw new Error('No claim type allowed');

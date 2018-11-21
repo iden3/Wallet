@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Map as ImmutableMap } from 'immutable';
 import PropTypes from 'prop-types';
 import claims from 'state/claims';
 
@@ -10,7 +9,7 @@ const {
     handleCreateClaim,
     handleAuthorizeClaim,
     handleSetClaimsFromStorage,
-    handleCreateDefaultClaim,
+    handleCreateGenericClaim,
     // handleUpdatePinnedClaims,
   },
   selectors: {
@@ -39,7 +38,7 @@ function withClaims(ClaimsComponent) {
       /*
        Handle to create a claim
        */
-      handleCreateDefaultClaim: PropTypes.func.isRequired,
+      handleCreateGenericClaim: PropTypes.func.isRequired,
       /*
        Action to update when a claim is pinned to dashboard or removed from the pinned
        */
@@ -60,7 +59,7 @@ function withClaims(ClaimsComponent) {
       /*
        Flag indicating any error when retrieve claims
        */
-      claimsError: PropTypes.object || PropTypes.string,
+      claimsError: PropTypes.string.isRequired,
     };
 
     render() {
@@ -84,7 +83,7 @@ function withClaims(ClaimsComponent) {
       handleCreateClaim,
       handleAuthorizeClaim,
       handleSetClaimsFromStorage,
-      handleCreateDefaultClaim,
+      handleCreateGenericClaim,
       // handleUpdatePinnedClaims,
     }, dispatch);
   }

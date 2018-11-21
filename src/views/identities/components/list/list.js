@@ -32,8 +32,8 @@ class List extends PureComponent {
     Object.keys(identitiesList).forEach((identity) => {
       identities.push(
         <Identity
-          key={`identity-${identitiesList[identity].idAddr}`}
-          id={identitiesList[identity].idAddr}
+          key={`identity-${identitiesList[identity].address}`}
+          id={identitiesList[identity].address}
           content={identitiesList[identity].label}
           data={this._setExtraData(identitiesList[identity])} />,
       );
@@ -55,13 +55,13 @@ class List extends PureComponent {
       let finalKey;
 
       switch (key) {
-        case 'idAddr':
+        case 'address':
           finalKey = 'Address:';
           finalValue = identity[key];
           break;
-        case 'relay':
+        case 'relayURL':
           finalKey = 'Relay:';
-          finalValue = identity.relay.url;
+          finalValue = identity.relayURL;
           break;
         case 'date':
           finalKey = 'Created on:';
@@ -76,7 +76,7 @@ class List extends PureComponent {
       }
 
       return finalValue && (
-        <Fragment key={`content-${identity.idAddr}-${finalKey}`}>
+        <Fragment key={`content-${identity.address}-${finalKey}`}>
           <div>
             <span style={{ fontWeight: 'bold', display: 'block' }}>
               {finalKey}

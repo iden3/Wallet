@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import claims from './claims';
 import forms from './forms';
-import history from './history';
+import historical from './historical';
 import qrCodes from './qr-codes';
 import identities from './identities';
 
@@ -13,7 +13,7 @@ const appReducer = combineReducers({
   // i.e: myStuff: myStuff.reducer, etc...
   claims: claims.reducer,
   forms: forms.reducer,
-  history: history.reducer,
+  historical: historical.reducer,
   qrCodes: qrCodes.reducer,
   identities: identities.reducer,
 });
@@ -21,7 +21,8 @@ const appReducer = combineReducers({
 /**
  * This only happens when delete all identities, so , we need
  * to delete the app state, before redirect againg¡ to the wizard
- * for creating an identity
+ * for creating an identity.
+ *
  * @param state
  * @param action
  * @returns {any}

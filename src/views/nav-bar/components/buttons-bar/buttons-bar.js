@@ -57,7 +57,7 @@ class ButtonsBar extends PureComponent {
             <Menu
               mode="horizontal"
               onClick={this.toggleCameraVisibility}
-              selectedKeys={[this.state.isCameraVisible && 'cameraButton']}>
+              selectedKeys={[this.state.isCameraVisible ? 'cameraButton' : '']}>
               <MenuItem key="cameraButton">
                 <Icon type={CAMERA} theme="filled" />
               </MenuItem>
@@ -65,7 +65,7 @@ class ButtonsBar extends PureComponent {
           )}
           { this.props.addNotificationsButton && (
             <Menu
-              selectedKeys={[this.props.isDesktopVisible && 'notificationsButton']}
+              selectedKeys={[this.props.isDesktopVisible ? 'notificationsButton' : '']}
               mode="horizontal">
               <MenuItem key="notificationsButton">
                 <Badge count={0}>

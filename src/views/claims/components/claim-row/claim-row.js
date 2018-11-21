@@ -17,7 +17,7 @@ class ClaimRow extends PureComponent {
     /*
      Array with the groups that this claim belongs to
      */
-    groups: PropTypes.arrayOf(PropTypes.string),
+    // groups: PropTypes.arrayOf(PropTypes.string),
     /*
      Last date of modification (creation or last version)
      */
