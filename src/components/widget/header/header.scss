@@ -21,6 +21,13 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    .i3-ww-widget__action-buttons {
+      display: flex;
+      flex-direction: row;
+      div:first-of-type {
+        margin-right: 10px;
+      }
+    }
     button, a {
       background: transparent;
       border: transparent;

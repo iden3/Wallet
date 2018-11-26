@@ -5,9 +5,11 @@ import { Map as ImmutableMap } from 'immutable';
 import {
   Box,
   Button,
+  Icon,
   Widget,
 } from 'base_components';
 import * as BOX_CONSTANTS from 'constants/box';
+import * as ICONS from 'constants/icons';
 import { withIdentities } from 'hocs';
 import List from '../components/list';
 
@@ -37,12 +39,9 @@ class Identities extends Component {
     askForDelete: false,
   };
 
-  /**
-   * Show or not the box with the confirmation for deleting the identities.
-   */
-  toggleAskConfirmation = () => {
-    this.setState(prevState => ({ askForDelete: !prevState.askForDelete }));
-  };
+  addIdentity = () => {
+    console.log('Add identity');
+  }
 
   /**
    * Call the action to delete all the identities in the app state
@@ -51,6 +50,17 @@ class Identities extends Component {
   deleteAllIdentities = () => {
     this.toggleAskConfirmation();
     this.state.askForDelete && this.props.handleDeleteAllIdentities();
+  };
+
+  deleteIdentity = () => {
+    this.toggleAskConfirmation();
+  }
+
+  /**
+   * Show or not the box with the confirmation for deleting the identities.
+   */
+  toggleAskConfirmation = () => {
+    this.setState(prevState => ({ askForDelete: !prevState.askForDelete }));
   };
 
   /**
@@ -82,12 +92,20 @@ class Identities extends Component {
 
   render() {
     const headerButtons = (
-      <Button
-        type="primary"
-        htmlType="button"
-        onClick={this.toggleAskConfirmation}>
-        Delete all
-      </Button>
+      <div className="i3-ww-widget__action-buttons">
+        <Button
+          type="primary"
+          htmlType="button"
+          onClick={this.addIdentity}>
+          <Icon type={ICONS.ADD_IDENTITY} />
+        </Button>
+        <Button
+          type="primary"
+          htmlType="button"
+          onClick={this.toggleAskConfirmation}>
+          <Icon type={ICONS.DELETE_ALL_IDENTITIES} />
+        </Button>
+      </div>
     );
     const confirmationContent = this._getConfirmationContent();
 
