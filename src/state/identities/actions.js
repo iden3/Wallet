@@ -17,6 +17,9 @@ import {
   DELETE_ALL_IDENTITIES,
   DELETE_ALL_IDENTITIES_SUCCESS,
   DELETE_ALL_IDENTITIES_ERROR,
+  DELETE_IDENTITY,
+  DELETE_IDENTITY_SUCCESS,
+  DELETE_IDENTITY_ERROR,
 } from './constants';
 
 function createIdentity() {
@@ -109,6 +112,27 @@ function deleteAllIdentitiesError(error) {
   };
 }
 
+function deleteIdentity() {
+  return {
+    type: DELETE_IDENTITY,
+  };
+}
+
+function deleteIdentitySuccess(idAddress) {
+  return {
+    type: DELETE_IDENTITY_SUCCESS,
+    data: idAddress,
+  };
+}
+
+function deleteIdentityError(error) {
+  console.error(error);
+  return {
+    type: DELETE_IDENTITY_ERROR,
+    data: error,
+  };
+}
+
 /**
  * Create an identity storing it in the storate and in the app state
  *.
@@ -175,6 +199,10 @@ export function handleUpdateIdentity(identity, data, passphrase) {
   };
 }
 
+/**
+ * Action creator to load in the app state all the identities from the storage.
+ * Called when reload page or enter.
+ */
 export function handleSetIdentitiesFromStorage() {
   return function (dispatch) {
     dispatch(setAllIdentities());
@@ -187,6 +215,11 @@ export function handleSetIdentitiesFromStorage() {
   };
 }
 
+/**
+ * Action creator to delete all the identities of the application.
+ *
+ * @param {string} passphrase - Introduced by user to delete all identities
+ */
 export function handleDeleteAllIdentities(passphrase) {
   return function (dispatch) {
     dispatch(deleteAllIdentities());
@@ -197,5 +230,28 @@ export function handleDeleteAllIdentities(passphrase) {
           : dispatch(deleteAllIdentitiesError('Could not be deleted the identities'));
       })
       .catch(error => dispatch(deleteAllIdentitiesError(error)));
+  };
+}
+
+/**
+ * Action creator to delete one identity.
+ *
+ * @param {string} idAddress - Ethereum address of the identity
+ * @param {string} passphrase - Introduced by the user to delete the identity
+ */
+export function handleDeleteIdentity(idAddress, passphrase) {
+  return function (dispatch) {
+    if (!idAddress) {
+      return dispatch(deleteAllIdentitiesError('No address provided to delete the identity'));
+    }
+
+    dispatch(deleteIdentity);
+    return Promise.resolve(identitiesHelper.deleteIdentity(idAddress, passphrase))
+      .then((isDeleted) => {
+        isDeleted
+          ? dispatch(deleteIdentitySuccess(idAddress))
+          : dispatch(deleteIdentityError('Could not delete identity'));
+      })
+      .catch(error => dispatch(deleteIdentityError(error)));
   };
 }

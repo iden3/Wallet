@@ -29,6 +29,11 @@ const sortedSteps = [
  */
 class CreateIdentity extends Component {
   static propTypes = {
+    /*
+      Flag to indicate if we are creating the first identity of the app or not. Just to know
+      if we are showing the wizard as a main view or inside a box (To create other identity beyond the existent ones)
+     */
+    afterCreateIdentity: PropTypes.func,
     //
     // from withFormsValues HOC
     //
@@ -57,6 +62,10 @@ class CreateIdentity extends Component {
     identitiesError: PropTypes.string.isRequired,
   };
 
+  static defaultProps = {
+    afterCreateIdentity: () => {},
+  }
+
   state = {
     currentStep: 0,
     passphrase: '',
@@ -78,7 +87,8 @@ class CreateIdentity extends Component {
   }
 
   /**
-   * Set component state to show the right view of the welcome wizard
+   * Set component state to show the right view of the welcome wizard.
+   *
    * @param {string} direction should be 'forward' or 'backwards'
    */
   changeStep = (direction = 'forward') => {
@@ -92,6 +102,7 @@ class CreateIdentity extends Component {
       }
 
       if (currentStep === sortedSteps.length) {
+        this.props.afterCreateIdentity();
         this.setState({ goToDashboard: true });
       } else {
         this.setState({ currentStep });
@@ -104,7 +115,7 @@ class CreateIdentity extends Component {
    * call the action creator to create the identity and set it
    * in the app state and in the storage selected.
    *
-   * @private {Object}  data - with identity 'label'/'name' and 'domain'
+   * @param {Object} data - with identity 'label'/'name' and 'domain'
    */
   createIdentity = (data) => {
     this.props.handleCreateIdentity(this.state.passphrase, data)
@@ -136,6 +147,7 @@ class CreateIdentity extends Component {
 
   render() {
     const Step = sortedSteps[this.state.currentStep];
+
     if (this.props.identitiesError) {
       notificationsHelper.showNotification({
         type: NOTIFICATIONS.ERROR,

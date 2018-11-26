@@ -12,6 +12,7 @@ const {
     handleUpdateIdentitiesNumber,
     handleUpdateIdentity,
     handleDeleteAllIdentities,
+    handleDeleteIdentity,
   },
   selectors: {
     getIdentitiesError,
@@ -41,6 +42,10 @@ function withIdentities(IdentitiesComponent) {
        Action to delete all identities from the app
        */
       handleDeleteAllIdentities: PropTypes.func.isRequired,
+      /*
+        Action to delete one identity
+      */
+      handleDeleteIdentity: PropTypes.func.isRequired,
       /*
        Selector to get the information related to an identity.
        Expect the identity address as parameter
@@ -88,6 +93,7 @@ function withIdentities(IdentitiesComponent) {
       handleUpdateIdentitiesNumber,
       handleSetIdentitiesFromStorage,
       handleDeleteAllIdentities,
+      handleDeleteIdentity,
     }, dispatch);
   }
 

@@ -53,7 +53,7 @@ const identitiesHelper = (function () {
       const isIdConsistent = _isIdentityConsistent(currentItem);
       rightIds = isIdConsistent
         ? rightIds + 1
-        : removeIdentity(storageIdKeys[i]) && (rightIds > 0 && rightIds - 1);
+        : deleteIdentity(storageIdKeys[i]) && (rightIds > 0 && rightIds - 1);
     }
 
     return rightIds > 0;
@@ -312,8 +312,8 @@ const identitiesHelper = (function () {
    * @param {string} storage - where to store this information
    * @returns {boolean} True if removed, false otherwise
    */
-  function removeIdentity(identityKey) {
-    return DAL.deleteItem(identityKey);
+  function deleteIdentity(identityKey) {
+    return identityKey ? DAL.deleteItem(identityKey) : false;
   }
 
   /**
@@ -329,16 +329,21 @@ const identitiesHelper = (function () {
     const currentDefaultIdKey = DAL.getItem(`${APP_SETTINGS.ST_DEFAULT_ID}`);
     const currentDefaultId = _getIdentity(currentDefaultIdKey);
 
-    // set the former default identity to false
-    if (currentDefaultId) {
+    // it's not the first time we create an identity and set the former default identity to false
+    if (identity && currentDefaultId) {
       currentDefaultId.isDefault = false;
       DAL.updateItem(`${APP_SETTINGS.ST_IDENTITY_PREFIX}-${currentDefaultId.address}`, currentDefaultId);
     }
 
     // set the new default identity
-    if (identity) {
+    if (identity) { // if it's not first identity created
       DAL.updateItem(`${APP_SETTINGS.ST_IDENTITY_PREFIX}-${identity.address}`, identity);
       DAL.updateItem(`${APP_SETTINGS.ST_DEFAULT_ID}`, identity.address);
+      return true;
+    }
+
+    // first identity created, already is default, so return true
+    if (!identity && currentDefaultId) {
       return true;
     }
 
@@ -429,7 +434,7 @@ const identitiesHelper = (function () {
    */
   function updateIdentitiesNumber(isToAdd) {
     const idsNumberItem = DAL.getItem(APP_SETTINGS.ST_IDENTITIES_NUMBER);
-    const idsNumber = idsNumberItem ? 0 : idsNumberItem;
+    const idsNumber = idsNumberItem && idsNumberItem.constructor === Number ? idsNumberItem : 0;
 
     // if it's the first identity set it as default
     if (idsNumber === 0) {
@@ -449,7 +454,7 @@ const identitiesHelper = (function () {
     deleteAllIdentities,
     getAllIdentities,
     getDefaultIdentity,
-    removeIdentity,
+    deleteIdentity,
     setIdentityAsDefault,
     setIdentityRelay,
     updateDefaultId,
