@@ -17,7 +17,9 @@
     "ethereum",
     "blockchain",
     "wallet",
-    "identity"
+    "identity",
+    "iden3",
+    "0kims"
   ],
   "engines": {
     "node": ">= 8.9",
