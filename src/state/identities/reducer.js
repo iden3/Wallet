@@ -61,7 +61,7 @@ function identities(state = initialState, action) {
         isFetching: false,
         error: '',
         identities: state.get('identities').set(action.data.get('address'), action.data),
-        currentIdentity: action.data.get('address'),
+        currentIdentity: state.get('currentIdentity') ? state.get('currentIdentity') : action.data.get('address'),
       });
     }
     case CREATE_IDENTITY_ERROR:
