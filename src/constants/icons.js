@@ -6,6 +6,7 @@
  *
  */
 export const ADD_IDENTITY = 'user-add';
+export const CHANGE_IDENTITY = 'select';
 export const BURGER_MENU = 'menu-fold';
 export const CAMERA = 'camera';
 export const CLAIMS = 'idcard';

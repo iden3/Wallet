@@ -5,6 +5,10 @@
   .i3-ww-row__main-content {
     display: flex !important;
     justify-content: center !important;
+    width: 100%;
+    .i3-ww-identity-row__change-identity {
+      margin-left: 15px;
+    }
   }
   .i3-ww-identity-row__initial-content {
     display: flex;
@@ -16,6 +20,7 @@
     height: inherit;
     display: flex;
     align-items: center;
+    width: 100%;
   }
   .i3-ww-identity-row__final-content {
     height: inherit;
@@ -23,7 +28,8 @@
     align-items: center;
   }
   .i3-ww-identity-row__description {
-    margin-left: rem(10px);
+    margin: auto;
+    // margin-left: rem(10px);
   }
   .i3-ww-row__collapsible-content--visible {
     margin-top: -3px;

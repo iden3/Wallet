@@ -1,6 +1,8 @@
 import React, { Fragment, PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import * as ICONS from 'constants/icons';
 import {
+  Icon,
   Row,
 } from 'base_components';
 
@@ -31,6 +33,9 @@ class IdentityRow extends PureComponent {
         className="i3-ww-identity-row__main-content"
         tabIndex="-1"
         role="gridcell">
+        <div className="i3-ww-identity-row__change-identity">
+          <Icon type={ICONS.CHANGE_IDENTITY} />
+        </div>
         <div className="i3-ww-identity-row__description">
           {this.props.content}
         </div>
