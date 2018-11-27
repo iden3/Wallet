@@ -40,7 +40,7 @@ class NavBar extends Component {
     /*
      Selector to get the current loaded identity information
      */
-    defaultIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
+    currentIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
   };
 
   state = {
@@ -97,8 +97,8 @@ class NavBar extends Component {
         {/* Regular menu for desktop */}
         <div className="i3-ww-nav-bar__header-items">
           <IdentityItem
-            title={this.props.defaultIdentity.get('name') || this.props.defaultIdentity.get('label')}
-            icon={this.props.defaultIdentity.get('icon')} />
+            title={this.props.currentIdentity.get('name') || this.props.currentIdentity.get('label')}
+            icon={this.props.currentIdentity.get('icon')} />
           <DesktopMenu
             items={menuItems}
             selectedItem={selectedMainMenuItem} />

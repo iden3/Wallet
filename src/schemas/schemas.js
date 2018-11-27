@@ -164,7 +164,7 @@ const schemas = (function () {
       relayURL: data.id.relay.url,
       seed: data.keys.mnemonic.split(),
       time: format(date, 'HH:mm'),
-      isDefault: data.isDefault,
+      isCurrent: data.isCurrent,
     };
 
     return _checkSchemas(identitySchema, parsedObject)

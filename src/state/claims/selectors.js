@@ -1,11 +1,20 @@
+import { Map as ImmutableMap } from 'immutable';
 import * as CLAIMS from 'constants/claim';
 
 export const getClaimsState = state => state.claims;
 export const getClaimsFetching = state => getClaimsState(state).get('isFetchingClaims');
 export const getClaimsError = state => getClaimsState(state).get('error')().get('message');
-export const getClaims = (state, type = CLAIMS.TYPE.EMITTED.NAME) => {
+export const getClaims = (state, type = CLAIMS.TYPE.EMITTED.NAME, idAddress) => {
   const list = getClaimsState(state).get(type);
-  return list;
+  let filteredList = new ImmutableMap({});
+
+  list.entrySeq().forEach((claim) => {
+    if (claim[1].get('identity') === idAddress) {
+      filteredList = list.set(claim[0], claim[1].toJS());
+    }
+  });
+
+  return filteredList;
 };
 /* export const getPinnedClaims = (state) => {
   const pinnedKeys = Object.keys(getClaimsState(state).get('pinned').toJS());

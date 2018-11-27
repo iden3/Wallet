@@ -34,7 +34,7 @@ class App extends Component {
     /*
      Selector to get the current loaded identity information
      */
-    defaultIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
+    currentIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
     //
     // From withClaims HoC
     //
@@ -50,7 +50,7 @@ class App extends Component {
    */
   componentDidMount() {
     this.props.handleSetIdentitiesFromStorage()
-      .then(() => this.props.handleSetClaimsFromStorage(this.props.defaultIdentity));
+      .then(() => this.props.handleSetClaimsFromStorage(this.props.currentIdentity));
   }
 
   render() {

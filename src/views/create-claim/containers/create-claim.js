@@ -43,7 +43,7 @@ class CreateClaim extends Component {
     /*
      Selector to get the current loaded identity information
      */
-    defaultIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
+    currentIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
   };
 
   static defaultProps = {
@@ -66,7 +66,7 @@ class CreateClaim extends Component {
         createClaimCB = this.props.handleCreateGenericClaim;
     }
 
-    createClaimCB(this.props.defaultIdentity, data)
+    createClaimCB(this.props.currentIdentity, data)
       .then(() => {
         this.props.onClose();
         notificationsHelper.showNotification({

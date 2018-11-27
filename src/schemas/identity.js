@@ -8,7 +8,7 @@
  * icon: string,
  * id: any,
  * implementation: string,
- * isDefault: boolean,
+ * isCurrent: boolean,
  * keys: {recovery: string, revoke: string, operational: string, container: any},
  * label: string,
  * originalDateTime: {},
@@ -25,7 +25,7 @@ const model = {
   icon: '',
   id: Object.create({}),
   implementation: '',
-  isDefault: false,
+  isCurrent: false,
   keys: {
     recovery: '',
     revoke: '',

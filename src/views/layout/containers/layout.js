@@ -48,11 +48,11 @@ class Layout extends React.Component {
     /*
      Selector to get the current loaded identity information
      */
-    defaultIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
+    currentIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
   };
 
   render() {
-    const usersExist = this.props.defaultIdentity.size > 0;
+    const usersExist = this.props.currentIdentity.size > 0;
 
     return (
       <LayoutCmpt className="i3-ww-layout">

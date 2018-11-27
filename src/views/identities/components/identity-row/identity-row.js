@@ -28,9 +28,17 @@ class IdentityRow extends PureComponent {
     id: PropTypes.string.isRequired,
     /*
      Flag to know if current row belongs to the current identity to don't show the "change identity" icon and
-     put another backgrodun color
+     put another background color
     */
     isCurrent: PropTypes.bool.isRequired,
+    /*
+     Call back when another identity is selected to load it in the app
+    */
+    onChangeCurrentIdentity: PropTypes.func.isRequired,
+    /*
+     Address of the identity if we want to change to another one
+    */
+    address: PropTypes.string.isRequired,
   };
 
   render() {
@@ -45,7 +53,12 @@ class IdentityRow extends PureComponent {
         role="gridcell">
         {!this.props.isCurrent
         && (
-          <div className="i3-ww-identity-row__change-identity">
+          <div
+            role="gridcell"
+            tabIndex="0"
+            onKeyUp={() => this.props.onChangeCurrentIdentity(this.props.address)}
+            onClick={() => this.props.onChangeCurrentIdentity(this.props.address)}
+            className="i3-ww-identity-row__change-identity">
             <Icon type={ICONS.CHANGE_IDENTITY} />
           </div>
         )}

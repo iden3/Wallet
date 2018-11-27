@@ -16,11 +16,11 @@ import * as APP_SETTINGS from 'constants/app';
  *  createIdentityInStorage,
  *  deleteAllIdentities,
  *  getAllIdentities,
- *  getDefaultIdentity,
+ *  getCurrentIdentity,
  *  removeIdentity,
- *  setIdentityAsDefault,
+ *  setIdentityAsCurrent,
  *  setIdentityRelay,
- *  updateDefaultId,
+ *  updateCurrentId,
  *  updateIdentity,
  *  updateIdentitiesNumber
  *  }
@@ -209,7 +209,7 @@ const identitiesHelper = (function () {
    * @returns {Promise<any>} Return a Promise with the field "address" that contains
    * the address of the counterfactual contract of the new identity
    */
-  function createIdentity(data, passphrase, isDefault = false, relayAddr = APP_SETTINGS.RELAY_ADDR) {
+  function createIdentity(data, passphrase, isCurrent = false, relayAddr = APP_SETTINGS.RELAY_ADDR) {
     const identity = _prepareCreateIdentity(passphrase, relayAddr);
 
     return new Promise((resolve, reject) => {
@@ -217,12 +217,12 @@ const identitiesHelper = (function () {
         .then((address) => {
           // once we have the address returned by the ID, set it in the local storage
           const newIdentity = _checkIdentitySchema({
-            address, ...identity, ...data, passphrase, isDefault,
+            address, ...identity, ...data, passphrase, isCurrent,
           });
 
           if (newIdentity && createIdentityInStorage(newIdentity)) {
-            if (newIdentity.isDefault) {
-              setIdentityAsDefault(newIdentity);
+            if (newIdentity.isCurrent) {
+              setIdentityAsCurrent(newIdentity.address);
             }
             resolve(newIdentity);
           } else {
@@ -301,7 +301,7 @@ const identitiesHelper = (function () {
    *
    * @returns {string} - With the default identity address
    */
-  function getDefaultIdentity() {
+  function getCurrentIdentity() {
     return DAL.getItem(`${APP_SETTINGS.ST_DEFAULT_ID}`);
   }
 
@@ -318,32 +318,34 @@ const identitiesHelper = (function () {
 
   /**
    * Set the new default identity which is the one loaded now in the app.
-   * Set the field isDefault inside the identity and the key indicating which identity is the default
+   * Set the field isCurrent inside the identity and the key indicating which identity is the default
    * in the selected storage.
    *
-   * @param {Object} identity - With the information of the new identity that will be the default
+   * @param {string} newIdAddress - With the information of the new identity that will be the default
    * @throws Will throw an error if the no identity provided.
    * @returns {boolean} - True if could be updated, false, otherwise
    */
-  function setIdentityAsDefault(identity = null) {
-    const currentDefaultIdKey = DAL.getItem(`${APP_SETTINGS.ST_DEFAULT_ID}`);
-    const currentDefaultId = _getIdentity(currentDefaultIdKey);
+  function setIdentityAsCurrent(newIdAddress = null) {
+    const currentIdKey = DAL.getItem(`${APP_SETTINGS.ST_DEFAULT_ID}`);
+    const currentId = _getIdentity(currentIdKey);
+    const newCurrentId = _getIdentity(newIdAddress);
 
     // it's not the first time we create an identity and set the former default identity to false
-    if (identity && currentDefaultId) {
-      currentDefaultId.isDefault = false;
-      DAL.updateItem(`${APP_SETTINGS.ST_IDENTITY_PREFIX}-${currentDefaultId.address}`, currentDefaultId);
+    if (newIdAddress && currentId) {
+      currentId.isCurrent = false;
+      DAL.updateItem(`${APP_SETTINGS.ST_IDENTITY_PREFIX}-${currentId.address}`, currentId);
     }
 
     // set the new default identity
-    if (identity) { // if it's not first identity created
-      DAL.updateItem(`${APP_SETTINGS.ST_IDENTITY_PREFIX}-${identity.address}`, identity);
-      DAL.updateItem(`${APP_SETTINGS.ST_DEFAULT_ID}`, identity.address);
+    if (newIdAddress) { // if it's not first identity created
+      newCurrentId.isCurrent = true;
+      DAL.updateItem(`${APP_SETTINGS.ST_IDENTITY_PREFIX}-${newIdAddress}`, newCurrentId);
+      DAL.updateItem(`${APP_SETTINGS.ST_DEFAULT_ID}`, newIdAddress);
       return true;
     }
 
     // first identity created, already is default, so return true
-    if (!identity && currentDefaultId) {
+    if (!newIdAddress && currentId) {
       return true;
     }
 
@@ -367,10 +369,10 @@ const identitiesHelper = (function () {
    *
    * @returns {boolean} - True if success, false otherwise
    */
-  function updateDefaultId() {
+  function updateCurrentId() {
     // set the object storage
-    const defaultIdAddr = DAL.getItem(APP_SETTINGS.ST_DEFAULT_ID);
-    const identity = DAL.getItem(`${APP_SETTINGS.ST_IDENTITY_PREFIX}-${defaultIdAddr}`);
+    const currentIdAddr = DAL.getItem(APP_SETTINGS.ST_DEFAULT_ID);
+    const identity = DAL.getItem(`${APP_SETTINGS.ST_IDENTITY_PREFIX}-${currentIdAddr}`);
 
     // the default identity is alright
     if (identity && _isIdentityConsistent(identity)) {
@@ -411,11 +413,11 @@ const identitiesHelper = (function () {
 
       // if there was no identities before or default field, put it in the storage
       // to load this identity next time that wallet is loaded
-      const existsDefaultID = DAL.getItem(`${APP_SETTINGS.ST_DEFAULT_ID}`);
+      const existsCurrentId = DAL.getItem(`${APP_SETTINGS.ST_DEFAULT_ID}`);
       const identitiesNumber = DAL.getItem(`${APP_SETTINGS.ST_IDENTITIES_NUMBER}`);
 
       // if does not exist field of default id or if ther are zero identities number
-      if (!existsDefaultID || (existsDefaultID && identitiesNumber && identitiesNumber === 0)) {
+      if (!existsCurrentId || (existsCurrentId && identitiesNumber && identitiesNumber === 0)) {
         DAL.setItem(`${APP_SETTINGS.ST_DEFAULT_ID}`, identity.address);
       }
 
@@ -438,7 +440,7 @@ const identitiesHelper = (function () {
 
     // if it's the first identity set it as default
     if (idsNumber === 0) {
-      setIdentityAsDefault();
+      setIdentityAsCurrent();
     }
 
     return isToAdd
@@ -453,11 +455,11 @@ const identitiesHelper = (function () {
     createIdentityInStorage,
     deleteAllIdentities,
     getAllIdentities,
-    getDefaultIdentity,
+    getCurrentIdentity,
     deleteIdentity,
-    setIdentityAsDefault,
+    setIdentityAsCurrent,
     setIdentityRelay,
-    updateDefaultId,
+    updateCurrentId,
     updateIdentity,
     updateIdentitiesNumber,
   };

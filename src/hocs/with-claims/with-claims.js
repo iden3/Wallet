@@ -73,7 +73,7 @@ function withClaims(ClaimsComponent) {
     return {
       isFetchingClaims: getClaimsFetching(state),
       claimsError: getClaimsError(state),
-      getClaims: type => getClaims(state, type),
+      getClaims: (type, idAddress) => getClaims(state, type, idAddress),
       // pinnedClaims: getPinnedClaims(state),
     };
   }

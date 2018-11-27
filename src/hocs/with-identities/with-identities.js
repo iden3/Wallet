@@ -13,12 +13,13 @@ const {
     handleUpdateIdentity,
     handleDeleteAllIdentities,
     handleDeleteIdentity,
+    handleChangeCurrentIdentity,
   },
   selectors: {
     getIdentitiesError,
     getIdentitiesFetching,
     getIdentity,
-    getDefaultIdentity,
+    getCurrentIdentity,
     getIdentities,
   },
 } = identities;
@@ -47,6 +48,10 @@ function withIdentities(IdentitiesComponent) {
       */
       handleDeleteIdentity: PropTypes.func.isRequired,
       /*
+       Action to change the current identity of the app
+      */
+      handleChangeCurrentIdentity: PropTypes.func.isRequired,
+      /*
        Selector to get the information related to an identity.
        Expect the identity address as parameter
        */
@@ -58,7 +63,7 @@ function withIdentities(IdentitiesComponent) {
       /*
        Selector to get the current loaded identity information
        */
-      defaultIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
+      currentIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
       /*
        Flag to check if the app is fetching the identities
        */
@@ -81,7 +86,7 @@ function withIdentities(IdentitiesComponent) {
       isFetchingIdentities: getIdentitiesFetching(state),
       identitiesError: getIdentitiesError(state),
       getIdentity: identityAddr => getIdentity(state, identityAddr),
-      defaultIdentity: getDefaultIdentity(state),
+      currentIdentity: getCurrentIdentity(state),
       identities: getIdentities(state),
     };
   }
@@ -94,6 +99,7 @@ function withIdentities(IdentitiesComponent) {
       handleSetIdentitiesFromStorage,
       handleDeleteAllIdentities,
       handleDeleteIdentity,
+      handleChangeCurrentIdentity,
     }, dispatch);
   }
 

@@ -40,7 +40,7 @@ class Identities extends Component {
     /*
      Selector to get the current loaded identity information
      */
-    defaultIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
+    currentIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
     /*
      Action to delete all identities from the app
      */
@@ -49,6 +49,10 @@ class Identities extends Component {
       Action to delete one identity
     */
     handleDeleteIdentity: PropTypes.func.isRequired,
+    /*
+      Action to change the current identity of the app
+    */
+    handleChangeCurrentIdentity: PropTypes.func.isRequired,
   };
 
   state = {
@@ -77,6 +81,15 @@ class Identities extends Component {
   deleteIdentity = () => {
     this.toggleBox();
     this.state.boxContent === boxContent.deleteOne && this.props.handleDeleteIdentity();
+  }
+
+  /**
+   * Call back when clicked the button of an identity row to change to this.
+   *
+   * @param {string} address - new identity address to load
+   */
+  onChangeCurrentIdentity = (address) => {
+    this.props.handleChangeCurrentIdentity(address);
   }
 
   /**
@@ -141,7 +154,8 @@ class Identities extends Component {
           title="Identities"
           headerButtons={headerButtons}>
           <List
-            defaultIdentity={this.props.defaultIdentity}
+            onChangeCurrentIdentity={this.onChangeCurrentIdentity}
+            currentIdentity={this.props.currentIdentity}
             togglePinned={this.togglePinned}
             list={this.props.identities} />
         </Widget>
