@@ -57,11 +57,15 @@ function identities(state = initialState, action) {
       });
     case CREATE_IDENTITY_SUCCESS: {
       // TODO: check if already exists the identity sent by the action
+      // if already there is an identity "logged" means that we are creating
+      // more identities and we don't want to change to new one, only create it
+      const currentIdentity = state.get('currentIdentity') ? state.get('currentIdentity') : action.data.get('address');
+
       return state.merge({
         isFetching: false,
         error: '',
         identities: state.get('identities').set(action.data.get('address'), action.data),
-        currentIdentity: state.get('currentIdentity') ? state.get('currentIdentity') : action.data.get('address'),
+        currentIdentity,
       });
     }
     case CREATE_IDENTITY_ERROR:

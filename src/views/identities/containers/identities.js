@@ -25,7 +25,7 @@ import './identities.scss';
 const boxContent = {
   deleteOne: 'delete identity',
   deleteAll: 'delete all identities',
-  createIdentity: 'create identity',
+  createIdentity: 'create identity wizard',
 };
 
 /**
@@ -95,7 +95,10 @@ class Identities extends Component {
   _getBoxContent() {
     switch (this.state.boxContent) {
       case boxContent.createIdentity:
-        return <CreateIdentity afterCreateIdentity={this.createIdentity} />;
+        return (
+          <CreateIdentity
+            afterCreateIdentity={this.createIdentity} />
+        );
       case boxContent.deleteAll:
         return <DeleteAllIdentities onConfirm={this.deleteAllIdentities} />;
       case boxContent.deleteOne:

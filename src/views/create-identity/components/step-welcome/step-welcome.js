@@ -19,19 +19,36 @@ class StepWelcome extends PureComponent {
       Call back triggered when one of the action buttons are pressed
      */
     move: PropTypes.func.isRequired,
+    /*
+     Flag to know if it's first identity, to show one text or other
+    */
+    isFirstIdentity: PropTypes.bool.isRequired,
   };
 
   render() {
     return (
       <div className="i3-ww-ci__step  i3-ww-ci__welcome">
         <div className="i3-ww-ci__title">
-          <p className="i3-ww-title">Welcome to iden3</p>
-          <p className="i3-ww-subtitle">Create your decentralized identity</p>
+          { this.props.isFirstIdentity
+            ? (
+              <div>
+                <p className="i3-ww-title">Welcome to iden3</p>
+                <p className="i3-ww-subtitle">Create your decentralized identity</p>
+              </div>
+            )
+            : (
+              <div>
+                <p className="i3-ww-title">New iden3 identity</p>
+                <p className="i3-ww-subtitle">Create another decentralized identity</p>
+              </div>
+            )
+          }
         </div>
         <div className="i3-ww-ci__content">
           <p>
-            The next steps will guide you through your active identity creation process,
-            and you will also be able to create more identities later.
+            The next steps will guide you through your active identity creation process.
+            {this.props.isFirstIdentity && 'You will also be able to create more identities later.' }
+            {' '}
             Keep in mind that your private key will be encrypted and stored in this device.
           </p>
         </div>

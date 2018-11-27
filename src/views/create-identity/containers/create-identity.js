@@ -34,6 +34,10 @@ class CreateIdentity extends Component {
       if we are showing the wizard as a main view or inside a box (To create other identity beyond the existent ones)
      */
     afterCreateIdentity: PropTypes.func,
+    /*
+     Flag to know if it's first identity, to show one text or other
+    */
+    isFirstIdentity: PropTypes.bool,
     //
     // from withFormsValues HOC
     //
@@ -64,6 +68,7 @@ class CreateIdentity extends Component {
 
   static defaultProps = {
     afterCreateIdentity: () => {},
+    isFirstIdentity: true,
   }
 
   state = {
@@ -158,6 +163,7 @@ class CreateIdentity extends Component {
     return (
       <div className="i3-ww-ci">
         <Step
+          isFirstIdentity={this.props.isFirstIdentity}
           createIdentity={this.createIdentity}
           setPassphrase={this.setPassphrase}
           getFormValue={this.props.getForm}
