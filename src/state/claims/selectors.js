@@ -10,7 +10,7 @@ export const getClaims = (state, type = CLAIMS.TYPE.EMITTED.NAME, idAddress) => 
 
   list.entrySeq().forEach((claim) => {
     if (claim[1].get('identity') === idAddress) {
-      filteredList = list.set(claim[0], claim[1].toJS());
+      filteredList = filteredList.set(claim[0], claim[1].toJS());
     }
   });
 

@@ -20,6 +20,7 @@ class List extends PureComponent {
      Call back when another identity is selected to load it in the app
     */
     onChangeCurrentIdentity: PropTypes.func.isRequired,
+    currentIdentity: PropTypes.instanceOf(ImmutableMap),
   };
 
   /**
@@ -39,7 +40,7 @@ class List extends PureComponent {
           onChangeCurrentIdentity={this.props.onChangeCurrentIdentity}
           key={`identity-${identitiesList[identity].address}`}
           address={identitiesList[identity].address}
-          isCurrent={identitiesList[identity].isCurrent}
+          isCurrent={this.props.currentIdentity.get('address') === identitiesList[identity].address}
           id={identitiesList[identity].address}
           content={identitiesList[identity].label}
           data={this._setExtraData(identitiesList[identity])} />,
