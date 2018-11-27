@@ -8,6 +8,7 @@
     width: 100%;
     .i3-ww-identity-row__change-identity {
       margin-left: 15px;
+      cursor: pointer;
     }
   }
   .i3-ww-identity-row__initial-content {
@@ -29,9 +30,13 @@
   }
   .i3-ww-identity-row__description {
     margin: auto;
-    // margin-left: rem(10px);
-  }
+   }
   .i3-ww-row__collapsible-content--visible {
     margin-top: -3px;
   }
+}
+
+.i3-ww-identity-row__main-content--current-user {
+  background: $identities-row-bg-current-user !important;
+  color: $identities-row-color-current-user;
 }

@@ -1,5 +1,6 @@
 import React, { Fragment, PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import * as ICONS from 'constants/icons';
 import {
   Icon,
@@ -25,17 +26,29 @@ class IdentityRow extends PureComponent {
      Id of the identity to used it as a key
      */
     id: PropTypes.string.isRequired,
+    /*
+     Flag to know if current row belongs to the current identity to don't show the "change identity" icon and
+     put another backgrodun color
+    */
+    isCurrent: PropTypes.bool.isRequired,
   };
 
   render() {
+    const rowClasses = classNames({
+      'i3-ww-identity-row': true,
+      'i3-ww-identity-row__main-content--current-user': this.props.isCurrent,
+    });
     const mainContent = (
       <div
         className="i3-ww-identity-row__main-content"
         tabIndex="-1"
         role="gridcell">
-        <div className="i3-ww-identity-row__change-identity">
-          <Icon type={ICONS.CHANGE_IDENTITY} />
-        </div>
+        {!this.props.isCurrent
+        && (
+          <div className="i3-ww-identity-row__change-identity">
+            <Icon type={ICONS.CHANGE_IDENTITY} />
+          </div>
+        )}
         <div className="i3-ww-identity-row__description">
           {this.props.content}
         </div>
@@ -45,9 +58,9 @@ class IdentityRow extends PureComponent {
     return (
       <Fragment>
         <Row
+          className={rowClasses}
           key={`identity-row-${this.props.id}`}
           id={this.props.id}
-          className="i3-ww-identity-row"
           collapsible={this.props.data}
           mainContent={mainContent} />
       </Fragment>

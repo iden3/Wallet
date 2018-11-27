@@ -33,6 +33,7 @@ class List extends PureComponent {
       identities.push(
         <Identity
           key={`identity-${identitiesList[identity].address}`}
+          isCurrent={identitiesList[identity].isDefault}
           id={identitiesList[identity].address}
           content={identitiesList[identity].label}
           data={this._setExtraData(identitiesList[identity])} />,
