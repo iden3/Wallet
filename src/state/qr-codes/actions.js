@@ -19,7 +19,7 @@ function fetchingQrCodesSuccess(response) {
 }
 
 function fetchingQrCodesError(error) {
-  console.log(error);
+  console.error(error);
   return {
     type: FETCHING_QR_CODES_ERROR,
     error: 'Fetching qr codes error',

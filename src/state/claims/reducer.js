@@ -60,7 +60,7 @@ function claims(state = initialState, action) {
         error: new ImmutableRecord({ message: '' }),
         emitted: state.get(CLAIMS.TYPE.EMITTED.NAME).set(
           action.data.get('id'),
-          {
+          new ImmutableMap({
             introducedContent: action.data.get('introducedContent'),
             identity: action.data.get('identity'),
             data: action.data.get('data'),
@@ -71,7 +71,7 @@ function claims(state = initialState, action) {
             url: action.data.get('url'),
             id: action.data.get('id'),
             // isPinned: action.data.get('isPinned'),
-          },
+          }),
         ),
       });
     case CREATE_GENERIC_CLAIM_ERROR:
@@ -89,7 +89,7 @@ function claims(state = initialState, action) {
         error: new ImmutableRecord({ message: '' }),
         emitted: state.get(CLAIMS.TYPE.EMITTED.NAME).set(
           action.data.get('id'),
-          {
+          new ImmutableMap({
             identity: action.data.get('identity'),
             data: action.data.get('data'),
             type: action.data.get('type'),
@@ -99,7 +99,7 @@ function claims(state = initialState, action) {
             url: action.data.get('url'),
             id: action.data.get('id'),
             // isPinned: action.data.get('isPinned'),
-          },
+          }),
         ),
       });
     case AUTHORIZE_CLAIM_ERROR:

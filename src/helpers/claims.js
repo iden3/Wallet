@@ -10,12 +10,9 @@ import * as APP_SETTINGS from 'constants/app';
 import * as CLAIMS from 'constants/claim';
 import DAL from 'dal';
 
-let instance;
-
 /**
  *
  * Class related to everything about claims: authorize, creates, decode what is read from a QR, etc...
- * Singleton to create it only once when we change to another identity, create the first one or (re) load the app
  *
  */
 class Claim {
@@ -24,19 +21,12 @@ class Claim {
    * @param {Immutable.Map} identity - Identity to work with this claim
    */
   constructor(identity) {
-    if (!instance) {
-      this.identity = identity;
-      // this.storage = new LocalStorage(APP_SETTINGS.ST_DOMAIN);
-      this.DAL = new DAL(APP_SETTINGS.LOCAL_STORAGE);
-      instance = this;
-    }
-
+    this.identity = identity;
+    this.DAL = new DAL(APP_SETTINGS.LOCAL_STORAGE);
     this.authorizeClaim = this.authorizeClaim.bind(this);
     this.createClaimInStorage = this.createClaimInStorage.bind(this);
     this.createGenericClaim = this.createGenericClaim.bind(this);
     this.getAllClaimsFromStorage = this.getAllClaimsFromStorage.bind(this);
-
-    return instance;
   }
 
   //

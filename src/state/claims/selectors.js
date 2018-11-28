@@ -8,6 +8,7 @@ export const getClaims = (state, type = CLAIMS.TYPE.EMITTED.NAME, idAddress) => 
   const list = getClaimsState(state).get(type);
   let filteredList = new ImmutableMap({});
 
+  // retrieve only the claims that belong to the identity sent
   list.entrySeq().forEach((claim) => {
     if (claim[1].get('identity') === idAddress) {
       filteredList = filteredList.set(claim[0], claim[1].toJS());

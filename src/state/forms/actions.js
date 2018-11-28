@@ -26,7 +26,7 @@ function fetchingFormsSuccess(response) {
 }
 
 function fetchingFormsError(error) {
-  console.log(error);
+  console.error(error);
   return {
     type: FETCHING_FORMS_ERROR,
     error: 'Fetching forms error',
@@ -46,7 +46,7 @@ function clearCreateIdentityFormsSuccess() {
 }
 
 function clearCreateIdentityFormsError(error) {
-  console.log(error);
+  console.error(error);
   return {
     type: FETCHING_FORMS_ERROR,
     error: 'Clear create identity forms error',
