@@ -4,7 +4,7 @@ export const getidentitiesState = state => state.identities;
 export const getIdentitiesFetching = state => getidentitiesState(state).get('isFetching');
 export const getIdentitiesError = state => getidentitiesState(state).get('error');
 export const getIdentity = (state, address) => getidentitiesState(state).get('identities').get(address);
-export const getDefaultIdentity = (state) => {
+export const getCurrentIdentity = (state) => {
   const idDefaultAddr = getidentitiesState(state).get('currentIdentity');
   const idDefault = getIdentity(state, idDefaultAddr);
   return new ImmutableMap(idDefault) || new ImmutableMap({});

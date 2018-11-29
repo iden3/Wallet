@@ -1,7 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
-import { withClaims } from 'hocs';
+import { Map as ImmutableMap } from 'immutable';
+import {
+  withIdentities,
+  withClaims
+} from 'hocs';
 import { CreateClaim } from 'views';
 import {
   Button,
@@ -39,6 +43,13 @@ class Claims extends Component {
      Expect the type of the claims as parameter
     */
     getClaims: PropTypes.func.isRequired,
+    //
+    //
+    //
+    /*
+     Selector to get the current loaded identity information
+     */
+    currentIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
   };
 
   static defaultProps = {
@@ -104,15 +115,25 @@ class Claims extends Component {
   }
 
   /**
-   * Compose the tabs to show and the drop-down to choose the sort option
+   * Compose the tabs to show and the drop-down to choose the sort option.
+   *
    * @returns {array} or React Elements with the tabs and the drop-down to sort
    * @private
    * TODO: Add dropdown to sort by an option
    */
   _getTabs() {
-    const received = { type: CLAIMS.TYPE.RECEIVED.NAME, list: this.props.getClaims(CLAIMS.TYPE.RECEIVED.NAME) };
-    const emitted = { type: CLAIMS.TYPE.EMITTED.NAME, list: this.props.getClaims(CLAIMS.TYPE.EMITTED.NAME) };
-    const grouped = { type: CLAIMS.TYPE.GROUPED.NAME, list: this.props.getClaims(CLAIMS.TYPE.GROUPED.NAME) };
+    const received = {
+      type: CLAIMS.TYPE.RECEIVED.NAME,
+      list: this.props.getClaims(CLAIMS.TYPE.RECEIVED.NAME, this.props.currentIdentity.get('address')),
+    };
+    const emitted = {
+      type: CLAIMS.TYPE.EMITTED.NAME,
+      list: this.props.getClaims(CLAIMS.TYPE.EMITTED.NAME, this.props.currentIdentity.get('address')),
+    };
+    const grouped = {
+      type: CLAIMS.TYPE.GROUPED.NAME,
+      list: this.props.getClaims(CLAIMS.TYPE.GROUPED.NAME, this.props.currentIdentity.get('address')),
+    };
 
     return [emitted, received, grouped].map((claimsList) => {
       return {
@@ -130,29 +151,32 @@ class Claims extends Component {
 
   render() {
     let content;
-
-    if (this.props.isPinnedList) {
-      content = this._getPinned();
+    if (this.props.currentIdentity) {
+      if (this.props.isPinnedList) {
+        content = this._getPinned();
+      } else {
+        const tabs = this._getTabs();
+        const headerButtons = (
+          <Button
+            type="primary"
+            htmlType="button"
+            onClick={this.toggleCreateClaimForm}>
+            Create
+          </Button>
+        );
+        content = (
+          <Widget
+            isFetching={false}
+            hasError={false}
+            hasData
+            title="Claims"
+            headerButtons={headerButtons}>
+            <Tabs tabs={tabs} />
+          </Widget>
+        );
+      }
     } else {
-      const tabs = this._getTabs();
-      const headerButtons = (
-        <Button
-          type="primary"
-          htmlType="button"
-          onClick={this.toggleCreateClaimForm}>
-          Create
-        </Button>
-      );
-      content = (
-        <Widget
-          isFetching={false}
-          hasError={false}
-          hasData
-          title="Claims"
-          headerButtons={headerButtons}>
-          <Tabs tabs={tabs} />
-        </Widget>
-      );
+      content = (<div />);
     }
 
     return (
@@ -169,4 +193,7 @@ class Claims extends Component {
   }
 }
 
-export default compose(withClaims)(Claims);
+export default compose(
+  withIdentities,
+  withClaims,
+)(Claims);

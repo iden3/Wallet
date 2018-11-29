@@ -45,7 +45,7 @@ class ClaimReader extends PureComponent {
     /*
      Selector to get the current loaded identity information
      */
-    defaultIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
+    currentIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
   };
 
   static defaultProps = {
@@ -64,7 +64,7 @@ class ClaimReader extends PureComponent {
    */
   authorizeKSignClaim = (data) => {
     if (data) {
-      this.props.handleAuthorizeClaim(this.props.defaultIdentity, data)
+      this.props.handleAuthorizeClaim(this.props.currentIdentity, data)
         .then(() => {
           this.props.toggleCameraVisibility();
           this.setState({ inputClaimData: '' });

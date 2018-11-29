@@ -5,14 +5,28 @@ import { Map as ImmutableMap } from 'immutable';
 import {
   Box,
   Button,
+  Icon,
   Widget,
 } from 'base_components';
 import * as BOX_CONSTANTS from 'constants/box';
+import * as ICONS from 'constants/icons';
+import { utils } from 'helpers';
 import { withIdentities } from 'hocs';
+import {
+  CreateIdentity,
+  DeleteIdentity,
+  DeleteAllIdentities,
+} from '../components';
 import List from '../components/list';
 
 
 import './identities.scss';
+
+const boxContent = {
+  deleteOne: 'delete identity',
+  deleteAll: 'delete all identities',
+  createIdentity: 'create identity wizard',
+};
 
 /**
  * Main view of the identities management of an user.
@@ -26,70 +40,110 @@ class Identities extends Component {
     /*
      Selector to get the current loaded identity information
      */
-    defaultIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
+    currentIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
     /*
      Action to delete all identities from the app
      */
     handleDeleteAllIdentities: PropTypes.func.isRequired,
+    /*
+      Action to delete one identity
+    */
+    handleDeleteIdentity: PropTypes.func.isRequired,
+    /*
+      Action to change the current identity of the app
+    */
+    handleChangeCurrentIdentity: PropTypes.func.isRequired,
   };
 
   state = {
-    askForDelete: false,
+    boxContent: null,
   };
 
   /**
-   * Show or not the box with the confirmation for deleting the identities.
+   * Show the box when create identity choice has been selected by the user.
    */
-  toggleAskConfirmation = () => {
-    this.setState(prevState => ({ askForDelete: !prevState.askForDelete }));
-  };
+  createIdentity = () => {
+    this.state.boxContent === boxContent.createIdentity && this.toggleBox();
+  }
 
   /**
    * Call the action to delete all the identities in the app state
    * and in the storage, and redirect to to the wizard to create an identity
    */
   deleteAllIdentities = () => {
-    this.toggleAskConfirmation();
-    this.state.askForDelete && this.props.handleDeleteAllIdentities();
+    this.toggleBox();
+    this.state.boxContent === boxContent.deleteAll && this.props.handleDeleteAllIdentities();
   };
 
   /**
-   * The content to show in the confirmation box to delete all de identities.
-   * There is a warning text and the button to delete them.
-   *
-   * @returns {Object} React element with the content to show
-   * @private
+   * Call the action to remove an identity.
    */
-  _getConfirmationContent() {
-    return (
-      <div className="i3-ww-identities__delete-confirmation">
-        <div className="i3-ww-identities__delete-confirmation-text">
-          You are about to delete all the identities of in this application
-          and device. This action can not be undone. If you continue, you
-          accept that all data stored will deleted.
-        </div>
-        <div className="i3-ww-identities__delete-confirmation-button">
-          <Button
-            type="primary"
-            htmlType="button"
-            onClick={this.deleteAllIdentities}>
-            I understand it: Delete them!
-          </Button>
-        </div>
-      </div>
-    );
+  deleteIdentity = () => {
+    this.toggleBox();
+    this.state.boxContent === boxContent.deleteOne && this.props.handleDeleteIdentity();
+  }
+
+  /**
+   * Call back when clicked the button of an identity row to change to this.
+   *
+   * @param {string} address - new identity address to load
+   */
+  onChangeCurrentIdentity = (address) => {
+    this.props.handleChangeCurrentIdentity(address);
+  }
+
+  /**
+   * Show or not the box with the confirmation for deleting the identities.
+   */
+  toggleBox = (content) => {
+    this.setState(prevState => ({ boxContent: prevState.boxContent ? null : content }));
+  };
+
+  /**
+   * Factory function to show one content or other regarding who is calling it.
+   * In this view choices are: create an identity, remove one or remove all.
+   *
+   * @returns {Object} with React element to show
+    */
+  _getBoxContent() {
+    switch (this.state.boxContent) {
+      case boxContent.createIdentity:
+        return (
+          <CreateIdentity
+            afterCreateIdentity={this.createIdentity} />
+        );
+      case boxContent.deleteAll:
+        return <DeleteAllIdentities onConfirm={this.deleteAllIdentities} />;
+      case boxContent.deleteOne:
+        return (
+          <DeleteIdentity
+            address="0xfefefe5656565"
+            label="Label of the id"
+            onConfirm={this.deleteIdentity} />
+        );
+      default:
+        return (<div />);
+    }
   }
 
   render() {
     const headerButtons = (
-      <Button
-        type="primary"
-        htmlType="button"
-        onClick={this.toggleAskConfirmation}>
-        Delete all
-      </Button>
+      <div className="i3-ww-widget__action-buttons">
+        <Button
+          type="primary"
+          htmlType="button"
+          onClick={() => this.toggleBox(boxContent.createIdentity)}>
+          <Icon type={ICONS.ADD_IDENTITY} />
+        </Button>
+        <Button
+          type="primary"
+          htmlType="button"
+          onClick={() => this.toggleBox(boxContent.deleteAll)}>
+          <Icon type={ICONS.DELETE_ALL_IDENTITIES} />
+        </Button>
+      </div>
     );
-    const confirmationContent = this._getConfirmationContent();
+    const boxElements = this._getBoxContent();
 
     return (
       <div className="i3-ww-identities">
@@ -100,7 +154,8 @@ class Identities extends Component {
           title="Identities"
           headerButtons={headerButtons}>
           <List
-            defaultIdentity={this.props.defaultIdentity}
+            onChangeCurrentIdentity={this.onChangeCurrentIdentity}
+            currentIdentity={this.props.currentIdentity}
             togglePinned={this.togglePinned}
             list={this.props.identities} />
         </Widget>
@@ -108,10 +163,10 @@ class Identities extends Component {
           <Box
             type={BOX_CONSTANTS.TYPE.SIDE_PANEL}
             side={BOX_CONSTANTS.SIDE.RIGHT}
-            onClose={this.toggleAskConfirmation}
-            content={confirmationContent}
-            title="Delete all the identities"
-            show={this.state.askForDelete} />
+            onClose={this.toggleBox}
+            content={boxElements}
+            title={utils.capitalizeFirstLetter(this.state.boxContent)}
+            show={!!this.state.boxContent} />
         </div>
       </div>
     );

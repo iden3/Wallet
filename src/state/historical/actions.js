@@ -19,7 +19,7 @@ function fetchingHistoricalSuccess(data) {
 }
 
 function fetchingHistoricalError(error) {
-  console.log(error);
+  console.error(error);
   return {
     type: FETCHING_HISTORICAL_ERROR,
     error: 'Fetching historical error',

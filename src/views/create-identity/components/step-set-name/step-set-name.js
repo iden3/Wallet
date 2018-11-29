@@ -71,6 +71,7 @@ class StepSetName extends PureComponent {
     if (isValidLabel) {
       this.props.createIdentity({ label: this.state.label, domain: this.state.domain });
       this._updateForm();
+      this.props.move('forward');
     } else {
       // show notification with error
       notificationsHelper.showNotification({

@@ -17,6 +17,12 @@ import {
   DELETE_ALL_IDENTITIES,
   DELETE_ALL_IDENTITIES_SUCCESS,
   DELETE_ALL_IDENTITIES_ERROR,
+  DELETE_IDENTITY,
+  DELETE_IDENTITY_SUCCESS,
+  DELETE_IDENTITY_ERROR,
+  CHANGE_CURRENT_IDENTITY,
+  CHANGE_CURRENT_IDENTITY_SUCCESS,
+  CHANGE_CURRENT_IDENTITY_ERROR,
 } from './constants';
 
 function createIdentity() {
@@ -109,6 +115,47 @@ function deleteAllIdentitiesError(error) {
   };
 }
 
+function deleteIdentity() {
+  return {
+    type: DELETE_IDENTITY,
+  };
+}
+
+function deleteIdentitySuccess(idAddress) {
+  return {
+    type: DELETE_IDENTITY_SUCCESS,
+    data: idAddress,
+  };
+}
+
+function deleteIdentityError(error) {
+  console.error(error);
+  return {
+    type: DELETE_IDENTITY_ERROR,
+    data: error,
+  };
+}
+
+function changeCurrentIdentity() {
+  return {
+    type: CHANGE_CURRENT_IDENTITY,
+  };
+}
+
+function changeCurrentIdentitySuccess(idAddress) {
+  return {
+    type: CHANGE_CURRENT_IDENTITY_SUCCESS,
+    data: idAddress,
+  };
+}
+
+function changeCurrentIdentityError(error) {
+  return {
+    type: CHANGE_CURRENT_IDENTITY_ERROR,
+    data: error,
+  };
+}
+
 /**
  * Create an identity storing it in the storate and in the app state
  *.
@@ -119,10 +166,10 @@ function deleteAllIdentitiesError(error) {
  */
 export function handleCreateIdentity(passphrase, data) {
   return function (dispatch, getState) {
-    const isDefault = selectors.getIdentitiesNumber(getState()) === 0;
+    const isCurrent = selectors.getIdentitiesNumber(getState()) === 0;
 
     dispatch(createIdentity());
-    return identitiesHelper.createIdentity(data, passphrase, isDefault)
+    return identitiesHelper.createIdentity(data, passphrase, isCurrent)
       .then((identity) => {
         const newIdentity = Object.assign({}, identity);
         if (!newIdentity) throw new Error('Identity does not match with the model');
@@ -168,25 +215,34 @@ export function handleUpdateIdentity(identity, data, passphrase) {
     dispatch(updateIdentity());
     return API.updateIdentity(identity, data, passphrase)
       .then((updatedIdentity) => {
-        identitiesHelper.setIdentityAsDefault(updatedIdentity);
+        identitiesHelper.setIdentityAsCurrent(updatedIdentity.address);
         dispatch(updateIdentitySuccess(updatedIdentity));
       })
       .catch(error => dispatch(updateIdentityError(error)));
   };
 }
 
+/**
+ * Action creator to load in the app state all the identities from the storage.
+ * Called when reload page or enter.
+ */
 export function handleSetIdentitiesFromStorage() {
   return function (dispatch) {
     dispatch(setAllIdentities());
     return Promise.resolve(identitiesHelper.getAllIdentities())
       .then((identities) => {
-        const defaultIdentity = identitiesHelper.getDefaultIdentity();
-        dispatch(setAllIdentitiesSuccess({ identities, currentIdentity: defaultIdentity }));
+        const currentIdentity = identitiesHelper.getCurrentIdentity();
+        dispatch(setAllIdentitiesSuccess({ identities, currentIdentity }));
       })
       .catch(error => dispatch(setAllIdentitiesError(error)));
   };
 }
 
+/**
+ * Action creator to delete all the identities of the application.
+ *
+ * @param {string} passphrase - Introduced by user to delete all identities
+ */
 export function handleDeleteAllIdentities(passphrase) {
   return function (dispatch) {
     dispatch(deleteAllIdentities());
@@ -197,5 +253,50 @@ export function handleDeleteAllIdentities(passphrase) {
           : dispatch(deleteAllIdentitiesError('Could not be deleted the identities'));
       })
       .catch(error => dispatch(deleteAllIdentitiesError(error)));
+  };
+}
+
+/**
+ * Action creator to delete one identity.
+ *
+ * @param {string} idAddress - Ethereum address of the identity
+ * @param {string} passphrase - Introduced by the user to delete the identity
+ */
+export function handleDeleteIdentity(idAddress, passphrase) {
+  return function (dispatch) {
+    if (!idAddress) {
+      return dispatch(deleteAllIdentitiesError('No address provided to delete the identity'));
+    }
+
+    dispatch(deleteIdentity);
+    return Promise.resolve(identitiesHelper.deleteIdentity(idAddress, passphrase))
+      .then((isDeleted) => {
+        isDeleted
+          ? dispatch(deleteIdentitySuccess(idAddress))
+          : dispatch(deleteIdentityError('Could not delete identity'));
+      })
+      .catch(error => dispatch(deleteIdentityError(error)));
+  };
+}
+
+/**
+ * Action creator to change the current user in the app.
+ *
+ * @param {string} idAddress - identity address to change in the app and load all the related data
+ */
+export function handleChangeCurrentIdentity(idAddress) {
+  return function (dispatch) {
+    if (!idAddress) {
+      return dispatch(changeCurrentIdentityError('No identity address provided to change to them'));
+    }
+
+    dispatch(changeCurrentIdentity);
+    return Promise.resolve(identitiesHelper.setIdentityAsCurrent(idAddress))
+      .then((isUpdated) => {
+        isUpdated
+          ? dispatch(changeCurrentIdentitySuccess(idAddress))
+          : dispatch(changeCurrentIdentityError('Could not change to selected identity'));
+      })
+      .catch(error => dispatch(changeCurrentIdentityError(error)));
   };
 }

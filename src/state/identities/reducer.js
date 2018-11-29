@@ -14,6 +14,9 @@ import {
   DELETE_ALL_IDENTITIES,
   DELETE_ALL_IDENTITIES_SUCCESS,
   DELETE_ALL_IDENTITIES_ERROR,
+  CHANGE_CURRENT_IDENTITY,
+  CHANGE_CURRENT_IDENTITY_SUCCESS,
+  CHANGE_CURRENT_IDENTITY_ERROR,
 } from './constants';
 
 /*
@@ -57,11 +60,15 @@ function identities(state = initialState, action) {
       });
     case CREATE_IDENTITY_SUCCESS: {
       // TODO: check if already exists the identity sent by the action
+      // if already there is an identity "logged" means that we are creating
+      // more identities and we don't want to change to new one, only create it
+      const currentIdentity = state.get('currentIdentity') ? state.get('currentIdentity') : action.data.get('address');
+
       return state.merge({
         isFetching: false,
         error: '',
         identities: state.get('identities').set(action.data.get('address'), action.data),
-        currentIdentity: action.data.get('address'),
+        currentIdentity,
       });
     }
     case CREATE_IDENTITY_ERROR:
@@ -110,6 +117,29 @@ function identities(state = initialState, action) {
         error: '',
       });
     case DELETE_ALL_IDENTITIES_ERROR:
+      return state.merge({
+        isFetching: false,
+        error: action.data,
+      });
+    case CHANGE_CURRENT_IDENTITY:
+      return state.merge({
+        isFetching: true,
+      });
+    case CHANGE_CURRENT_IDENTITY_SUCCESS: {
+      const _identities = state.get('identities');
+
+      // change the until now loaded identity as not current anymore
+      _identities.get(state.get('currentIdentity')).set('isCurrent', false);
+      // since we have the identity address in the action.data field, change
+      // in this identity the isCurrent field to True
+      _identities.get(action.data).set('isCurrent', true);
+      return state.merge({
+        isFetching: false,
+        identities: _identities,
+        currentIdentity: action.data,
+      });
+    }
+    case CHANGE_CURRENT_IDENTITY_ERROR:
       return state.merge({
         isFetching: false,
         error: action.data,

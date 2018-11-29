@@ -16,6 +16,11 @@ class List extends PureComponent {
      Lit of the claims to list
      */
     list: PropTypes.instanceOf(ImmutableMap),
+    /*
+     Call back when another identity is selected to load it in the app
+    */
+    onChangeCurrentIdentity: PropTypes.func.isRequired,
+    currentIdentity: PropTypes.instanceOf(ImmutableMap),
   };
 
   /**
@@ -32,7 +37,10 @@ class List extends PureComponent {
     Object.keys(identitiesList).forEach((identity) => {
       identities.push(
         <Identity
+          onChangeCurrentIdentity={this.props.onChangeCurrentIdentity}
           key={`identity-${identitiesList[identity].address}`}
+          address={identitiesList[identity].address}
+          isCurrent={this.props.currentIdentity.get('address') === identitiesList[identity].address}
           id={identitiesList[identity].address}
           content={identitiesList[identity].label}
           data={this._setExtraData(identitiesList[identity])} />,
