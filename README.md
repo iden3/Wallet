@@ -5,11 +5,11 @@ Implementation of the front-end for the Iden3 wallet for managing identities and
 This webapp it's thought to be responsive and access to the cam of your device.
 
 The application has these areas:
- - **Dashboard**: you can find a widget with the pending action. That means that you will see a list of actions that require your approval. Such as a login or regirter in a third party provider.
+ - **Dashboard**: you can find a widget with the pending action. That means that you will see a list of actions that require your approval. Such as a login or register in a third party provider.
  As well, there is a widget with the pinned claims: those that the user decides to access them easy (the favourite ones). I.e. could be a claim to access to their work place, to the gym, etc...
  - **Claims**: We can find a widget with the list of claims. Are divided in three types: Emitted, Received and grouped.
  - **History**: A list with the history of the user actions (such as create a claim, revoke another, login in a third party provider using a claim, etc...).
- - **Manage identities**: An user can create as many identities as he/she wants. Here it's possible to create, delete, etc...
+ - **Manage identities**: An user can create as many identities as he/she wants. Here it's possible to create, delete, etc... You can create as much identities as you want. Also can delete all identities without any password, key, nothing. Since we are in an early stage, this is only to check how the application works and kind of "developer mode".
 
 
 ### **WARNING: All code here is experimental and WIP**
@@ -25,7 +25,7 @@ npm run build:dev
 ```
 For running production build:
 ```
-npm run build: prod
+npm run build:prod
 ```
 For running tests:
 ```
@@ -46,11 +46,11 @@ npm run test
 
 ### Some development decisions
 
-- Project is developer (mostly) with features of ES6 and ESM
+- Project is developer (mostly) with ES6 and ES Modules features.
 - Follow BEM naming for classes and id's, please (http://getbem.com).
 - Container - component pattern: At views there will be always a containers folder. And if needed a components folder.
-- Use High order components to wrap any container accessing to the app STATE: We think is easier to reuse using the 'compose' Redux function.
-- High order components are preferred over Render Props. We are open to discus about whether use one or the other. We are pretty sure that you always will find awesome pros and cons :)
+- Use High order components to wrap any container accessing to the app state: We think that it's easier to reuse them using the 'compose' Redux function.
+- High order components are preferred over Render Props (even we are using both patterns inside the code). We are open to discus about whether use one or the other. We are pretty sure that you will always find awesome trade-offs and benefits :)
 - PureComponents are preferred over functional components. In our tests are faster to render.
 - Try to memoize when we need to update component state with new received props.
 - Please use constants files in the 'constants' folder for any literal or value to check that we will be the same in the application.
@@ -83,5 +83,5 @@ About testing it's very important to test:
 - If there is any immutable entity, test that you can't mutate it.
 - If component has classes, once mounted check that has these classes.
 - Test that the component has the corresponding accessibility tags (`role`, etc...).
-### Licenses
-Avatar Icon made by [Pixelmeetup](https://www.flaticon.com/authors/pixelmeetup) from www.flaticon.com 
+### Roadmap
+- 
