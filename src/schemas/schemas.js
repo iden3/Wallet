@@ -138,6 +138,11 @@ const schemas = (function () {
  */
   function parseIdentitySchema(data) {
     const date = new Date();
+    const { keys } = data;
+    const keysContainer = data.keys.keysContainer || data.keys.container;
+    const relay = data.id.relay || data.relay;
+    // when we are not creating th identity, and we are loading it from storage, implementation use to be ""
+    const implementation = typeof data.implementation === 'string' ? data.implementation : data.id.implementation;
 
     const parsedObject = {
       address: data.address,
@@ -145,24 +150,24 @@ const schemas = (function () {
       domain: data.domain,
       icon: utils.generateHash(),
       id: Object.getPrototypeOf(data.id),
-      implementation: data.id.implementation,
+      implementation,
       keys: {
-        recovery: data.keys.keyRecovery,
-        revoke: data.keys.keyRevoke,
-        operational: data.keys.keyOp,
+        recovery: keys.keyRecovery || keys.recovery,
+        revoke: keys.keyRevoke || keys.revoke,
+        operational: keys.keyOp || keys.operational,
         container: {
-          prefix: data.keys.keysContainer.prefix,
-          type: data.keys.keysContainer.type,
-          encryptionKey: data.keys.keysContainer.encryptionKey,
-          ...Object.getPrototypeOf(data.keys.keysContainer),
+          prefix: keysContainer.prefix,
+          type: keysContainer.type,
+          encryptionKey: keysContainer.encryptionKey,
+          ...Object.getPrototypeOf(keysContainer),
         },
       },
       label: data.label,
       originalDateTime: date,
       passphrase: data.passphrase,
-      relay: Object.getPrototypeOf(data.id.relay),
-      relayURL: data.id.relay.url,
-      seed: data.keys.mnemonic.split(),
+      relay: Object.getPrototypeOf(relay),
+      relayURL: data.relayURL || relay.url,
+      seed: data.seed || keys.mnemonic.split(),
       time: format(date, 'HH:mm'),
       isCurrent: data.isCurrent,
     };

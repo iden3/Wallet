@@ -67,15 +67,15 @@ const identitiesHelper = (function () {
    * @returns {Object} With the identity created or an Error if already existed
    */
   function _checkIdentitySchema(data) {
-    let newIdentity;
+    //let newIdentity;
 
-    if (!_getIdentity(data.address)) { // if doesn't exist identity
+    /*if (!_getIdentity(data.address)) { // if doesn't exist identity
       newIdentity = schemas.parseIdentitySchema(data);
     } else {
       throw new Error('Identity already exists');
-    }
+    }*/
 
-    return newIdentity;
+    return schemas.parseIdentitySchema(data);
   }
 
   /**
@@ -290,7 +290,7 @@ const identitiesHelper = (function () {
         ),
       );
 
-      ids[idFromStorage.address] = identity;
+      ids[idFromStorage.address] = _checkIdentitySchema(identity);
     }
 
     return Promise.resolve(ids);
