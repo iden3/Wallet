@@ -83,5 +83,12 @@ About testing it's very important to test:
 - If there is any immutable entity, test that you can't mutate it.
 - If component has classes, once mounted check that has these classes.
 - Test that the component has the corresponding accessibility tags (`role`, etc...).
-### Roadmap
-- 
+### Road map
+- Dapp access.
+- Notification module.
+- Recovery / revoke identity.
+- Recover an identity in another device.
+- Documents backup: drivers for indexedDB or other third parties like iCloud, Dropbox, etc... (under discussion).
+- Claims search module.
+- Historical widget.
+- Pinned claims in the dashboard.
