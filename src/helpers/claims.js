@@ -21,12 +21,19 @@ class Claim {
    * @param {Immutable.Map} identity - Identity to work with this claim
    */
   constructor(identity) {
-    this.identity = identity;
     this.DAL = new DAL(APP_SETTINGS.LOCAL_STORAGE);
     this.authorizeClaim = this.authorizeClaim.bind(this);
     this.createClaimInStorage = this.createClaimInStorage.bind(this);
     this.createGenericClaim = this.createGenericClaim.bind(this);
     this.getAllClaimsFromStorage = this.getAllClaimsFromStorage.bind(this);
+
+    // TODO: we need to do this in iden3js, to return functions and not a Class
+    const keysContainerProto = Object.getPrototypeOf(new iden3.KeyContainer(APP_SETTINGS.LOCAL_STORAGE));
+    this.identity = identity;
+    this.identity.get('keys').container = Object.assign(
+      { __proto__: keysContainerProto },
+      identity.get('keys').container,
+    );
   }
 
   //
@@ -34,7 +41,7 @@ class Claim {
   //
 
   /**
-   * Call the API to send to centalized server an authorization of a claim.
+   * Call the API to send to centralized server an authorization of a claim.
    *
    * @param {Object} proofOfClaim - With the proof of claim
    * @param {Object} JSONData - With the data of the claim sent by the centralized server (read by a QR i.e.)
@@ -63,7 +70,7 @@ class Claim {
    */
   _authorizeKSignClaim(data) {
     const id = identitiesHelper.createId(
-      this.identity.get('keys').toJS(),
+      this.identity.get('keys'),
       this.identity.get('relayURL'),
       this.identity.get('address'),
     );
@@ -84,7 +91,7 @@ class Claim {
     const JSONData = iden3.auth.parseQRhex(data); // Object {challenge, signature, url}
     const keyToAuthorize = iden3.utils.addrFromSig(JSONData.challenge, JSONData.signature); // string
     const unixTime = utils.getUnixTime(); // number
-    const operationalKey = this.identity.get('keys').get('operational');
+    const operationalKey = this.identity.get('keys').operational;
     const dataForAuthorization = new ImmutableList([
       keysContainer,
       operationalKey, // kSign in this case is the operational
@@ -100,9 +107,9 @@ class Claim {
   }
 
   _preNewClaim() {
-    const keysContainer = this.identity.get('keys').get('container');
+    const keysContainer = this.identity.get('keys').container;
     const id = identitiesHelper.createId(
-      this.identity.get('keys').toJS(),
+      this.identity.get('keys'),
       this.identity.get('relayURL'),
       this.identity.get('address'),
     );
@@ -211,7 +218,7 @@ class Claim {
       API.createGenericClaim(
         id,
         keysContainer,
-        this.identity.get('keys').get('operational'),
+        this.identity.get('keys').operational,
         APP_SETTINGS.DEFAULT_RELAY_DOMAIN,
         data,
       )

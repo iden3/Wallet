@@ -9,7 +9,10 @@ import {
 } from 'react-router-dom';
 import { Map as ImmutableMap } from 'immutable';
 import classNames from 'classnames';
-import { withIdentities } from 'hocs';
+import {
+  withClaims,
+  withIdentities,
+} from 'hocs';
 import {
   Content,
   Header,
@@ -43,13 +46,34 @@ class Layout extends React.Component {
     //
     location: PropTypes.object.isRequired,
     //
-    // from withIdentities HoC
+    // From withIdentities HoC
     //
     /*
+      Action to set in the app state the identities from the app state first time app is loaded
+    */
+    handleSetIdentitiesFromStorage: PropTypes.func.isRequired,
+    /*
      Selector to get the current loaded identity information
-     */
+    */
     currentIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
+    //
+    // From withClaims HoC
+    //
+    /*
+      Action to retrieve all claims from storage (for set the later in the app state)
+    */
+    handleSetClaimsFromStorage: PropTypes.func.isRequired,
   };
+
+  /**
+   * First time app is loaded set in the app state the identities
+   * and claims that belong to this identity, that are in the storage.
+   */
+  constructor(props) {
+    super(props);
+    this.props.handleSetIdentitiesFromStorage()
+      .then(() => this.props.handleSetClaimsFromStorage(this.props.currentIdentity));
+  }
 
   render() {
     const usersExist = this.props.currentIdentity.size > 0;
@@ -101,4 +125,5 @@ class Layout extends React.Component {
 export default compose(
   withRouter,
   withIdentities,
+  withClaims,
 )(Layout);

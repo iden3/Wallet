@@ -6,8 +6,11 @@ export const getIdentitiesError = state => getidentitiesState(state).get('error'
 export const getIdentity = (state, address) => getidentitiesState(state).get('identities').get(address);
 export const getCurrentIdentity = (state) => {
   const idDefaultAddr = getidentitiesState(state).get('currentIdentity');
-  const idDefault = getIdentity(state, idDefaultAddr);
-  return new ImmutableMap(idDefault) || new ImmutableMap({});
+  if (idDefaultAddr) {
+    const idDefault = getIdentity(state, idDefaultAddr).toJS();
+    return new ImmutableMap(idDefault) || new ImmutableMap({});
+  }
+  return new ImmutableMap({});
 };
 export const getIdentitiesNumber = state => getidentitiesState(state).get('identities').size || 0;
 export const getIdentities = state => getidentitiesState(state).get('identities');
