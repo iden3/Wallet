@@ -150,7 +150,7 @@
     "webpack": "^4.23.0",
     "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.5",
+    "webpack-dev-server": "^3.1.14",
     "webpack-md5-hash": "0.0.6",
     "webpack-merge": "^4.1.4"
   },

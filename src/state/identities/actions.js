@@ -176,7 +176,7 @@ export function handleCreateIdentity(passphrase, data) {
         // update the number of identities
         identitiesHelper.updateIdentitiesNumber(true);
         dispatch(createIdentitySuccess(newIdentity));
-        // return data from new user because is needed to bind it to a name in next step of the UI
+        // return data from new user because is needed to bind it to a label in next step of the UI
         return newIdentity;
       })
       .catch(error => dispatch(createIdentityError(error.message)));
