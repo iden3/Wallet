@@ -10,31 +10,31 @@ import {
 } from 'base_components';
 import { notificationsHelper } from 'helpers';
 
-import './step-set-name.scss';
+import './step-set-label.scss';
 
 /**
- * Show an input to ask to users which name they want
+ * Show an input to ask to users which label they want
  * TODO: Select domain regarding the Relay selected (for now mocked with @iden3.io)
  */
-class StepSetName extends PureComponent {
+class StepSetLabel extends PureComponent {
   static propTypes = {
     /*
      To indicate to the container next step (if moving forward or backwards)
      */
     move: PropTypes.func.isRequired,
     /*
-     Action to update in the app state the identity name introduced
+     Action to update in the app state the identity label introduced
      */
     updateForm: PropTypes.func.isRequired,
     /*
-     Callback to retrieve the value of the identity name form is there
+     Callback to retrieve the value of the identity label form is there
      was any before moving over the different views of the wizard
      */
     getFormValue: PropTypes.func.isRequired,
     /*
      Call back to trigger when moving forward and bind the label with the identity address
      */
-    createIdentity: PropTypes.func.isRequired,
+    setLabel: PropTypes.func.isRequired,
   };
 
   state = {
@@ -53,7 +53,7 @@ class StepSetName extends PureComponent {
   };
 
   /**
-   * Update the app state with the current identity name introduced
+   * Update the app state with the current identity label introduced
    * and trigger callback to move former view of the wizard.
    */
   moveBackwards = () => {
@@ -69,14 +69,14 @@ class StepSetName extends PureComponent {
     const isValidLabel = this._checkLabel();
 
     if (isValidLabel) {
-      this.props.createIdentity({ label: this.state.label, domain: this.state.domain });
+      this.props.setLabel({ label: this.state.label, domain: this.state.domain });
       this._updateForm();
       this.props.move('forward');
     } else {
       // show notification with error
       notificationsHelper.showNotification({
         type: NOTIFICATIONS.ERROR,
-        description: 'Not valid name, please try again.',
+        description: 'Not valid label, please try again.',
       });
     }
   };
@@ -96,7 +96,7 @@ class StepSetName extends PureComponent {
 
   /**
    * Trigger call back from props to update the identity
-   * name in the app state.
+   * label in the app state.
    *
    * @private
    */
@@ -109,15 +109,15 @@ class StepSetName extends PureComponent {
 
   render() {
     return (
-      <div className="i3-ww-ci__step i3-ww-ci__set-name">
+      <div className="i3-ww-ci__step i3-ww-ci__set-label">
         <div className="i3-ww-ci__title">
-          <p className="i3-ww-title">Your name</p>
+          <p className="i3-ww-title">Your name/label</p>
         </div>
         <div className="i3-ww-ci__content">
           <span>
             You are almost there!
             <br />
-            Please, insert a name in the selected domain to create your identity.
+            Please, insert a name/label in the selected domain to create your identity.
             Only alphanumeric characters are allowed, dashes and underscores.
             At least should have one letter.
             Not other symbols (i.e. @) or spaces are allowed.
@@ -125,7 +125,7 @@ class StepSetName extends PureComponent {
           <div>
             <Input
               value={this.state.label}
-              placeholder="Enter a name"
+              placeholder="Enter a name/label"
               onChange={e => this.handleInputChange(e.target.value)} />
             <span className="i3-ww-ci__relay_text">@iden3.io</span>
             {' '}
@@ -153,4 +153,4 @@ class StepSetName extends PureComponent {
   }
 }
 
-export default StepSetName;
+export default StepSetLabel;

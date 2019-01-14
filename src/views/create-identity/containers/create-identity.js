@@ -10,7 +10,7 @@ import {
 import { notificationsHelper } from 'helpers';
 import {
   StepSetPassphrase,
-  StepSetName,
+  StepSetLabel,
   StepWelcome,
 } from '../components';
 
@@ -18,8 +18,8 @@ import './create-identity.scss';
 
 const sortedSteps = [
   StepWelcome,
+  StepSetLabel,
   StepSetPassphrase,
-  StepSetName,
 ];
 
 /**
@@ -75,6 +75,7 @@ class CreateIdentity extends Component {
     currentStep: 0,
     passphrase: '',
     goToDashboard: false,
+    labelData: { label: '', domain: '' },
   };
 
   /**
@@ -89,6 +90,32 @@ class CreateIdentity extends Component {
 
   componentWillUnmount() {
     this.setState({ goToDashboard: true });
+  }
+
+  /**
+   * Set the label chosen by the user in the state to use it in the last step to create the identity.
+   *
+   * @param {string} data - With the label chosen
+   */
+  setLabel = (data) => {
+    if (data.label && data.domain) {
+      this.setState({ labelData: data });
+    } else {
+      notificationsHelper.showNotification({
+        type: NOTIFICATIONS.ERROR,
+        description: 'We are sorry... No name/label or domain set or could not be saved',
+      });
+    }
+  }
+
+  /**
+   * Set the passphrase in the component state needed to sign the identity keys
+   * when created.
+   *
+   * @param passphrase - Chosen by the user
+   */
+  setPassphrase = (passphrase) => {
+    this.setState({ passphrase });
   }
 
   /**
@@ -107,13 +134,13 @@ class CreateIdentity extends Component {
       }
 
       if (currentStep === sortedSteps.length) {
-        this.props.afterCreateIdentity();
+        this.createIdentity();
         this.setState({ goToDashboard: true });
       } else {
         this.setState({ currentStep });
       }
     }
-  };
+  }
 
   /**
    * Create the identity: create keys and set the relay. Then
@@ -122,24 +149,22 @@ class CreateIdentity extends Component {
    *
    * @param {Object} data - with identity 'label'/'name' and 'domain'
    */
-  createIdentity = (data) => {
-    this.props.handleCreateIdentity(this.state.passphrase, data)
-      .then(() => this.props.handleClearCreateIdentityForms())
-      .catch(error => notificationsHelper.showNotification({
+  createIdentity = (data = this.state.labelData) => {
+    if (this.state.passphrase && data) { // step asking for passphrase already done
+      this.props.handleCreateIdentity(this.state.passphrase, data)
+        .then(() => this.props.handleClearCreateIdentityForms())
+        .then(() => this.props.afterCreateIdentity())
+        .catch(error => notificationsHelper.showNotification({
+          type: NOTIFICATIONS.ERROR,
+          description: `We are sorry... There was an error creating the identity:\n${error}`,
+        }));
+    } else {
+      notificationsHelper.showNotification({
         type: NOTIFICATIONS.ERROR,
-        description: `We are sorry... There was an error creating the identity:\n${error}`,
-      }));
-  };
-
-  /**
-   * Set the passphrase in the component state needed to sign the identity keys
-   * when created.
-   *
-   * @param passphrase
-   */
-  setPassphrase = (passphrase) => {
-    this.setState({ passphrase });
-  };
+        description: 'We are sorry... There was an error creating the identity:\nNo passphrase or label set',
+      });
+    }
+  }
 
   /**
    * Call the action to update the form in the app state
@@ -148,7 +173,7 @@ class CreateIdentity extends Component {
    */
   updateForm = (form, newValues) => {
     this.props.handleUpdateForm(form, newValues);
-  };
+  }
 
   render() {
     const Step = sortedSteps[this.state.currentStep];
@@ -164,7 +189,7 @@ class CreateIdentity extends Component {
       <div className="i3-ww-ci">
         <Step
           isFirstIdentity={this.props.isFirstIdentity}
-          createIdentity={this.createIdentity}
+          setLabel={this.setLabel}
           setPassphrase={this.setPassphrase}
           getFormValue={this.props.getForm}
           updateForm={this.updateForm}
