@@ -144,9 +144,10 @@ class Identities extends Component {
       </div>
     );
     const boxElements = this._getBoxContent();
+    const cmptClassName = 'i3-ww-identities';
 
     return (
-      <div className="i3-ww-identities">
+      <div className={cmptClassName}>
         <Widget
           isFetching={false}
           hasError={false}

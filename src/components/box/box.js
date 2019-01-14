@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
   Portal,
@@ -53,7 +53,8 @@ class Box extends Component {
   };
 
   /**
-   * Set the new state if visibility changes regading parent component
+   * Set the new state if visibility changes regarding parent component.
+   *
    * @param {object} props new props from parent
    * @param {object} state current state before have been updated
    * @returns {object} updated state
@@ -65,14 +66,21 @@ class Box extends Component {
     return state;
   }
 
+  componentDidMount() {
+    if (document.getElementsByClassName('i3-ww-popups')[0] && this.node) {
+      document.getElementsByClassName('i3-ww-popups')[0].appendChild(this.node);
+    }
+  }
+
   /**
    * Remove the listeners to the focus and escape and return the focus
-   * to the las element active before show the Box
+   * to the las element active before show the Box.
    */
   componentWillUnmount() {
     document.removeEventListener('keydown', this.handleClose, true);
     document.removeEventListener('focus', this.handleFocus, true);
-    this.lastActive.focus();
+    this.lastActive && this.lastActive.focus();
+    document.getElementsByClassName('i3-ww-popups')[0].removeChild(this.node);
   }
 
   /**
@@ -98,8 +106,27 @@ class Box extends Component {
   };
 
   /**
+   * If we click over the app, check if was a click inside the box or not.
+   * If click made outside add or remove event listener to check the click.
+   */
+  handleClick = (e) => {
+    // ignore clicks inside the Box
+    if (this.node.contains(e.target)) {
+      return;
+    }
+
+    // clicked out of the Box
+    if (!this.state.isVisible) {
+      document.addEventListener('click', this.handleClick, false);
+    } else {
+      document.removeEventListener('click', this.handleClick, false);
+    }
+  }
+
+  /**
    * Handle the focus of the inner element and close with
-   * the inner content of the box. For accessibility
+   * the inner content of the box. For accessibility purposes.
+   *
    * @param {object} container React node
    */
   setActiveContainer = (container) => {
@@ -150,10 +177,23 @@ class Box extends Component {
 
   render() {
     return (
-      <div className="i3-ww-box">
-        <Portal parentClassName="i3-ww-box">
-          { this._getContent() }
-        </Portal>
+      <div ref={node => this.node = node}>
+        { this.state.isVisible && (
+          <Fragment>
+            <div className="i3-ww-box-mask" />
+            <div
+              className="i3-ww-box"
+              role="button"
+              tabIndex={0}
+              onClick={this.handleClick}
+              onKeyUp={this.handleClick}>
+              <Portal parentClassName="i3-ww-box">
+                { this._getContent() }
+              </Portal>
+            </div>
+          </Fragment>
+        )
+      }
       </div>
     );
   }

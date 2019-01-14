@@ -150,6 +150,7 @@ function changeCurrentIdentitySuccess(idAddress) {
 }
 
 function changeCurrentIdentityError(error) {
+  console.error(error);
   return {
     type: CHANGE_CURRENT_IDENTITY_ERROR,
     data: error,
