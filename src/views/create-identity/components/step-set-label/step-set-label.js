@@ -21,7 +21,7 @@ class StepSetLabel extends PureComponent {
     /*
      To indicate to the container next step (if moving forward or backwards)
      */
-    move: PropTypes.func.isRequired,
+    move: PropTypes.func,
     /*
      Action to update in the app state the identity label introduced
      */

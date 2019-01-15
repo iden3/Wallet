@@ -9,6 +9,9 @@ import {
 } from 'hocs';
 import { notificationsHelper } from 'helpers';
 import {
+  Wizard,
+} from 'views';
+import {
   StepSetPassphrase,
   StepSetLabel,
   StepWelcome,
@@ -72,9 +75,9 @@ class CreateIdentity extends Component {
   }
 
   state = {
-    currentStep: 0,
+    // currentStep: 0,
     passphrase: '',
-    goToDashboard: false,
+    // goToDashboard: false,
     labelData: { label: '', domain: '' },
   };
 
@@ -88,9 +91,9 @@ class CreateIdentity extends Component {
     this.props.getForm(FORMS.IDENTITY_NAME);
   }
 
-  componentWillUnmount() {
+  /* componentWillUnmount() {
     this.setState({ goToDashboard: true });
-  }
+  } */
 
   /**
    * Set the label chosen by the user in the state to use it in the last step to create the identity.
@@ -123,7 +126,7 @@ class CreateIdentity extends Component {
    *
    * @param {string} direction should be 'forward' or 'backwards'
    */
-  changeStep = (direction = 'forward') => {
+  /* changeStep = (direction = 'forward') => {
     if (!this.state.goToDashboard) {
       let { currentStep } = this.state;
 
@@ -140,7 +143,7 @@ class CreateIdentity extends Component {
         this.setState({ currentStep });
       }
     }
-  }
+  } */
 
   /**
    * Create the identity: create keys and set the relay. Then
@@ -175,8 +178,33 @@ class CreateIdentity extends Component {
     this.props.handleUpdateForm(form, newValues);
   }
 
+  _getSortedSteps = () => {
+    const Step1 = sortedSteps[0];
+    const Step2 = sortedSteps[1];
+    const Step3 = sortedSteps[2];
+
+    return [
+      {
+        view: Step1,
+        ownProps: { isFirstIdentity: this.props.isFirstIdentity },
+        move: true,
+      },
+      {
+        view: Step2,
+        ownProps: { updateForm: this.updateForm, getFormValue: this.props.getForm, setLabel: this.setLabel },
+        move: true,
+      },
+      {
+        view: Step3,
+        ownProps: { updateForm: this.updateForm, getFormValue: this.props.getForm, setPassphrase: this.setPassphrase },
+        move: true,
+      },
+    ];
+  }
+
   render() {
-    const Step = sortedSteps[this.state.currentStep];
+    // const Step = sortedSteps[this.state.currentStep];
+    const sortedStepsObj = this._getSortedSteps();
 
     if (this.props.identitiesError) {
       notificationsHelper.showNotification({
@@ -187,14 +215,17 @@ class CreateIdentity extends Component {
 
     return (
       <div className="i3-ww-ci">
-        <Step
+        { /* <Step
           isFirstIdentity={this.props.isFirstIdentity}
           setLabel={this.setLabel}
           setPassphrase={this.setPassphrase}
           getFormValue={this.props.getForm}
           updateForm={this.updateForm}
           showNotification={this.showNotification}
-          move={this.changeStep} />
+          move={this.changeStep} /> */}
+        <Wizard
+          sortedSteps={sortedStepsObj}
+          lastAction={this.createIdentity} />
       </div>
     );
   }

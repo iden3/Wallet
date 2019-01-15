@@ -21,7 +21,7 @@ class StepSetPassphrase extends PureComponent {
     /*
       Callback triggered when one of the action buttons are pressed
      */
-    move: PropTypes.func.isRequired,
+    move: PropTypes.func,
     /*
      Callback to retrieve the value of the passphrase form is there was any before moving
      over the different views of the wizard

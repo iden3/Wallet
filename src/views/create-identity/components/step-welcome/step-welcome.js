@@ -18,7 +18,7 @@ class StepWelcome extends PureComponent {
     /*
       Call back triggered when one of the action buttons are pressed
      */
-    move: PropTypes.func.isRequired,
+    move: PropTypes.func,
     /*
      Flag to know if it's first identity, to show one text or other
     */

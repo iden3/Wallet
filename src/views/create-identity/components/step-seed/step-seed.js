@@ -7,7 +7,7 @@ import {
 
 class StepSeed extends PureComponent {
   static propTypes = {
-    move: PropTypes.func.isRequired,
+    move: PropTypes.func,
     seed: PropTypes.array,
   }
 
