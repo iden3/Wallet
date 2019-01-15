@@ -78,6 +78,10 @@ class Layout extends React.Component {
                   && this.props.handleSetClaimsFromStorage(this.props.currentIdentity));
   }
 
+  state = {
+    saveSeedNotisVisible: false,
+  }
+
   /**
   * Render notification warning to save seed if it's needed
   */
@@ -85,7 +89,7 @@ class Layout extends React.Component {
     const notification = this.props.currentIdentity.size > 0 && this._getSaveSeedNotification();
 
     if (notification) {
-      document.getElementsByClassName('i3-ww-save-seed-notification')[0].appendChild(notification)
+      document.getElementsByClassName('i3-ww-save-seed-notification')[0].appendChild(notification);
     }
   }
 
@@ -96,12 +100,15 @@ class Layout extends React.Component {
   * @returns {Node} React element with the notification.
   */
   _getSaveSeedNotification() {
-    if (!this.props.currentIdentity.get('hasSavedSeed')) {
+    if (!this.props.currentIdentity.get('hasSavedSeed') && !this.state.saveSeedNotisVisible) {
+      this.setState({ saveSeedNotisVisible: true });
+
       return notificationsHelper.showNotification({
         type: NOTIFICATIONS.WARNING,
         message: 'WARNING: Save your private key!',
         description: 'Please, click here to proceed. If not, you will not be able to do any transaction',
         duration: 0,
+        placement: 'topLeft',
       });
     }
 

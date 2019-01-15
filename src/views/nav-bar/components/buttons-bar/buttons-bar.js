@@ -25,6 +25,7 @@ class ButtonsBar extends PureComponent {
   static propTypes = {
     addCamButton: PropTypes.bool,
     addNotificationsButton: PropTypes.bool,
+    addSaveSeedNotification: PropTypes.bool,
     mobileMenuItems: PropTypes.arrayOf(PropTypes.node),
     isDesktopVisible: PropTypes.bool,
   };
@@ -32,6 +33,7 @@ class ButtonsBar extends PureComponent {
   static defaultProps = {
     addCamButton: false,
     addNotificationsButton: false,
+    addSaveSeedNotification: false,
     isDesktopVisible: false,
   };
 
@@ -53,6 +55,21 @@ class ButtonsBar extends PureComponent {
     return (
       <Fragment>
         <div className="i3-ww-nav-bar__buttons">
+          {
+            this.props.addSaveSeedNotification && (
+            <Menu
+              mode="horizontal"
+              selectedKeys={[this.state.isDesktopVisible ? 'saveSeedNotification' : '']}>
+              <MenuItem key="saveSeedNotification">
+                <div className="i3-ww-blink">
+                  <Badge dot>
+                    <Icon type="notification" />
+                  </Badge>
+                </div>
+              </MenuItem>
+            </Menu>
+            )
+          }
           { this.props.addCamButton && (
             <Menu
               mode="horizontal"

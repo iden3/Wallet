@@ -57,7 +57,7 @@ const notifications = (function () {
   function showNotification(config) {
     if (notificationTypes.indexOf(config.type) !== -1) {
       const _config = Object.assign({}, config, _getContent(config));
-      _config.placement = 'bottomRight';
+      _config.placement = _config.placement || 'bottomRight';
       _config.bottom = 20;
 
       delete _config.type;

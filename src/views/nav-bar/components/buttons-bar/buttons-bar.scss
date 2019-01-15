@@ -49,6 +49,13 @@
       background: $nav-bar-badge-bg-color;
       box-shadow: 0 0 0 1px $nav-bar-badge-bg-color;
     }
+
+    // the badge of the notifications for saving seed
+    .ant-badge-dot {
+      height: 10px;
+      width: 10px;
+      right: 12px;
+    }
     .i3-ww-drop-down {
       display: block;
       @include with-desktop-width {

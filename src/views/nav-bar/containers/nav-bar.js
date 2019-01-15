@@ -103,6 +103,7 @@ class NavBar extends Component {
             items={menuItems}
             selectedItem={selectedMainMenuItem} />
           <ButtonsBar
+            addSaveSeedNotification={!this.props.currentIdentity.get('hasSavedSeed')}
             addCamButton
             addNotificationsButton
             mobileMenuItems={menuItems} />
