@@ -57,6 +57,7 @@ class Box extends Component {
    *
    * @param {object} props new props from parent
    * @param {object} state current state before have been updated
+   *
    * @returns {object} updated state
    */
   static getDerivedStateFromProps(props, state) {
@@ -84,7 +85,8 @@ class Box extends Component {
   }
 
   /**
-   * Set the focus for usability in the content shown in the  box
+   * Set the focus for usability in the content shown in the  box.
+   *
    * @param {object} event
    */
   handleFocus = (event) => {
@@ -95,7 +97,8 @@ class Box extends Component {
   };
 
   /**
-   * If key escape (code 27) pressed, close the box
+   * If key escape (code 27) pressed, close the box.
+   *
    * @param {number} keyCode
    */
   handleClose = ({ keyCode }) => {
@@ -155,7 +158,8 @@ class Box extends Component {
   };
 
   /**
-   * Get the content to render, a SidePanel or a Pop-up
+   * Get the content to render, a SidePanel or a Pop-up.
+   *
    * @returns {object} React node with a SidePanel or a Popup component
    * @private
    */

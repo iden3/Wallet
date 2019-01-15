@@ -216,8 +216,15 @@ const identitiesHelper = (function () {
       API.createIdentity(identity.id)
         .then((address) => {
           // once we have the address returned by the ID, set it in the local storage
+          // set the flag hasSavedIdentity at false to show a notification in the app
+          // to warn user to keep the seed and show them it
           const newIdentity = _checkIdentitySchema({
-            address, ...identity, ...data, passphrase, isCurrent,
+            address,
+            ...identity,
+            ...data,
+            passphrase,
+            isCurrent,
+            hasSavedSeed: false,
           });
 
           if (newIdentity && createIdentityInStorage(newIdentity)) {

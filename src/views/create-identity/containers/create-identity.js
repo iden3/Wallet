@@ -149,9 +149,9 @@ class CreateIdentity extends Component {
    *
    * @param {Object} data - with identity 'label'/'name' and 'domain'
    */
-  createIdentity = (data = this.state.labelData) => {
+  createIdentity = async (data = this.state.labelData) => {
     if (this.state.passphrase && data) { // step asking for passphrase already done
-      this.props.handleCreateIdentity(this.state.passphrase, data)
+      await this.props.handleCreateIdentity(this.state.passphrase, data)
         .then(() => this.props.handleClearCreateIdentityForms())
         .then(() => this.props.afterCreateIdentity())
         .catch(error => notificationsHelper.showNotification({

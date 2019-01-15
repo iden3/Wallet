@@ -22,6 +22,7 @@ const model = {
   address: '',
   date: '',
   domain: '',
+  hasSavedSeed: false,
   icon: '',
   id: Object.create({}),
   implementation: '',

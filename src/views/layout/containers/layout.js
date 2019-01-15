@@ -27,6 +27,8 @@ import {
   CreateIdentity,
 } from 'views';
 import * as ROUTES from 'constants/routes';
+import { notificationsHelper } from 'helpers';
+import { TYPE as NOTIFICATIONS } from 'constants/notifications';
 import {
   HeaderWithLogo,
   Footer,
@@ -76,6 +78,36 @@ class Layout extends React.Component {
                   && this.props.handleSetClaimsFromStorage(this.props.currentIdentity));
   }
 
+  /**
+  * Render notification warning to save seed if it's needed
+  */
+  componentDidUpdate() {
+    const notification = this.props.currentIdentity.size > 0 && this._getSaveSeedNotification();
+
+    if (notification) {
+      document.getElementsByClassName('i3-ww-save-seed-notification')[0].appendChild(notification)
+    }
+  }
+
+  /**
+  * Create a notification node with a warning message to save the seed by the user.
+  * This notification is always shown unless the user click on it to go to the wizard to save the seed.
+  *
+  * @returns {Node} React element with the notification.
+  */
+  _getSaveSeedNotification() {
+    if (!this.props.currentIdentity.get('hasSavedSeed')) {
+      return notificationsHelper.showNotification({
+        type: NOTIFICATIONS.WARNING,
+        message: 'WARNING: Save your private key!',
+        description: 'Please, click here to proceed. If not, you will not be able to do any transaction',
+        duration: 0,
+      });
+    }
+
+    return null;
+  }
+
   render() {
     const usersExist = this.props.currentIdentity.size > 0;
 
@@ -85,7 +117,10 @@ class Layout extends React.Component {
           'i3-ww-header': true,
           'i3-ww-header__no-nav-bar': !usersExist,
         })}>
-          <HeaderWithLogo location={this.props.location} enableLink={usersExist} />
+          <HeaderWithLogo
+            showSaveSeedNotification
+            location={this.props.location}
+            enableLink={usersExist} />
           { usersExist && <NavBar /> }
         </Header>
         <Content className="i3-ww-content">
@@ -117,6 +152,7 @@ class Layout extends React.Component {
             )
           }
           <Footer />
+          <div className="i3-ww-save-seed-notification" />
         </Content>
       </LayoutCmpt>
     );

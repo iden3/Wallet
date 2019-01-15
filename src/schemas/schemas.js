@@ -148,6 +148,7 @@ const schemas = (function () {
       address: data.address,
       date: format(date, 'd/MMM/yyyy'),
       domain: data.domain,
+      hasSavedSeed: !!data.hasSavedSeed, // if there is no field, set it as false to show save seed notification
       icon: utils.generateHash(),
       id: Object.getPrototypeOf(data.id),
       implementation,
