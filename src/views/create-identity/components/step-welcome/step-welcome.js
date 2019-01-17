@@ -27,24 +27,8 @@ class StepWelcome extends PureComponent {
 
   render() {
     return (
-      <div className="i3-ww-ci__step  i3-ww-ci__welcome">
-        <div className="i3-ww-ci__title">
-          { this.props.isFirstIdentity
-            ? (
-              <div>
-                <p className="i3-ww-title">Welcome to iden3</p>
-                <p className="i3-ww-subtitle">Create your decentralized identity</p>
-              </div>
-            )
-            : (
-              <div>
-                <p className="i3-ww-title">New iden3 identity</p>
-                <p className="i3-ww-subtitle">Create another decentralized identity</p>
-              </div>
-            )
-          }
-        </div>
-        <div className="i3-ww-ci__content">
+      <div>
+        <div>
           <p>
             The next steps will guide you through your active identity creation process.
             {this.props.isFirstIdentity && 'You will also be able to create more identities later.' }

@@ -75,9 +75,7 @@ class CreateIdentity extends Component {
   }
 
   state = {
-    // currentStep: 0,
     passphrase: '',
-    // goToDashboard: false,
     labelData: { label: '', domain: '' },
   };
 
@@ -90,10 +88,6 @@ class CreateIdentity extends Component {
     this.props.getForm(FORMS.PASSPHRASE);
     this.props.getForm(FORMS.IDENTITY_NAME);
   }
-
-  /* componentWillUnmount() {
-    this.setState({ goToDashboard: true });
-  } */
 
   /**
    * Set the label chosen by the user in the state to use it in the last step to create the identity.
@@ -122,30 +116,6 @@ class CreateIdentity extends Component {
   }
 
   /**
-   * Set component state to show the right view of the welcome wizard.
-   *
-   * @param {string} direction should be 'forward' or 'backwards'
-   */
-  /* changeStep = (direction = 'forward') => {
-    if (!this.state.goToDashboard) {
-      let { currentStep } = this.state;
-
-      if (direction === 'forward') {
-        currentStep = this.state.currentStep + 1;
-      } else if (direction === 'backwards') {
-        currentStep = this.state.currentStep - 1;
-      }
-
-      if (currentStep === sortedSteps.length) {
-        this.createIdentity();
-        this.setState({ goToDashboard: true });
-      } else {
-        this.setState({ currentStep });
-      }
-    }
-  } */
-
-  /**
    * Create the identity: create keys and set the relay. Then
    * call the action creator to create the identity and set it
    * in the app state and in the storage selected.
@@ -170,7 +140,8 @@ class CreateIdentity extends Component {
   }
 
   /**
-   * Call the action to update the form in the app state
+   * Call the action to update the form in the app state.
+   *
    * @param {string} form - from one of the forms in the app (given from a constants file)
    * @param {object} newValues - with the new values
    */
@@ -179,31 +150,30 @@ class CreateIdentity extends Component {
   }
 
   _getSortedSteps = () => {
-    const Step1 = sortedSteps[0];
-    const Step2 = sortedSteps[1];
-    const Step3 = sortedSteps[2];
-
     return [
       {
-        view: Step1,
+        content: sortedSteps[0],
         ownProps: { isFirstIdentity: this.props.isFirstIdentity },
-        move: true,
+        classes: ['i3-ww-ci__welcome'],
+        title: this.props.isFirstIdentity ? 'Welcome to iden3' : 'New iden3 identity',
+        subtitle: `Create ${this.props.isFirstIdentity ? 'your' : 'another'} decentralized identity`,
       },
       {
-        view: Step2,
+        content: sortedSteps[1],
         ownProps: { updateForm: this.updateForm, getFormValue: this.props.getForm, setLabel: this.setLabel },
-        move: true,
+        classes: ['i3-ww-ci__set-label'],
+        title: 'Your username',
       },
       {
-        view: Step3,
+        content: sortedSteps[2],
         ownProps: { updateForm: this.updateForm, getFormValue: this.props.getForm, setPassphrase: this.setPassphrase },
-        move: true,
+        classes: ['i3-ww-ci__passphrase'],
+        title: 'Create a passphrase',
       },
     ];
   }
 
   render() {
-    // const Step = sortedSteps[this.state.currentStep];
     const sortedStepsObj = this._getSortedSteps();
 
     if (this.props.identitiesError) {
@@ -214,19 +184,10 @@ class CreateIdentity extends Component {
     }
 
     return (
-      <div className="i3-ww-ci">
-        { /* <Step
-          isFirstIdentity={this.props.isFirstIdentity}
-          setLabel={this.setLabel}
-          setPassphrase={this.setPassphrase}
-          getFormValue={this.props.getForm}
-          updateForm={this.updateForm}
-          showNotification={this.showNotification}
-          move={this.changeStep} /> */}
-        <Wizard
-          sortedSteps={sortedStepsObj}
-          lastAction={this.createIdentity} />
-      </div>
+      <Wizard
+        className="i3-ww-ci"
+        sortedSteps={sortedStepsObj}
+        lastAction={this.createIdentity} />
     );
   }
 }

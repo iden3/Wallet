@@ -112,44 +112,41 @@ class StepSetPassphrase extends PureComponent {
     });
 
     return (
-      <div className="i3-ww-ci__step i3-ww-ci__passphrase">
-        <div className="i3-ww-ci__title">
-          <p className="i3-ww-title">Create a passphrase</p>
-        </div>
-        <div className="i3-ww-ci__content">
+      <div>
+        <div>
           <p>
-            Secure your identity to encrypt your private key.
-            A good passphrase
+              Secure your identity to encrypt your private key.
+              A good passphrase
             {' '}
             <span className="i3-ww-ci__passphrase-content-description1--bold">
-            should have at least 15 characters with upper and lower case letters,
-            digits and some special characters.
+              should have at least 15 characters with upper and lower case letters,
+              digits and some special characters.
             </span>
             <span className="i3-ww-ci__passphrase-content-description2">
               {' '}
-            But it should be a text which you are able to remember,
+              But it should be a text which you are able to remember,
               {' '}
-            since it will be asked in some of your activities with your identity.
+              since it will be asked in some of your activities with your identity.
             </span>
           </p>
-          <div className={inputClasses}>
-            <form>
-              <div className="i3-ww-ci__input-wrapper">
-                <Input
-                  placeholder="Enter a passphrase"
-                  value={this.state.passphrase}
-                  onChange={e => this.handleInputChange(e.target.value, 'passphrase')}
-                  isPasswordType />
-              </div>
-              <div className="i3-ww-ci__input-wrapper">
-                <Input
-                  placeholder="Repeat the passphrase"
-                  value={this.state.repeatedPasshphrase}
-                  onChange={e => this.handleInputChange(e.target.value, 'repeatedPasshphrase')}
-                  isPasswordType />
-              </div>
-            </form>
-          </div>
+        </div>
+        <div className={inputClasses}>
+          <form>
+            <div className="i3-ww-ci__input-wrapper">
+              <Input
+                placeholder="Enter a passphrase"
+                value={this.state.passphrase}
+                onChange={e => this.handleInputChange(e.target.value, 'passphrase')}
+                isPasswordType />
+            </div>
+            <div className="i3-ww-ci__input-wrapper">
+              <Input
+                placeholder="Repeat the passphrase"
+                value={this.state.repeatedPasshphrase}
+                onChange={e => this.handleInputChange(e.target.value, 'repeatedPasshphrase')}
+                isPasswordType />
+            </div>
+          </form>
         </div>
         <div className="i3-ww-ci__buttons">
           <Button
@@ -163,7 +160,7 @@ class StepSetPassphrase extends PureComponent {
             onClick={this.moveForward}
             type="primary"
             htmlType="button">
-            Next
+            Create my identity!
             <Icon type="right" />
           </Button>
         </div>

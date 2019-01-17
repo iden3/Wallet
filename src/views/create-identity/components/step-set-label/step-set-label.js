@@ -109,28 +109,25 @@ class StepSetLabel extends PureComponent {
 
   render() {
     return (
-      <div className="i3-ww-ci__step i3-ww-ci__set-label">
-        <div className="i3-ww-ci__title">
-          <p className="i3-ww-title">Your name/label</p>
-        </div>
-        <div className="i3-ww-ci__content">
-          <span>
-            You are almost there!
-            <br />
-            Please, insert a name/label in the selected domain to create your identity.
-            Only alphanumeric characters are allowed, dashes and underscores.
+      <div>
+        <p>
+          <p>
+              You are almost there!
+          </p>
+            Please, write an username in the selected domain to create your identity.
+            Only alphanumeric characters, dashes and underscores are allowed.
             At least should have one letter.
-            Not other symbols (i.e. @) or spaces are allowed.
-          </span>
-          <div>
-            <Input
-              value={this.state.label}
-              placeholder="Enter a name/label"
-              onChange={e => this.handleInputChange(e.target.value)} />
-            <span className="i3-ww-ci__relay_text">@iden3.io</span>
-            {' '}
+            Not allowed other symbols (i.e. @) or spaces.
+        </p>
+
+        <div>
+          <Input
+            value={this.state.label}
+            placeholder="Enter a name/label"
+            onChange={e => this.handleInputChange(e.target.value)} />
+          <span className="i3-ww-ci__relay_text">@iden3.io</span>
+          {' '}
             (default Relay)
-          </div>
         </div>
         <div className="i3-ww-ci__buttons">
           <Button
