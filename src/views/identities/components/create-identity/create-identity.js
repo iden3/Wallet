@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { CreateIdentity as CreateIdentityView } from 'views';
+import {
+  CreateIdentityWizard,
+} from 'views';
 
 /**
  * Component that calls the Create identity view wizard
@@ -19,7 +21,7 @@ class CreateIdentity extends PureComponent {
 
   render() {
     return (
-      <CreateIdentityView
+      <CreateIdentityWizard
         isFirstIdentity={false}
         afterCreateIdentity={this.props.afterCreateIdentity} />
     );

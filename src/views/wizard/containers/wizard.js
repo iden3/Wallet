@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ClassNames from 'classnames';
+import { FORWARD, BACKWARDS } from 'constants/wizard';
 import Step from '../components';
 
 import './wizard.scss';
@@ -25,8 +26,17 @@ class Wizard extends Component {
          Props of the component
         */
         ownProps: PropTypes.object,
+        /*
+         Own classes of the step
+        */
         classes: PropTypes.array,
+        /*
+         Title of the step
+        */
         title: PropTypes.string,
+        /*
+         Subtitle of the step
+        */
         subtitle: PropTypes.string,
       }).isRequired,
     ).isRequired,
@@ -58,13 +68,13 @@ class Wizard extends Component {
    *
    * @param {string} direction should be 'forward' or 'backwards'
    */
-  changeStep = (direction = 'forward') => {
+  changeStep = (direction = FORWARD) => {
     if (!this.state.goToDashboard) {
       let { currentStep } = this.state;
 
-      if (direction === 'forward') {
+      if (direction === FORWARD) {
         currentStep = this.state.currentStep + 1;
-      } else if (direction === 'backwards') {
+      } else if (direction === BACKWARDS) {
         currentStep = this.state.currentStep - 1;
       }
 

@@ -24,7 +24,7 @@ import {
   Historical,
   Identities,
   NavBar,
-  CreateIdentity,
+  CreateIdentityWizard,
 } from 'views';
 import * as ROUTES from 'constants/routes';
 import { notificationsHelper } from 'helpers';
@@ -153,7 +153,7 @@ class Layout extends React.Component {
             )
             : (
               <Switch>
-                <Route path="/:tab" component={CreateIdentity} />
+                <Route path="/:tab" component={CreateIdentityWizard} />
                 <Redirect from="/" to={ROUTES.CREATE_IDENTITY.MAIN} />
               </Switch>
             )
