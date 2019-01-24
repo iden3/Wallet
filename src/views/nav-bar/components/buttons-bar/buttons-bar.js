@@ -11,7 +11,10 @@ import {
   CAMERA,
   NOTIFICATIONS,
 } from 'constants/icons';
-import { ClaimReader } from 'views';
+import {
+  ClaimReader,
+  SaveSeedWizard,
+} from 'views';
 
 import './buttons-bar.scss';
 
@@ -23,10 +26,25 @@ import './buttons-bar.scss';
  */
 class ButtonsBar extends PureComponent {
   static propTypes = {
+    /*
+     If needed to show a button to show the cam
+    */
     addCamButton: PropTypes.bool,
+    /*
+     If needed to show a button with the notifications
+    */
     addNotificationsButton: PropTypes.bool,
+    /*
+     If needed to show a button to warn users that they need to save the seed / private key
+    */
     addSaveSeedNotification: PropTypes.bool,
+    /*
+     The menu shown in mobile phone size
+    */
     mobileMenuItems: PropTypes.arrayOf(PropTypes.node),
+    /*
+     Just to know if we are in the create identity wizard when we don't have any identity or not
+    */
     isDesktopVisible: PropTypes.bool,
   };
 
@@ -39,17 +57,27 @@ class ButtonsBar extends PureComponent {
 
   state = {
     isCameraVisible: false,
+    isSaveSeedWizardVisible: false,
   };
 
   /**
-   * Update the state to show or not the box with the camera.
-   * This callback is called from the camera button.
-   */
+  * Update the state to show or not the box with the camera.
+  * This callback is called from the camera button.
+  */
   toggleCameraVisibility = () => {
     this.setState(
       prevState => ({ isCameraVisible: !prevState.isCameraVisible }),
     );
   };
+
+  /**
+  * Update the state to show or not the box with the save seed wizard.
+  */
+  toggleShowSaveSeedWizard = () => {
+    this.setState(
+      prevState => ({ isSaveSeedWizardVisible: !prevState.isSaveSeedWizardVisible }),
+    );
+  }
 
   render() {
     return (
@@ -59,6 +87,7 @@ class ButtonsBar extends PureComponent {
             this.props.addSaveSeedNotification && (
             <Menu
               mode="horizontal"
+              onClick={this.toggleShowSaveSeedWizard}
               selectedKeys={[this.state.isDesktopVisible ? 'saveSeedNotification' : '']}>
               <MenuItem key="saveSeedNotification">
                 <div className="i3-ww-blink">
@@ -99,6 +128,14 @@ class ButtonsBar extends PureComponent {
             isCameraVisible={this.state.isCameraVisible}
             toggleCameraVisibility={this.toggleCameraVisibility} />
         )}
+        {/* Box to show wizard to save seed */}
+        {
+          this.state.isSaveSeedWizardVisible && (
+            <SaveSeedWizard
+              isVisible={this.state.isSaveSeedWizardVisible}
+              toggleVisibility={this.toggleShowSaveSeedWizard} />
+          )
+        }
       </Fragment>
     );
   }

@@ -127,6 +127,12 @@ $button-danger-hover-content-color: $red;
 $button-danger-pressed-bg-color: $white;
 $button-danger-pressed-content-color: $purple;
 
+// Chip
+$chip-bg-color: $blue-11;
+
+// Show QE code with master seed to keep it
+$qr-code-background: $white;
+
 // Inputs
 $input-bg-color: $blue-30;
 $input-color: $white;
@@ -182,6 +188,7 @@ $box-pop-up-border-radius: 2px;
 // Z-index
 $footer-z-index: 1;
 $header-z-index: 50;
+$top-left-notifications: 50;
 $main-content-z-index: 1;
 $side-bar-z-index: 100;
 $pop-up-z-index: 100;

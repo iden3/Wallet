@@ -64,17 +64,10 @@ const identitiesHelper = (function () {
    * This is defined to create it in the storage selected, not in the Relay.
    *
    * @param {Object} data - with the data of the identity
+   *
    * @returns {Object} With the identity created or an Error if already existed
    */
   function _checkIdentitySchema(data) {
-    //let newIdentity;
-
-    /*if (!_getIdentity(data.address)) { // if doesn't exist identity
-      newIdentity = schemas.parseIdentitySchema(data);
-    } else {
-      throw new Error('Identity already exists');
-    }*/
-
     return schemas.parseIdentitySchema(data);
   }
 
@@ -117,6 +110,10 @@ const identitiesHelper = (function () {
     return identity;
   }
 
+  function _getNumberOfIdentities() {
+    const idsNumberItem = DAL.getItem(APP_SETTINGS.ST_IDENTITIES_NUMBER);
+    return idsNumberItem && idsNumberItem.constructor === Number ? idsNumberItem : 0;
+  }
   /**
    * Check if an identity is consistent. It means that has iddAddr field, keys object
    * with their keys, a key container object, a Relay object and a name or label field.
@@ -182,6 +179,7 @@ const identitiesHelper = (function () {
    * @param {string} keys.operational - With the operational key of the identity
    * @param {string} relayURL - URL of the current Relay of the identity
    * @param {string} idAddress - Of the current identity
+   *
    * @returns {iden3.Id}
    */
   function createId(keys, relayURL, idAddress = '') {
@@ -211,6 +209,7 @@ const identitiesHelper = (function () {
    */
   function createIdentity(data, passphrase, isCurrent = false, relayAddr = APP_SETTINGS.RELAY_ADDR) {
     const identity = _prepareCreateIdentity(passphrase, relayAddr);
+    const idsNumber = _getNumberOfIdentities();
 
     return new Promise((resolve, reject) => {
       API.createIdentity(identity.id)
@@ -224,12 +223,14 @@ const identitiesHelper = (function () {
             ...data,
             passphrase,
             isCurrent,
-            hasSavedSeed: false,
           });
 
           if (newIdentity && createIdentityInStorage(newIdentity)) {
             if (newIdentity.isCurrent) {
               setIdentityAsCurrent(newIdentity.address);
+            }
+            if (idsNumber === 0) { // if first identity mark it to save master seed by the user
+              newIdentity.needsToSaveMasterKey = true;
             }
             resolve(newIdentity);
           } else {
@@ -276,6 +277,7 @@ const identitiesHelper = (function () {
     const idsInStorage = DAL.getKeys(APP_SETTINGS.IDENTITY_STORAGE_PREFIX);
     const idsInStorageLength = idsInStorage.length;
     const ids = {};
+    const needsMasterSeedToBeSaved = DAL.getItem(APP_SETTINGS.NEEDS_SAVE_MASTER_SEED);
 
     for (let i = 0; i < idsInStorageLength; i++) {
       const idKey = idsInStorage[i];
@@ -300,7 +302,7 @@ const identitiesHelper = (function () {
       ids[idFromStorage.address] = _checkIdentitySchema(identity);
     }
 
-    return Promise.resolve(ids);
+    return Promise.resolve({ needsMasterSeedToBeSaved, ids });
   }
 
   /**
@@ -442,17 +444,30 @@ const identitiesHelper = (function () {
    * @returns {boolean} - True if was updated the number, false otherwise
    */
   function updateIdentitiesNumber(isToAdd) {
-    const idsNumberItem = DAL.getItem(APP_SETTINGS.ST_IDENTITIES_NUMBER);
-    const idsNumber = idsNumberItem && idsNumberItem.constructor === Number ? idsNumberItem : 0;
+    const idsNumber = _getNumberOfIdentities();
 
-    // if it's the first identity set it as default
+    // if it's the first identity set it as default and create in DAL the flag to indicate that
+    // we need to warn user to save master seed
     if (idsNumber === 0) {
       setIdentityAsCurrent();
+      DAL.setItem(APP_SETTINGS.NEEDS_SAVE_MASTER_SEED, true);
     }
 
     return isToAdd
       ? DAL.updateItem(APP_SETTINGS.ST_IDENTITIES_NUMBER, idsNumber + 1)
       : idsNumber > 0 && DAL.updateItem(APP_SETTINGS.ST_IDENTITIES_NUMBER, idsNumber - 1);
+  }
+
+  function getMasterSeed(identity, passphrase) {
+    const keysContainer = new iden3.KeyContainer(DAL.storageName);
+    keysContainer.unlock(passphrase);
+    //  TODO: change this when implemented in iden3js
+    // return identity.get('keys').container.getMasterSeed();
+    return 'home fork office library book spoon pan pawn handbag pipe remote hair';
+  }
+
+  function setMasterSeedSaved() {
+    return DAL.deleteItem(APP_SETTINGS.NEEDS_SAVE_MASTER_SEED);
   }
 
   return {
@@ -463,9 +478,11 @@ const identitiesHelper = (function () {
     deleteAllIdentities,
     getAllIdentities,
     getCurrentIdentity,
+    getMasterSeed,
     deleteIdentity,
     setIdentityAsCurrent,
     setIdentityRelay,
+    setMasterSeedSaved,
     updateCurrentId,
     updateIdentity,
     updateIdentitiesNumber,

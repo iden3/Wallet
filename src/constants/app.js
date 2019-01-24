@@ -14,3 +14,4 @@ export const DEFAULT_RELAY_DOMAIN = 'iden3.io';
 export const CLAIM_STORAGE_PREFIX = 'claim-';
 export const IDENTITY_STORAGE_PREFIX = 'id-0x';
 export const FILE_NAME_SEED = 'iden3.txt';
+export const NEEDS_SAVE_MASTER_SEED = 'needs-sms';

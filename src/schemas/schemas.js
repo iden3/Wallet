@@ -148,7 +148,6 @@ const schemas = (function () {
       address: data.address,
       date: format(date, 'd/MMM/yyyy'),
       domain: data.domain,
-      hasSavedSeed: !!data.hasSavedSeed, // if there is no field, set it as false to show save seed notification
       icon: utils.generateHash(),
       id: Object.getPrototypeOf(data.id),
       implementation,
@@ -168,7 +167,6 @@ const schemas = (function () {
       passphrase: data.passphrase,
       relay: Object.getPrototypeOf(relay),
       relayURL: data.relayURL || relay.url,
-      seed: data.seed || keys.mnemonic.split(),
       time: format(date, 'HH:mm'),
       isCurrent: data.isCurrent,
     };

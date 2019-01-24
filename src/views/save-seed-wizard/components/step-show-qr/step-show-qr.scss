@@ -1,0 +1,17 @@
+.i3-ww-ssw__show-qr {
+  .i3-ww-ssw__master-seed {
+    padding-top: 15px;
+    display: flex;
+    flex-flow: wrap;
+    justify-content: center;
+  }
+  .i3-ww-ssw__master-seed-and-words {
+    background: $qr-code-background;
+    padding: 30px 0;
+  }
+  .i3-ww-ssw__identity-address {
+    color: black;
+    padding-top: 15px;
+    font-weight: bold;
+  }
+}

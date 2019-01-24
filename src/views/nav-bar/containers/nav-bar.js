@@ -41,6 +41,10 @@ class NavBar extends Component {
      Selector to get the current loaded identity information
      */
     currentIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
+    /*
+     Flag that indicates if master seed has been saved or not
+    */
+    needsToSaveMasterKey: PropTypes.bool.isRequired,
   };
 
   state = {
@@ -103,7 +107,7 @@ class NavBar extends Component {
             items={menuItems}
             selectedItem={selectedMainMenuItem} />
           <ButtonsBar
-            addSaveSeedNotification={!this.props.currentIdentity.get('hasSavedSeed')}
+            addSaveSeedNotification={this.props.needsToSaveMasterKey}
             addCamButton
             addNotificationsButton
             mobileMenuItems={menuItems} />

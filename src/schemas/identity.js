@@ -15,14 +15,12 @@
  * passphrase: string,
  * relay: any,
  * relayURL: string,
- * seed: Array,
  * time: string}}
  */
 const model = {
   address: '',
   date: '',
   domain: '',
-  hasSavedSeed: false,
   icon: '',
   id: Object.create({}),
   implementation: '',
@@ -38,7 +36,6 @@ const model = {
   passphrase: '',
   relay: Object.create({}),
   relayURL: '',
-  seed: [],
   time: '',
 };
 

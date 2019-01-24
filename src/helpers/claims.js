@@ -46,6 +46,7 @@ class Claim {
    * @param {Object} proofOfClaim - With the proof of claim
    * @param {Object} JSONData - With the data of the claim sent by the centralized server (read by a QR i.e.)
    * @param {string} keyToAuthorize - Key returned by the Relay to authorize this claim
+   *
    * @returns {Promise<any>}
    */
   _authClaimToCentralizedServer(proofOfClaim, JSONData, keyToAuthorize) {
@@ -66,6 +67,7 @@ class Claim {
    *
    * @param {Immutable.Map} identity - With the identity which is authorizing the claim
    * @param {Immutable.List} data - With the keys and data to sign
+   *
    * @returns {Promise<any>}
    */
   _authorizeKSignClaim(data) {
@@ -85,6 +87,7 @@ class Claim {
    * @param {string} data.challenge - Challenge that proofs the claim
    * @param {string} data.signature - Of the claim
    * @param {string} data.url - From the third party that ask the identity to authorize a claim
+   *
    * @returns {Promise<{dataForAuthorization: Immutable.List | Immutable.List<any>, JSONData: {challenge, signature, url}, keyToAuthorize: String}>}
    */
   _decodeReadData(data, keysContainer) {
@@ -131,6 +134,7 @@ class Claim {
    * @param {string} data.signature - Of the claim
    * @param {string} data.url - From the third party that ask the identity to authorize a claim
    * @param {string} localId - the id of the claim in the app storage
+   *
    * @returns {Promise<any>}
    */
   authorizeClaim(data, localId) {
@@ -182,6 +186,7 @@ class Claim {
    * @param {string} claimId - Local id of the claim
    * @param {Object} proofOfClaim - Proof of the claim
    * @param {string} sourceUrl - Of the app/dapp (if needed)
+   *
    * @returns {*}
    */
   createClaimInStorage(type, idAddrOwner, claimData, claimId, proofOfClaim, sourceUrl = '') {
@@ -209,6 +214,7 @@ class Claim {
    * @param {Immutable.Map} identity - Identity object owner of this claim
    * @param {string} data - Of the claim
    * @param {string} localClaimId - The local storage id of this claim to store it
+   *
    * @returns {Promise<any>}
    */
   createGenericClaim(data, localClaimId) {

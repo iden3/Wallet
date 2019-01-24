@@ -8,6 +8,7 @@ import {
   Redirect,
 } from 'react-router-dom';
 import { Map as ImmutableMap } from 'immutable';
+import memoize from 'memoize-one';
 import classNames from 'classnames';
 import {
   withClaims,
@@ -42,6 +43,8 @@ import './layout.scss';
  * to create a new one
  */
 class Layout extends React.Component {
+  memoizeSaveSeedNotification = memoize(() => this._getSaveSeedNotification());
+
   static propTypes = {
     //
     // from react-router-dom
@@ -58,6 +61,10 @@ class Layout extends React.Component {
      Selector to get the current loaded identity information
     */
     currentIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
+    /*
+     Flag to check is master seed has been saved
+    */
+    needsToSaveMasterKey: PropTypes.bool.isRequired,
     //
     // From withClaims HoC
     //
@@ -78,19 +85,11 @@ class Layout extends React.Component {
                   && this.props.handleSetClaimsFromStorage(this.props.currentIdentity));
   }
 
-  state = {
-    saveSeedNotisVisible: false,
-  }
-
   /**
   * Render notification warning to save seed if it's needed
   */
   componentDidUpdate() {
-    const notification = this.props.currentIdentity.size > 0 && this._getSaveSeedNotification();
-
-    if (notification) {
-      document.getElementsByClassName('i3-ww-save-seed-notification')[0].appendChild(notification);
-    }
+    this._getSaveSeedNotification();
   }
 
   /**
@@ -100,23 +99,25 @@ class Layout extends React.Component {
   * @returns {Node} React element with the notification.
   */
   _getSaveSeedNotification() {
-    if (!this.props.currentIdentity.get('hasSavedSeed') && !this.state.saveSeedNotisVisible) {
-      this.setState({ saveSeedNotisVisible: true });
-
-      return notificationsHelper.showNotification({
+    if (this.props.currentIdentity.size > 0 && this.props.needsToSaveMasterKey) {
+      notificationsHelper.showNotification({
         type: NOTIFICATIONS.WARNING,
         message: 'WARNING: Save your private key!',
-        description: 'Please, click here to proceed. If not, you will not be able to do any transaction',
+        description: 'Please, click here to proceed. Otherwise, you won\'t be able to do any transaction',
         duration: 0,
         placement: 'topLeft',
+        className: 'i3-ww-save-seed__notification',
       });
+    } if (document.getElementsByClassName('i3-ww-save-seed__notification')[0]) {
+      // if exists notification, remove it because master seed has been already saved
+      const notification = document.getElementsByClassName('i3-ww-save-seed__notification')[0];
+      notification.remove(notification);
     }
-
-    return null;
   }
 
   render() {
     const usersExist = this.props.currentIdentity.size > 0;
+    this.memoizeSaveSeedNotification(this.props.needsToSaveMasterKey);
 
     return (
       <LayoutCmpt className="i3-ww-layout">
@@ -125,7 +126,6 @@ class Layout extends React.Component {
           'i3-ww-header__no-nav-bar': !usersExist,
         })}>
           <HeaderWithLogo
-            showSaveSeedNotification
             location={this.props.location}
             enableLink={usersExist} />
           { usersExist && <NavBar /> }

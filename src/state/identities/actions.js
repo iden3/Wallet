@@ -23,6 +23,9 @@ import {
   CHANGE_CURRENT_IDENTITY,
   CHANGE_CURRENT_IDENTITY_SUCCESS,
   CHANGE_CURRENT_IDENTITY_ERROR,
+  SET_MASTER_SEED_AS_SAVED,
+  SET_MASTER_SEED_AS_SAVED_SUCCESS,
+  SET_MASTER_SEED_AS_SAVED_ERROR,
 } from './constants';
 
 function createIdentity() {
@@ -157,6 +160,25 @@ function changeCurrentIdentityError(error) {
   };
 }
 
+function setMasterSeedAsSaved() {
+  return {
+    type: SET_MASTER_SEED_AS_SAVED,
+  };
+}
+
+function setMasterSeedAsSavedSuccess() {
+  return {
+    type: SET_MASTER_SEED_AS_SAVED_SUCCESS,
+  };
+}
+
+function setMasterSeedAsSavedError(error) {
+  return {
+    type: SET_MASTER_SEED_AS_SAVED_ERROR,
+    data: error,
+  };
+}
+
 /**
  * Create an identity storing it in the storate and in the app state
  *.
@@ -233,7 +255,11 @@ export function handleSetIdentitiesFromStorage() {
     return Promise.resolve(identitiesHelper.getAllIdentities())
       .then((identities) => {
         const currentIdentity = identitiesHelper.getCurrentIdentity();
-        dispatch(setAllIdentitiesSuccess({ identities, currentIdentity }));
+        dispatch(setAllIdentitiesSuccess({
+          identities: identities.ids,
+          currentIdentity,
+          needsToSaveMasterKey: identities.needsMasterSeedToBeSaved,
+        }));
       })
       .catch(error => dispatch(setAllIdentitiesError(error)));
   };
@@ -299,5 +325,26 @@ export function handleChangeCurrentIdentity(idAddress) {
           : dispatch(changeCurrentIdentityError('Could not change to selected identity'));
       })
       .catch(error => dispatch(changeCurrentIdentityError(error)));
+  };
+}
+
+/**
+* Set the needs to save master seed flag as false. This means to remove the property
+* from the state and remove the key from the DAL.
+*/
+export function handleSetMasterSeedAsSaved() {
+  return function (dispatch) {
+    dispatch(setMasterSeedAsSaved());
+    return new Promise((resolve, reject) => {
+      const setAsSavedInDAL = identitiesHelper.setMasterSeedSaved();
+      if (setAsSavedInDAL) {
+        dispatch(setMasterSeedAsSavedSuccess());
+        resolve();
+      } else {
+        const errorMsg = 'Could not be saved that you saved the master seed. Please, proceed again later.';
+        dispatch(setMasterSeedAsSavedError(errorMsg));
+        reject(errorMsg);
+      }
+    });
   };
 }

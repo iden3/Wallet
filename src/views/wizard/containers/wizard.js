@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ClassNames from 'classnames';
-import { FORWARD, BACKWARDS } from 'constants/wizard';
+import {
+  FORWARD,
+  BACKWARDS,
+} from 'constants/wizard';
+
 import Step from '../components';
 
 import './wizard.scss';
