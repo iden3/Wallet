@@ -8,7 +8,6 @@ import {
   Redirect,
 } from 'react-router-dom';
 import { Map as ImmutableMap } from 'immutable';
-import memoizeOne from 'memoize-one';
 import classNames from 'classnames';
 import {
   withClaims,
@@ -43,8 +42,6 @@ import './layout.scss';
  * to create a new one
  */
 class Layout extends React.Component {
-  memoizeSaveSeedNotification = memoizeOne(() => this._getSaveSeedNotification());
-
   static propTypes = {
     //
     // from react-router-dom
@@ -86,14 +83,24 @@ class Layout extends React.Component {
   }
 
   /**
+  * If we are in the Dashboard (we have at least one identity) call to the method
+  * to show a warning to the user to save the master seed (if not saved before)
+  */
+  componentDidUpdate() {
+    this.props.currentIdentity.size > 0 && this._getSaveSeedNotification();
+  }
+
+  /**
   * Create a notification node with a warning message to save the seed by the user.
   * This notification is always shown unless the user click on it to go to the wizard to save the seed.
   *
   * @returns {Node} React element with the notification.
   */
   _getSaveSeedNotification() {
-    if (this.props.currentIdentity.size > 0 && this.props.needsToSaveMasterKey) {
-      !document.getElementsByClassName('i3-ww-save-seed__notification')[0]
+    const notificationEl = document.getElementsByClassName('i3-ww-save-seed__notification')[0];
+
+    if (this.props.needsToSaveMasterKey) {
+      !notificationEl
       && notificationsHelper.showNotification({
         type: NOTIFICATIONS.WARNING,
         message: 'WARNING: Save your private key!',
@@ -102,16 +109,14 @@ class Layout extends React.Component {
         placement: 'topLeft',
         className: 'i3-ww-save-seed__notification',
       });
-    } if (document.getElementsByClassName('i3-ww-save-seed__notification')[0]) {
+    } else {
       // if exists notification, remove it because master seed has been already saved
-      const notification = document.getElementsByClassName('i3-ww-save-seed__notification')[0];
-      notification.remove(notification);
+      notificationEl && notificationEl.remove(notificationEl);
     }
   }
 
   render() {
     const usersExist = this.props.currentIdentity.size > 0;
-    this.memoizeSaveSeedNotification(this.props.needsToSaveMasterKey);
 
     return (
       <LayoutCmpt className="i3-ww-layout">
