@@ -8,7 +8,7 @@ import {
   Redirect,
 } from 'react-router-dom';
 import { Map as ImmutableMap } from 'immutable';
-import memoize from 'memoize-one';
+import memoizeOne from 'memoize-one';
 import classNames from 'classnames';
 import {
   withClaims,
@@ -43,7 +43,7 @@ import './layout.scss';
  * to create a new one
  */
 class Layout extends React.Component {
-  memoizeSaveSeedNotification = memoize(() => this._getSaveSeedNotification());
+  memoizeSaveSeedNotification = memoizeOne(() => this._getSaveSeedNotification());
 
   static propTypes = {
     //
@@ -86,13 +86,6 @@ class Layout extends React.Component {
   }
 
   /**
-  * Render notification warning to save seed if it's needed
-  */
-  componentDidUpdate() {
-    this._getSaveSeedNotification();
-  }
-
-  /**
   * Create a notification node with a warning message to save the seed by the user.
   * This notification is always shown unless the user click on it to go to the wizard to save the seed.
   *
@@ -100,7 +93,8 @@ class Layout extends React.Component {
   */
   _getSaveSeedNotification() {
     if (this.props.currentIdentity.size > 0 && this.props.needsToSaveMasterKey) {
-      notificationsHelper.showNotification({
+      !document.getElementsByClassName('i3-ww-save-seed__notification')[0]
+      && notificationsHelper.showNotification({
         type: NOTIFICATIONS.WARNING,
         message: 'WARNING: Save your private key!',
         description: 'Please, click here to proceed. Otherwise, you won\'t be able to do any transaction',

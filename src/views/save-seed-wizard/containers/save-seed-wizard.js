@@ -162,7 +162,7 @@ class SaveSeedWizard extends Component {
   }
 
   removeMasterSeed = () => {
-    this.setState({ masterSeed: '' })
+    this.setState({ masterSeed: '' });
   }
 
   /*
