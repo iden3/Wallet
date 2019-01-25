@@ -20,6 +20,7 @@ import {
   SET_MASTER_SEED_AS_SAVED,
   SET_MASTER_SEED_AS_SAVED_SUCCESS,
   SET_MASTER_SEED_AS_SAVED_ERROR,
+  CLEAR_IDENTITY_ERROR,
 } from './constants';
 
 /*
@@ -58,6 +59,10 @@ const initialState = new ImmutableMap({
 
 function identities(state = initialState, action) {
   switch (action.type) {
+    case CLEAR_IDENTITY_ERROR:
+      return state.merge({
+        error: '',
+      });
     case CREATE_IDENTITY:
       return state.merge({
         isFetching: true,

@@ -26,6 +26,7 @@ import {
   SET_MASTER_SEED_AS_SAVED,
   SET_MASTER_SEED_AS_SAVED_SUCCESS,
   SET_MASTER_SEED_AS_SAVED_ERROR,
+  CLEAR_IDENTITY_ERROR,
 } from './constants';
 
 function createIdentity() {
@@ -176,6 +177,12 @@ function setMasterSeedAsSavedError(error) {
   return {
     type: SET_MASTER_SEED_AS_SAVED_ERROR,
     data: error,
+  };
+}
+
+function clearError() {
+  return {
+    type: CLEAR_IDENTITY_ERROR,
   };
 }
 
@@ -346,5 +353,11 @@ export function handleSetMasterSeedAsSaved() {
         reject(errorMsg);
       }
     });
+  };
+}
+
+export function handleClearIdentitiesError() {
+  return function (dispatch) {
+    dispatch(clearError());
   };
 }

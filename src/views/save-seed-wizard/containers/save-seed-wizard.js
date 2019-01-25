@@ -150,9 +150,9 @@ class SaveSeedWizard extends Component {
           this.setPassphrase(passphrase);
           resolve();
         })
-        .catch(error => notificationsHelper.showNotification({
+        .catch(() => notificationsHelper.showNotification({
           type: NOTIFICATIONS.ERROR,
-          description: `Something went wrong decrypting the master seed.\nIs your passphrase correct? ${error.msg}`,
+          description: 'Something went wrong decrypting the master seed.\nIs your passphrase correct?',
         }));
     });
   }

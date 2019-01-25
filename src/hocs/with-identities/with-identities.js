@@ -18,6 +18,7 @@ const {
     handleDeleteIdentity,
     handleChangeCurrentIdentity,
     handleSetMasterSeedAsSaved,
+    handleClearIdentitiesError,
   },
   selectors: {
     getIdentitiesError,
@@ -60,6 +61,10 @@ function withIdentities(IdentitiesComponent) {
        Action to change the status if master seed has already been saved by the user
       */
       handleSetMasterSeedAsSaved: PropTypes.func.isRequired,
+      /*
+       Clear up the identities error string
+      */
+      handleClearIdentitiesError: PropTypes.func.isRequired,
       /*
        Selector to get the information related to an identity.
        Expect the identity address as parameter
@@ -129,6 +134,7 @@ function withIdentities(IdentitiesComponent) {
       handleDeleteIdentity,
       handleChangeCurrentIdentity,
       handleSetMasterSeedAsSaved,
+      handleClearIdentitiesError,
     }, dispatch);
   }
 

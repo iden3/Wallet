@@ -114,4 +114,5 @@ module.exports = {
     cleanWebPackPlugin,
     htmlWebpackPlugin,
   ],
+  node: { fs: 'empty' }, // so we don't trigger errors when a library is using fs, i.e.
 };

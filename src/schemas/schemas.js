@@ -61,6 +61,7 @@ const schemas = (function () {
  * @param {Object} data - With the object to check with the model
  * @param {boolean} deepComparison - If we find and Object, compare key/values inside as well
  * @throws Will throw an error if the argument is model or data are null or undefined
+ *
  * @returns {boolean} True if are data has the same schema than the model, false otherwise
  */
   function _checkSchemas(model, data, deepComparison = false) {
@@ -145,7 +146,7 @@ const schemas = (function () {
     const implementation = typeof data.implementation === 'string' ? data.implementation : data.id.implementation;
 
     const parsedObject = {
-      address: data.address,
+      address: data.id.idAddr || data.address,
       date: format(date, 'd/MMM/yyyy'),
       domain: data.domain,
       icon: utils.generateHash(),
@@ -164,7 +165,6 @@ const schemas = (function () {
       },
       label: data.label,
       originalDateTime: date,
-      passphrase: data.passphrase,
       relay: Object.getPrototypeOf(relay),
       relayURL: data.relayURL || relay.url,
       time: format(date, 'HH:mm'),

@@ -73,21 +73,23 @@ class ShowQR extends PureComponent {
           </p>
         </div>
         <div className="i3-ww-ssw__master-seed-and-words">
-          <QRCode value={stringContent} />
-          <div className="i3-ww-ssw__master-seed">
-            <br />
+          <div className="i3-ww-ssw__master-seed-qr">
+            <QRCode value={stringContent} />
+          </div>
+          <div className="i3-ww-ssc__master-seed-title">
             Your master seed:
-            <br />
+          </div>
+          <div className="i3-ww-ssw__master-seed">
             {this.props.masterSeed
               .split(' ')
               .map((word, index) => (<Chip content={word} key={`chip-${index}`} />))
             }
             <br />
-            <div className="i3-ww-ssw__identity-address">
-              Ethereum address of first identity:
-              {' '}
-              {this.props.identityAddress}
-            </div>
+          </div>
+          <div className="i3-ww-ssw__identity-address">
+             First identity address:
+            <br />
+            {this.props.identityAddress}
           </div>
         </div>
         <div className="i3-ww-ssw__buttons">

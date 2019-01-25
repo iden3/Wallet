@@ -64,6 +64,10 @@ class CreateIdentityWizard extends Component {
      */
     handleCreateIdentity: PropTypes.func.isRequired,
     /*
+     Action to remove the error string from identity entity after notification is closed
+    */
+    handleClearIdentitiesError: PropTypes.func.isRequired,
+    /*
      Flag indicating any error when retrieve identities
      */
     identitiesError: PropTypes.string.isRequired,
@@ -86,6 +90,16 @@ class CreateIdentityWizard extends Component {
   componentDidMount() {
     this.props.getForm(FORMS.PASSPHRASE);
     this.props.getForm(FORMS.IDENTITY_NAME);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!prevProps.identitiesError && this.props.identitiesError) {
+      notificationsHelper.showNotification({
+        type: NOTIFICATIONS.ERROR,
+        description: `We are sorry... There was an error creating the identity:\n${this.props.identitiesError}`,
+        onClose: this.props.handleClearIdentitiesError,
+      });
+    }
   }
 
   /**
@@ -187,14 +201,6 @@ class CreateIdentityWizard extends Component {
 
   render() {
     const sortedStepsObj = this._getSortedSteps();
-
-    if (this.props.identitiesError) {
-      notificationsHelper.showNotification({
-        type: NOTIFICATIONS.ERROR,
-        description: `We are sorry... There was an error creating the identity:\n${this.props.identitiesError}`,
-      });
-    }
-
     return (
       <Wizard
         className="i3-ww-ci"

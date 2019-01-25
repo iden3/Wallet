@@ -15,7 +15,7 @@
  * passphrase: string,
  * relay: any,
  * relayURL: string,
- * time: string}}
+ * time: string }}
  */
 const model = {
   address: '',
@@ -33,7 +33,6 @@ const model = {
   },
   label: '',
   originalDateTime: {},
-  passphrase: '',
   relay: Object.create({}),
   relayURL: '',
   time: '',

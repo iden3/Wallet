@@ -73,20 +73,31 @@ const identitiesHelper = (function () {
 
   /**
    * Create the keys of an identity and sets them in the storage selected.
+   * Also create the master seed only if it is the first identity of this wallet.
    *
    * @param {string} passphrase - to sign the keys
    * @param {string} storage - where to store this information
+   * @param {boolean} isFirstIdentity - Indicating if it's first identity
+   *
    * @returns {{keyRecovery: string, keyRevoke: string, keyOp: string. keyContainer: Object}}
    */
-  function _createKeys(passphrase) {
-    const keysContainer = new iden3.KeyContainer(DAL.storageName);
-    keysContainer.unlock(passphrase);
-    const newKeys = keysContainer.generateKeysMnemonic();
-    const [keyRecovery, keyRevoke, keyOp] = newKeys.keys;
+  function _createKeys(passphrase, isFirstIdentity) {
+    try {
+      const keysContainer = new iden3.KeyContainer(DAL.storageName, new iden3.Db());
+      keysContainer.unlock(passphrase);
+      // const newKeys = keysContainer.generateKeysMnemonic();
+      // const [keyRecovery, keyRevoke, keyOp] = newKeys.keys;
+      // new iden3
+      isFirstIdentity && keysContainer.generateMasterSeed();
 
-    return {
-      keyRecovery, keyRevoke, keyOp, keysContainer, mnemonic: newKeys.mnemonic,
-    };
+      const [keyOpEtherAddress, keyOpPublic, keyRecovery, keyRevoke] = keysContainer.createKeys();
+
+      return {
+        keyRecovery, keyRevoke, keyOp: keyOpPublic, keysContainer,
+      };
+    } catch (error) {
+      return null;
+    }
   }
 
   /**
@@ -119,6 +130,7 @@ const identitiesHelper = (function () {
    * with their keys, a key container object, a Relay object and a name or label field.
    *
    * @param {object} identity - Retrieved from the selected store
+   *
    * @returns {boolean} - True if this identity is consistent and has right data, False otherwise
    *
    * TODO: not the best check. Light check only looking if values exist. So need to improve it a lot.
@@ -133,24 +145,29 @@ const identitiesHelper = (function () {
    *
    * @param {string} passphrase - To unlock keys for some seconds and create the keys
    * @param {string} relayAddress - URL of the Relay in which create the identity
+   * @param {boolean} isFirstIdentity - Indicating if it's first identity
+   *
    * @returns {{id: Id, keys: (*|{keyRecovery: string, keyRevoke: string, keyOp: string, keyContainer: Object}), relay: (*|Object)}}
    */
-  function _prepareCreateIdentity(passphrase, relayAddress) {
+  function _prepareCreateIdentity(passphrase, relayAddress, isFirstIdentity) {
     if (passphrase && relayAddress) {
-      const keys = _createKeys(passphrase);
-      const relay = setIdentityRelay(relayAddress);
+      const keys = _createKeys(passphrase, isFirstIdentity);
+      if (keys) {
+        const relay = setIdentityRelay(relayAddress);
 
-      return {
-        id: createId(
-          { recovery: keys.keyRecovery, revoke: keys.keyRevoke, operational: keys.keyOp },
-          relay.url,
-        ),
-        keys,
-        relay,
-      };
+        return Promise.resolve({
+          id: createId(
+            { recovery: keys.keyRecovery, revoke: keys.keyRevoke, operational: keys.keyOp },
+            relay.url,
+          ),
+          keys,
+          relay,
+        });
+      }
+      return Promise.reject(new Error('Looks like your passphrase is not correct'));
     }
 
-    throw new Error('No passphrase or relay address set');
+    return Promise.reject(Error('No passphrase or relay address set'));
   }
 
   /**
@@ -182,16 +199,15 @@ const identitiesHelper = (function () {
    *
    * @returns {iden3.Id}
    */
-  function createId(keys, relayURL, idAddress = '') {
+  function createId(keys, relayURL) {
     const id = new iden3.Id(
+      keys.operational,
       keys.recovery,
       keys.revoke,
-      keys.operational,
       new iden3.Relay(relayURL), // to get the prototype
       '',
     );
 
-    id.idaddr = idAddress;
     return id;
   }
 
@@ -204,24 +220,29 @@ const identitiesHelper = (function () {
    * @param {Object} data - with new identity values
    * @param {string} passphrase - The passphrase to unlock for 30 seconds the key container
    * @param {string} relayAddr - with the URL of the relay to get the counterfactual address
+   *
    * @returns {Promise<any>} Return a Promise with the field "address" that contains
    * the address of the counterfactual contract of the new identity
    */
   function createIdentity(data, passphrase, isCurrent = false, relayAddr = APP_SETTINGS.RELAY_ADDR) {
-    const identity = _prepareCreateIdentity(passphrase, relayAddr);
     const idsNumber = _getNumberOfIdentities();
+    const isFirstIdentity = idsNumber === 0;
+    // const identity = _prepareCreateIdentity(passphrase, relayAddr, isFirstIdentity);
 
     return new Promise((resolve, reject) => {
-      API.createIdentity(identity.id)
-        .then((address) => {
+      _prepareCreateIdentity(passphrase, relayAddr, isFirstIdentity)
+        .then(async (identity) => {
+          const address = await API.createIdentity(identity.id);
+          return { address, identity };
+        })
+        .then((res) => {
           // once we have the address returned by the ID, set it in the local storage
           // set the flag hasSavedIdentity at false to show a notification in the app
           // to warn user to keep the seed and show them it
           const newIdentity = _checkIdentitySchema({
-            address,
-            ...identity,
+            address: res.address,
+            ...res.identity,
             ...data,
-            passphrase,
             isCurrent,
           });
 
@@ -319,6 +340,7 @@ const identitiesHelper = (function () {
    *
    * @param {string} identityKey - With format 'id-Address of the id'
    * @param {string} storage - where to store this information
+   *
    * @returns {boolean} True if removed, false otherwise
    */
   function deleteIdentity(identityKey) {
@@ -332,6 +354,7 @@ const identitiesHelper = (function () {
    *
    * @param {string} newIdAddress - With the information of the new identity that will be the default
    * @throws Will throw an error if the no identity provided.
+   *
    * @returns {boolean} - True if could be updated, false, otherwise
    */
   function setIdentityAsCurrent(newIdAddress = null) {
@@ -458,14 +481,22 @@ const identitiesHelper = (function () {
       : idsNumber > 0 && DAL.updateItem(APP_SETTINGS.ST_IDENTITIES_NUMBER, idsNumber - 1);
   }
 
+  /**
+  *
+  */
   function getMasterSeed(identity, passphrase) {
-    const keysContainer = new iden3.KeyContainer(DAL.storageName);
+    const keysContainer = new iden3.KeyContainer(DAL.storageName, new iden3.Db());
     keysContainer.unlock(passphrase);
     //  TODO: change this when implemented in iden3js
-    // return identity.get('keys').container.getMasterSeed();
-    return 'home fork office library book spoon pan pawn handbag pipe remote hair';
+    return keysContainer.getMasterSeed();
+    // return 'home fork office library book spoon pan pawn handbag pipe remote hair';
   }
 
+  /**
+  * Remove from the DAL the flag to know if master seed has been saved or not
+  *
+  * @returns {boolean} if key could be deleted
+  */
   function setMasterSeedSaved() {
     return DAL.deleteItem(APP_SETTINGS.NEEDS_SAVE_MASTER_SEED);
   }
