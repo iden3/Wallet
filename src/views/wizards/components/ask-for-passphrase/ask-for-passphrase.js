@@ -9,9 +9,9 @@ import {
   FORWARD,
 } from 'constants/wizard';
 
-import './step-ask-for-passphrase.scss';
+import './ask-for-passphrase.scss';
 
-class AskPassphrase extends PureComponent {
+class AskForPassphrase extends PureComponent {
   static propTypes = {
     /*
      Callback thar controls the movement to next step
@@ -21,11 +21,11 @@ class AskPassphrase extends PureComponent {
      Callback to trigger when move forward to retrieve the decrypted master seed
     */
     getMasterSeed: PropTypes.func.isRequired,
-  }
+  };
 
   state = {
     passphrase: '',
-  }
+  };
 
   /**
    * Handle the Input controlled components values when changed. Set the
@@ -36,7 +36,7 @@ class AskPassphrase extends PureComponent {
    */
   handleInputChange = (value, input) => {
     this.setState({ [input]: value });
-  }
+  };
 
   /*
   * Callback to handle the forward movement to next wizard step
@@ -46,7 +46,7 @@ class AskPassphrase extends PureComponent {
       this.props.getMasterSeed(this.state.passphrase)
         .then(() => this.props.move(FORWARD));
     }
-  }
+  };
 
   render() {
     return (
@@ -83,4 +83,4 @@ class AskPassphrase extends PureComponent {
   }
 }
 
-export default AskPassphrase;
+export default AskForPassphrase;

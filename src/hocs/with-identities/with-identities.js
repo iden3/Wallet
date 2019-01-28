@@ -98,13 +98,13 @@ function withIdentities(IdentitiesComponent) {
     *
     * @returns {Promise} with the master seed or and error message otherwise
     */
-    handleGetIdentityMasterSeed = (identity, passphrase) => {
+    handleGetIdentityMasterSeed = (passphrase) => {
       return new Promise((resolve, reject) => {
-        const masterSeed = identitiesHelper.getMasterSeed(identity, passphrase);
+        const masterSeed = identitiesHelper.getMasterSeed(passphrase);
 
         return masterSeed ? resolve(masterSeed) : reject(new Error('Could not be decrypted the seed'));
       });
-    }
+    };
 
     render() {
       return (

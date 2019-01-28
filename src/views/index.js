@@ -5,7 +5,7 @@
 
 export App from 'views/app';
 export Claims from 'views/claims';
-export CreateIdentityWizard from 'views/create-identity-wizard';
+export { CreateIdentityWizard } from 'views/wizards';
 export Dashboard from 'views/dashboard';
 export Historical from 'views/historical';
 export Identities from 'views/identities';
@@ -13,5 +13,5 @@ export Layout from 'views/layout';
 export NavBar from 'views/nav-bar';
 export ClaimReader from 'views/claim-reader';
 export CreateClaim from 'views/create-claim';
-export SaveSeedWizard from 'views/save-seed-wizard';
-export Wizard from 'views/wizard';
+export { SaveSeedWizard } from 'views/wizards';
+export { Wizard } from 'views/wizards';

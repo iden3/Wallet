@@ -140,6 +140,10 @@ class CreateIdentityWizard extends Component {
       await this.props.handleCreateIdentity(this.state.passphrase, data)
         .then(() => this.props.handleClearCreateIdentityForms())
         .then(() => this.props.afterCreateIdentity())
+        .then(() => notificationsHelper.showNotification({
+          type: NOTIFICATIONS.SUCCESS,
+          description: `Congratulations! New identity ${data.label}@${data.domain} has been created`,
+        }))
         .catch(error => notificationsHelper.showNotification({
           type: NOTIFICATIONS.ERROR,
           description: `We are sorry... There was an error creating the identity:\n${error}`,

@@ -104,7 +104,8 @@ class Layout extends React.Component {
       && notificationsHelper.showNotification({
         type: NOTIFICATIONS.WARNING,
         message: 'WARNING: Save your private key!',
-        description: 'Please, click here to proceed. Otherwise, you won\'t be able to do any transaction',
+        description: `Please, click in the blinking icon of the navigation bar to proceed.
+                      Otherwise, you will not be able to do any action, transaction or claim.`,
         duration: 0,
         placement: 'topLeft',
         className: 'i3-ww-save-seed__notification',

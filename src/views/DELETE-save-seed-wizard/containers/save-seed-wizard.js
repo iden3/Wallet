@@ -73,12 +73,12 @@ class SaveSeedWizard extends Component {
      Action to get decrypted master seed sending the passphrase introduced
     */
     handleGetIdentityMasterSeed: PropTypes.func.isRequired,
-  }
+  };
 
   state = {
     masterSeed: '',
     passphrase: '',
-  }
+  };
 
   /**
    * Get the fields of the two inputs of when passphrase is asked
@@ -96,6 +96,12 @@ class SaveSeedWizard extends Component {
   }
 
   /**
+   * Check if introduced master seed by the user has the same value than
+   * the encrypted one.
+   *
+   * @param {string} givenMasterSeed - Master seed introduced by the user
+   *
+   * @returns {Promise} resolved (empty) are same values, reject with a message otherwise
    */
   checkIntroducedMasterSeed = (givenMasterSeed) => {
     return new Promise((resolve, reject) => {
@@ -120,7 +126,7 @@ class SaveSeedWizard extends Component {
           });
         });
     });
-  }
+  };
 
   /**
   * Remove the master seed from the state, hide the wizard box
@@ -133,7 +139,7 @@ class SaveSeedWizard extends Component {
       this.setAsSaved();
       resolve();
     });
-  }
+  };
 
   /**
   * Trigger action to retrieve the decrypted master seed.
@@ -155,26 +161,26 @@ class SaveSeedWizard extends Component {
           description: 'Something went wrong decrypting the master seed.\nIs your passphrase correct?',
         }));
     });
-  }
+  };
 
   removePassphrase = () => {
     this.setState({ passphrase: '' });
-  }
+  };
 
   removeMasterSeed = () => {
     this.setState({ masterSeed: '' });
-  }
+  };
 
   /*
   * Set the master seed in the component state
   */
   setMasterSeed = (decryptedMasterSeed) => {
     this.setState({ masterSeed: decryptedMasterSeed });
-  }
+  };
 
   setPassphrase = (passphrase) => {
     this.setState({ passphrase });
-  }
+  };
 
   /*
   * Callback to set in the store that seed has already saved.
@@ -182,7 +188,7 @@ class SaveSeedWizard extends Component {
   */
   setAsSaved = () => {
     this.props.handleSetMasterSeedAsSaved();
-  }
+  };
 
   /**
    * Call the action to update the form in the app state.
@@ -192,7 +198,7 @@ class SaveSeedWizard extends Component {
    */
   updateForm = (form, newValues) => {
     this.props.handleUpdateForm(form, newValues);
-  }
+  };
 
   /**
   * Create the object to send to the Wizard component with the content of each step and titles/subtitles
@@ -242,7 +248,7 @@ class SaveSeedWizard extends Component {
         title: 'Last step!',
       },
     ];
-  }
+  };
 
   render() {
     const sortedStepsObj = this._getSortedSteps();

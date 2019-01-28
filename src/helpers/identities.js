@@ -104,6 +104,7 @@ const identitiesHelper = (function () {
    * Check if exists an identity in the current storage.
    *
    * @param {string} iddAddr - Counterfactual address of the identity sent by the Relay.
+   *
    * @returns {object | undefined} with the settings of the identity in the LS or undefined ir doesn't exist
    */
   function _getIdentity(iddAddr) {
@@ -121,6 +122,11 @@ const identitiesHelper = (function () {
     return identity;
   }
 
+  /**
+  * Retrieve from the DAL the number of identities available
+  *
+  * @returns {number} with the number of identities
+  */
   function _getNumberOfIdentities() {
     const idsNumberItem = DAL.getItem(APP_SETTINGS.ST_IDENTITIES_NUMBER);
     return idsNumberItem && idsNumberItem.constructor === Number ? idsNumberItem : 0;
@@ -132,9 +138,6 @@ const identitiesHelper = (function () {
    * @param {object} identity - Retrieved from the selected store
    *
    * @returns {boolean} - True if this identity is consistent and has right data, False otherwise
-   *
-   * TODO: not the best check. Light check only looking if values exist. So need to improve it a lot.
-   *
    */
   function _isIdentityConsistent(identity) {
     return schemas.compareSchemas(SCHEMAS.IDENTITY, identity);
@@ -175,7 +178,8 @@ const identitiesHelper = (function () {
    *
    * @param {Object} identity - With its information, above all, it's needed the keys and the id address
    * @param {Object} data - With label or name field to bind it to the identity
-   * @param {string} passphrase - to sign the petition
+   * @param {string} passphrase - to sign the request
+   *
    * @returns {Promise<void>}
    */
   function bindIdToUsername(identity, data, passphrase) {
@@ -227,7 +231,6 @@ const identitiesHelper = (function () {
   function createIdentity(data, passphrase, isCurrent = false, relayAddr = APP_SETTINGS.RELAY_ADDR) {
     const idsNumber = _getNumberOfIdentities();
     const isFirstIdentity = idsNumber === 0;
-    // const identity = _prepareCreateIdentity(passphrase, relayAddr, isFirstIdentity);
 
     return new Promise((resolve, reject) => {
       _prepareCreateIdentity(passphrase, relayAddr, isFirstIdentity)
@@ -266,6 +269,7 @@ const identitiesHelper = (function () {
    * Create identity in the storage requested.
    *
    * @param {Object} identity - With identity information
+   *
    * @returns {boolean} - True if created, false otherwise
    */
   function createIdentityInStorage(identity) {
@@ -307,7 +311,6 @@ const identitiesHelper = (function () {
       const keysContainerProto = Object.getPrototypeOf(new iden3.KeyContainer(APP_SETTINGS.LOCAL_STORAGE));
 
       // set again prototypes of the objects because can't be stored in the local storage
-      // TODO: Change this in iden3js to get functions, because now returning Objects that can't be stored in Local Storage
       identity.keys.container = Object.assign({ __proto__: keysContainerProto }, identity.keys.container);
       identity.relay = Object.getPrototypeOf(setIdentityRelay(identity.relayURL));
       identity.id = Object.getPrototypeOf(
@@ -388,6 +391,7 @@ const identitiesHelper = (function () {
    * Create the object with the Relay information
    *
    * @param {string} relay - The url of the relay
+   *
    * @returns {Object} with the information of the relay, including the url field
    */
   function setIdentityRelay(relay = APP_SETTINGS.RELAY_ADDR) {
@@ -433,6 +437,7 @@ const identitiesHelper = (function () {
    *
    * @param {Object} identity - With all the data
    * @param {Object} data - With the new data to update
+   *
    * @returns {Object} - The updated identity if was updated the number, false otherwise
    */
   function updateIdentity(identity, data) {
@@ -464,6 +469,7 @@ const identitiesHelper = (function () {
    * Update the number of identities in the application.
    *
    * @param {boolean} isToAdd - True if we are adding an identity, false if we are removing it
+   *
    * @returns {boolean} - True if was updated the number, false otherwise
    */
   function updateIdentitiesNumber(isToAdd) {
@@ -482,14 +488,17 @@ const identitiesHelper = (function () {
   }
 
   /**
+  * Get from iden3js the master seed decrypted
   *
+  * @param {string} passphrase - To unlock the key container
+  *
+  * @return {string} with the master seed (a mnemonic phrase with some words)
   */
-  function getMasterSeed(identity, passphrase) {
+  function getMasterSeed(passphrase) {
     const keysContainer = new iden3.KeyContainer(DAL.storageName, new iden3.Db());
+
     keysContainer.unlock(passphrase);
-    //  TODO: change this when implemented in iden3js
     return keysContainer.getMasterSeed();
-    // return 'home fork office library book spoon pan pawn handbag pipe remote hair';
   }
 
   /**
