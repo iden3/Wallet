@@ -47,20 +47,6 @@ class NavBar extends Component {
     needsToSaveMasterKey: PropTypes.bool.isRequired,
   };
 
-  state = {
-    isCameraVisible: false,
-  };
-
-  /**
-   * Update the state to show or not the box with the camera.
-   * This callback is called from the camera button.
-   */
-  toggleCameraVisibility = () => {
-    this.setState(
-      prevState => ({ isCameraVisible: !prevState.isCameraVisible }),
-    );
-  };
-
   /**
    * Compose all the Menu with their links and routes
    * @returns {element[]} An array of React nodes (MenuItem)

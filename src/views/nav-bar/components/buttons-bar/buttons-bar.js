@@ -12,7 +12,7 @@ import {
   NOTIFICATIONS,
 } from 'constants/icons';
 import {
-  ClaimReader,
+  SignInPermissionWizard,
   SaveSeedWizard,
 } from 'views';
 
@@ -77,7 +77,7 @@ class ButtonsBar extends PureComponent {
     this.setState(
       prevState => ({ isSaveSeedWizardVisible: !prevState.isSaveSeedWizardVisible }),
     );
-  }
+  };
 
   render() {
     return (
@@ -124,9 +124,9 @@ class ButtonsBar extends PureComponent {
         </div>
         {/* Box to show camera for reading QR */}
         { this.props.addCamButton && (
-          <ClaimReader
-            isCameraVisible={this.state.isCameraVisible}
-            toggleCameraVisibility={this.toggleCameraVisibility} />
+          <SignInPermissionWizard
+            isVisible={this.state.isCameraVisible}
+            toggleVisibility={this.toggleCameraVisibility} />
         )}
         {/* Box to show wizard to save seed */}
         {

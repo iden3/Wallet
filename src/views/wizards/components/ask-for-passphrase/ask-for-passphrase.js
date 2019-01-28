@@ -38,7 +38,7 @@ class AskForPassphrase extends PureComponent {
     this.setState({ [input]: value });
   };
 
-  /*
+  /**
   * Callback to handle the forward movement to next wizard step
   */
   moveForward = () => {
