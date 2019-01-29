@@ -17,6 +17,12 @@ import {
   CREATE_GENERIC_CLAIM,
   CREATE_GENERIC_CLAIM_SUCCESS,
   CREATE_GENERIC_CLAIM_ERROR,
+  GENERATE_ASSIGN_NAME_CLAIM,
+  GENERATE_ASSIGN_NAME_CLAIM_SUCCESS,
+  GENERATE_ASSIGN_NAME_CLAIM_ERROR,
+  GENERATE_AUTH_K_SIGN_CLAIM,
+  GENERATE_AUTH_K_SIGN_CLAIM_SUCCESS,
+  GENERATE_AUTH_K_SIGN_CLAIM_ERROR,
   UPDATE_PINNED_CLAIMS,
   UPDATE_PINNED_CLAIMS_SUCCESS,
   UPDATE_PINNED_CLAIMS_ERROR,
@@ -103,6 +109,62 @@ function claims(state = initialState, action) {
         ),
       });
     case AUTHORIZE_CLAIM_ERROR:
+      return state.merge({
+        isFetchingClaims: false,
+        error: state.get('error')().set('message', action.error.message),
+      });
+    case GENERATE_ASSIGN_NAME_CLAIM:
+      return state.merge({
+        isFetchingClaims: true,
+      });
+    case GENERATE_ASSIGN_NAME_CLAIM_SUCCESS:
+      return state.merge({
+        isFetchingClaims: false,
+        error: new ImmutableRecord({ message: '' }),
+        received: state.get(CLAIMS.TYPE.RECEIVED.NAME).set(
+          action.data.get('id'),
+          new ImmutableMap({
+            identity: action.data.get('identity'),
+            data: action.data.get('data'),
+            type: action.data.get('type'),
+            date: action.data.get('date'),
+            time: action.data.get('time'),
+            proof: action.data.get('proof'),
+            url: action.data.get('url'),
+            id: action.data.get('id'),
+            // isPinned: action.data.get('isPinned'),
+          }),
+        ),
+      });
+    case GENERATE_ASSIGN_NAME_CLAIM_ERROR:
+      return state.merge({
+        isFetchingClaims: false,
+        error: state.get('error')().set('message', action.error.message),
+      });
+    case GENERATE_AUTH_K_SIGN_CLAIM:
+      return state.merge({
+        isFetchingClaims: true,
+      });
+    case GENERATE_AUTH_K_SIGN_CLAIM_SUCCESS:
+      return state.merge({
+        isFetchingClaims: false,
+        error: new ImmutableRecord({ message: '' }),
+        emitted: state.get(CLAIMS.TYPE.EMITTED.NAME).set(
+          action.data.get('id'),
+          new ImmutableMap({
+            identity: action.data.get('identity'),
+            data: action.data.get('data'),
+            type: action.data.get('type'),
+            date: action.data.get('date'),
+            time: action.data.get('time'),
+            proof: action.data.get('proof'),
+            url: action.data.get('url'),
+            id: action.data.get('id'),
+            // isPinned: action.data.get('isPinned'),
+          }),
+        ),
+      });
+    case GENERATE_AUTH_K_SIGN_CLAIM_ERROR:
       return state.merge({
         isFetchingClaims: false,
         error: state.get('error')().set('message', action.error.message),

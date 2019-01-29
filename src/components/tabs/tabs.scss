@@ -15,5 +15,11 @@
   .ant-tabs-ink-bar{
     background-color: transparent;
   }
+  .ant-tabs-tab {
+    span {
+      display: flex;
+      justify-content: center;
+    }
+  }
 }
 

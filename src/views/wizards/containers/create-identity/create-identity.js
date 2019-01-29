@@ -5,6 +5,7 @@ import * as FORMS from 'constants/forms';
 import { TYPE as NOTIFICATIONS } from 'constants/notifications';
 import {
   withFormsValues,
+  withClaims,
   withIdentities,
 } from 'hocs';
 import { notificationsHelper } from 'helpers';
@@ -42,6 +43,17 @@ class CreateIdentity extends Component {
     */
     isFirstIdentity: PropTypes.bool,
     //
+    // from withClaims HOC
+    //
+    /*
+     Generate in the app state an Assign name claim emitted by the name resolver / relay
+     */
+    handleGenerateAssignNameClaim: PropTypes.func.isRequired,
+    /*
+     Generate in the app state a kSign authorization claim to the relay
+     */
+    handleGenerateAuthKSignClaim: PropTypes.func.isRequired,
+    //
     // from withFormsValues HOC
     //
     /*
@@ -70,7 +82,14 @@ class CreateIdentity extends Component {
     /*
      Flag indicating any error when retrieve identities
      */
-    identitiesError: PropTypes.string.isRequired,
+    identitiesError: PropTypes.string.isRequired
+    //
+    // from withClaims HoC
+    //
+    /*
+     Action authorize a claim received
+     */
+    // handleAuthorizeClaim: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -126,7 +145,7 @@ class CreateIdentity extends Component {
    */
   setPassphrase = (passphrase) => {
     this.setState({ passphrase });
-  }
+  };
 
   /**
    * Create the identity: create keys and set the relay. Then
@@ -137,7 +156,16 @@ class CreateIdentity extends Component {
    */
   createIdentity = async (data = this.state.labelData) => {
     if (data) { // step asking for passphrase already done
+      let newIdentity;
+      let proofOfClaim;
+
       await this.props.handleCreateIdentity(this.state.passphrase, data)
+        .then((_newIdentity, _proofOfClaim) => {
+          newIdentity = _newIdentity;
+          proofOfClaim = _proofOfClaim || 'data Proof of Claim';
+          this.props.handleGenerateAssignNameClaim(newIdentity, proofOfClaim);
+        })
+        .then(() => this.props.handleGenerateAuthKSignClaim(newIdentity, proofOfClaim))
         .then(() => this.props.handleClearCreateIdentityForms())
         .then(() => this.props.afterCreateIdentity())
         .then(() => notificationsHelper.showNotification({
@@ -215,6 +243,7 @@ class CreateIdentity extends Component {
 }
 
 export default compose(
+  withClaims,
   withIdentities,
   withFormsValues,
 )(CreateIdentity);

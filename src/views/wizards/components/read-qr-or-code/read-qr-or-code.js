@@ -68,7 +68,7 @@ class ReadQROrCode extends PureComponent {
           placeholder="Introduce code"
           onChange={e => this.handleInputChange(e.target.value)} />
         <Button
-          onClick={this.moveForward}
+          onClick={() => this.moveForward(this.state.inputSignInData)}
           type="primary"
           htmlType="button">
           Authorize code

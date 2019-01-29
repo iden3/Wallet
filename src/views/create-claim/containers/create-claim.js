@@ -47,7 +47,7 @@ class CreateClaim extends Component {
   };
 
   static defaultProps = {
-    type: CLAIMS_CONSTANTS.TYPE.DEFAULT.NAME,
+    type: CLAIMS_CONSTANTS.TYPE.BASIC.NAME,
     isVisible: false,
   };
 
@@ -59,7 +59,7 @@ class CreateClaim extends Component {
     let createClaimCB;
 
     switch (this.props.type) {
-      case CLAIMS_CONSTANTS.TYPE.DEFAULT.NAME:
+      case CLAIMS_CONSTANTS.TYPE.BASIC.NAME:
         createClaimCB = this.props.handleCreateGenericClaim;
         break;
       default:
@@ -88,7 +88,7 @@ class CreateClaim extends Component {
    */
   _getContent() {
     switch (this.props.type) {
-      case CLAIMS_CONSTANTS.TYPE.DEFAULT.NAME:
+      case CLAIMS_CONSTANTS.TYPE.BASIC.NAME:
         return <GenericClaim handleCreateGenericClaim={this.createClaim} />;
       default:
         return <GenericClaim handleCreateGenericClaim={this.createClaim} />;

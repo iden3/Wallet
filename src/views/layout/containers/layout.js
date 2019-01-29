@@ -78,8 +78,8 @@ class Layout extends React.Component {
   constructor(props) {
     super(props);
     this.props.handleSetIdentitiesFromStorage()
-      .then(() => this.props.currentIdentity.size === 1
-                  && this.props.handleSetClaimsFromStorage(this.props.currentIdentity));
+      .then(identitiesNumber => identitiesNumber > 0
+                                && this.props.handleSetClaimsFromStorage(this.props.currentIdentity));
   }
 
   /**

@@ -70,7 +70,7 @@ class SignInPermission extends Component {
   };
 
   handleConfirmSignIn = () => {
-    console.log('-----> CONFIRM SIGN IN');
+    console.warning('-----> CONFIRM SIGN IN');
     this.props.toggleVisibility();
   };
 

@@ -244,6 +244,55 @@ class Claim {
   }
 
   /**
+   * Generate an assign name claim. This is made when an identity is created.
+   * The name resolver (can be the same relay) emits one claim to the user, so
+   * will be in the received claims list. We don't need to do any async call,
+   * this method create it in the app state and local storage.
+   *
+   * @param {string} localClaimId - Local id of the claim
+   * @param proofOfClaim - Proof of the claim returned by the name resolver
+   * @param url - Of the name resolver that emitted it
+   *
+   * @returns {Promise<any>} - With the final claim structure that has been created in the storage
+   */
+  generateAssignName(localClaimId, proofOfClaim, url = APP_SETTINGS.DEFAULT_RELAY_DOMAIN) {
+    const createdClaim = this.createClaimInStorage(
+      CLAIMS.TYPE.RECEIVED.NAME,
+      this.identity.get('address'),
+      `Bind ${this.identity.get('address')} to label ${this.identity.get('label')}@${this.identity.get('domain')}`,
+      localClaimId,
+      proofOfClaim,
+      url,
+    );
+
+    return Promise.resolve(createdClaim);
+  }
+
+  /**
+   * Generate a authorize K sign claim. This is made when an identity is created.
+   * It's a claim emitted to the relay with the operational public key in order
+   * can sign on behalf the user.
+   *
+   * @param {string} localClaimId - Local id of the claim
+   * @param proofOfClaim - Proof of the claim returned by the relay
+   * @param url - To the relay emitted
+   *
+   * @returns {Promise<any>} - With the final claim structure that has been created in the storage
+   */
+  generateAuthKSign(localClaimId, proofOfClaim, url = APP_SETTINGS.DEFAULT_RELAY_DOMAIN) {
+    const createdClaim = this.createClaimInStorage(
+      CLAIMS.TYPE.EMITTED.NAME,
+      this.identity.get('address'),
+      `Authorize to relay ${url} to sign with public key ${this.identity.get('keys').operational}`,
+      localClaimId,
+      proofOfClaim,
+      url,
+    );
+
+    return Promise.resolve(createdClaim);
+  }
+
+  /**
    * Retrieve all the claims stored in the storage.
    *
    * @returns {Promise<{}>} - With an object with claims grouped by emitted, received and grouped

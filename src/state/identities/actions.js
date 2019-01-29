@@ -267,6 +267,9 @@ export function handleSetIdentitiesFromStorage() {
           currentIdentity,
           needsToSaveMasterKey: identities.needsMasterSeedToBeSaved,
         }));
+
+        // return the number of identities recovered from the storage
+        return (Object.keys(identities.ids).length);
       })
       .catch(error => dispatch(setAllIdentitiesError(error)));
   };

@@ -1,7 +1,10 @@
 import iden3 from 'iden3';
 import schemas from 'schemas';
 import DALFactory from 'dal';
-import { API } from 'helpers';
+import {
+  API,
+  ClaimsHelper,
+} from 'helpers';
 import * as SCHEMAS from 'constants/schemas';
 import * as APP_SETTINGS from 'constants/app';
 
@@ -248,6 +251,13 @@ const identitiesHelper = (function () {
             ...data,
             isCurrent,
           });
+
+          // TODO: With the proofOfClaim field in the res.address.proofOfClaim
+          // create a new Entry and then create an emitted AuthorizeKSign
+          // with the signature authorized to the Relay to sign
+
+          // TODO: Create an AssignName claim, that is one received by the Name resolver
+          // (in this case is the relay)
 
           if (newIdentity && createIdentityInStorage(newIdentity)) {
             if (newIdentity.isCurrent) {
