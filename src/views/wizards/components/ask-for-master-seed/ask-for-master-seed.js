@@ -51,7 +51,7 @@ class AskForMasterSeed extends PureComponent {
       <div className="i3-ww-ssw__ask-seed">
         <div>
           <p>
-            Please, introduce here the passphrase that we have shown you in the former step.
+            Please, introduce here the master seed / mnemonic that we have shown you in the former step.
             We need to be sure that you have it.
             <br />
             Write as we shown you since is case sensitive and with the same blank spaces.

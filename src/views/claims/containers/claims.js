@@ -156,21 +156,20 @@ class Claims extends Component {
         content = this._getPinned();
       } else {
         const tabs = this._getTabs();
-        const headerButtons = (
+        /* const headerButtons = (
           <Button
             type="primary"
             htmlType="button"
             onClick={this.toggleCreateClaimForm}>
             Create
           </Button>
-        );
+        ); */ // add to Widget with headerButtons={headerButtons}
         content = (
           <Widget
             isFetching={false}
             hasError={false}
             hasData
-            title="Claims"
-            headerButtons={headerButtons}>
+            title="Claims">
             <Tabs tabs={tabs} />
           </Widget>
         );

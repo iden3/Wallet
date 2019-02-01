@@ -43,9 +43,7 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-        },
+        use: [{ loader: 'babel-loader', options: { cacheDirectory: false } }],
       },
       {
         test: /\.(jpe?g|png|gif|svg|ico|url)$/i,
@@ -72,7 +70,7 @@ module.exports = {
               // to configure the generated identification: [name of the component]_[name of class/id]_[random unique hash]
               localIdentName: '[name]_[local]_[hash:base64]',
               sourceMap: true,
-              minimize: true,
+              // minimize: true,
             },
           },
           // Loads a Sass/SCSS file and compiles it to CSS --> https://github.com/webpack-contrib/sass-loader

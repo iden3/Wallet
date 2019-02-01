@@ -209,7 +209,10 @@ export function handleCreateIdentity(passphrase, data) {
         // return data from new user because is needed to bind it to a label in next step of the UI
         return newIdentity;
       })
-      .catch(error => dispatch(createIdentityError(error.message)));
+      .catch((error) => {
+        dispatch(createIdentityError(error.message));
+        return Promise.reject(new Error(error));
+      });
   };
 }
 

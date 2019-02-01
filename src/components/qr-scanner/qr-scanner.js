@@ -11,6 +11,10 @@ const ENDED_STREAM = 'ended';
  * Uses the camera component to get the stream and find the QR.
  * ScanImage is a function triggered for each tick of the video stream
  * for parsing the image and look for a QR code.
+ *s
+ * Since we depends on if user has granted us access to cam,
+ * each time we need to access to component state, we need
+ * to check if it exists. Because if no access granted, we don't have state.
  */
 class QRScanner extends PureComponent {
   static propTypes = {
@@ -36,7 +40,10 @@ class QRScanner extends PureComponent {
    * @param {object} stream of the video
    */
   closeCamera = () => {
-    this.state.videoElement.srcObject.getVideoTracks()[0].stop();
+    // if user has not granted access to cam, we don't have state in the component
+    if (this.state && this.state.videoElement.srcObject) {
+      this.state.videoElement.srcObject.getVideoTracks()[0].stop();
+    }
   };
 
   /**
@@ -48,7 +55,7 @@ class QRScanner extends PureComponent {
    * the video stream and manipulate it
    */
   scanImage = (videoElement, canvasElement) => {
-    if (videoElement.readyState === videoElement.HAVE_ENOUGH_DATA) {
+    if (this.state && videoElement.readyState === videoElement.HAVE_ENOUGH_DATA) {
       this.setState({
         canvasElement,
         videoElement,
@@ -67,7 +74,9 @@ class QRScanner extends PureComponent {
   _handleStreamTick() {
     // It is needed do this check, otherwise a lot of animation frames are added to event loop
     // and even we unmount the component the are many frames to deal with in the stack
-    if (this.state.videoElement.srcObject.getVideoTracks()[0].readyState === LIVE_STREAM) {
+    if (this.state
+      && this.state.videoElement.srcObject
+      && this.state.videoElement.srcObject.getVideoTracks()[0].readyState === LIVE_STREAM) {
       const canvas = this.state.canvasElement.getContext('2d');
 
       // write current video stream tick in the canvas for parsing it and check if there is any QR code
@@ -91,7 +100,9 @@ class QRScanner extends PureComponent {
     }
 
     // check if stream finished (when camera is closed or component unmount)
-    if (this.state.videoElement.srcObject.getVideoTracks()[0].readyState === ENDED_STREAM) {
+    if (this.state
+      && this.state.videoElement.srcObject
+      && this.state.videoElement.srcObject.getVideoTracks()[0].readyState === ENDED_STREAM) {
       this.closeCamera();
     }
   }

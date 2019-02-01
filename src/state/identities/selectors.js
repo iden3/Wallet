@@ -1,6 +1,8 @@
 import { Map as ImmutableMap } from 'immutable';
 
-export const getIdentitiesState = state => state.identities;
+export const getIdentitiesState = (state) => {
+  return state.identities;
+};
 export const getIdentitiesFetching = state => getIdentitiesState(state).get('isFetching');
 export const getIdentitiesError = state => getIdentitiesState(state).get('error');
 export const getIdentity = (state, address) => getIdentitiesState(state).get('identities').get(address);

@@ -141,12 +141,12 @@ const schemas = (function () {
     const date = new Date();
     const { keys } = data;
     const keysContainer = data.keys.keysContainer || data.keys.container;
-    const relay = data.id.relay || data.relay;
+    const { relay } = data;
     // when we are not creating th identity, and we are loading it from storage, implementation use to be ""
-    const implementation = typeof data.implementation === 'string' ? data.implementation : data.id.implementation;
+    const implementation = typeof data.id.implementation === 'string' ? data.id.implementation : data.implementation;
 
     const parsedObject = {
-      address: data.id.idAddr || data.address,
+      address: data.address,
       date: format(date, 'd/MMM/yyyy'),
       domain: data.domain,
       icon: utils.generateHash(),
@@ -156,6 +156,7 @@ const schemas = (function () {
         recovery: keys.keyRecovery || keys.recovery,
         revoke: keys.keyRevoke || keys.revoke,
         operational: keys.keyOp || keys.operational,
+        profilePath: keys.profilePath ? keys.profilePath : data.id.keyProfilePath,
         container: {
           prefix: keysContainer.prefix,
           type: keysContainer.type,
@@ -164,6 +165,8 @@ const schemas = (function () {
         },
       },
       label: data.label,
+      proofOfKSign: data.proofOfClaimKSign || data.proofOfKSign,
+      proofOfEthLabel: data.proofOfEthLabel,
       originalDateTime: date,
       relay: Object.getPrototypeOf(relay),
       relayURL: data.relayURL || relay.url,

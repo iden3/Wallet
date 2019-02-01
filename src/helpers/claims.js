@@ -283,7 +283,7 @@ class Claim {
     const createdClaim = this.createClaimInStorage(
       CLAIMS.TYPE.EMITTED.NAME,
       this.identity.get('address'),
-      `Authorize to relay ${url} to sign with public key ${this.identity.get('keys').operational}`,
+      `Authorize this key to sign messages on behalf of the user: ${this.identity.get('keys').operational}`,
       localClaimId,
       proofOfClaim,
       url,

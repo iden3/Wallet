@@ -40,6 +40,10 @@ class AskForNewPassphrase extends PureComponent {
      Flag to know is first identity or not, to show one text or other in the move forward button
     */
     isFirstIdentity: PropTypes.bool.isRequired,
+    /*
+     Flag to know if is fetching creating identity
+     */
+    isFetching: PropTypes.bool.isRequired,
   };
 
   state = {
@@ -185,14 +189,20 @@ class AskForNewPassphrase extends PureComponent {
           </form>
         </div>
         <div className="i3-ww-ci__buttons">
+          {
+            !this.props.isFetching
+            && (
+            <Button
+              onClick={this.moveBackwards}
+              type="primary"
+              htmlType="button">
+              <Icon type="left" />
+              Back
+            </Button>
+            )
+          }
           <Button
-            onClick={this.moveBackwards}
-            type="primary"
-            htmlType="button">
-            <Icon type="left" />
-            Back
-          </Button>
-          <Button
+            loading={this.props.isFetching}
             onClick={this.moveForward}
             type="primary"
             htmlType="button">

@@ -1,5 +1,6 @@
 const webpack = require('webpack');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+// const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+// const TerserPlugin = require('terser-webpack-plugin');
 // create a CSS file per JS file which contains CSS
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 // optimize and minimize the CSS
@@ -23,11 +24,19 @@ module.exports = merge(common, {
   mode: 'production',
   optimization: {
     minimizer: [
-      new UglifyJsPlugin({
+      /* new UglifyJsPlugin({
         cache: false,
         parallel: true,
         sourceMap: true, // set to true to have JS source maps
-      }),
+      }), */
+      /* new TerserPlugin({
+        terserOptions: {
+          test: /\.js(\?.*)?$/i,
+          parallel: true,
+          safari10: false,
+          ecma: 5,
+        },
+      }), */
       new OptimizeCSSAssetsPlugin({}),
     ],
     // separate in a file called vendors.js all used in node_modules

@@ -51,10 +51,12 @@ class Wizard extends Component {
      Own class of the inner view
     */
     className: PropTypes.string,
+    existsError: PropTypes.bool,
   };
 
   static defaultProps = {
     lastAction: () => {},
+    existsError: false,
   };
 
   state = {
@@ -72,7 +74,27 @@ class Wizard extends Component {
    * @param {string} direction should be 'forward' or 'backwards'
    */
   changeStep = (direction = FORWARD) => {
-    if (!this.state.goToDashboard) {
+    let { currentStep } = this.state;
+
+    if (direction === FORWARD && !this.props.existsError && !this.state.goToDashboard) {
+      currentStep = this.state.currentStep + 1;
+      if (currentStep === this.props.sortedSteps.length) {
+        this.props.lastAction();
+        this.setState({ goToDashboard: true });
+      } else {
+        this.setState({ currentStep });
+      }
+    } else if (direction === BACKWARDS) {
+      this.setState(prevState => ({
+        currentStep: prevState.currentStep - 1,
+        goToDashboard: prevState.goToDashboard ? false : prevState.goToDashboard,
+      }));
+    } /* else if (direction === FORWARD && this.props.existsError) {
+
+    } */
+
+
+    /*if (!this.props.existsError && direction !== BACKWARDS) {//!this.state.goToDashboard) {
       let { currentStep } = this.state;
 
       if (direction === FORWARD) {
@@ -87,7 +109,7 @@ class Wizard extends Component {
       } else {
         this.setState({ currentStep });
       }
-    }
+    }*/
   };
 
   render() {

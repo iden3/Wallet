@@ -15,7 +15,7 @@ module.exports = merge(common, {
     contentBase: path.join(__dirname, 'dist'),
     compress: true,
     publicPath: '/',
-    port: 9000,
+    port: 8800,
     stats: 'normal',
     watchContentBase: true,
     historyApiFallback: true,

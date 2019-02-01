@@ -167,7 +167,7 @@ class Layout extends React.Component {
 }
 
 export default compose(
-  withRouter,
   withIdentities,
   withClaims,
+  withRouter,
 )(Layout);

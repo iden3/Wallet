@@ -25,14 +25,14 @@ class ShowMasterSeed extends PureComponent {
      The decrypted master seed to keep by the user (use to be mnemonic of some words)
     */
     masterSeed: PropTypes.string.isRequired,
-  }
+  };
 
   /*
   * Callback to handle the forward movement to next wizard step
   */
   moveForward = () => {
     this.props.move(FORWARD);
-  }
+  };
 
   render() {
     return (
@@ -46,8 +46,7 @@ class ShowMasterSeed extends PureComponent {
             <br />
             <br />
             Keep in mind that if you lose it, you will not be able to recover any of your identities.
-            Write it down or print this screen because in the next step you should to introduce it again,
-            so that we are sure you have kept it.
+            Write it down or print this screen because in the next step you must introduce the phrase again so we are sure that you kept it.
           </p>
         </div>
         <div>

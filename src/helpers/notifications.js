@@ -62,6 +62,9 @@ const notifications = (function () {
       _config.bottom = 20;
 
       delete _config.type;
+      if (!_config.duration) {
+        _config.duration = 10;
+      }
       notification[config.type](_config);
     }
   }

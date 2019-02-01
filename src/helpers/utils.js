@@ -1,3 +1,4 @@
+import iden3 from 'iden3';
 const utils = {
   /**
    * Check if two arrays are equal recursively: in length and in values,
@@ -311,7 +312,7 @@ const utils = {
 
   /**
   * Throttle means to be sure that something is executed only once in the delay time.
-  * 
+  *
   * @param {number} delay - in miliseconds
   * @param {function} fn - the callback to execute only once in the delay time
   *
@@ -330,17 +331,17 @@ const utils = {
     };
   },
 
-  /** 
-  * To print an elemnt of the web. Add an iframe with 0 width and height, insert the content
+  /**
+  * To print an element of the web. Add an iframe with 0 width and height, insert the content
   * that we want to print and call the print method of this object to show the user the rendered
   * content with the options to print (they change regarding the printer)
   *
   * @param {string} elClass - The class of the element to create the iframe
-  * @param {string} title - To set it in the iframe for a11y 
+  * @param {string} title - To set it in the iframe for a11y
   */
   print(elClass, title = 'Iframe to print') {
     const contentToPrint = document.getElementsByClassName(elClass)[0];
-    const idIframe = `iframe-${elClass}`
+    const idIframe = `iframe-${elClass}`;
     const iframe = document.createElement('iframe');
     let pri;
 
@@ -356,12 +357,23 @@ const utils = {
     pri = document.getElementById(idIframe).contentWindow;
     pri.document.open();
     pri.document.write(contentToPrint.innerHTML);
-    pri.document.close();
     pri.focus();
     pri.print();
+    pri.document.close();
+
 
     // destroy the iframe
     document.getElementById(idIframe).remove();
+  },
+  /**
+   * Parse the information read from a QR (or introduced code) to do a sign in.
+   *
+   * @param {string} hexString - The code read
+   * @returns {Object} with the information parsed and human readable
+   */
+  parseQRInfoToSignIn(hexString) {
+    const bufferData = iden3.utils.hexToStr(hexString);
+    return JSON.parse(bufferData.toString('ascii'));
   },
 };
 

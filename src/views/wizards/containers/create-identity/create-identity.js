@@ -82,7 +82,11 @@ class CreateIdentity extends Component {
     /*
      Flag indicating any error when retrieve identities
      */
-    identitiesError: PropTypes.string.isRequired
+    identitiesError: PropTypes.string.isRequired,
+    /*
+     Flag indicating if it's fetching identitiies
+     */
+    isFetchingIdentities: PropTypes.bool.isRequired,
     //
     // from withClaims HoC
     //
@@ -109,16 +113,6 @@ class CreateIdentity extends Component {
   componentDidMount() {
     this.props.getForm(FORMS.PASSPHRASE);
     this.props.getForm(FORMS.IDENTITY_NAME);
-  }
-
-  componentDidUpdate(prevProps) {
-    if (!prevProps.identitiesError && this.props.identitiesError) {
-      notificationsHelper.showNotification({
-        type: NOTIFICATIONS.ERROR,
-        description: `We are sorry... There was an error creating the identity:\n${this.props.identitiesError}`,
-        onClose: this.props.handleClearIdentitiesError,
-      });
-    }
   }
 
   /**
@@ -172,15 +166,19 @@ class CreateIdentity extends Component {
           type: NOTIFICATIONS.SUCCESS,
           description: `Congratulations! New identity ${data.label}@${data.domain} has been created`,
         }))
-        .catch(error => notificationsHelper.showNotification({
-          type: NOTIFICATIONS.ERROR,
-          description: `We are sorry... There was an error creating the identity:\n${error}`,
-        }));
+        .catch((error) => {
+          notificationsHelper.showNotification({
+            type: NOTIFICATIONS.ERROR,
+            description: `We are sorry... There was an error creating the identity:\n${error.message}`,
+          });
+          this.props.handleClearIdentitiesError();
+        });
     } else {
       notificationsHelper.showNotification({
         type: NOTIFICATIONS.ERROR,
         description: 'We are sorry... There was an error creating the identity:\nNo passphrase or label set',
       });
+      this.props.handleClearIdentitiesError();
     }
   };
 
@@ -224,6 +222,7 @@ class CreateIdentity extends Component {
           getFormValue: this.props.getForm,
           setPassphrase: this.setPassphrase,
           isFirstIdentity: this.props.isFirstIdentity,
+          isFetching: this.props.isFetchingIdentities,
         },
         classes: ['i3-ww-ci__passphrase'],
         title: this.props.isFirstIdentity ? 'Create a passphrase' : 'Write your passphrase',
@@ -237,6 +236,7 @@ class CreateIdentity extends Component {
       <Wizard
         className="i3-ww-ci"
         sortedSteps={sortedStepsObj}
+        existsError={!!this.props.identitiesError}
         lastAction={this.createIdentity} />
     );
   }

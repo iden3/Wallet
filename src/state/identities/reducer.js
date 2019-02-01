@@ -51,7 +51,7 @@ import {
  */
 const initialState = new ImmutableMap({
   error: '',
-  isFetching: true,
+  isFetching: false,
   identities: ImmutableMap({}),
   currentIdentity: '',
   // needsToSaveMasterKey: true, only added if is set in the DAL, check SET_ALL_IDENTITIES_SUCCESS case
@@ -94,9 +94,10 @@ function identities(state = initialState, action) {
       });
     case SET_ALL_IDENTITIES_SUCCESS:
       return state.merge({
-        isFetching: true,
+        isFetching: false,
         identities: action.data.get('identities'),
         currentIdentity: action.data.get('currentIdentity'),
+        error: '',
         ...action.data.get('needsToSaveMasterKey') && { needsToSaveMasterKey: true },
       });
     case SET_ALL_IDENTITIES_ERROR:
@@ -150,6 +151,7 @@ function identities(state = initialState, action) {
         isFetching: false,
         identities: _identities,
         currentIdentity: action.data,
+        error: '',
       });
     }
     case CHANGE_CURRENT_IDENTITY_ERROR:
@@ -166,6 +168,7 @@ function identities(state = initialState, action) {
         .delete('needsToSaveMasterKey')
         .merge({
           isFetching: false,
+          error: '',
         });
     case SET_MASTER_SEED_AS_SAVED_ERROR:
       return state.merge({

@@ -3,7 +3,6 @@ import schemas from 'schemas';
 import DALFactory from 'dal';
 import {
   API,
-  ClaimsHelper,
 } from 'helpers';
 import * as SCHEMAS from 'constants/schemas';
 import * as APP_SETTINGS from 'constants/app';
@@ -157,20 +156,25 @@ const identitiesHelper = (function () {
    */
   function _prepareCreateIdentity(passphrase, relayAddress, isFirstIdentity) {
     if (passphrase && relayAddress) {
-      const keys = _createKeys(passphrase, isFirstIdentity);
-      if (keys) {
-        const relay = setIdentityRelay(relayAddress);
+      try {
+        const keys = _createKeys(passphrase, isFirstIdentity);
+        if (keys) {
+          const relay = setIdentityRelay(relayAddress);
 
-        return Promise.resolve({
-          id: createId(
-            { recovery: keys.keyRecovery, revoke: keys.keyRevoke, operational: keys.keyOp },
-            relay.url,
-          ),
-          keys,
-          relay,
-        });
+          return Promise.resolve({
+            id: createId(
+              { recovery: keys.keyRecovery, revoke: keys.keyRevoke, operational: keys.keyOp },
+              relay.url,
+            ),
+            keys,
+            relay,
+          });
+        }
+        return Promise.reject(new Error('Looks like your passphrase is not correct'));
+      } catch {
+        return Promise.reject();
       }
-      return Promise.reject(new Error('Looks like your passphrase is not correct'));
+
     }
 
     return Promise.reject(Error('No passphrase or relay address set'));
@@ -180,16 +184,16 @@ const identitiesHelper = (function () {
    * Call to the Relay to bind the label/name of an identity to an address.
    *
    * @param {Object} identity - With its information, above all, it's needed the keys and the id address
-   * @param {Object} data - With label or name field to bind it to the identity
+   * @param {string} label - With label to bind it to the identity
    * @param {string} passphrase - to sign the request
    *
    * @returns {Promise<void>}
    */
-  function bindIdToUsername(identity, data, passphrase) {
+  async function bindLabelToUsername(identity, label, passphrase) {
     let identityUpdated = {};
 
-    identity.keys.container.unlock(passphrase);
-    API.bindIdToUsername(identity, data.label || data.name)
+    identity.keys.keysContainer.unlock(passphrase);
+    await API.bindLabelToUsername(identity, label)
       .then(res => identityUpdated = Object.assign({}, identityUpdated, res.data));
     return identityUpdated;
   }
@@ -241,13 +245,22 @@ const identitiesHelper = (function () {
           const address = await API.createIdentity(identity.id);
           return { address, identity };
         })
+        .then(async (createIdentityRes) => {
+          const _bindLabelUsername = await bindLabelToUsername(createIdentityRes.identity, data.label, passphrase);
+          return {
+            createdIdentity: createIdentityRes,
+            proofOfClaimAssignName: _bindLabelUsername,
+          };
+        })
         .then((res) => {
           // once we have the address returned by the ID, set it in the local storage
           // set the flag hasSavedIdentity at false to show a notification in the app
           // to warn user to keep the seed and show them it
           const newIdentity = _checkIdentitySchema({
-            address: res.address,
-            ...res.identity,
+            address: res.createdIdentity.address.idAddr,
+            proofOfClaimKSign: res.createdIdentity.address.proofOfClaim,
+            proofOfEthLabel: res.proofOfClaimAssignName,
+            ...res.createdIdentity.identity,
             ...data,
             isCurrent,
           });
@@ -271,7 +284,13 @@ const identitiesHelper = (function () {
             reject(new Error('New identity could not be created'));
           }
         })
-        .catch(error => reject(new Error(error)));
+        .catch((error) => {
+          if (error.response.data.error === 'error on GetClaimByHi') {
+            reject(new Error('We are sorry. This label is already taken. Please come back and choose another one'));
+          } else {
+            reject(new Error(error.response.data.error || error.response.statusText));
+          }
+        });
     });
   }
 
@@ -521,7 +540,7 @@ const identitiesHelper = (function () {
   }
 
   return {
-    bindIdToUsername,
+    bindLabelToUsername,
     createId,
     createIdentity,
     createIdentityInStorage,

@@ -73,7 +73,9 @@ function withIdentities(IdentitiesComponent) {
       /*
        Selector to retrieve all the identities
        */
-      identities: PropTypes.PropTypes.instanceOf(ImmutableMap).isRequired,
+      identities: PropTypes.oneOfType([
+        PropTypes.instanceOf(ImmutableMap),
+        PropTypes.object]).isRequired,
       /*
        Selector to get the current loaded identity information
        */

@@ -104,6 +104,6 @@ class NavBar extends Component {
 }
 
 export default compose(
-  withRouter,
   withIdentities,
+  withRouter,
 )(NavBar);

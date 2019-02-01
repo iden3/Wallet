@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
+import { Map as ImmutableMap } from 'immutable';
 import {
+  withAuthorizations,
   withIdentities,
 } from 'hocs';
 import {
+  notificationsHelper,
   utils,
 } from 'helpers';
+import { TYPE as NOTIFICATIONS } from 'constants/notifications';
 import * as BOX_CONSTANTS from 'constants/box';
 import { Wizard } from 'views';
 import {
@@ -37,6 +41,21 @@ class SignInPermission extends Component {
   static propTypes = {
     toggleVisibility: PropTypes.func.isRequired,
     isVisible: PropTypes.bool.isRequired,
+    //
+    // from withIdentities HoC
+    //
+    /*
+     Selector to get the current loaded identity information
+     */
+    currentIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
+    //
+    // from withAuthorizations HoC
+    //
+    handleCAppSignIn: PropTypes.func.isRequired,
+    /*
+     Flag to know if we are doing an async call
+     */
+    isFetchingAuthorization: PropTypes.bool.isRequired,
   };
 
   state = {
@@ -44,34 +63,40 @@ class SignInPermission extends Component {
   };
 
   /**
-   * Remove the master seed from the state, hide the wizard box
-   * and call the action to set the master seed flag as saved
-   * to don't show anymore any UI warning
-   */
-  finishWizard = () => {
-    return new Promise(async (resolve, reject) => {
-      const response = await this.props.signInCB();
-
-      if (response) {
-        this.props.toggleVisibility();
-        resolve();
-      } else {
-        reject(response);
-      }
-    });
-  };
-
-  /**
    *
    * @param {Object} signIngData - With the data related to the QR or code introduced
    */
   handleReadData = (signInData) => {
-    this.setState({ signInData });
+    try {
+      this.setState({ signInData: utils.parseQRInfoToSignIn(signInData) });
+    } catch {
+      notificationsHelper.showNotification({
+        type: NOTIFICATIONS.ERROR,
+        message: 'There is an error!',
+        description: 'Sorry! We can not understand the read code',
+      });
+    }
   };
 
-  handleConfirmSignIn = () => {
-    console.warning('-----> CONFIRM SIGN IN');
-    this.props.toggleVisibility();
+  /**
+   * Confirm sign in. So, toggle the visibility of the wizard and call
+   * the third party call back (back end) with the permission signed
+   */
+  handleConfirmSignIn = (passphrase) => {
+    this.props.handleCAppSignIn(this.props.currentIdentity, passphrase, this.state.signInData)
+      .then(() => {
+        this.props.toggleVisibility();
+        notificationsHelper.showNotification({
+          type: NOTIFICATIONS.SUCCESS,
+          message: 'Oh yes!',
+          description: `You have signed in at ${this.state.signInData.body.data.origin}`,
+        });
+      })
+      .catch(error => notificationsHelper.showNotification({
+        type: NOTIFICATIONS.ERROR,
+        message: 'Sig in error!',
+        description: `OooopS! Something went wrong! ${error}`,
+      }));
   };
 
   /**
@@ -97,9 +122,12 @@ class SignInPermission extends Component {
         ownProps: {
           signInData: this.state.signInData,
           confirmSignIn: this.handleConfirmSignIn,
+          identityLabel: this.props.currentIdentity.get('label'),
+          identityDomain: this.props.currentIdentity.get('domain'),
+          isFetching: this.props.isFetchingAuthorization,
         },
         classes: ['i3-ww-confirm-sign-in'],
-        title: 'Confirm sign in',
+        title: 'Confirm',
       },
     ];
   };
@@ -131,4 +159,5 @@ class SignInPermission extends Component {
 
 export default compose(
   withIdentities,
+  withAuthorizations,
 )(SignInPermission);
