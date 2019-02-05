@@ -372,8 +372,7 @@ const utils = {
    * @returns {Object} with the information parsed and human readable
    */
   parseQRInfoToSignIn(hexString) {
-    const bufferData = iden3.utils.hexToStr(hexString);
-    return JSON.parse(bufferData.toString('ascii'));
+    return JSON.parse(Buffer.from(hexString, 'base64').toString('ascii'));
   },
 };
 
