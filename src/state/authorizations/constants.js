@@ -1,0 +1,3 @@
+export const C_APP_SIGN_IN = 'C_APP_SIGN_IN';
+export const C_APP_SIGN_IN_SUCCESS = 'C_APP_SIGN_IN_SUCCESS';
+export const C_APP_SIGN_IN_ERROR = 'C_APP_SIGN_IN_ERROR';

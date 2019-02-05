@@ -73,7 +73,7 @@ class List extends PureComponent {
       case CLAIM.TYPE.RECEIVED.NAME:
         content = claim.introducedContent
           ? claim.introducedContent
-          : `Issued by ${claim.issuer || 'Unknown identity'}`;
+          : `Issued by ${claim.issuer || claim.url || 'Unknown identity'}`;
         break;
       case CLAIM.TYPE.EMITTED.NAME:
         content = claim.introducedContent
@@ -114,7 +114,7 @@ class List extends PureComponent {
         <Fragment key={`claim-${claim.id}-data`}>
           <div>
             <span className="" style={{ fontWeight: 'bold', display: 'block' }}>
-              { claim.url ? 'Authorized to:' : 'Created by you' }
+              { claim.type === CLAIM.TYPE.EMITTED.NAME ? 'To:' : 'From:' }
             </span>
             <span>
               {claim.url
@@ -132,37 +132,42 @@ class List extends PureComponent {
             </span>
           </div>
           <br />
-          <div className="i3-ww-claims-list__scrollable-proofs">
-            <span className="" style={{ fontWeight: 'bold', display: 'block' }}>
+          {
+            claim.proof
+            && (
+            <div className="i3-ww-claims-list__scrollable-proofs">
+              <span className="" style={{ fontWeight: 'bold', display: 'block' }}>
               Claim proof:
-            </span>
-            <span>
-              <p>
-                <span className="" style={{ fontWeight: 'bold', display: 'block' }}>
+              </span>
+              <span>
+                <p>
+                  <span className="" style={{ fontWeight: 'bold', display: 'block' }}>
                   Root:
-                </span>
-                <span>
-                  {claim.proof.Root}
-                </span>
-              </p>
-              <p>
-                <span className="" style={{ fontWeight: 'bold', display: 'block' }}>
+                  </span>
+                  <span>
+                    {claim.proof.Root}
+                  </span>
+                </p>
+                <p>
+                  <span className="" style={{ fontWeight: 'bold', display: 'block' }}>
                   Leaf:
-                </span>
-                <span>
-                  {claim.proof.Leaf}
-                </span>
-              </p>
-              <p>
-                <span className="" style={{ fontWeight: 'bold', display: 'block' }}>
+                  </span>
+                  <span>
+                    {claim.proof.Leaf}
+                  </span>
+                </p>
+                <p>
+                  <span className="" style={{ fontWeight: 'bold', display: 'block' }}>
                   Proof:
-                </span>
-                <span>
-                  {claim.proof.Proof}
-                </span>
-              </p>
-            </span>
-          </div>
+                  </span>
+                  <span>
+                    {claim.proof.Proof}
+                  </span>
+                </p>
+              </span>
+            </div>
+            )
+          }
         </Fragment>)
     );
   }

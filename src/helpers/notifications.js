@@ -12,9 +12,10 @@ const notifications = (function () {
   /**
      * The content of the notification, with the colour and the message to show.
      *
-     * @paran {Object} config - Object to set the notification object
+     * @param {Object} config - Object to set the notification object
      * @param {string} config.type - Should be one of 'success', 'error', 'info', 'warning', 'warn', 'open', 'close', 'destroy'
      * @param {string} config.message - Message to show in the notification
+     *
      * @returns {{style: {color: string, background: string}, message: (*|string)}}
      */
   function _getContent(config) {
@@ -57,10 +58,13 @@ const notifications = (function () {
   function showNotification(config) {
     if (notificationTypes.indexOf(config.type) !== -1) {
       const _config = Object.assign({}, config, _getContent(config));
-      _config.placement = 'bottomRight';
+      _config.placement = _config.placement || 'bottomRight';
       _config.bottom = 20;
 
       delete _config.type;
+      if (!_config.duration) {
+        _config.duration = 10;
+      }
       notification[config.type](_config);
     }
   }

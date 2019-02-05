@@ -23,6 +23,10 @@ import {
   CHANGE_CURRENT_IDENTITY,
   CHANGE_CURRENT_IDENTITY_SUCCESS,
   CHANGE_CURRENT_IDENTITY_ERROR,
+  SET_MASTER_SEED_AS_SAVED,
+  SET_MASTER_SEED_AS_SAVED_SUCCESS,
+  SET_MASTER_SEED_AS_SAVED_ERROR,
+  CLEAR_IDENTITY_ERROR,
 } from './constants';
 
 function createIdentity() {
@@ -150,9 +154,35 @@ function changeCurrentIdentitySuccess(idAddress) {
 }
 
 function changeCurrentIdentityError(error) {
+  console.error(error);
   return {
     type: CHANGE_CURRENT_IDENTITY_ERROR,
     data: error,
+  };
+}
+
+function setMasterSeedAsSaved() {
+  return {
+    type: SET_MASTER_SEED_AS_SAVED,
+  };
+}
+
+function setMasterSeedAsSavedSuccess() {
+  return {
+    type: SET_MASTER_SEED_AS_SAVED_SUCCESS,
+  };
+}
+
+function setMasterSeedAsSavedError(error) {
+  return {
+    type: SET_MASTER_SEED_AS_SAVED_ERROR,
+    data: error,
+  };
+}
+
+function clearError() {
+  return {
+    type: CLEAR_IDENTITY_ERROR,
   };
 }
 
@@ -179,7 +209,10 @@ export function handleCreateIdentity(passphrase, data) {
         // return data from new user because is needed to bind it to a label in next step of the UI
         return newIdentity;
       })
-      .catch(error => dispatch(createIdentityError(error.message)));
+      .catch((error) => {
+        dispatch(createIdentityError(error.message));
+        return Promise.reject(new Error(error));
+      });
   };
 }
 
@@ -232,7 +265,14 @@ export function handleSetIdentitiesFromStorage() {
     return Promise.resolve(identitiesHelper.getAllIdentities())
       .then((identities) => {
         const currentIdentity = identitiesHelper.getCurrentIdentity();
-        dispatch(setAllIdentitiesSuccess({ identities, currentIdentity }));
+        dispatch(setAllIdentitiesSuccess({
+          identities: identities.ids,
+          currentIdentity,
+          needsToSaveMasterKey: identities.needsMasterSeedToBeSaved,
+        }));
+
+        // return the number of identities recovered from the storage
+        return (Object.keys(identities.ids).length);
       })
       .catch(error => dispatch(setAllIdentitiesError(error)));
   };
@@ -298,5 +338,32 @@ export function handleChangeCurrentIdentity(idAddress) {
           : dispatch(changeCurrentIdentityError('Could not change to selected identity'));
       })
       .catch(error => dispatch(changeCurrentIdentityError(error)));
+  };
+}
+
+/**
+* Set the needs to save master seed flag as false. This means to remove the property
+* from the state and remove the key from the DAL.
+*/
+export function handleSetMasterSeedAsSaved() {
+  return function (dispatch) {
+    dispatch(setMasterSeedAsSaved());
+    return new Promise((resolve, reject) => {
+      const setAsSavedInDAL = identitiesHelper.setMasterSeedSaved();
+      if (setAsSavedInDAL) {
+        dispatch(setMasterSeedAsSavedSuccess());
+        resolve();
+      } else {
+        const errorMsg = 'Could not be saved that you saved the master seed. Please, proceed again later.';
+        dispatch(setMasterSeedAsSavedError(errorMsg));
+        reject(errorMsg);
+      }
+    });
+  };
+}
+
+export function handleClearIdentitiesError() {
+  return function (dispatch) {
+    dispatch(clearError());
   };
 }

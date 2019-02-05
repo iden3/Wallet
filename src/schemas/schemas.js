@@ -61,6 +61,7 @@ const schemas = (function () {
  * @param {Object} data - With the object to check with the model
  * @param {boolean} deepComparison - If we find and Object, compare key/values inside as well
  * @throws Will throw an error if the argument is model or data are null or undefined
+ *
  * @returns {boolean} True if are data has the same schema than the model, false otherwise
  */
   function _checkSchemas(model, data, deepComparison = false) {
@@ -140,9 +141,9 @@ const schemas = (function () {
     const date = new Date();
     const { keys } = data;
     const keysContainer = data.keys.keysContainer || data.keys.container;
-    const relay = data.id.relay || data.relay;
+    const { relay } = data;
     // when we are not creating th identity, and we are loading it from storage, implementation use to be ""
-    const implementation = typeof data.implementation === 'string' ? data.implementation : data.id.implementation;
+    const implementation = typeof data.id.implementation === 'string' ? data.id.implementation : data.implementation;
 
     const parsedObject = {
       address: data.address,
@@ -155,6 +156,7 @@ const schemas = (function () {
         recovery: keys.keyRecovery || keys.recovery,
         revoke: keys.keyRevoke || keys.revoke,
         operational: keys.keyOp || keys.operational,
+        profilePath: keys.profilePath ? keys.profilePath : data.id.keyProfilePath,
         container: {
           prefix: keysContainer.prefix,
           type: keysContainer.type,
@@ -163,11 +165,11 @@ const schemas = (function () {
         },
       },
       label: data.label,
+      proofOfKSign: data.proofOfClaimKSign || data.proofOfKSign,
+      proofOfEthLabel: data.proofOfEthLabel,
       originalDateTime: date,
-      passphrase: data.passphrase,
       relay: Object.getPrototypeOf(relay),
       relayURL: data.relayURL || relay.url,
-      seed: data.seed || keys.mnemonic.split(),
       time: format(date, 'HH:mm'),
       isCurrent: data.isCurrent,
     };

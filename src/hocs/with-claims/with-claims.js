@@ -10,6 +10,8 @@ const {
     handleAuthorizeClaim,
     handleSetClaimsFromStorage,
     handleCreateGenericClaim,
+    handleGenerateAssignNameClaim,
+    handleGenerateAuthKSignClaim,
     // handleUpdatePinnedClaims,
   },
   selectors: {
@@ -39,6 +41,14 @@ function withClaims(ClaimsComponent) {
        Handle to create a claim
        */
       handleCreateGenericClaim: PropTypes.func.isRequired,
+      /*
+       Generate a new assign name received claim after create an identity
+       */
+      handleGenerateAssignNameClaim: PropTypes.func.isRequired,
+      /*
+       Generate in the app state a kSign authorization claim to the relay
+       */
+      handleGenerateAuthKSignClaim: PropTypes.func.isRequired,
       /*
        Action to update when a claim is pinned to dashboard or removed from the pinned
        */
@@ -84,6 +94,8 @@ function withClaims(ClaimsComponent) {
       handleAuthorizeClaim,
       handleSetClaimsFromStorage,
       handleCreateGenericClaim,
+      handleGenerateAssignNameClaim,
+      handleGenerateAuthKSignClaim,
       // handleUpdatePinnedClaims,
     }, dispatch);
   }

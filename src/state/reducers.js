@@ -4,6 +4,7 @@ import forms from './forms';
 import historical from './historical';
 import qrCodes from './qr-codes';
 import identities from './identities';
+import authorizations from './authorizations';
 
 const ownReducers = {};
 
@@ -16,6 +17,7 @@ const appReducer = combineReducers({
   historical: historical.reducer,
   qrCodes: qrCodes.reducer,
   identities: identities.reducer,
+  authorizations: authorizations.reducer,
 });
 
 /**

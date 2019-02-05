@@ -17,6 +17,10 @@ import {
   CHANGE_CURRENT_IDENTITY,
   CHANGE_CURRENT_IDENTITY_SUCCESS,
   CHANGE_CURRENT_IDENTITY_ERROR,
+  SET_MASTER_SEED_AS_SAVED,
+  SET_MASTER_SEED_AS_SAVED_SUCCESS,
+  SET_MASTER_SEED_AS_SAVED_ERROR,
+  CLEAR_IDENTITY_ERROR,
 } from './constants';
 
 /*
@@ -47,13 +51,18 @@ import {
  */
 const initialState = new ImmutableMap({
   error: '',
-  isFetching: true,
+  isFetching: false,
   identities: ImmutableMap({}),
   currentIdentity: '',
+  // needsToSaveMasterKey: true, only added if is set in the DAL, check SET_ALL_IDENTITIES_SUCCESS case
 });
 
 function identities(state = initialState, action) {
   switch (action.type) {
+    case CLEAR_IDENTITY_ERROR:
+      return state.merge({
+        error: '',
+      });
     case CREATE_IDENTITY:
       return state.merge({
         isFetching: true,
@@ -63,12 +72,15 @@ function identities(state = initialState, action) {
       // if already there is an identity "logged" means that we are creating
       // more identities and we don't want to change to new one, only create it
       const currentIdentity = state.get('currentIdentity') ? state.get('currentIdentity') : action.data.get('address');
+      const needsToSaveMasterKey = action.data.get('needsToSaveMasterKey');
+      action.data.delete('needsToSaveMasterKey');
 
       return state.merge({
         isFetching: false,
         error: '',
         identities: state.get('identities').set(action.data.get('address'), action.data),
         currentIdentity,
+        ...needsToSaveMasterKey && { needsToSaveMasterKey: true },
       });
     }
     case CREATE_IDENTITY_ERROR:
@@ -82,9 +94,11 @@ function identities(state = initialState, action) {
       });
     case SET_ALL_IDENTITIES_SUCCESS:
       return state.merge({
-        isFetching: true,
+        isFetching: false,
         identities: action.data.get('identities'),
         currentIdentity: action.data.get('currentIdentity'),
+        error: '',
+        ...action.data.get('needsToSaveMasterKey') && { needsToSaveMasterKey: true },
       });
     case SET_ALL_IDENTITIES_ERROR:
       return state.merge({
@@ -137,9 +151,26 @@ function identities(state = initialState, action) {
         isFetching: false,
         identities: _identities,
         currentIdentity: action.data,
+        error: '',
       });
     }
     case CHANGE_CURRENT_IDENTITY_ERROR:
+      return state.merge({
+        isFetching: false,
+        error: action.data,
+      });
+    case SET_MASTER_SEED_AS_SAVED:
+      return state.merge({
+        isFetching: true,
+      });
+    case SET_MASTER_SEED_AS_SAVED_SUCCESS:
+      return state
+        .delete('needsToSaveMasterKey')
+        .merge({
+          isFetching: false,
+          error: '',
+        });
+    case SET_MASTER_SEED_AS_SAVED_ERROR:
       return state.merge({
         isFetching: false,
         error: action.data,

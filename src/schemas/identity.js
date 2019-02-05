@@ -15,8 +15,7 @@
  * passphrase: string,
  * relay: any,
  * relayURL: string,
- * seed: Array,
- * time: string}}
+ * time: string }}
  */
 const model = {
   address: '',
@@ -30,14 +29,15 @@ const model = {
     recovery: '',
     revoke: '',
     operational: '',
+    profilePath: 0,
     container: Object.create({}),
   },
   label: '',
+  proofOfEthLabel: {},
+  proofOfKSign: {},
   originalDateTime: {},
-  passphrase: '',
   relay: Object.create({}),
   relayURL: '',
-  seed: [],
   time: '',
 };
 

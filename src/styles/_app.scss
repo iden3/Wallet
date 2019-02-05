@@ -19,10 +19,27 @@ body {
   font-family: Barlow Light, Lato, sans-serif !important;
   font-size: $app-regular-fs;
   background-color: $app-bg-color;
+  .ant-notification-topLeft { // very important notification will appear in top left
+    z-index: $top-left-notifications; // so, when a cover for the popups / sidebars is shown, the notification remains below
+  }
   #i3-ww-root {
     position: relative;
     height: auto !important;
     min-height: 100%;
     overflow-x: hidden;
+    .i3-ww-blink {
+      animation: blink-animation 1s steps(5, start) infinite;
+      -webkit-animation: blink-animation 1s steps(5, start) infinite;
+    }
+    @keyframes blink-animation {
+      to {
+        visibility: hidden;
+      }
+    }
+    @-webkit-keyframes blink-animation {
+      to {
+        visibility: hidden;
+      }
+    }
   }
 }

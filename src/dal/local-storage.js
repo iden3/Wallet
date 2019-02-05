@@ -112,8 +112,8 @@ class LocalStorage {
   deleteItem = (key) => {
     const finalKey = this.composeKey(key);
 
-    if (!this.getItem(finalKey)) {
-      localStorage.deleteItem(finalKey);
+    if (this.getItem(finalKey)) { // if exists key delete it
+      localStorage.removeItem(finalKey);
       return true;
     }
 

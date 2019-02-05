@@ -1,5 +1,4 @@
 import {
-  API,
   ClaimsHelper,
   utils,
 } from 'helpers';
@@ -20,6 +19,12 @@ import {
   CREATE_GENERIC_CLAIM,
   CREATE_GENERIC_CLAIM_SUCCESS,
   CREATE_GENERIC_CLAIM_ERROR,
+  GENERATE_ASSIGN_NAME_CLAIM,
+  GENERATE_ASSIGN_NAME_CLAIM_SUCCESS,
+  GENERATE_ASSIGN_NAME_CLAIM_ERROR,
+  GENERATE_AUTH_K_SIGN_CLAIM,
+  GENERATE_AUTH_K_SIGN_CLAIM_SUCCESS,
+  GENERATE_AUTH_K_SIGN_CLAIM_ERROR,
 /*  UPDATE_PINNED_CLAIMS,
   UPDATE_PINNED_CLAIMS_SUCCESS,
   UPDATE_PINNED_CLAIMS_ERROR, */
@@ -104,6 +109,48 @@ function authorizeClaimError(data) {
   console.error(data);
   return {
     type: AUTHORIZE_CLAIM_ERROR,
+    error: data,
+  };
+}
+
+function generateAssignNameClaim() {
+  return {
+    type: GENERATE_ASSIGN_NAME_CLAIM,
+  };
+}
+
+function generateAssignNameClaimSuccess(data) {
+  return {
+    type: GENERATE_ASSIGN_NAME_CLAIM_SUCCESS,
+    data: new ImmutableMap({ ...data }),
+  };
+}
+
+function generateAssignNameClaimError(data) {
+  console.error(data);
+  return {
+    type: GENERATE_ASSIGN_NAME_CLAIM_ERROR,
+    error: data,
+  };
+}
+
+function generateAuthKSignClaim() {
+  return {
+    type: GENERATE_AUTH_K_SIGN_CLAIM,
+  };
+}
+
+function generateAuthKSignClaimSuccess(data) {
+  return {
+    type: GENERATE_AUTH_K_SIGN_CLAIM_SUCCESS,
+    data: new ImmutableMap({ ...data }),
+  };
+}
+
+function generateAuthKSignClaimError(data) {
+  console.error(data);
+  return {
+    type: GENERATE_AUTH_K_SIGN_CLAIM_ERROR,
     error: data,
   };
 }
@@ -195,6 +242,31 @@ export function handleAuthorizeClaim(identity, claimData) {
     return claims.authorizeClaim(claimData, localClaimId)
       .then(authorizedClaim => dispatch(authorizeClaimSuccess(authorizedClaim)))
       .catch(error => dispatch(authorizeClaimError(error)));
+  };
+}
+
+export function handleGenerateAssignNameClaim(identity, proofOfClaim) {
+  return function (dispatch) {
+    dispatch(generateAssignNameClaim());
+
+    const localClaimId = utils.createUniqueAlphanumericId();
+    const claims = new ClaimsHelper(new ImmutableMap({ ...identity }));
+
+    return claims.generateAssignName(localClaimId, proofOfClaim)
+      .then(assignNameClaim => dispatch(generateAssignNameClaimSuccess(assignNameClaim)))
+      .catch(error => dispatch(generateAssignNameClaimError(error)));
+  };
+}
+
+export function handleGenerateAuthKSignClaim(identity, proofOfClaim) {
+  return function (dispatch) {
+    dispatch(generateAuthKSignClaim());
+    const localClaimId = utils.createUniqueAlphanumericId();
+    const claims = new ClaimsHelper(new ImmutableMap({ ...identity }));
+
+    return claims.generateAuthKSign(localClaimId, proofOfClaim)
+      .then(authKSignClaim => dispatch(generateAuthKSignClaimSuccess(authKSignClaim)))
+      .catch(error => dispatch(generateAuthKSignClaimError(error)));
   };
 }
 

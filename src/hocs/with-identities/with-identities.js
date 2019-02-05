@@ -4,6 +4,9 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { Map as ImmutableMap } from 'immutable';
 import identities from 'state/identities';
+import {
+  identitiesHelper,
+} from 'helpers';
 
 const {
   actions: {
@@ -14,6 +17,8 @@ const {
     handleDeleteAllIdentities,
     handleDeleteIdentity,
     handleChangeCurrentIdentity,
+    handleSetMasterSeedAsSaved,
+    handleClearIdentitiesError,
   },
   selectors: {
     getIdentitiesError,
@@ -21,6 +26,7 @@ const {
     getIdentity,
     getCurrentIdentity,
     getIdentities,
+    getNeedsToSaveMasterKey,
   },
 } = identities;
 
@@ -52,6 +58,14 @@ function withIdentities(IdentitiesComponent) {
       */
       handleChangeCurrentIdentity: PropTypes.func.isRequired,
       /*
+       Action to change the status if master seed has already been saved by the user
+      */
+      handleSetMasterSeedAsSaved: PropTypes.func.isRequired,
+      /*
+       Clear up the identities error string
+      */
+      handleClearIdentitiesError: PropTypes.func.isRequired,
+      /*
        Selector to get the information related to an identity.
        Expect the identity address as parameter
        */
@@ -59,7 +73,9 @@ function withIdentities(IdentitiesComponent) {
       /*
        Selector to retrieve all the identities
        */
-      identities: PropTypes.PropTypes.instanceOf(ImmutableMap).isRequired,
+      identities: PropTypes.oneOfType([
+        PropTypes.instanceOf(ImmutableMap),
+        PropTypes.object]).isRequired,
       /*
        Selector to get the current loaded identity information
        */
@@ -72,11 +88,29 @@ function withIdentities(IdentitiesComponent) {
        If there is any error when retrieve identities
        */
       identitiesError: PropTypes.string.isRequired,
+      /*
+       Flag to check is master seed has been saved
+      */
+      needsToSaveMasterKey: PropTypes.bool.isRequired,
+    };
+
+    /**
+    * Since this is not an action creator that should dispatch to the store,
+    * this prop should be placed here. It get the master seed of the wallet.
+    *
+    * @returns {Promise} with the master seed or and error message otherwise
+    */
+    handleGetIdentityMasterSeed = (passphrase) => {
+      return new Promise((resolve, reject) => {
+        const masterSeed = identitiesHelper.getMasterSeed(passphrase);
+
+        return masterSeed ? resolve(masterSeed) : reject(new Error('Could not be decrypted the seed'));
+      });
     };
 
     render() {
       return (
-        <IdentitiesComponent {...this.props} />
+        <IdentitiesComponent {...this.props} handleGetIdentityMasterSeed={this.handleGetIdentityMasterSeed} />
       );
     }
   }
@@ -88,6 +122,7 @@ function withIdentities(IdentitiesComponent) {
       getIdentity: identityAddr => getIdentity(state, identityAddr),
       currentIdentity: getCurrentIdentity(state),
       identities: getIdentities(state),
+      needsToSaveMasterKey: getNeedsToSaveMasterKey(state),
     };
   }
 
@@ -100,6 +135,8 @@ function withIdentities(IdentitiesComponent) {
       handleDeleteAllIdentities,
       handleDeleteIdentity,
       handleChangeCurrentIdentity,
+      handleSetMasterSeedAsSaved,
+      handleClearIdentitiesError,
     }, dispatch);
   }
 

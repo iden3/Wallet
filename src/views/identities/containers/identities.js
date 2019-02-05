@@ -13,7 +13,7 @@ import * as ICONS from 'constants/icons';
 import { utils } from 'helpers';
 import { withIdentities } from 'hocs';
 import {
-  CreateIdentity,
+  CreateIdentity as CreateIdentityWizard,
   DeleteIdentity,
   DeleteAllIdentities,
 } from '../components';
@@ -109,7 +109,7 @@ class Identities extends Component {
     switch (this.state.boxContent) {
       case boxContent.createIdentity:
         return (
-          <CreateIdentity
+          <CreateIdentityWizard
             afterCreateIdentity={this.createIdentity} />
         );
       case boxContent.deleteAll:
@@ -144,9 +144,10 @@ class Identities extends Component {
       </div>
     );
     const boxElements = this._getBoxContent();
+    const cmptClassName = 'i3-ww-identities';
 
     return (
-      <div className="i3-ww-identities">
+      <div className={cmptClassName}>
         <Widget
           isFetching={false}
           hasError={false}

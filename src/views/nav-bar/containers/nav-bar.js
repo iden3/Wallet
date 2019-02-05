@@ -41,20 +41,10 @@ class NavBar extends Component {
      Selector to get the current loaded identity information
      */
     currentIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
-  };
-
-  state = {
-    isCameraVisible: false,
-  };
-
-  /**
-   * Update the state to show or not the box with the camera.
-   * This callback is called from the camera button.
-   */
-  toggleCameraVisibility = () => {
-    this.setState(
-      prevState => ({ isCameraVisible: !prevState.isCameraVisible }),
-    );
+    /*
+     Flag that indicates if master seed has been saved or not
+    */
+    needsToSaveMasterKey: PropTypes.bool.isRequired,
   };
 
   /**
@@ -103,6 +93,7 @@ class NavBar extends Component {
             items={menuItems}
             selectedItem={selectedMainMenuItem} />
           <ButtonsBar
+            addSaveSeedNotification={this.props.needsToSaveMasterKey}
             addCamButton
             addNotificationsButton
             mobileMenuItems={menuItems} />
@@ -113,6 +104,6 @@ class NavBar extends Component {
 }
 
 export default compose(
-  withRouter,
   withIdentities,
+  withRouter,
 )(NavBar);
