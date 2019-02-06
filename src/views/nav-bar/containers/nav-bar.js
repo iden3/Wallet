@@ -8,13 +8,18 @@ import {
 import memoizeOne from 'memoize-one';
 import { Map as ImmutableMap } from 'immutable';
 import { withIdentities } from 'hocs';
-import { MenuItem } from 'base_components';
 import * as ROUTES from 'constants/routes';
+import * as BOX_CONSTANTS from 'constants/box';
 import { utils } from 'helpers';
+import {
+  Box,
+  MenuItem,
+} from 'base_components';
 import {
   ButtonsBar,
   IdentityItem,
   DesktopMenu,
+  MyData,
 } from '../components';
 
 import './nav-bar.scss';
@@ -47,8 +52,13 @@ class NavBar extends Component {
     needsToSaveMasterKey: PropTypes.bool.isRequired,
   };
 
+  state = {
+    isMyDataBoxVisible: false,
+  };
+
   /**
    * Compose all the Menu with their links and routes
+   *
    * @returns {element[]} An array of React nodes (MenuItem)
    * @private
    */
@@ -75,8 +85,35 @@ class NavBar extends Component {
       }
     });
 
+    // add my data label that shows a box to import export data
+    this._getMyDataLink(items);
     return items;
   }
+
+  /**
+   * Add the label pointing to my data. Has no route,
+   * but when on click needs to show the wizazrd of import / export data
+   *
+   * @param {array} items - Menu items already set
+   * @private
+   */
+  _getMyDataLink(items) {
+    items.push(
+      <MenuItem key="My data">
+        <div
+          onClick={() => this.toggleMyDataBox()}>
+          My data
+        </div>
+      </MenuItem>,
+    );
+  }
+
+  /**
+   * Show or not the box with the confirmation for deleting the identities.
+   */
+  toggleMyDataBox = () => {
+    this.setState(prevState => ({ isMyDataBoxVisible: !prevState.isMyDataBoxVisible }));
+  };
 
   render() {
     const menuItems = this._getMenuItems();
@@ -97,6 +134,15 @@ class NavBar extends Component {
             addCamButton
             addNotificationsButton
             mobileMenuItems={menuItems} />
+        </div>
+        <div>
+          <Box
+            type={BOX_CONSTANTS.TYPE.SIDE_PANEL}
+            side={BOX_CONSTANTS.SIDE.RIGHT}
+            onClose={this.toggleMyDataBox}
+            content={(<MyData />)}
+            title={utils.capitalizeFirstLetter('My data')}
+            show={this.state.isMyDataBoxVisible} />
         </div>
       </div>
     );

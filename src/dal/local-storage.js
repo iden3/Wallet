@@ -37,10 +37,34 @@ class LocalStorage {
   }
 
   /**
+   * Return all the local storage
+   */
+  backup = () => {
+    return localStorage;
+  };
+
+  /**
    * Remove all the local storage
    */
   clear = () => {
     localStorage.clear();
+  };
+
+  /**
+   * Dump all the local storage from given information.
+   *
+   * @param {object} data - with the data to dump to the local storage
+   *
+   * @returns {boolean} if all data was dump
+   */
+  dump = (data) => {
+    let dumpedData = true;
+
+    Object.keys(data).forEach((key) => {
+      dumpedData = this.setItem(key, data[key]);
+    });
+
+    return dumpedData;
   };
 
   /**

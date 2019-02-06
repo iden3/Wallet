@@ -13,11 +13,11 @@ class CreateIdentity extends PureComponent {
      Call back to trigger when identity created, in this case will be close the box
     */
     afterCreateIdentity: PropTypes.func,
-  }
+  };
 
   static defaultProps = {
     afterCreateIdentity: () => {},
-  }
+  };
 
   render() {
     return (
