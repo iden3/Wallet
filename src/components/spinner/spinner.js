@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
+import './spinner.scss';
+
 /**
  * Spinner to show at buttons, widgets, etc...
  */
@@ -11,14 +13,6 @@ class Spinner extends PureComponent {
       Custom class name
      */
     className: PropTypes.string,
-    /**
-      Spinner color
-     */
-    color: PropTypes.string,
-  };
-
-  static defaultProps = {
-    color: '#fff',
   };
 
   render() {
@@ -26,11 +20,12 @@ class Spinner extends PureComponent {
       'i3-ww-spinner': true,
       [`${this.props.className}`]: this.props.className,
     });
-
     return (
-      <span
-        className={cmptClasses}
-        style={{ borderColor: this.props.color }} />);
+      <div className={cmptClasses}>
+        <div />
+        <div />
+      </div>
+    );
   }
 }
 

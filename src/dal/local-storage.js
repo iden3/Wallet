@@ -92,6 +92,15 @@ class LocalStorage {
   };
 
   /**
+   * Retrieve all the local storage.
+   *
+   * @returns {Storage} - All the local storage
+   */
+  getAll = () => {
+    return localStorage;
+  };
+
+  /**
    * Get an item from the local storage with the prefix of current domain
    *
    * @param {string} key - to get from the local storage

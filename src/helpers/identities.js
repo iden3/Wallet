@@ -1,4 +1,4 @@
-import iden3 from 'iden3';
+import iden3 from '@iden3/iden3';
 import schemas from 'schemas';
 import DALFactory from 'dal';
 import {
@@ -258,7 +258,7 @@ const identitiesHelper = (function () {
           // to warn user to keep the seed and show them it
           const newIdentity = _checkIdentitySchema({
             address: res.createdIdentity.address.idAddr,
-            proofOfClaimKSign: res.createdIdentity.address.proofOfClaim,
+            proofOfClaimKSign: res.createdIdentity.address.proofClaim,
             proofOfEthLabel: res.proofOfClaimAssignName,
             ...res.createdIdentity.identity,
             ...data,

@@ -1,4 +1,4 @@
-import iden3 from 'iden3';
+import iden3 from '@iden3/iden3';
 import { List as ImmutableList } from 'immutable';
 import { format } from 'date-fns';
 import {

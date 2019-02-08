@@ -1,4 +1,3 @@
-import iden3 from 'iden3';
 const utils = {
   /**
    * Check if two arrays are equal recursively: in length and in values,
@@ -361,7 +360,6 @@ const utils = {
     pri.print();
     pri.document.close();
 
-
     // destroy the iframe
     document.getElementById(idIframe).remove();
   },
@@ -373,6 +371,59 @@ const utils = {
    */
   parseQRInfoToSignIn(hexString) {
     return JSON.parse(Buffer.from(hexString, 'base64').toString('ascii'));
+  },
+
+  /**
+   * Read the content of a file and return it.
+   *
+   * @param {Object} inputFile - with the file
+   *
+   * @returns {Promise} - resolved with the content of the file, otherwise rejected
+   */
+  async readFileContent(inputFile) {
+    const temporaryFileReader = new FileReader();
+
+    return new Promise((resolve, reject) => {
+      temporaryFileReader.onerror = () => {
+        temporaryFileReader.abort();
+        reject(new Error('Problem parsing input file.'));
+      };
+
+      temporaryFileReader.onload = () => {
+        resolve(temporaryFileReader.result);
+      };
+
+      temporaryFileReader.readAsText(inputFile);
+    });
+  },
+  /**
+   * Create a blob to download a file.
+   *
+   * @param {string} content - of the file
+   * @param {string} name - of the new file
+   * @param {string} extension - of the new file
+   *
+   * @returns {boolean} - if created successfully
+   */
+  saveFile(content, name = 'iden3', extension = 'txt') {
+    try {
+      const blob = new Blob([content]);
+      const anchor = document.createElement('a');
+      const id = 'i3-ww-download-document-tmp';
+
+      document.body.appendChild(anchor);
+      anchor.id = id;
+      anchor.download = `${name}.${extension}`;
+      anchor.href = (window.URL || window.webkitURL).createObjectURL(blob);
+      anchor.dataset.downloadurl = ['text/plain', anchor.download, anchor.href].join(':');
+      anchor.click();
+
+      // destroy the anchor
+      document.getElementById(id).remove();
+      return true;
+    } catch (error) {
+      throw new Error(`We are sorry. The file could not be created: ${error.message}`);
+    }
   },
 };
 

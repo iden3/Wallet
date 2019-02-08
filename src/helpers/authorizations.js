@@ -1,5 +1,5 @@
 import { API } from 'helpers';
-import iden3 from 'iden3';
+import iden3 from '@iden3/iden3';
 import DALFactory from 'dal';
 import * as APP_SETTINGS from 'constants/app';
 

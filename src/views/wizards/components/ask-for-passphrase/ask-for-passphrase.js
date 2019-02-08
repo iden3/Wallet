@@ -13,14 +13,22 @@ import './ask-for-passphrase.scss';
 
 class AskForPassphrase extends PureComponent {
   static propTypes = {
-    /*
-     Callback thar controls the movement to next step
+    /**
+    * Callback that controls the movement to next step
     */
     move: PropTypes.func.isRequired,
-    /*
-     Callback to trigger when move forward to retrieve the decrypted master seed
-    */
-    getMasterSeed: PropTypes.func.isRequired,
+    /**
+     * Generic call back that can be different regarding the component calling this view
+     */
+    actionForward: PropTypes.func.isRequired,
+    /**
+     * Informative text to place before the input
+     */
+    infoText: PropTypes.string,
+  };
+
+  static defaultProps = {
+    infoText: '',
   };
 
   state = {
@@ -43,7 +51,7 @@ class AskForPassphrase extends PureComponent {
   */
   moveForward = () => {
     if (this.state.passphrase) {
-      this.props.getMasterSeed(this.state.passphrase)
+      this.props.actionForward(this.state.passphrase)
         .then(() => this.props.move(FORWARD));
     }
   };
@@ -51,13 +59,15 @@ class AskForPassphrase extends PureComponent {
   render() {
     return (
       <div className="i3-ww-ssw__ask-passphrase">
+        {this.props.infoText
+        && (
         <div>
           <p>
-            We need your passphrase to decrypt the mnemonic passphrase that you are going to keep.
-            We remind you that entering a private key on a website is dangerous. Please, be sure
-            that you are in an Iden3 website and it is not compromised.
+            {this.props.infoText}
           </p>
         </div>
+        )
+       }
         <div>
           <form>
             <div className="i3-ww-ssw__input-wrapper">

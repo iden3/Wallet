@@ -42,6 +42,9 @@ const sortedSteps = [
 */
 class SaveSeed extends Component {
   static propTypes = {
+    /*
+     To know if wizard is visible or not
+     */
     isVisible: PropTypes.bool.isRequired,
     /*
       Callback to change the visibility
@@ -90,6 +93,9 @@ class SaveSeed extends Component {
     this.props.getForm(FORMS.SHOW_SEED);
   }
 
+  /**
+   * Remove from state sensitive information.
+   */
   componentWillUnmount() {
     this.removePassphrase();
     this.removeMasterSeed();
@@ -131,7 +137,7 @@ class SaveSeed extends Component {
   /**
   * Remove the master seed from the state, hide the wizard box
   * and call the action to set the master seed flag as saved
-  * to don't show anymore any UI warning
+  * to don't show anymore any UI warning.
   */
   finishWizard = () => {
     return new Promise((resolve) => {
@@ -163,26 +169,39 @@ class SaveSeed extends Component {
     });
   };
 
-  removePassphrase = () => {
-    this.setState({ passphrase: '' });
-  };
-
+  /**
+   * Set master seed to blank in the state.
+   */
   removeMasterSeed = () => {
     this.setState({ masterSeed: '' });
   };
 
-  /*
-  * Set the master seed in the component state
-  */
+  /**
+   * Set passphrase in blank in the state.
+   */
+  removePassphrase = () => {
+    this.setState({ passphrase: '' });
+  };
+
+  /**
+   * Set the master seed in the state.
+   *
+   * @param {string} decryptedMasterSeed
+   */
   setMasterSeed = (decryptedMasterSeed) => {
     this.setState({ masterSeed: decryptedMasterSeed });
   };
 
+  /**
+   * Set the passphrase in the state.
+   *
+   * @param {string} passphrase
+   */
   setPassphrase = (passphrase) => {
     this.setState({ passphrase });
   };
 
-  /*
+  /**
   * Callback to set in the store that seed has already saved.
   * Already iden3js will be informed to set it.
   */
@@ -201,7 +220,7 @@ class SaveSeed extends Component {
   };
 
   /**
-  * Create the object to send to the Wizard component with the content of each step and titles/subtitles
+  * Create the object to send to the Wizard component with the content of each step and titles/subtitles.
   * @private
   */
   _getSortedSteps = () => {
@@ -209,13 +228,16 @@ class SaveSeed extends Component {
       {
         content: sortedSteps[0],
         ownProps: {
-          updateForm: this.updateForm,
-          getFormValue: this.props.getForm,
-          getMasterSeed: this.getDecryptedMasterSeed,
+          /* updateForm: this.updateForm,
+          getFormValue: this.props.getForm, */
+          actionForward: this.getDecryptedMasterSeed,
         },
         classes: ['i3-ww-save-master-seed__passphrase'],
         title: 'Keep your master seed phrase',
         subtitle: 'Introduce your passphrase',
+        infoText: 'We need your passphrase to decrypt the mnemonic passphrase that you are going to keep.\n'
+          + 'We remind you that entering a private key on a website is dangerous. Please, be sure\n'
+          + 'that you are in an Iden3 website and it is not compromised.',
       },
       {
         content: sortedSteps[1],

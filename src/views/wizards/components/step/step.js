@@ -27,7 +27,7 @@ class Step extends Component {
      Title of this step
     */
     title: PropTypes.string.isRequired,
-  }
+  };
 
   render() {
     const Content = this.props.content;

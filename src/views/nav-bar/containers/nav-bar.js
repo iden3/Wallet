@@ -56,6 +56,14 @@ class NavBar extends Component {
     isMyDataBoxVisible: false,
   };
 
+
+  /**
+   * Show or not the box with the confirmation for deleting the identities.
+   */
+  toggleMyDataBox = () => {
+    this.setState(prevState => ({ isMyDataBoxVisible: !prevState.isMyDataBoxVisible }));
+  };
+
   /**
    * Compose all the Menu with their links and routes
    *
@@ -101,19 +109,15 @@ class NavBar extends Component {
     items.push(
       <MenuItem key="My data">
         <div
+          role="button"
+          tabIndex="0"
+          onKeyUp={() => this.toggleMyDataBox()}
           onClick={() => this.toggleMyDataBox()}>
           My data
         </div>
       </MenuItem>,
     );
   }
-
-  /**
-   * Show or not the box with the confirmation for deleting the identities.
-   */
-  toggleMyDataBox = () => {
-    this.setState(prevState => ({ isMyDataBoxVisible: !prevState.isMyDataBoxVisible }));
-  };
 
   render() {
     const menuItems = this._getMenuItems();
@@ -140,9 +144,10 @@ class NavBar extends Component {
             type={BOX_CONSTANTS.TYPE.SIDE_PANEL}
             side={BOX_CONSTANTS.SIDE.RIGHT}
             onClose={this.toggleMyDataBox}
-            content={(<MyData />)}
+            content={(<MyData toggleVisibility={this.toggleMyDataBox} />)}
             title={utils.capitalizeFirstLetter('My data')}
-            show={this.state.isMyDataBoxVisible} />
+            show={this.state.isMyDataBoxVisible}
+            fullScreen />
         </div>
       </div>
     );

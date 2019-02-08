@@ -21,6 +21,10 @@ class SidePanel extends PureComponent {
      */
     footer: PropTypes.node,
     /*
+     If box should have the width of all the screen. Also will no have opacity (set to 1)
+     */
+    fullScreen: PropTypes.bool,
+    /*
     Children
      */
     children: PropTypes.node.isRequired,
@@ -40,6 +44,7 @@ class SidePanel extends PureComponent {
 
   static defaultProps = {
     side: 'right',
+    fullScreen: false,
   };
 
   componentDidMount() {
@@ -49,6 +54,8 @@ class SidePanel extends PureComponent {
   render() {
     const cmptClasses = classNames({
       'i3-ww-side-panel': true,
+      'i3-ww-side-panel--full_screen': this.props.fullScreen,
+      'i3-side-panel--regular-size': !this.props.fullScreen,
       [`i3-ww-side-panel--${this.props.side}`]: true,
       'i3-ww-side-panel--visible': this.props.isVisible,
     });

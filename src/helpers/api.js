@@ -1,4 +1,4 @@
-import iden3 from 'iden3';
+import iden3 from '@iden3/iden3';
 import axios from 'axios';
 /**
  * Any interaction with a Relay or external agent (an AJAX call) should be done by a call set here.

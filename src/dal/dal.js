@@ -82,7 +82,7 @@ class DAL {
    * @returns {*}
    */
   clear() {
-    return this._storage.clear();
+    return Promise.resolve(this._storage.clear());
   }
 
   /**
@@ -106,6 +106,15 @@ class DAL {
    */
   itemExists(key) {
     return this._storage.itemExists(key);
+  }
+
+  /**
+   * Get all the storage.
+   *
+   * @returns {*|string[]|IDBRequest<any[]>|FormDataEntryValue[]}
+   */
+  getAll(){
+    return this._storage.getAll();
   }
 
   /**

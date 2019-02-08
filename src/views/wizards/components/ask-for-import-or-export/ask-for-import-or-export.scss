@@ -1,0 +1,12 @@
+.i3-ww-ask-for-import-or-export {
+  .i3-ww-import-export__separator {
+    max-width: 600px;
+    width: 85%;
+    height: 3px;
+    border-bottom: 1px solid $separator-line-color;
+    position: absolute;
+  }
+  .i3-ww-import-export__import{
+    padding-top: 40px;
+  }
+}
