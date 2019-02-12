@@ -9,6 +9,9 @@
     width: 28px;
     height: 28px;
   }
+  .ant-radio-inner:focus {
+    outline: none;
+  }
   .ant-radio-inner {
     border-width: 2px;
   }

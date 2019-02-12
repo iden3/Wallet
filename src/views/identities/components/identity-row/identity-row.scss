@@ -42,11 +42,17 @@
   .i3-ww-radio-button {
     padding-left: 20px;
   }
+  .i3-ww-identity-row__select-identity {
+    outline: none;
+  }
 }
 
 .i3-ww-identity-row__main-content--current-user {
   background: $identities-row-bg-current-user !important;
   color: $identities-row-color-current-user;
+  .i3-ww-identity-row__description {
+    font-weight: bold;
+  }
 }
 
 .i3-ww-identity-row__main-content--current-user-tag {

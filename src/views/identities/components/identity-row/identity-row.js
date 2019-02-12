@@ -63,6 +63,7 @@ class IdentityRow extends PureComponent {
         role="gridcell">
         <div
           role="gridcell"
+          className="i3-ww-identity-row__select-identity"
           tabIndex={this.props.order}
           onKeyUp={() => this.props.onChangeCurrentIdentity(this.props.address)}
           onClick={() => this.props.onChangeCurrentIdentity(this.props.address)}>
