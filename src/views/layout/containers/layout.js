@@ -12,6 +12,7 @@ import classNames from 'classnames';
 import {
   withClaims,
   withIdentities,
+  withImportExportData,
 } from 'hocs';
 import {
   Content,
@@ -59,6 +60,10 @@ class Layout extends React.Component {
     */
     currentIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
     /*
+     Number of identities
+     */
+    identitiesNumber: PropTypes.number.isRequired,
+    /*
      Flag to check is master seed has been saved
     */
     needsToSaveMasterKey: PropTypes.bool.isRequired,
@@ -86,8 +91,17 @@ class Layout extends React.Component {
   * If we are in the Dashboard (we have at least one identity) call to the method
   * to show a warning to the user to save the master seed (if not saved before)
   */
-  componentDidUpdate() {
-    this.props.currentIdentity.size > 0 && this._getSaveSeedNotification();
+  componentDidUpdate(prevProps) {
+    const areIds = this.props.identitiesNumber || this.props.currentIdentity.size > 0;
+
+    if (areIds) {
+      this._getSaveSeedNotification();
+    }
+
+    // this case use to happen when import new data
+    if (prevProps.identitiesNumber !== this.props.identitiesNumber) {
+      this.props.handleSetClaimsFromStorage(this.props.currentIdentity);
+    }
   }
 
   /**
@@ -117,24 +131,24 @@ class Layout extends React.Component {
   }
 
   render() {
-    const usersExist = this.props.currentIdentity.size > 0;
+    const areIds = this.props.identitiesNumber > 0;
 
     return (
       <LayoutCmpt className="i3-ww-layout">
         <Header className={classNames({
           'i3-ww-header': true,
-          'i3-ww-header__no-nav-bar': !usersExist,
+          'i3-ww-header__no-nav-bar': !areIds,
         })}>
           <HeaderWithLogo
             location={this.props.location}
-            enableLink={usersExist} />
-          { usersExist && <NavBar /> }
+            enableLink={areIds} />
+          { areIds && <NavBar /> }
         </Header>
         <Content className="i3-ww-content">
           {/* If exists an identity we use the regular routes
               to access to any of the views. Otherwise, all requests
               are redirect to the Create identity view wizard to create an identity */}
-          { usersExist
+          { areIds
             ? (
               <Switch>
                 <Route
@@ -169,5 +183,6 @@ class Layout extends React.Component {
 export default compose(
   withIdentities,
   withClaims,
+  withImportExportData,
   withRouter,
 )(Layout);

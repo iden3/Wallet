@@ -147,9 +147,11 @@ $claim-row-date-cell-bg-color: $grey-9;
 $claim-row-color: $black-100;
 
 // Identities list
-$identities-row-color: $black-100;
-$identities-row-bg-current-user: $blue-30;
-$identities-row-color-current-user: $white;
+$identities-row-color: $white;
+$identities-row-bg-color: $blue-30;
+$identities-row-bg-current-user: $white;
+$identities-row-color-current-user: $blue-100-rgba;
+$identities-row-color-current-user-tag: $grey-23;
 
 // Tabs
 $tab-active-bg-color: $blue-20;
@@ -163,6 +165,8 @@ $widget-header-bg-color: $blue-11;
 // Lists
 $row-collapsible-content-color: $white;
 $row-collapsible-content-bg-color: $blue-30;
+$row-collapsible-button-color: $blue-11;
+$row-collapsible-button-border-color: $grey-23;
 
 // Box: Side panel and pop ups
 $box-bg-color: $blue-40-rgba;
@@ -171,6 +175,10 @@ $box-header-border-color: $blue-30;
 
 // Lines
 $separator-line-color: $blue-30;
+
+// Radio button
+$radio-button-checked-color: $blue-30;
+$radio-button-not-checked-color: $grey-70;
 
   /*
   * Other settings

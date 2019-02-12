@@ -11,7 +11,6 @@ function withImportExportData(ImportExportComponent) {
       this.keysHelper = new Keys();
       this.keysContainer = this.keysHelper.container;
       this.db = this.keysHelper.db;
-      this.DAL = this.keysHelper.DAL;
     }
 
     /**
@@ -20,11 +19,15 @@ function withImportExportData(ImportExportComponent) {
      *
      * @param {string} passphrase
      *
-     * @returns {boolean} True if encrypted file was successfully created
-     */
-    exportData = (passphrase) => {
+     * @returns {Promise}
+     * */
+    exportData = async (passphrase) => {
       this.keysContainer.unlock(passphrase);
-      return utils.saveFile((this.db.exportWallet(this.keysContainer)));
+      const exported = await utils.decryptUUID(passphrase);
+      if (exported) {
+        return utils.saveFile((this.db.exportWallet(this.keysContainer)));
+      }
+      return false;
     };
 
     /**
@@ -33,32 +36,19 @@ function withImportExportData(ImportExportComponent) {
      *
      * @param {string} passphrase
      * @param {object} file - selected by the user
+     * @param {Function} onLoadCB - callback to trigger when on load ends
      *
      * @returns {Promise}
      */
-    importData = (passphrase, file) => {
-      // const fileContent = await utils.readFileContent(file).catch(error => console.log('--->', error));
-
-      return utils.readFileContent(file)
+    importData = (passphrase, file, onLoadCB) => {
+      return utils.readFileContent(file, onLoadCB)
         .then(async (fileContent) => {
           this.keysContainer.unlock(passphrase);
-          await this.DAL.clear();
+          // await this.DAL.clear();
           return fileContent;
         })
         .then(fileContent => this.db.importWallet(this.keysContainer, fileContent))
         .catch(error => new Error(error));
-
-      /* await this.keysHelper.DAL.clear();
-      try {
-        return this.db.importWallet(this.keysContainer, fileContent);
-      } catch (error) {
-        throw new Error(error);
-      } */
-
-      /* return new Promise((resolve, reject) => {
-        const decryptedFile = this.db.importWallet(this.keysContainer, fileContent);
-        decryptedFile ? resolve(true) : reject();
-      }); */
     };
 
     render() {

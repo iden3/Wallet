@@ -20,6 +20,7 @@ class Spinner extends PureComponent {
       'i3-ww-spinner': true,
       [`${this.props.className}`]: this.props.className,
     });
+
     return (
       <div className={cmptClasses}>
         <div />

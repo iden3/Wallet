@@ -1,3 +1,6 @@
+import { Keys } from 'helpers';
+import * as APP_SETTINGS from 'constants/app';
+
 const utils = {
   /**
    * Check if two arrays are equal recursively: in length and in values,
@@ -377,10 +380,11 @@ const utils = {
    * Read the content of a file and return it.
    *
    * @param {Object} inputFile - with the file
+   * @param {Function} onLoadCB - callback to trigger when on load ends
    *
    * @returns {Promise} - resolved with the content of the file, otherwise rejected
    */
-  async readFileContent(inputFile) {
+  async readFileContent(inputFile, onLoadCB) {
     const temporaryFileReader = new FileReader();
 
     return new Promise((resolve, reject) => {
@@ -390,6 +394,7 @@ const utils = {
       };
 
       temporaryFileReader.onload = () => {
+        if (onLoadCB) onLoadCB();
         resolve(temporaryFileReader.result);
       };
 
@@ -423,6 +428,58 @@ const utils = {
       return true;
     } catch (error) {
       throw new Error(`We are sorry. The file could not be created: ${error.message}`);
+    }
+  },
+
+  /**
+   * Creates a random UUID alphanumerical string.
+   *
+   * @returns {string} with random uuid with format xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
+   */
+  createUUID() {
+    let dt = new Date().getTime();
+    const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+      const r = (dt + Math.random() * 16) % 16 | 0;
+      dt = Math.floor(dt / 16);
+      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+
+    return uuid;
+  },
+
+  /**
+   * Create an encrypted from a random UUID and save it in the storage.
+   *
+   * @param {string} passphrase
+   *
+   * @returns {boolean} True if created, encrypted and stored
+   */
+  createEncryptedUUID(passphrase) {
+    const uuid = this.createUUID();
+    const keysHelper = new Keys();
+    let encryptedUUID = null;
+
+    keysHelper.container.unlock(passphrase);
+    encryptedUUID = keysHelper.container.encrypt(uuid);
+
+    return keysHelper.DAL.setItem(APP_SETTINGS.ST_DOMAIN, encryptedUUID);
+  },
+
+  /**
+   * Decrypt the ramdon UUID created with the createEncryptedUUID function.
+   *
+   * @param {string} passphrase
+   * @returns {boolean}
+   */
+  async decryptUUID(passphrase) {
+    const keysHelper = new Keys();
+
+    try {
+      keysHelper.container.unlock(passphrase);
+      await keysHelper.container.decrypt(keysHelper.DAL.getItem(APP_SETTINGS.ST_DOMAIN));
+      return true;
+    } catch {
+      return false;
     }
   },
 };

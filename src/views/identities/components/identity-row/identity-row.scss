@@ -7,8 +7,9 @@
     justify-content: center !important;
     width: 100%;
     .i3-ww-identity-row__change-identity {
-      margin-left: 15px;
       cursor: pointer;
+      margin-left: auto;
+      margin-right: 10%;
     }
   }
   .i3-ww-identity-row__initial-content {
@@ -29,14 +30,30 @@
     align-items: center;
   }
   .i3-ww-identity-row__description {
-    margin: auto;
+    padding-left: 10px;
+    max-width: 60%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
    }
   .i3-ww-row__collapsible-content--visible {
     margin-top: -3px;
+  }
+  .i3-ww-radio-button {
+    padding-left: 20px;
   }
 }
 
 .i3-ww-identity-row__main-content--current-user {
   background: $identities-row-bg-current-user !important;
   color: $identities-row-color-current-user;
+}
+
+.i3-ww-identity-row__main-content--current-user-tag {
+  border: 1px white solid;
+  padding: 0px 5px;
+  border-radius: 3px;
+  color: $identities-row-bg-current-user;
+  background: white;
+  margin: 2% 2% auto auto;
 }

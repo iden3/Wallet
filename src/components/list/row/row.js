@@ -50,12 +50,29 @@ class Row extends PureComponent {
       header: PropTypes.string,
       description: PropTypes.string,
     }),
+    /*
+     Call back triggered if click on row. If received bool (a false) don't need
+     to add the click nor class
+     */
+    onRowClick: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
+    /*
+     Background colour different from the default one
+     */
+    background: PropTypes.string,
+  };
+
+  static defaultProps = {
+    onRowClick: false,
+    background: '#FFFFFF',
   };
 
   state = {
     collapsed: true,
   };
 
+  /**
+   * Change visibility of the content row
+   */
   toggleCollapse = () => {
     this.setState(prevState => ({ collapsed: !prevState.collapsed }));
   };
@@ -66,28 +83,29 @@ class Row extends PureComponent {
       [`${this.props.className}`]: this.props.className,
     });
 
+
     return (
       <div
+        role="gridcell"
         key={`row-${this.props.id}`}
         className="i3-ww-list__row">
         <div
           className={rowClasses}
+          style={{ background: this.props.background }}
           role="row">
           {this.props.initialContent && (
             <div className="i3-ww-row__initial-content">
               {this.props.initialContent}
-            </div>)}
-          {this.props.date && (
-            <div className="i3-ww-row__date">
-              {this.props.date}
-            </div>)}
+            </div>
+          )}
           <div className="i3-ww-row__main-content">
             {this.props.mainContent}
           </div>
-          {this.props.finalContent && (
-            <div className="i3-ww-row__final-content">
-              {this.props.finalContent}
-            </div>)}
+          {this.props.date && (
+            <div className="i3-ww-row__date">
+              {this.props.date}
+            </div>
+          )}
           {this.props.collapsible
           && (
             <div
@@ -96,10 +114,14 @@ class Row extends PureComponent {
               role="gridcell"
               onKeyUp={this.toggleCollapse}
               onClick={this.toggleCollapse}>
-              <Icon type={this.state.collapsed ? 'down' : 'up'} />
+              <Icon type={this.state.collapsed ? 'caret-down' : 'caret-up'} />
             </div>
-          )
-          }
+          )}
+          {this.props.finalContent && (
+            <div className="i3-ww-row__final-content">
+              {this.props.finalContent}
+            </div>
+          )}
         </div>
         {this.props.collapsible
         && (

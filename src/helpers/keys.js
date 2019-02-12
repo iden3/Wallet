@@ -1,6 +1,8 @@
 import iden3 from '@iden3/iden3';
 import DALFactory from 'dal';
 import * as APP_SETTINGS from 'constants/app';
+import uuid from 'uuid';
+
 let instance;
 
 class Keys {

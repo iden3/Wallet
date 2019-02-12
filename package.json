@@ -155,7 +155,7 @@
     "webpack-merge": "^4.1.4"
   },
   "dependencies": {
-    "@iden3/iden3": "0.0.1-9.1",
+    "@iden3/iden3": "0.0.21",
     "antd": "^3.13.2",
     "axios": "^0.18.0",
     "classnames": "^2.2.6",

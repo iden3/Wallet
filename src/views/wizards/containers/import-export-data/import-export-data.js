@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
+import { Map as ImmutableMap } from 'immutable';
 import {
   withImportExportData,
+  withClaims,
+  withIdentities,
 } from 'hocs';
 import {
   notificationsHelper,
@@ -28,10 +31,17 @@ const sortedSteps = [
 ];
 
 /**
- * Wizard that used to import a backupt or export the data of the wallet
+ * Wizard that used to import a backupt or export the data of the wallet.
+ * Needs to check if component is mounted or not, because when this wizard
+ * is shown when there are no identities (first time in the wallet)
+ * the component is unmounted before finish the handleImportFile, since
+ * we are rehydrating the state with the import and.
  */
 class ImportExportData extends Component {
   static propTypes = {
+    /*
+      Function to show or not the wizard
+     */
     toggleVisibility: PropTypes.func.isRequired,
     //
     // from withImportExportData HOC
@@ -44,6 +54,21 @@ class ImportExportData extends Component {
      Export data function, download to user device a file with all the storage
     */
     exportData: PropTypes.func.isRequired,
+    //
+    // from withIdentities HOC
+    //
+    handleSetIdentitiesFromStorage: PropTypes.func.isRequired,
+    /*
+     Selector to get the current loaded identity information
+    */
+    currentIdentity: PropTypes.instanceOf(ImmutableMap).isRequired,
+    //
+    // From withClaims HoC
+    //
+    /*
+      Action to retrieve all claims from storage (for set the later in the app state)
+    */
+    handleSetClaimsFromStorage: PropTypes.func.isRequired,
   };
 
   state = {
@@ -53,15 +78,24 @@ class ImportExportData extends Component {
     goToFirstStep: false,
   };
 
+  componentDidMount() {
+    this._ismounted = true;
+  }
+
+  componentWillUnmount() {
+    this._ismounted = false;
+  }
+
   /**
    * Triggered when a file is selected in the system browser window to choose
    * a file to import the data in the wallet
    *
-   * @param {object} file - the selected file of the system
+   * @param {object} element - the selected file of the system
    *
    * @returns {Promise} resolved if data was imported, rejected otherwise
    */
-  handleImportFile = async (file) => {
+  handleImportFile = async (element) => {
+    const file = element.target.files[0];
     let importedData = false;
     let errorMsg = '';
 
@@ -77,10 +111,12 @@ class ImportExportData extends Component {
         type: NOTIFICATIONS.ERROR,
         description: 'File could not be decrypted. Right passphrase? Right file?',
       });
-      this.setState({ goToFirstStep: true });
+      this._ismounted && this.setState({ goToFirstStep: true });
+    } else if (importedData && !errorMsg) {
+      await this.props.handleSetIdentitiesFromStorage();
     }
 
-    this.setState({ finished: true });
+    this._ismounted && this.setState({ finished: true });
   };
 
   /**
@@ -148,13 +184,18 @@ class ImportExportData extends Component {
       {
         content: sortedSteps[2],
         ownProps: {
-          finishedAction: this.state.finished,
+          afterActionFinished: this.updateWalletData,
+          isActionFinished: this.state.finished,
           getInfoText: this.getLastStepInfoText,
           buttonText: 'Finish',
         },
         title: this.getLastStepTitle(),
       },
     ];
+  };
+
+  updateWalletData = () => {
+    this.props.handleSetClaimsFromStorage(this.props.currentIdentity);
   };
 
   /**
@@ -175,21 +216,46 @@ class ImportExportData extends Component {
    *
    * @returns {Promise} resolved or rejected regarding if success action
    */
-  triggerAction = (passphrase) => {
-    this.setState({ passphrase });
+  triggerAction = async (passphrase) => {
+    this.setState({ passphrase, goToFirstStep: false });
     if (this.state.action === IMPORT) {
       this.uploadFile.click();
       return Promise.resolve();
     }
 
     if (this.state.action === EXPORT) {
-      const exported = this.props.exportData(passphrase);
-      this.setState({ finished: exported });
-      return Promise.resolve();
+      return this._exportFile(passphrase);
     }
 
     return Promise.reject(new Error('No action set: Import or export?'));
   };
+
+  /**
+   * Exports a file with the data wallet calling the proper function from the HoC
+   *
+   * @returns {Promise<*>} Resolved if exported file, rejected otherwise
+   *
+   * @private
+   */
+  async _exportFile(passphrase) {
+    const exported = await this.props.exportData(passphrase);
+    this.setState({ finished: exported });
+
+    if (!exported) {
+      const errorMsg = 'Data could not be exported. Right passphrase?';
+
+      this._ismounted && this.setState({ goToFirstStep: true });
+      // no right passphrase
+      notificationsHelper.showNotification({
+        type: NOTIFICATIONS.ERROR,
+        description: errorMsg,
+      });
+      return Promise.reject(new Error(errorMsg));
+    }
+
+    // exported properly
+    return Promise.resolve();
+  }
 
   render() {
     const sortedStepsObj = this.getSortedSteps();
@@ -205,7 +271,12 @@ class ImportExportData extends Component {
         <input
           type="file"
           id="i3-ww-my-data--upload-file"
-          onChange={el => this.handleImportFile(el.target.files[0])}
+          onChange={(el) => {
+            this.handleImportFile(el);
+            // reset the element selected because if same file is selected again
+            // onChange event will not be triggered by the input
+            el.target.value = null;
+          }}
           ref={(el) => { this.uploadFile = el; }}
           style={{ display: 'none' }} />
       </div>
@@ -213,4 +284,8 @@ class ImportExportData extends Component {
   }
 }
 
-export default compose(withImportExportData)(ImportExportData);
+export default compose(
+  withClaims,
+  withIdentities,
+  withImportExportData,
+)(ImportExportData);

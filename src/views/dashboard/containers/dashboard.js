@@ -22,7 +22,8 @@ class Dashboard extends Component {
         All claims
         {' '}
         <Icon type="right" />
-      </Link>);
+      </Link>
+    );
 
     return (
       <div className="i3-ww-dashboard">

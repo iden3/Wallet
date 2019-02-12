@@ -63,24 +63,23 @@ class WelcomeNewIdentity extends PureComponent {
         </div>
         {this.props.isFirstIdentity
           && (
-            <div>
+            <div style={{ outline: 'none' }}>
               <div>
-                <div
+                <span
                   onClick={() => this.toggleImportBackupBox()}
                   role="button"
                   tabIndex="0"
                   onKeyUp={() => this.toggleImportBackupBox()}
                   className="i3-ww-fake-link">
-                  Import my wallet backup
-                </div>
+                    Import my wallet backup
+                </span>
                 <Box
                   type={BOX_CONSTANTS.TYPE.SIDE_PANEL}
                   side={BOX_CONSTANTS.SIDE.RIGHT}
                   onClose={this.toggleImportBackupBox}
                   content={(<ImportExportDataWizard toggleVisibility={this.toggleImportBackupBox} />)}
                   title={utils.capitalizeFirstLetter('Import wallet backup')}
-                  show={this.state.isMyDataBoxVisible}
-                  fullScreen />
+                  show={this.state.isMyDataBoxVisible} />
               </div>
             </div>
           )}

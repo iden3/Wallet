@@ -3,6 +3,7 @@ import schemas from 'schemas';
 import DALFactory from 'dal';
 import {
   API,
+  utils,
 } from 'helpers';
 import * as SCHEMAS from 'constants/schemas';
 import * as APP_SETTINGS from 'constants/app';
@@ -86,10 +87,8 @@ const identitiesHelper = (function () {
   function _createKeys(passphrase, isFirstIdentity) {
     try {
       const keysContainer = new iden3.KeyContainer(DAL.storageName, new iden3.Db());
+
       keysContainer.unlock(passphrase);
-      // const newKeys = keysContainer.generateKeysMnemonic();
-      // const [keyRecovery, keyRevoke, keyOp] = newKeys.keys;
-      // new iden3
       isFirstIdentity && keysContainer.generateMasterSeed();
 
       const [keyOpEtherAddress, keyOpPublic, keyRecovery, keyRevoke] = keysContainer.createKeys();
@@ -264,6 +263,9 @@ const identitiesHelper = (function () {
             ...data,
             isCurrent,
           });
+
+          // create random key in the storage to check passphrase in some actions
+          isFirstIdentity && utils.createEncryptedUUID(passphrase);
 
           // TODO: With the proofOfClaim field in the res.address.proofOfClaim
           // create a new Entry and then create an emitted AuthorizeKSign

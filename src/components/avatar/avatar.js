@@ -8,6 +8,8 @@ import './avatar.scss';
 /**
  * Component to show an avatar. Uses the jdenticon library
  * to create an avatar calculating pixels regarding the value passed.
+ *
+ * When created for an identity, the identicon is using their Ethereum address to always have the same icon
  */
 class Avatar extends PureComponent {
   static propTypes = {

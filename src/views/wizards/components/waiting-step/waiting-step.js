@@ -20,7 +20,7 @@ class WaitingStep extends PureComponent {
     /*
      Flag to point out that action that is showing spinning it's over
      */
-    finishedAction: PropTypes.bool.isRequired,
+    isActionFinished: PropTypes.bool.isRequired,
     /*
     Information text to place before call to action button
      */
@@ -29,6 +29,10 @@ class WaitingStep extends PureComponent {
     Call to action button text after action finished
      */
     buttonText: PropTypes.string,
+    /*
+     Action to call after mount component (maybe to fetch data)
+     */
+    afterActionFinished: PropTypes.func,
   };
 
   static defaultProps = {
@@ -37,9 +41,19 @@ class WaitingStep extends PureComponent {
   };
 
   /**
+   * Since this component should be updated maybe once, call here
+   * the call back after action that is waiting is finished.
+   */
+  componentDidUpdate() {
+    this.props.afterActionFinished();
+  }
+
+  /**
    * Show the content after the spinner has dissapeared.
    * It show a text if sent in props.getInfoText (function)
    * and a button to continue to next step.
+   *
+   * Also trigger afterActionFinished callback if sent.
    *
    * @returns {*}
    */
@@ -72,7 +86,7 @@ class WaitingStep extends PureComponent {
   render() {
     return (
       <div className="i3-ww-wizard__waiting-step">
-        { this.props.finishedAction ? this.getFinalContent() : <Spinner /> }
+        { this.props.isActionFinished ? this.getFinalContent() : <Spinner /> }
       </div>
     );
   }

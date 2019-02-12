@@ -52,7 +52,8 @@ class AskForPassphrase extends PureComponent {
   moveForward = () => {
     if (this.state.passphrase) {
       this.props.actionForward(this.state.passphrase)
-        .then(() => this.props.move(FORWARD));
+        .then(() => this.props.move(FORWARD))
+        .catch(error => new Error(error.message));
     }
   };
 

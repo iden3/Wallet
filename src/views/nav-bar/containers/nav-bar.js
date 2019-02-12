@@ -129,7 +129,7 @@ class NavBar extends Component {
         <div className="i3-ww-nav-bar__header-items">
           <IdentityItem
             title={this.props.currentIdentity.get('name') || this.props.currentIdentity.get('label')}
-            icon={this.props.currentIdentity.get('icon')} />
+            icon={this.props.currentIdentity.get('address')} />
           <DesktopMenu
             items={menuItems}
             selectedItem={selectedMainMenuItem} />
@@ -146,8 +146,7 @@ class NavBar extends Component {
             onClose={this.toggleMyDataBox}
             content={(<MyData toggleVisibility={this.toggleMyDataBox} />)}
             title={utils.capitalizeFirstLetter('My data')}
-            show={this.state.isMyDataBoxVisible}
-            fullScreen />
+            show={this.state.isMyDataBoxVisible} />
         </div>
       </div>
     );
