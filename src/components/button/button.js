@@ -32,19 +32,25 @@ class Button extends PureComponent {
       Class name with own styles to add
      */
     className: PropTypes.string,
+    /*
+     Needed if disabled to change background colour
+     */
+    disabled: PropTypes.bool,
   };
 
   static defaultProps = {
     overrideOwnClasses: false,
+    disabled: false,
   };
 
   render() {
     const { children, overrideOwnClasses, ...restProps } = this.props;
     const cmptClasses = classNames({
       'i3-ww-button': true,
-      'i3-ww-button__primary': !overrideOwnClasses && this.props.type === 'primary',
-      'i3-ww-button__secondary': !overrideOwnClasses && this.props.type === 'secondary',
-      'i3-ww-button__danger': !overrideOwnClasses && this.props.type === 'danger',
+      'i3-ww-button__primary': !overrideOwnClasses && this.props.type === 'primary' && !this.props.disabled,
+      'i3-ww-button__secondary': !overrideOwnClasses && this.props.type === 'secondary' && !this.props.disabled,
+      'i3-ww-button__danger': !overrideOwnClasses && this.props.type === 'danger' && !this.props.disabled,
+      'i3-ww-button__disabled': this.props.disabled,
       [`${this.props.className}`]: this.props.className,
     });
 

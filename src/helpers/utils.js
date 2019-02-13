@@ -393,6 +393,11 @@ const utils = {
         reject(new Error('Problem parsing input file.'));
       };
 
+      // if user cancel to upload event
+      temporaryFileReader.onabort = () => {
+        reject(new Error('Aborted upload file.'));
+      };
+
       temporaryFileReader.onload = () => {
         if (onLoadCB) onLoadCB();
         resolve(temporaryFileReader.result);
@@ -481,6 +486,22 @@ const utils = {
     } catch {
       return false;
     }
+  },
+  /**
+   * Retrieve the hostname from a string with a url. I.e. from https://iden3.io/feature
+   * returns iden3.io
+   *
+   * @param {string} url - with a URL format
+   * @returns {string | null} - with the hostname of the url
+   */
+  getHostnameFromUrl(url) {
+    const match = url.match(/:\/\/(www[0-9]?\.)?(.[^/:]+)/i);
+
+    if (match !== null && match.length > 2 && typeof match[2] === 'string' && match[2].length > 0) {
+      return match[2];
+    }
+
+    return null;
   },
 };
 

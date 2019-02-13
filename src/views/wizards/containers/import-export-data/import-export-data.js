@@ -117,6 +117,23 @@ class ImportExportData extends Component {
     }
 
     this._ismounted && this.setState({ finished: true });
+    // do this to don't handle anymore the window of browsing file in the client (check method handleInputClick)
+    document.body.onfocus = null;
+  };
+
+  /**
+   * For fixing that when window is shown the client browser for select a file to upload,
+   * and user clicks on CANCEL, we need to handle this event. Right now, there is no solution
+   * further than this workaround.
+   */
+  handleInputClick = () => {
+    document.body.onfocus = () => {
+      if (this.uploadFile && !this.uploadFile.value.length) {
+        this._ismounted && this.setState({
+          goToFirstStep: true,
+        });
+      }
+    };
   };
 
   /**
@@ -168,6 +185,7 @@ class ImportExportData extends Component {
         content: sortedSteps[0],
         ownProps: {
           setAction: this.setAction,
+          isFirstIdentity: this.props.currentIdentity.size === 0,
         },
         classes: ['i3-ww-ask-for-import-or-export'],
         title: 'Manage your data',
@@ -206,6 +224,10 @@ class ImportExportData extends Component {
    * @returns {Promise} after state set with the action to do
    */
   setAction = (action) => {
+    // this is to handle when user cancel the upload of a file in the browser selection file window
+    if (action === IMPORT) {
+      this.handleInputClick();
+    }
     this.setState({ action });
   };
 

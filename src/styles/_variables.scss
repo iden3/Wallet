@@ -127,6 +127,9 @@ $button-danger-hover-content-color: $red;
 $button-danger-pressed-bg-color: $white;
 $button-danger-pressed-content-color: $purple;
 
+$button-disabled-bg-color: $grey-23;
+$button-disabled-content-color: $grey-52;
+
 // Chip
 $chip-bg-color: $blue-11;
 
@@ -179,6 +182,9 @@ $separator-line-color: $blue-30;
 // Radio button
 $radio-button-checked-color: $blue-30;
 $radio-button-not-checked-color: $grey-70;
+
+// Links
+$fake-link-color: $blue-40;
 
   /*
   * Other settings

@@ -287,10 +287,14 @@ const identitiesHelper = (function () {
           }
         })
         .catch((error) => {
-          if (error.response.data.error === 'error on GetClaimByHi') {
-            reject(new Error('We are sorry. This label is already taken. Please come back and choose another one'));
+          if (error.response) {
+            if (error.response.data.error === 'error on GetClaimByHi') {
+              reject(new Error('We are sorry. This label is already taken. Please come back and choose another one'));
+            } else {
+              reject(new Error(error.response.data.error || error.response.statusText));
+            }
           } else {
-            reject(new Error(error.response.data.error || error.response.statusText));
+            reject(new Error(error.message));
           }
         });
     });
