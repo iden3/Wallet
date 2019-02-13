@@ -5,6 +5,7 @@ import {
   List as ListCmpt,
   Scrollable,
 } from 'base_components';
+import { utils } from 'helpers';
 import Identity from '../identity-row';
 
 /**
@@ -70,7 +71,7 @@ class List extends PureComponent {
           break;
         case 'relayURL':
           finalKey = 'Relay:';
-          finalValue = identity.relayURL;
+          finalValue = utils.getHostnameFromUrl(identity.relayURL);
           break;
         case 'date':
           finalKey = 'Created on:';
