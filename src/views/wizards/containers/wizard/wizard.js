@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ClassNames from 'classnames';
+import memoizeOne from 'memoize-one';
 import {
   FORWARD,
   BACKWARDS,
@@ -14,6 +15,8 @@ import './wizard.scss';
 * different views that they can go forward or backwards.
 */
 class Wizard extends Component {
+  memoizedResetWizard = memoizeOne(resetWizard => resetWizard && this.setState({ currentStep: 0 }));
+
   static propTypes = {
     /*
      Array with the views sorted to show the wizard steps.
@@ -51,18 +54,30 @@ class Wizard extends Component {
      Own class of the inner view
     */
     className: PropTypes.string,
+    /*
+     If any error to don't move to another step unless resetWizard prop is set to true
+     */
     existsError: PropTypes.bool,
+    /*
+     If go to the first step of the wizard
+     */
+    resetWizard: PropTypes.bool,
   };
 
   static defaultProps = {
     lastAction: () => {},
     existsError: false,
+    resetWizard: false,
   };
 
   state = {
     currentStep: 0,
     goToDashboard: false,
   };
+
+  componentDidUpdate() {
+    this.memoizedResetWizard(this.props.resetWizard);
+  }
 
   componentWillUnmount() {
     this.setState({ goToDashboard: true });
@@ -89,27 +104,7 @@ class Wizard extends Component {
         currentStep: prevState.currentStep - 1,
         goToDashboard: prevState.goToDashboard ? false : prevState.goToDashboard,
       }));
-    } /* else if (direction === FORWARD && this.props.existsError) {
-
-    } */
-
-
-    /*if (!this.props.existsError && direction !== BACKWARDS) {//!this.state.goToDashboard) {
-      let { currentStep } = this.state;
-
-      if (direction === FORWARD) {
-        currentStep = this.state.currentStep + 1;
-      } else if (direction === BACKWARDS) {
-        currentStep = this.state.currentStep - 1;
-      }
-
-      if (currentStep === this.props.sortedSteps.length) {
-        this.props.lastAction();
-        this.setState({ goToDashboard: true });
-      } else {
-        this.setState({ currentStep });
-      }
-    }*/
+    }
   };
 
   render() {

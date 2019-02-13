@@ -26,6 +26,10 @@ class Box extends Component {
      */
     content: PropTypes.object.isRequired,
     /*
+     If box should have the width of all the screen. Also will no have opacity (set to 1)
+     */
+    fullScreen: PropTypes.bool,
+    /*
       Call back from any parent to trigger when box is closed
      */
     onClose: PropTypes.func,
@@ -45,6 +49,10 @@ class Box extends Component {
     The type of box to show
      */
     type: PropTypes.oneOf(boxTypes).isRequired,
+  };
+
+  static defaultProps = {
+    fullScreen: false,
   };
 
   state = {
@@ -124,7 +132,7 @@ class Box extends Component {
     } else {
       document.removeEventListener('click', this.handleClick, false);
     }
-  }
+  };
 
   /**
    * Handle the focus of the inner element and close with
@@ -170,6 +178,7 @@ class Box extends Component {
     return (
       <Container
         header={header}
+        fullScreen={this.props.fullScreen}
         side={this.props.side}
         onClose={this.toggleBoxVisibility}
         setActiveContainer={this.setActiveContainer}
@@ -180,18 +189,20 @@ class Box extends Component {
   }
 
   render() {
+    const cmptClass = this.props.fullScreen ? 'i3-ww-box-full-screen' : 'i3-ww-box';
+
     return (
       <div ref={node => this.node = node}>
         { this.state.isVisible && (
           <Fragment>
             <div className="i3-ww-box-mask" />
             <div
-              className="i3-ww-box"
+              className={cmptClass}
               role="button"
               tabIndex={0}
               onClick={this.handleClick}
               onKeyUp={this.handleClick}>
-              <Portal parentClassName="i3-ww-box">
+              <Portal parentClassName={cmptClass}>
                 { this._getContent() }
               </Portal>
             </div>

@@ -1,9 +1,8 @@
 import React, { Fragment, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import * as ICONS from 'constants/icons';
 import {
-  Icon,
+  RadioButton,
   Row,
 } from 'base_components';
 
@@ -39,6 +38,17 @@ class IdentityRow extends PureComponent {
      Address of the identity if we want to change to another one
     */
     address: PropTypes.string.isRequired,
+    /*
+     For A11y purposes
+     */
+    order: PropTypes.number.isRequired,
+  };
+
+  isCurrentIdentityAction = () => {
+    if (this.props.isCurrent) {
+      return false;
+    }
+    return this.props.onChangeCurrentIdentity(this.props.address);
   };
 
   render() {
@@ -51,26 +61,34 @@ class IdentityRow extends PureComponent {
         className="i3-ww-identity-row__main-content"
         tabIndex="-1"
         role="gridcell">
-        {!this.props.isCurrent
+        <div
+          role="gridcell"
+          className="i3-ww-identity-row__select-identity"
+          tabIndex={this.props.order}
+          onKeyUp={() => this.props.onChangeCurrentIdentity(this.props.address)}
+          onClick={() => this.props.onChangeCurrentIdentity(this.props.address)}>
+          <RadioButton checked={this.props.isCurrent} />
+        </div>
+        <div className="i3-ww-identity-row__description">
+          {this.props.content}
+        </div>
+        {this.props.isCurrent
         && (
           <div
             role="gridcell"
             tabIndex="0"
-            onKeyUp={() => this.props.onChangeCurrentIdentity(this.props.address)}
-            onClick={() => this.props.onChangeCurrentIdentity(this.props.address)}
-            className="i3-ww-identity-row__change-identity">
-            <Icon type={ICONS.CHANGE_IDENTITY} />
+            className="i3-ww-identity-row__main-content--current-user-tag">
+            Selected
           </div>
         )}
-        <div className="i3-ww-identity-row__description">
-          {this.props.content}
-        </div>
       </div>
     );
 
     return (
       <Fragment>
         <Row
+          onRowClick={this.props.isCurrent ? false : () => this.isCurrentIdentityAction()}
+          background={this.props.isCurrent ? '#FFFFFF' : '#265390'}
           className={rowClasses}
           key={`identity-row-${this.props.id}`}
           id={this.props.id}

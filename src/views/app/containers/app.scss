@@ -18,4 +18,10 @@
     );
     @include fluid-sizing('font-size', $map, true);
   }
+  .i3-ww-fake-link {
+    cursor: pointer;
+    &:focus {
+      outline: none;
+    }
+  }
 }

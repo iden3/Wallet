@@ -9,7 +9,7 @@ import { Button } from 'base_components';
 class DeleteAllIdentities extends PureComponent {
     static propTypes = {
       onConfirm: PropTypes.func.isRequired,
-    }
+    };
 
     render() {
       return (

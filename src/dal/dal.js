@@ -70,12 +70,31 @@ class DAL {
   }
 
   /**
+   * Return all the local storage
+   */
+  backup() {
+    return this._storage.backup();
+  }
+
+  /**
    * Remove all the items of the application.
    *
    * @returns {*}
    */
   clear() {
-    return this._storage.clear();
+    return Promise.resolve(this._storage.clear());
+  }
+
+  /**
+   /**
+   * Dump all the local storage from given information.
+   *
+   * @param {object} data - with the data to dump to the local storage
+   *
+   * @returns {boolean} if all data was dump
+   */
+  dump(data) {
+    return this._storage.dump(data);
   }
 
   /**
@@ -87,6 +106,15 @@ class DAL {
    */
   itemExists(key) {
     return this._storage.itemExists(key);
+  }
+
+  /**
+   * Get all the storage.
+   *
+   * @returns {*|string[]|IDBRequest<any[]>|FormDataEntryValue[]}
+   */
+  getAll(){
+    return this._storage.getAll();
   }
 
   /**

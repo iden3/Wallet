@@ -64,7 +64,7 @@ class Identities extends Component {
    */
   createIdentity = () => {
     this.state.boxContent === boxContent.createIdentity && this.toggleBox();
-  }
+  };
 
   /**
    * Call the action to delete all the identities in the app state
@@ -81,7 +81,7 @@ class Identities extends Component {
   deleteIdentity = () => {
     this.toggleBox();
     this.state.boxContent === boxContent.deleteOne && this.props.handleDeleteIdentity();
-  }
+  };
 
   /**
    * Call back when clicked the button of an identity row to change to this.
@@ -90,7 +90,7 @@ class Identities extends Component {
    */
   onChangeCurrentIdentity = (address) => {
     this.props.handleChangeCurrentIdentity(address);
-  }
+  };
 
   /**
    * Show or not the box with the confirmation for deleting the identities.

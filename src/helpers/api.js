@@ -1,4 +1,4 @@
-import iden3 from 'iden3';
+import iden3 from '@iden3/iden3';
 import axios from 'axios';
 /**
  * Any interaction with a Relay or external agent (an AJAX call) should be done by a call set here.
@@ -217,7 +217,7 @@ const API = (function () {
    * the call back from the centralized app back end to send the signed package.
    *
    * @param {string} url - From the 3rd party app to send the post call back
-    * @param {Object} data - With the signed package
+   * @param {Object} data - With the signed package
    *
    * @returns {Promise} with the result of the async call
    */

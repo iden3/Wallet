@@ -25,6 +25,10 @@ class PopUp extends PureComponent {
      */
     footer: PropTypes.node,
     /*
+     If box should have the width of all the screen. Also will no have opacity (set to 1)
+     */
+    fullScreen: PropTypes.bool,
+    /*
     Set if the pop-up should be shown or not
      */
     isVisible: PropTypes.bool,
@@ -40,6 +44,7 @@ class PopUp extends PureComponent {
 
   static defaultProps = {
     isVisible: false,
+    fullScreen: false,
     size: BOX_CONSTANTS.POP_UP.SIZE.MEDIUM,
   };
 

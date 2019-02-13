@@ -7,6 +7,9 @@
   top: 0;
   bottom: 0;
   overflow-y: auto;
+}
+
+.i3-side-panel--regular-size {
   background: $box-bg-color;
   $map: ($desktop-width: 600px,
           $tablet-landscape-width: 450px,
@@ -15,6 +18,11 @@
           $small-mobile-min-width: 256px,
   );
   @include fluid-sizing('max-width', $map, false);
+}
+
+.i3-ww-side-panel--full_screen {
+  max-width: 100%;
+  background: $box-bg-full-screen-color;
 }
 
 .i3-ww-side-panel__inner {

@@ -1,0 +1,37 @@
+.i3-ww-radio-button {
+  .ant-radio-inner:after {
+    width: 16px;
+    height: 16px;
+    left: 4px;
+    top: 4px;
+  }
+  .ant-radio-inner {
+    width: 28px;
+    height: 28px;
+  }
+  .ant-radio-inner:focus {
+    outline: none;
+  }
+  .ant-radio-inner {
+    border-width: 2px;
+  }
+}
+
+.i3-radio-button--checked {
+  .ant-radio-checked .ant-radio-inner {
+    border-color: $radio-button-checked-color;
+  }
+  .ant-radio-inner:after {
+    background-color: $radio-button-checked-color;
+  }
+}
+
+.i3-radio-button--not-checked {
+  .ant-radio-inner {
+    background: transparent;
+    border-width: 2px;
+    border-color: $radio-button-not-checked-color;
+  }
+}
+
+

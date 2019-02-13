@@ -34,9 +34,10 @@ class List extends PureComponent {
     const identities = [];
     const identitiesList = this.props.list.toJS();
 
-    Object.keys(identitiesList).forEach((identity) => {
+    Object.keys(identitiesList).forEach((identity, index) => {
       identities.push(
         <Identity
+          order={index}
           onChangeCurrentIdentity={this.props.onChangeCurrentIdentity}
           key={`identity-${identitiesList[identity].address}`}
           address={identitiesList[identity].address}

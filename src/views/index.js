@@ -14,6 +14,7 @@ export ClaimReader from 'views/claim-reader';
 export CreateClaim from 'views/create-claim';
 export {
   CreateIdentityWizard,
+  ImportExportDataWizard,
   SignInPermissionWizard,
   SaveSeedWizard,
   Wizard,

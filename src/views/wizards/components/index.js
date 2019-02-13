@@ -1,4 +1,5 @@
 export Step from './step/step';
+export AskForImportOrExport from './ask-for-import-or-export/ask-for-import-or-export';
 export AskForMasterSeed from './ask-for-master-seed/ask-for-master-seed';
 export AskForNewIdLabel from './ask-for-new-id-label/ask-for-new-id-label';
 export AskForNewPassphrase from './ask-for-new-passphrase/ask-for-new-passphrase';
@@ -7,4 +8,5 @@ export AskForPermissionToSign from './ask-for-permission-to-sign/ask-for-permiss
 export ReadQROrCode from './read-qr-or-code/read-qr-or-code';
 export ShowMasterSeed from './show-master-seed/show-master-seed';
 export ShowQRWithSavedMasterSeed from './show-qr-with-saved-master-seed/show-qr-with-saved-master-seed';
+export WaitingStep from './waiting-step/waiting-step';
 export WelcomeNewIdentity from './welcome-new-identity/welcome-new-identity';

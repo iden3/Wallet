@@ -1,15 +1,32 @@
-@keyframes spinner {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
 .i3-ww-spinner {
-  width: rem(20px);
-  height: rem(20px);
-  border-radius: 100%;
-  border: 2px solid $white;
-  border-bottom-color: transparent !important;
-  animation: spinner 0.75s 0s infinite linear;
-  vertical-align: middle;
   display: inline-block;
+  position: relative;
+  width: 64px;
+  height: 64px;
+}
+.i3-ww-spinner div {
+  position: absolute;
+  border: 4px solid #fff;
+  opacity: 1;
+  border-radius: 50%;
+  animation: i3-ww-spinner 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+.i3-ww-spinner div:nth-child(2) {
+  animation-delay: -0.5s;
+}
+@keyframes i3-ww-spinner {
+  0% {
+    top: 28px;
+    left: 28px;
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    top: -1px;
+    left: -1px;
+    width: 58px;
+    height: 58px;
+    opacity: 0;
+  }
 }

@@ -27,6 +27,7 @@ const {
     getCurrentIdentity,
     getIdentities,
     getNeedsToSaveMasterKey,
+    getIdentitiesNumber,
   },
 } = identities;
 
@@ -70,6 +71,10 @@ function withIdentities(IdentitiesComponent) {
        Expect the identity address as parameter
        */
       getIdentity: PropTypes.func.isRequired,
+      /*
+       Current number of identities
+       */
+      identitiesNumber: PropTypes.number.isRequired,
       /*
        Selector to retrieve all the identities
        */
@@ -123,6 +128,7 @@ function withIdentities(IdentitiesComponent) {
       currentIdentity: getCurrentIdentity(state),
       identities: getIdentities(state),
       needsToSaveMasterKey: getNeedsToSaveMasterKey(state),
+      identitiesNumber: getIdentitiesNumber(state),
     };
   }
 

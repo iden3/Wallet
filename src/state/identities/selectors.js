@@ -9,8 +9,8 @@ export const getIdentity = (state, address) => getIdentitiesState(state).get('id
 export const getCurrentIdentity = (state) => {
   const idDefaultAddr = getIdentitiesState(state).get('currentIdentity');
   if (idDefaultAddr) {
-    const idDefault = getIdentity(state, idDefaultAddr).toJS();
-    return new ImmutableMap(idDefault) || new ImmutableMap({});
+    const idDefault = getIdentity(state, idDefaultAddr);
+    return idDefault ? new ImmutableMap(idDefault.toJS()) : new ImmutableMap({});
   }
   return new ImmutableMap({});
 };
