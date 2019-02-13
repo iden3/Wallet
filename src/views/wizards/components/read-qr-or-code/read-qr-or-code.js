@@ -47,10 +47,10 @@ class ReadQROrCode extends PureComponent {
    *
    * @param {string} readData - From QR or introduced manually
    */
-  moveForward = (readData = this.state.inputSignInData) => {
+  moveForward = async (readData = this.state.inputSignInData) => {
     if (readData) {
-      this.props.handleReadData(readData);
-      this.props.move(FORWARD);
+      const hasBeenRead = await this.props.handleReadData(readData);
+      hasBeenRead && this.props.move(FORWARD);
     }
   };
 

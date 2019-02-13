@@ -68,13 +68,20 @@ class SignInPermission extends Component {
    */
   handleReadData = (signInData) => {
     try {
-      this.setState({ signInData: utils.parseQRInfoToSignIn(signInData) });
+      const parsedData = utils.parseQRInfoToSignIn(signInData);
+      if (!parsedData.body) {
+        throw new Error();
+      } else {
+        this.setState({ signInData: parsedData });
+        return true;
+      }
     } catch {
       notificationsHelper.showNotification({
         type: NOTIFICATIONS.ERROR,
         message: 'There is an error!',
         description: 'Sorry! We can not understand the read code',
       });
+      return false;
     }
   };
 
