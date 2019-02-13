@@ -29,11 +29,13 @@ class Claim {
 
     // TODO: we need to do this in iden3js, to return functions and not a Class
     const keysContainerProto = Object.getPrototypeOf(new iden3.KeyContainer(APP_SETTINGS.LOCAL_STORAGE));
-    this.identity = identity;
-    this.identity.get('keys').container = Object.assign(
-      { __proto__: keysContainerProto },
-      identity.get('keys').container,
-    );
+    if (identity) {
+      this.identity = identity;
+      this.identity.get('keys').container = Object.assign(
+        { __proto__: keysContainerProto },
+        identity.get('keys').container,
+      );
+    }
   }
 
   //
