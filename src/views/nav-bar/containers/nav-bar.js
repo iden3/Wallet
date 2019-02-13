@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { compose } from 'redux';
 import PropTypes from 'prop-types';
 import {
-  Link,
+  NavLink,
   withRouter,
 } from 'react-router-dom';
 import memoizeOne from 'memoize-one';
@@ -56,7 +56,6 @@ class NavBar extends Component {
     isMyDataBoxVisible: false,
   };
 
-
   /**
    * Show or not the box with the confirmation for deleting the identities.
    */
@@ -85,9 +84,9 @@ class NavBar extends Component {
       if (_route.ORDER !== -1) {
         items.push(
           <MenuItem key={_route.KEY}>
-            <Link to={_route.MAIN} replace>
+            <NavLink activeClassName="i3-ww-menu--selected-item" to={_route.MAIN} replace>
               {_route.KEY}
-            </Link>
+            </NavLink>
           </MenuItem>,
         );
       }
@@ -121,7 +120,7 @@ class NavBar extends Component {
 
   render() {
     const menuItems = this._getMenuItems();
-    const selectedMainMenuItem = this.memoizedPath(this.props.location.pathname);
+    const initialSelectedItem = this.memoizedPath(this.props.location.pathname);
 
     return (
       <div className="i3-ww-nav-bar">
@@ -131,8 +130,8 @@ class NavBar extends Component {
             title={this.props.currentIdentity.get('name') || this.props.currentIdentity.get('label')}
             icon={this.props.currentIdentity.get('address')} />
           <DesktopMenu
-            items={menuItems}
-            selectedItem={selectedMainMenuItem} />
+            initialSelectedItem={initialSelectedItem}
+            items={menuItems} />
           <ButtonsBar
             addSaveSeedNotification={this.props.needsToSaveMasterKey}
             addCamButton

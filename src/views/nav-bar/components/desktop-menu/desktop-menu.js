@@ -12,7 +12,7 @@ import './desktop-menu.scss';
 class DesktopMenu extends PureComponent {
   static propTypes = {
     items: PropTypes.arrayOf(PropTypes.node).isRequired,
-    selectedItem: PropTypes.string.isRequired,
+    initialSelectedItem: PropTypes.string.isRequired,
   };
 
   render() {
@@ -20,7 +20,7 @@ class DesktopMenu extends PureComponent {
       <div className="i3-ww-nav-bar-desktop">
         <Menu
           mode="horizontal"
-          selectedKeys={[this.props.selectedItem]}>
+          defaultSelectedKeys={[this.props.initialSelectedItem]}>
           { this.props.items }
         </Menu>
       </div>
