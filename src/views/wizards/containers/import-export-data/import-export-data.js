@@ -128,7 +128,7 @@ class ImportExportData extends Component {
    */
   handleInputClick = () => {
     document.body.onfocus = () => {
-      if (!this.uploadFile.value.length) {
+      if (this.uploadFile && !this.uploadFile.value.length) {
         this._ismounted && this.setState({
           goToFirstStep: true,
         });

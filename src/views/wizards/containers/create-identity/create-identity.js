@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import * as FORMS from 'constants/forms';
 import { TYPE as NOTIFICATIONS } from 'constants/notifications';
 import {
-  withFormsValues,
   withClaims,
+  withFormsValues,
   withIdentities,
 } from 'hocs';
 import { notificationsHelper } from 'helpers';
@@ -87,13 +87,6 @@ class CreateIdentity extends Component {
      Flag indicating if it's fetching identitiies
      */
     isFetchingIdentities: PropTypes.bool.isRequired,
-    //
-    // from withClaims HoC
-    //
-    /*
-     Action authorize a claim received
-     */
-    // handleAuthorizeClaim: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -104,6 +97,7 @@ class CreateIdentity extends Component {
   state = {
     passphrase: '',
     labelData: { label: '', domain: '' },
+    errorCreatingIdentity: false,
   };
 
   /**
@@ -141,12 +135,18 @@ class CreateIdentity extends Component {
     this.setState({ passphrase });
   };
 
+  createIdentityHasErrors = () => {
+    return this.state.errorCreatingIdentity;
+  };
+
   /**
    * Create the identity: create keys and set the relay. Then
    * call the action creator to create the identity and set it
    * in the app state and in the storage selected.
    *
    * @param {Object} data - with identity 'label'/'name' and 'domain'
+   *
+   * @returns {Boolean} if identity was created succesfully, false otherwise
    */
   createIdentity = async (data = this.state.labelData) => {
     if (data) { // step asking for passphrase already done
@@ -161,11 +161,14 @@ class CreateIdentity extends Component {
         })
         .then(() => this.props.handleGenerateAuthKSignClaim(newIdentity, proofOfClaim))
         .then(() => this.props.handleClearCreateIdentityForms())
+        .then(() => {
+          notificationsHelper.showNotification({
+            type: NOTIFICATIONS.SUCCESS,
+            description: `Congratulations! New identity ${data.label}@${data.domain} has been created`,
+          });
+          this.props.handleClearIdentitiesError();
+        })
         .then(() => this.props.afterCreateIdentity())
-        .then(() => notificationsHelper.showNotification({
-          type: NOTIFICATIONS.SUCCESS,
-          description: `Congratulations! New identity ${data.label}@${data.domain} has been created`,
-        }))
         .catch((error) => {
           notificationsHelper.showNotification({
             type: NOTIFICATIONS.ERROR,
@@ -223,6 +226,8 @@ class CreateIdentity extends Component {
           setPassphrase: this.setPassphrase,
           isFirstIdentity: this.props.isFirstIdentity,
           isFetching: this.props.isFetchingIdentities,
+          createIdentityHasErrors: this.state.createIdentityHasErrors,
+          lastAction: this.createIdentity,
         },
         classes: ['i3-ww-ci__passphrase'],
         title: this.props.isFirstIdentity ? 'Create a passphrase' : 'Write your passphrase',
@@ -236,8 +241,7 @@ class CreateIdentity extends Component {
       <Wizard
         className="i3-ww-ci"
         sortedSteps={sortedStepsObj}
-        existsError={!!this.props.identitiesError}
-        lastAction={this.createIdentity} />
+        existsError={!!this.props.identitiesError} />
     );
   }
 }

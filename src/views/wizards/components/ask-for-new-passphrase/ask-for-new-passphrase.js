@@ -44,6 +44,10 @@ class AskForNewPassphrase extends PureComponent {
      Flag to know if is fetching creating identity
      */
     isFetching: PropTypes.bool.isRequired,
+    /*
+      Last action to do after moving forward
+     */
+    lastAction: PropTypes.func.isRequired,
   };
 
   state = {
@@ -76,38 +80,51 @@ class AskForNewPassphrase extends PureComponent {
    * have the same value. If not, a notification is shown.
    */
   moveForward = async () => {
-    let errMsg = '';
     this._updatePassphrase();
+    let passphrassesError = '';
 
+    // In the case that we are creating first identity, two fields are shown
+    // to repeat the passphrase, otherwise, only one field
     if (this.props.isFirstIdentity) {
-      if (this.state.passphrase !== this.state.repeatedPasshphrase) {
-        // show error nofitication
-        this.setState({ areSamePassphrases: false });
-        errMsg = 'Is not the same passphrase in both fields';
-      } else if (this.state.passphrase.length === 0 || this.state.repeatedPasshphrase.length === 0) {
-        // show error notification
-        this.setState({ areSamePassphrases: false });
-        // show notification with error
-        errMsg = 'Passphrase can\'t be empty';
-      }
-    } else if (this.state.passphrase.length === 0) {
-      // show notification with error
-      errMsg = 'Passphrase can\'t be empty';
+      passphrassesError = this._checkPassphrassesAreEqual();
     }
 
-    if (errMsg) {
+    if (passphrassesError) {
       // show notification with error
       notificationsHelper.showNotification({
         type: NOTIFICATIONS.ERROR,
-        description: errMsg,
+        description: passphrassesError,
       });
     } else {
-      // move forward
       this.setState({ areSamePassphrases: true });
       await this.props.setPassphrase(this.state.passphrase);
-      this.props.move(FORWARD);
+      await this.props.lastAction();
     }
   };
+
+  /**
+   * Check all cases that if we are asking for new passphrase,
+   * both fields are the same.
+   *
+   * @returns {string} Fullfilled with the messager error, empty otherwise
+   * @private
+   */
+  _checkPassphrassesAreEqual() {
+    if (this.state.passphrase !== this.state.repeatedPasshphrase) {
+      // show error nofitication
+      this.setState({ areSamePassphrases: false });
+      return 'Not the same passphrase in both fields';
+    }
+
+    if (this.state.passphrase.length === 0 || this.state.repeatedPasshphrase.length === 0) {
+      // show error notification
+      this.setState({ areSamePassphrases: false });
+      // show notification with error
+      return 'No passphrase field can\'t be empty';
+    }
+
+    return '';
+  }
 
   /**
    * Trigger the call back sent via props to update in
