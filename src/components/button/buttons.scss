@@ -57,4 +57,11 @@
       }
     }
   }
+  &.i3-ww-button__disabled {
+    button {
+      background-color: $button-disabled-bg-color;
+      border-color: $button-disabled-bg-color;
+      color: $button-disabled-content-color;
+    }
+  }
 }

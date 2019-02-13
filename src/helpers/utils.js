@@ -393,6 +393,11 @@ const utils = {
         reject(new Error('Problem parsing input file.'));
       };
 
+      // if user cancel to upload event
+      temporaryFileReader.onabort = () => {
+        reject(new Error('Aborted upload file.'));
+      };
+
       temporaryFileReader.onload = () => {
         if (onLoadCB) onLoadCB();
         resolve(temporaryFileReader.result);

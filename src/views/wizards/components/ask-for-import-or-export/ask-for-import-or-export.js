@@ -23,6 +23,10 @@ class AskForImportOrExport extends PureComponent {
      * Set action to import or export
      */
     setAction: PropTypes.func.isRequired,
+    /*
+     To disable or not the export button
+     */
+    isFirstIdentity: PropTypes.bool.isRequired,
   };
 
   move = (action) => {
@@ -43,6 +47,7 @@ class AskForImportOrExport extends PureComponent {
           <Button
             onClick={() => this.move(EXPORT)}
             type="primary"
+            disabled={this.props.isFirstIdentity}
             htmlType="button">
             <Icon type="upload" />
             Export
