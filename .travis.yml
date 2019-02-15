@@ -9,7 +9,7 @@ before_deploy:
   - openssl aes-256-cbc -K $encrypted_47e438c158bc_key -iv 0 -p
     -in deploy_rsa.enc -out deploy_rsa -d
   - chmod 600 deploy_rsa
-  - mv travis_rsa ~/.ssh/id_rsa
+  - mv deploy_rsa ~/.ssh/id_rsa
   - cat server.pub >> $HOME/.ssh/known_hosts
 deploy:
   provider: script
