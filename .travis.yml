@@ -5,3 +5,5 @@ node_js:
 git:
     quiet: true
 cache: npm
+after_success:
+  - bash ./deploy.sh
