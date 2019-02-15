@@ -157,7 +157,7 @@ class Layout extends React.Component {
                 <Route
                   path={ROUTES.CLAIMS.MAIN}
                   component={Claims} />
-                {/* TODO: Uncomment when we know what to do with this feature */}
+                { /* TODO: Uncomment when we know what to do with this feature */ }
                 {/* <Route
                   path={ROUTES.HISTORICAL.MAIN}
                   component={Historical} /> */}
