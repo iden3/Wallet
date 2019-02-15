@@ -13,7 +13,7 @@ before_deploy:
   - cat server.pub >> $HOME/.ssh/known_hosts
 deploy:
   provider: script
-  script: rsync -r --delete-after --quiet --rsync-path="mkdir -p ~/www/zombie/ && rsync" $TRAVIS_BUILD_DIR/dist travis@138.68.71.197:~/www/zombie/
+  script: npm run build:prod && rsync -r --delete-after --quiet --rsync-path="mkdir -p ~/www/zombie/ && rsync" $TRAVIS_BUILD_DIR/dist travis@138.68.71.197:~/www/zombie/
   on:
     branch: master
     repo: iden3/Wallet
