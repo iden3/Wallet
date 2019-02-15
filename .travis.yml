@@ -6,15 +6,19 @@ git:
   quiet: true
 cache: npm
 before_deploy:
-  - openssl aes-256-cbc -K $encrypted_47e438c158bc_key -iv $encrypted_47e438c158bc_iv
+  - openssl aes-256-cbc -K $encrypted_47e438c158bc_key -iv 0 -p
     -in deploy_rsa.enc -out deploy_rsa -d
   - chmod 600 deploy_rsa
   - mv travis_rsa ~/.ssh/id_rsa
   - cat server.pub >> $HOME/.ssh/known_hosts
 deploy:
   provider: script
-  skip_cleanup: true
-  script: rsync -r --delete-after --quiet --rsync-path="mkdir -p ~/www/zombie/ && rsync" $TRAVIS_BUILD_DIR/dist travis@138.68.71.197:~/www/zombie/
+  script: npm run build:prod && rsync -r --delete-after --quiet --rsync-path="mkdir -p ~/www/zombie/ && rsync" $TRAVIS_BUILD_DIR/dist travis@138.68.71.197:~/www/zombie/
   on:
     branch: master
+    repo: iden3/Wallet
+    tags: false
+  skip_cleanup: true
+notifications:
+  email: false
 
