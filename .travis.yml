@@ -5,9 +5,13 @@ node_js:
 git:
     quiet: true
 cache: npm
-deploy:
-  provider: script
-  skip_cleanup: true
-  script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/dist root@138.68.71.197:~/www/test/
-  on:
-    branch: master
+stages:
+  - transpile
+  - name: deploy
+      if: branch = master
+jobs:
+  - stage: transpile
+    script: npm run build:prod
+  - stage: deploy
+    script: ./deploy.sh
+
