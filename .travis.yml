@@ -9,3 +9,7 @@ deploy:
   provider: script
   skip_cleanup: true
   script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/dist root@138.68.71.197:~/www/test/
+  branches:
+    only:
+      - master
+      - /v\d+\.\d+[a-z]/
