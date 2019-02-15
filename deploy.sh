@@ -2,8 +2,6 @@
 
 # exit with nonzero exit code if anything fails
 set -xe
-echo "--> DEPLOY TO ZOMBIE"
-
 if [ $TRAVIS_BRANCH == 'master' ] ; then
   echo "==> DEPLOY TO ZOMBIE"
   eval "$(ssh-agent -s)"

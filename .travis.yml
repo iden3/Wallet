@@ -13,4 +13,3 @@ before_install:
   - cat server.pub >> $HOME/.ssh/known_hosts
 after_success:
   - bash ./deploy.sh
-
