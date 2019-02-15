@@ -1,7 +1,7 @@
 sudo: true
 language: node_js
 node_js:
-  - "stable"
+  - "8"
 git:
     quiet: true
 cache: npm
