@@ -157,9 +157,9 @@ class Layout extends React.Component {
                 <Route
                   path={ROUTES.CLAIMS.MAIN}
                   component={Claims} />
-                <Route
+                {/* <Route
                   path={ROUTES.HISTORICAL.MAIN}
-                  component={Historical} />
+                  component={Historical} /> */}
                 <Route
                   path={ROUTES.IDENTITIES.MAIN}
                   component={Identities} />

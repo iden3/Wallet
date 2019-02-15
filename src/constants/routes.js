@@ -17,13 +17,14 @@ export const CLAIMS = {
   CHILDREN: [],
   ORDER: 0,
 };
-export const HISTORICAL = {
+// TODO: Uncomment when whe know what to do with this feature
+/* export const HISTORICAL = {
   MAIN: '/historical',
   KEY: 'Historical',
   ICON: ICONS.HISTORICAL,
   CHILDREN: [],
   ORDER: 3,
-};
+}; */
 export const IDENTITIES = {
   MAIN: '/identities',
   KEY: 'Identities',
