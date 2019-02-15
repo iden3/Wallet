@@ -4,11 +4,10 @@ import { compose } from 'redux';
 import { Map as ImmutableMap } from 'immutable';
 import {
   withIdentities,
-  withClaims
+  withClaims,
 } from 'hocs';
 import { CreateClaim } from 'views';
 import {
-  Button,
   Tabs,
   Widget,
 } from 'base_components';
@@ -130,12 +129,13 @@ class Claims extends Component {
       type: CLAIMS.TYPE.EMITTED.NAME,
       list: this.props.getClaims(CLAIMS.TYPE.EMITTED.NAME, this.props.currentIdentity.get('address')),
     };
-    const grouped = {
+    // TODO: Uncomment when we is cleared what we can do with this feature
+    /* const grouped = {
       type: CLAIMS.TYPE.GROUPED.NAME,
       list: this.props.getClaims(CLAIMS.TYPE.GROUPED.NAME, this.props.currentIdentity.get('address')),
-    };
+    }; */
 
-    return [emitted, received, grouped].map((claimsList) => {
+    return [emitted, received].map((claimsList) => {
       return {
         title: utils.capitalizeFirstLetter(claimsList.type),
         children: (
