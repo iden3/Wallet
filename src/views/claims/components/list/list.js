@@ -98,7 +98,8 @@ class List extends PureComponent {
         key={key}
         content={content}
         groups={groups}
-        {...claimProps} />);
+        {...claimProps} />
+    );
   }
 
   /**
