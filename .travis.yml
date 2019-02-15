@@ -13,8 +13,13 @@ before_deploy:
   - cat server.pub >> $HOME/.ssh/known_hosts
 deploy:
   provider: script
-  skip_cleanup: true
   script: rsync -r --delete-after --quiet --rsync-path="mkdir -p ~/www/zombie/ && rsync" $TRAVIS_BUILD_DIR/dist travis@138.68.71.197:~/www/zombie/
+  skip_cleanup: true
   on:
-    branch: master
+    repo: iden3/Wallet
+    tags: false
+    all_branches: true
+
+notifications:
+  email: false
 
