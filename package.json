@@ -1,6 +1,6 @@
 {
   "name": "web-wallet",
-  "description": "Iden 3 SPA web application wallet",
+  "description": "Iden 3 SPA Webapp identity wallet",
   "version": "0.1.0",
   "private": false,
   "main": "index.js",
