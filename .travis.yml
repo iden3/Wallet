@@ -5,9 +5,9 @@ node_js:
 git:
     quiet: true
 cache: npm
-addons:
-  ssh_known_hosts:
-    - 138.68.71.197
-after_success:
-  - rsync -rq --delete --rsync-path="mkdir -p ~/www/test/ && rsync" \
-    $TRAVIS_BUILD_DIR/dist travis@138.68.71.197:~/www/test/
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/dist travis@138.68.71.197:~/www/test/
+  on:
+    branch: master
