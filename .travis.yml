@@ -1,15 +1,19 @@
 sudo: true
 language: node_js
 node_js:
-- '8'
+  - "8"
 git:
   quiet: true
 cache: npm
-before_install:
-- openssl aes-256-cbc -K $encrypted_47e438c158bc_key -iv $encrypted_47e438c158bc_iv
-  -in travis_rsa.enc -out travis_rsa -d
-- chmod 600 travis_rsa
-- mv travis_rsa ~/.ssh/id_rsa
-- cat server.pub >> $HOME/.ssh/known_hosts
-after_success:
-- bash ./deploy.sh
+before_deploy:
+  - openssl aes-256-cbc -K $encrypted_47e438c158bc_key -iv $encrypted_47e438c158bc_iv
+    -in deploy_rsa.enc -out deploy_rsa -d
+  - chmod 600 deploy_rsa
+  - mv travis_rsa ~/.ssh/id_rsa
+  - cat server.pub >> $HOME/.ssh/known_hosts
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: rsync -r --delete-after --quiet --rsync-path="mkdir -p ~/www/zombie/ && rsync" $TRAVIS_BUILD_DIR/dist travis@138.68.71.197:~/www/zombie/
+  on:
+    branch: master
