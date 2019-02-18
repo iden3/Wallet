@@ -10,7 +10,7 @@ if [ $TRAVIS_BRANCH == 'master' ] ; then
   #  adds the default keys ~/.ssh/id_rsa into the SSH authentication agent for implementing single sign-on with SSH
   ssh-add
   npm run build:prod
-  rsync -rq --delete --rsync-path="mkdir -p ~/www/zombie/ && rsync" $TRAVIS_BUILD_DIR/dist travis@138.68.71.197:~/www/zombie/
+  rsync -rq --delete --rsync-path="mkdir -p ~/www/zombie/ && rsync" $DIST_DIR $DEV_PATH_DESTINY
 else
   echo "==> Not deploying, since this branch isn't master."
 fi
